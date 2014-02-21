@@ -18,11 +18,12 @@ setup(
                     'Programming Language :: Python',
                     ],
     platforms = ('Any',),
-    packages = ['pyXSteam', 'pyXSteam.test'],
+    packages = ['pyXSteam', 'test'],
+    scripts = ['bin/pyXSteamDemo.py'],
     url = 'http://pypi.python.org/pypi/TowelStuff/',
     license = 'LICENSE.txt',
     requires = ['numpy(>=1.6.2)', ],
-    test_suite = 'pyXSteam.test.test_pyXSteam',
+    test_suite = 'test.test_pyXSteam',
 )
 
 # sudo pip install .
