@@ -17,21 +17,29 @@ class XSteam(object):
     __CRITICAL_TEMPERATURE__ = 647.096  # K
     __CRITICAL_PREASURE__ = 22.06395  # MPa
     __CRITICAL_DENSITY__ = 322  # kg m^-1
+    __TRIPLE_POINT_TEMPERATURE__ = 273.16  # K
+    __TRIPLE_POINT_PREASURE__ = 0.000611657  # MPa
 
     def __init__(self, mksSystem = True):
         self.unitConverter = UnitConverter(mksSystem)
 
-    def critTemperatur(self):
-        return self.unitConverter.fromSIunit_T(self.__CRITICAL_TEMPERATURE__)
-
-    def critPreasure(self):
-        return self.unitConverter.fromSIunit_p(self.__CRITICAL_PREASURE__)
-
-    def critDensity(self):
-        return self.unitConverter.fromSIunit_p(self.__CRITICAL_DENSITY__)
-
     def specificGasConstant(self):
         return self.__SPECIFIC_GAS_CONSTANT__
+
+    def criticalTemperatur(self):
+        return self.unitConverter.fromSIunit_T(self.__CRITICAL_TEMPERATURE__)
+
+    def criticalPreasure(self):
+        return self.unitConverter.fromSIunit_p(self.__CRITICAL_PREASURE__)
+
+    def criticalDensity(self):
+        return self.unitConverter.fromSIunit_p(self.__CRITICAL_DENSITY__)
+
+    def triplePointTemperatur(self):
+        return self.unitConverter.fromSIunit_T(self.__TRIPLE_POINT_TEMPERATURE__)
+
+    def triplePointPreasure(self):
+        return self.unitConverter.fromSIunit_p(self.__TRIPLE_POINT_PREASURE__)
 
 #%***********************************************************************************************************
 # %*1.2 Temperature

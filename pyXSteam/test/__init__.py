@@ -6,8 +6,10 @@ Created on 03.02.2014
 @author: max
 '''
 import unittest
+
 from pyXSteam import XSteam
 import test_pyXSteam
+
 
 def suite():
     # import unittest
