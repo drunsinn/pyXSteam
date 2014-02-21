@@ -1,12 +1,8 @@
 # -*- coding: UTF-8 -*-
 import math
-# import Region1
-# import Region2
-# import Region3
-# import Region4
-# import Region5
 from Regions import Region1, Region2, Region3, Region4, Region5
 import RegionSelection
+
 #%***********************************************************************************************************
 # %*5 Transport properties
 #%***********************************************************************************************************

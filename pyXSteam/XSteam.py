@@ -9,11 +9,29 @@ class XSteam(object):
     ''' Library for calculation properties of H2O accordint to IF-97
         This Python Library is based on the original XSteam Library for 
         Matlab and Excel from Magnus Holmgren, www.x-eng.com.
-        Es take no responsibilities for any errors in the code or damage thereby!
+        We take no responsibilities for any errors in the code or damage thereby!
         See Readme for examples
     '''
+
+    __SPECIFIC_GAS_CONSTANT__ = 0.461526  # kJ kg^-1 K^-1
+    __CRITICAL_TEMPERATURE__ = 647.096  # K
+    __CRITICAL_PREASURE__ = 22.06395  # MPa
+    __CRITICAL_DENSITY__ = 322  # kg m^-1
+
     def __init__(self, mksSystem = True):
         self.unitConverter = UnitConverter(mksSystem)
+
+    def critTemperatur(self):
+        return self.unitConverter.fromSIunit_T(self.__CRITICAL_TEMPERATURE__)
+
+    def critPreasure(self):
+        return self.unitConverter.fromSIunit_p(self.__CRITICAL_PREASURE__)
+
+    def critDensity(self):
+        return self.unitConverter.fromSIunit_p(self.__CRITICAL_DENSITY__)
+
+    def specificGasConstant(self):
+        return self.__SPECIFIC_GAS_CONSTANT__
 
 #%***********************************************************************************************************
 # %*1.2 Temperature
@@ -412,7 +430,7 @@ class XSteam(object):
 
 #%***********************************************************************************************************
 # %*1.6 Density (rho)
-# % Density is calculated as 1/v. Se section 1.5 Volume
+# % Density is calculated as 1/v. See section 1.5 Volume
     def rhoV_p(self, p):
         '''Saturated vapour density as a function of preasure'''
         return 1 / self.vV_p(p)

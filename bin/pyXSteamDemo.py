@@ -12,7 +12,7 @@ def demo_simpel_Values():
 def demo_generate_ph_Diagramm(path = None, precision = 1.0):
     '''Generate a p(h) Diagramm showing the Saturation Line'''
     steamTable = XSteam(mksSystem = True)
-    p_krit = 220.639
+    p_krit = steamTable.critPreasure()
     h_krit = steamTable.hL_p(p_krit)
 
     p = np.arange(0.0, 1000, precision)
