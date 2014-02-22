@@ -11,7 +11,7 @@ setup(
     name = 'pyXSteam',
     version = '0.1',
     description = 'pyXSteam is a port of the Matlab/Excel Package XSteam by Magnus Holmgren, www.x-eng.com to Python',
-    long_description = open('README.TXT').read(),
+    long_description = open('README.txt').read(),
     author = 'Max Pirkl',
     author_email = 'pirkl.max@googlemail.com',
     classifiers = [ 'Development Status ::  Alpha',
