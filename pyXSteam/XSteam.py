@@ -1,9 +1,12 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
 import math
-from Regions import Region1, Region2, Region3, Region4, Region5
+
 import RegionSelection
+from Regions import Region1, Region2, Region3, Region4, Region5
 import TransportProperties
+import Constants
+
 
 class XSteam(object):
     ''' Library for calculation properties of H2O accordint to IF-97
@@ -13,33 +16,26 @@ class XSteam(object):
         See Readme for examples
     '''
 
-    __SPECIFIC_GAS_CONSTANT__ = 0.461526  # kJ kg^-1 K^-1
-    __CRITICAL_TEMPERATURE__ = 647.096  # K
-    __CRITICAL_PREASURE__ = 22.06395  # MPa
-    __CRITICAL_DENSITY__ = 322  # kg m^-1
-    __TRIPLE_POINT_TEMPERATURE__ = 273.16  # K
-    __TRIPLE_POINT_PREASURE__ = 0.000611657  # MPa
-
     def __init__(self, mksSystem = True):
         self.unitConverter = UnitConverter(mksSystem)
 
     def specificGasConstant(self):
-        return self.__SPECIFIC_GAS_CONSTANT__
+        return Constants.__SPECIFIC_GAS_CONSTANT__
 
     def criticalTemperatur(self):
-        return self.unitConverter.fromSIunit_T(self.__CRITICAL_TEMPERATURE__)
+        return self.unitConverter.fromSIunit_T(Constants.__CRITICAL_TEMPERATURE__)
 
     def criticalPreasure(self):
-        return self.unitConverter.fromSIunit_p(self.__CRITICAL_PREASURE__)
+        return self.unitConverter.fromSIunit_p(Constants.__CRITICAL_PREASURE__)
 
     def criticalDensity(self):
-        return self.unitConverter.fromSIunit_p(self.__CRITICAL_DENSITY__)
+        return self.unitConverter.fromSIunit_p(Constants.__CRITICAL_DENSITY__)
 
     def triplePointTemperatur(self):
-        return self.unitConverter.fromSIunit_T(self.__TRIPLE_POINT_TEMPERATURE__)
+        return self.unitConverter.fromSIunit_T(Constants.__TRIPLE_POINT_TEMPERATURE__)
 
     def triplePointPreasure(self):
-        return self.unitConverter.fromSIunit_p(self.__TRIPLE_POINT_PREASURE__)
+        return self.unitConverter.fromSIunit_p(Constants.__TRIPLE_POINT_PREASURE__)
 
 #%***********************************************************************************************************
 # %*1.2 Temperature

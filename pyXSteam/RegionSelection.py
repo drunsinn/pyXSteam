@@ -1,7 +1,9 @@
 # -*- coding: UTF-8 -*-
 import math
-from Regions import Region1, Region2, Region3, Region4, Region5
+
 import RegionBorders
+from Regions import Region1, Region2, Region3, Region4, Region5
+
 
 #%***********************************************************************************************************
 # %*3 Region Selection

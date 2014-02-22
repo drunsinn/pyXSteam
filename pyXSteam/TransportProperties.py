@@ -1,7 +1,10 @@
 # -*- coding: UTF-8 -*-
 import math
-from Regions import Region1, Region2, Region3, Region4, Region5
+
 import RegionSelection
+from Regions import Region1, Region2, Region3, Region4, Region5
+import Constants
+
 
 #%***********************************************************************************************************
 # %*5 Transport properties
@@ -161,7 +164,8 @@ def Surface_Tension_T(T):
     # function Surface_Tension_T = Surface_Tension_T(T)
     # % IAPWS Release on Surface Tension of Ordinary Water Substance,
     # % September 1994
-    tc = 647.096  # % K
+    # tc = 647.096  # % K
+    tc = Constants.__CRITICAL_TEMPERATURE__
     B = 0.2358  # % N / m
     bb = -0.625  #
     my = 1.256  #

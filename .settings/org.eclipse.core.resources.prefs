@@ -1,10 +1,12 @@
 eclipse.preferences.version=1
 encoding//bin/pyXSteamDemo.py=utf-8
+encoding//pyXSteam/Constants.py=UTF-8
 encoding//pyXSteam/RegionBorders.py=UTF-8
 encoding//pyXSteam/RegionSelection.py=UTF-8
 encoding//pyXSteam/Regions.py=UTF-8
 encoding//pyXSteam/TransportProperties.py=UTF-8
 encoding//pyXSteam/XSteam.py=UTF-8
 encoding//pyXSteam/__init__.py=utf-8
+encoding//test/__init__.py=UTF-8
 encoding/README.TXT=UTF-8
 encoding/setup.py=utf-8

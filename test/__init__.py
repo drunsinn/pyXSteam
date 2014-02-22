@@ -7,7 +7,7 @@ Created on 03.02.2014
 '''
 import unittest
 
-from pyXSteam import XSteam
+from pyXSteam.XSteam import XSteam
 import test_pyXSteam
 
 

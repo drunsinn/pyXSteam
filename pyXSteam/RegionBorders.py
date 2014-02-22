@@ -13,7 +13,7 @@ def B23p_T(T):
     # %1997
     # %Section 4 Auxiliary Equation for the Boundary between Regions 2 and 3
     # %Eq 5, Page 5
-    return 348.05185628969 - 1.1671859879975 * T + 1.0192970039326E-03 * T ** 2
+    return 348.05185628969 - 1.1671859879975 * T + 1.0192970039326E-03 * (T ** 2)
 
 def B23T_p(p):
     # function B23T_p = B23T_p(p)
