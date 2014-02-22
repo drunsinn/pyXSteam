@@ -1,16 +1,17 @@
 # -*- coding: UTF-8 -*-
+"""
+Section 3: Region Selection
+"""
 import math
-
 import RegionBorders
 from Regions import Region1, Region2, Region3, Region4, Region5
 
 
-#%***********************************************************************************************************
-# %*3 Region Selection
-#%***********************************************************************************************************
-# %*3.1 Regions as a function of pT
 def region_pT(p, T):
+    """
+    Section 3.1 Regions as a function of pT
     # function region_pT = region_pT(p, T)
+    """
     if (T > 1073.15) and (p < 10) and (T < 2273.15) and (p > 0.000611):
         region_pT = 5
     elif (T <= 1073.15) and (T > 273.15) and (p <= 100) and (p > 0.000611):
@@ -36,11 +37,10 @@ def region_pT(p, T):
 
     return region_pT
 
-
-#%***********************************************************************************************************
-# %*3.2 Regions as a function of ph
 def region_ph(p, h):
+    """Section 3.2 Regions as a function of ph
     # function region_ph = region_ph(  p,   h)
+    """
     # %Check if outside pressure limits
     if (p < 0.000611657) or (p > 100):
         # region_ph = 0
@@ -118,15 +118,14 @@ def region_ph(p, h):
     # region_ph = 0;
     return 0
 
-
-#%***********************************************************************************************************
-# %*3.3 Regions as a function of ps
 def region_ps(p, s):
+    """
+    Section 3.3 Regions as a function of ps
     # function region_ps = region_ps(  p,   s)
+    """
     if (p < 0.000611657) or (p > 100) or (s < 0) or (s > Region5.s5_pT(p, 2273.15)):
         # region_ps = 0;
         return 0
-
     # % Check region 5
     if s > Region2.s2_pT(p, 1073.15):
         if p <= 10:
@@ -135,8 +134,6 @@ def region_ps(p, s):
         else:
             # region_ps = 0;
             return 0
-
-
     # % Check region 2
     if p > 16.529:
         ss = Region2.s2_pT(p, RegionBorders.B23T_p(p))  # % Between 5.047 & 5.261. Use to speed up !
@@ -146,7 +143,6 @@ def region_ps(p, s):
     if s > ss:
         # region_ps = 2;
         return 2
-
     # % Check region 3
     ss = Region1.s1_pT(p, 623.15);
     if (p > 16.529) and (s > ss):
@@ -156,24 +152,22 @@ def region_ps(p, s):
         else:
             # region_ps = 4;
             return 4
-
     # % Check region 4 (Not inside region 3)
     if (p < 16.529) and (s > Region1.s1_pT(p, Region4.T4_p(p))):
         # region_ps = 4;
         return 4
-
     # % Check region 1
     if (p > 0.000611657) and (s > Region1.s1_pT(p, 273.15)):
         # region_ps = 1
         return 1
-
     # region_ps = 1;
     return 1
 
-#%***********************************************************************************************************
-# %*3.4 Regions as a function of hs
 def region_hs(h, s):
+    """
+    # Section 3.4 Regions as a function of hs
     # function region_hs = region_hs(  h,   s)
+    """
     if s < -0.0001545495919:
         # region_hs = 0;
         return 0
@@ -315,56 +309,58 @@ def region_hs(h, s):
 
 
 #%***********************************************************************************************************
-# %*3.5 Regions as a function of p and rho
-def Region_prho(p, rho):
-    # function Region_prho = Region_prho(p,rho)
+def region_prho(p, rho):
+    """
+    # Section 3.5 Regions as a function of p and rho
+    # function region_prho = region_prho(p,rho)
+    """
     v = 1 / rho
     if (p < 0.000611657) or (p > 100):
-        # Region_prho = 0;
+        # region_prho = 0;
         return 0
 
     if p < 16.5292:  #  %Bellow region 3, Check region 1,4,2
         if v < Region1.v1_pT(p, 273.15):  # %Observe that this is not actually min of v. Not valid Water of 4�C is ligther.
-            # Region_prho = 0;
+            # region_prho = 0;
             return 0
         if v <= Region1.v1_pT(p, Region4.T4_p(p)):
-            # Region_prho = 1;
+            # region_prho = 1;
             return 1
         if v < Region2.v2_pT(p, Region4.T4_p(p)):
-            # Region_prho = 4;
+            # region_prho = 4;
             return 4
         if v <= Region2.v2_pT(p, 1073.15):
-            # Region_prho = 2;
+            # region_prho = 2;
             return 2
         if p > 10:  # %Above region 5
-            # Region_prho = 0;
+            # region_prho = 0;
             return 0
         if v <= Region5.v5_pT(p, 2073.15):
-            # Region_prho = 5;
+            # region_prho = 5;
             return 5
     else:  # %Check region 1,3,4,3,2 (Above the lowest point of region 3.)
         if v < Region1.v1_pT(p, 273.15):  # %Observe that this is not actually min of v. Not valid Water of 4�C is ligther.
-            # Region_prho = 0;
+            # region_prho = 0;
             return 0
         if v < Region1.v1_pT(p, 623.15):
-            # Region_prho = 1;
+            # region_prho = 1;
             return 1
         # %Check if in region 3 or 4 (Bellow Reg 2)
         if v < Region2.v2_pT(p, RegionBorders.B23T_p(p)):
             # %Region 3 or 4
             if p > 22.064:  # %Above region 4
-                # Region_prho = 3;
+                # region_prho = 3;
                 return 3
             if (v < Region3.v3_ph(p, Region4.h4L_p(p))) or (v > Region3.v3_ph(p, Region4.h4V_p(p))):  # %Uses iteration!!
-                # Region_prho = 3;
+                # region_prho = 3;
                 return 3
             else:
-                # Region_prho = 4;
+                # region_prho = 4;
                 return 4
         # %Check if region 2
         if v < Region2.v2_pT(p, 1073.15):
-            # Region_prho = 2;
+            # region_prho = 2;
             return 2
-    # Region_prho = 0;
+    # region_prho = 0;
     return 0
 

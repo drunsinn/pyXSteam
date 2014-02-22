@@ -1,31 +1,30 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
 import math
-
 import RegionSelection
 from Regions import Region1, Region2, Region3, Region4, Region5
 import TransportProperties
 import Constants
 
-
 class XSteam(object):
     """
-    Library for calculation properties of H2O accordint to IF-97
+    Library for calculation properties of H2O according to IF-97
     This Python Library is based on the original XSteam Library for 
     Matlab and Excel from Magnus Holmgren, www.x-eng.com.
     We take no responsibilities for any errors in the code or damage thereby!
     See README.txt for examples
     
-    # %*1.6 Density (rho)
-# % Density is calculated as 1/v. See section 1.5 Volume
+    Notes:
+    Density (rho):
+        Density is calculated as 1/v. See section 1.5 Volume
     
-    # %* 1.12 Viscosity
-# %Viscosity is not part of IAPWS Steam IF97. Equations from
-# %"Revised Release on the IAPWS Formulation 1985 for the Viscosity of Ordinary Water Substance", 2003 are used.
-# %Viscosity in the mixed region (4) is interpolated according to the density. This is not true since it will be two fases.
+    Viscosity:
+        Viscosity is not part of IAPWS Steam IF97. Equations from
+        "Revised Release on the IAPWS Formulation 1985 for the Viscosity of Ordinary Water Substance", 2003 are used.
+        Viscosity in the mixed region (4) is interpolated according to the density. This is not true since it will be two phases.
 
-# %*1.16 Thermal conductivity
-# %Revised release on the IAPS Formulation 1985 for the Thermal Conductivity of ordinary water substance (IAPWS 1998)
+    Thermal conductivity:
+        Revised release on the IAPS Formulation 1985 for the Thermal Conductivity of ordinary water substance (IAPWS 1998)
     """
 
     def __init__(self, mksSystem = True):
@@ -33,28 +32,33 @@ class XSteam(object):
         self.unitConverter = UnitConverter(mksSystem)
 
     def specificGasConstant(self):
+        """returns the specific Gas Constant in kJ kg^-1 K^-1"""
         return Constants.__SPECIFIC_GAS_CONSTANT__
 
     def criticalTemperatur(self):
+        """returns the specific temperature"""
         return self.unitConverter.fromSIunit_T(Constants.__CRITICAL_TEMPERATURE__)
 
-    def criticalPreasure(self):
-        return self.unitConverter.fromSIunit_p(Constants.__CRITICAL_PREASURE__)
+    def criticalPressure(self):
+        """returns the specific Pressure"""
+        return self.unitConverter.fromSIunit_p(Constants.__CRITICAL_PRESSURE__)
 
     def criticalDensity(self):
+        """returns the specific Density"""
         return self.unitConverter.fromSIunit_p(Constants.__CRITICAL_DENSITY__)
 
     def triplePointTemperatur(self):
+        """returns the temperature of the triple point"""
         return self.unitConverter.fromSIunit_T(Constants.__TRIPLE_POINT_TEMPERATURE__)
 
-    def triplePointPreasure(self):
-        return self.unitConverter.fromSIunit_p(Constants.__TRIPLE_POINT_PREASURE__)
+    def triplePointPressure(self):
+        """returns the Pressure of the triple point"""
+        return self.unitConverter.fromSIunit_p(Constants.__TRIPLE_POINT_PRESSURE__)
 
 #%***********************************************************************************************************
-# %*1.2 Temperature
+# Section 1.2 temperature
     def tsat_p(self, p):
-        """Calculate the Saturation-Temperature as a function of the preasure"""
-
+        """Saturation-temperature as a function of pressure"""
         p = self.unitConverter.toSIunit_p(p)
         if (p > 0.000611657) and (p < 22.06395):
             return self.unitConverter.fromSIunit_T(Region4.T4_p(p))
@@ -62,7 +66,7 @@ class XSteam(object):
             return float("NaN")
 
     def tsat_s(self, s):
-        """Saturation-Temperature as a function of entropy"""
+        """Saturation-temperature as a function of entropy"""
         s = self.unitConverter.toSIunit_s(s)
         if (s > -0.0001545495919) and (s < 9.155759395):
             ps = Region4.p4_s(s)
@@ -71,7 +75,7 @@ class XSteam(object):
             return float("NaN")
 
     def t_ph(self, p, h):
-        """Temperture as a function of pressure and enthalpy"""
+        """temperature as a function of pressure and enthalpy"""
         p = self.unitConverter.toSIunit_p(p)
         h = self.unitConverter.toSIunit_h(h)
         Region = RegionSelection.region_ph(p, h)
@@ -89,7 +93,7 @@ class XSteam(object):
             return float("NaN")
 
     def t_ps(self, p, s):
-        """Temperture as a function of pressure and entropy"""
+        """temperature as a function of pressure and entropy"""
         p = self.unitConverter.toSIunit_p(p)
         s = self.unitConverter.toSIunit_s(s)
         Region = RegionSelection.region_ps(p, s)
@@ -107,7 +111,7 @@ class XSteam(object):
             return float("NaN")
 
     def t_hs(self, h, s):
-        """Temperture as a function of enthalpy and entropy"""
+        """temperature as a function of enthalpy and entropy"""
         h = self.unitConverter.toSIunit_h(h)
         s = self.unitConverter.toSIunit_s(s)
         Region = RegionSelection.region_hs(h, s)
@@ -128,7 +132,7 @@ class XSteam(object):
             return float("NaN")
 
 #%***********************************************************************************************************
-# %*1.3 Pressure (p)
+# Section 1.3 Pressure (p)
     def psat_s(self, s):
         """Saturation-Pressure as a function of entropy"""
         s = self.unitConverter.toSIunit_s(s)
@@ -187,7 +191,7 @@ class XSteam(object):
         return ps;
 
 #%***********************************************************************************************************
-# %*1.4 Enthalpy (h)
+# Section 1.4 Enthalpy (h)
     def hV_p(self, p):
         """Saturated vapour enthalpy as a function of preasure"""
         p = self.unitConverter.toSIunit_p(p)
@@ -273,7 +277,7 @@ class XSteam(object):
         """Entalpy as a function of pressure and density. Observe for low temperatures (liquid) this equation has 2 solutions"""
         p = self.unitConverter.toSIunit_p(p)
         rho = 1 / self.unitConverter.toSIunit_v(1 / float(rho))
-        Region = RegionSelection.Region_prho(p, rho)
+        Region = RegionSelection.region_prho(p, rho)
         if Region == 1:
             return self.unitConverter.fromSIunit_h(Region1.h1_pT(p, Region1.T1_prho(p, rho)))
         elif Region == 2:
@@ -308,7 +312,7 @@ class XSteam(object):
         return hL + x * (hV - hL)
 
 #%***********************************************************************************************************
-# %*1.5 Specific Volume (v)
+# Section 1.5 Specific Volume (v)
     def vV_p(self, p):
         """Saturated vapour volume as a function of preasure"""
         p = self.unitConverter.toSIunit_p(p)
@@ -424,7 +428,7 @@ class XSteam(object):
             return float("NaN")
 
 #%***********************************************************************************************************
-# %*1.6 Density (rho)
+# Section 1.6 Density (rho)
 # % Density is calculated as 1/v. See section 1.5 Volume
     def rhoV_p(self, p):
         """Saturated vapour density as a function of preasure"""
@@ -455,7 +459,7 @@ class XSteam(object):
         return 1 / self.v_ps(p, s)
 
 #%***********************************************************************************************************
-# %*1.7 Specific entropy (s)
+# Section 1.7 Specific entropy (s)
     def sV_p(self, p):
         """Saturated vapour entropy as a function of preasure"""
         p = self.unitConverter.toSIunit_p(p)
@@ -554,7 +558,7 @@ class XSteam(object):
             return float("NaN")
 
 #%***********************************************************************************************************
-# %*1.8 Specific internal energy (u)
+# Section 1.8 Specific internal energy (u)
     def uV_p(self, p):
         """Saturated vapour internal energy as a function of preasure"""
         p = self.unitConverter.toSIunit_p(p)
@@ -683,7 +687,7 @@ class XSteam(object):
             return float("NaN")
 
 #%***********************************************************************************************************
-# %*1.9 Specific isobaric heat capacity (Cp)
+# Section 1.9 Specific isobaric heat capacity (Cp)
     def CpV_p(self, p):
         """Saturated vapour heat capacity as a function of preasure"""
         p = self.unitConverter.toSIunit_p(p)
@@ -795,7 +799,7 @@ class XSteam(object):
             return float("NaN")
 
 #%***********************************************************************************************************
-# %*1.10 Specific isochoric heat capacity (Cv)
+# Section 1.10 Specific isochoric heat capacity (Cv)
     def CvV_p(self, p):
         """Saturated vapour isochoric heat capacity as a function of preasure"""
         p = self.unitConverter.toSIunit_p(p)
@@ -907,7 +911,7 @@ class XSteam(object):
             return float("NaN")
 
 #%***********************************************************************************************************
-# %*1.11 Speed of sound
+# Section 1.11 Speed of sound
     def wV_p(self, p):
         """Saturated vapour speed of sound as a function of preasure"""
         p = self.unitConverter.toSIunit_p(p)
@@ -1019,7 +1023,7 @@ class XSteam(object):
             return float("NaN")
 
 #%***********************************************************************************************************
-# %* 1.12 Viscosity
+# Section  1.12 Viscosity
 # %Viscosity is not part of IAPWS Steam IF97. Equations from
 # %"Revised Release on the IAPWS Formulation 1985 for the Viscosity of Ordinary Water Substance", 2003 are used.
 # %Viscosity in the mixed region (4) is interpolated according to the density. This is not true since it will be two fases.
@@ -1053,7 +1057,7 @@ class XSteam(object):
         return self.my_ph(p, h)
 
 #%***********************************************************************************************************
-# %*1.13 Prandtl
+# Section 1.13 Prandtl
     def pr_pt(self, p, t):
         Cp = self.unitConverter.toSIunit_Cp(self.Cp_pt(p, t))
         my = self.unitConverter.toSIunit_my(self.my_pt(p, t))
@@ -1067,7 +1071,7 @@ class XSteam(object):
         return Cp * 1000 * my / tc
 
 #%***********************************************************************************************************
-# %*1.15 Surface tension
+# Section 1.15 Surface tension
     def st_t(self, t):
         """Surface tension for two phase water/steam as a function of T"""
         T = self.unitConverter.toSIunit_T(t)
@@ -1080,7 +1084,7 @@ class XSteam(object):
         return self.unitConverter.fromSIunit_st(TransportProperties.Surface_Tension_T(T))
 
 #%***********************************************************************************************************
-# %*1.16 Thermal conductivity
+# Section 1.16 Thermal conductivity
 # %Revised release on the IAPS Formulation 1985 for the Thermal Conductivity of ordinary water substance (IAPWS 1998)
     def tcL_p(self, p):
         """Saturated vapour thermal conductivity as a function of preasure"""
@@ -1162,7 +1166,7 @@ class XSteam(object):
         return self.unitConverter.fromSIunit_tc(TransportProperties.tc_ptrho(p, T, rho))
 
 #%***********************************************************************************************************
-# %*1.17 Vapour fraction
+# Section 1.17 Vapour fraction
     def x_ph(self, p, h):
         """Vapour fraction as a function of pressure and enthalpy"""
         p = self.unitConverter.toSIunit_p(p)
@@ -1183,7 +1187,7 @@ class XSteam(object):
 
 
 #%***********************************************************************************************************
-# %*1.18 Vapour Volume Fraction
+# Section 1.18 Vapour Volume Fraction
     def vx_ph(self, p, h):
         """Vapour volume fraction as a function of pressure and enthalpy"""
         p = self.unitConverter.toSIunit_p(p)

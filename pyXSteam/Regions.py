@@ -1,19 +1,25 @@
 # -*- coding: UTF-8 -*-
+"""
+Section 2: IAPWS IF 97 Calling functions
+"""
 import math
-
 import RegionBorders
 import Constants
 
-
-# %*2.1 Functions for region 1
 class Region1():
+    """
+    Section 2.1: IAPWS IF 97 Calling functions to calculate the properties of water in Region 1
+    Release on the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam, September 1997
+    """
 
     @staticmethod
     def v1_pT(p, T):
-        # function v1_pT = v1_pT(p, T)
+        """
+        function v1_pT = v1_pT(p, T)
         # %Release on the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam, September 1997
         # %5 Equations for Region 1, Section. 5.1 Basic Equation
         # %Eqution 7, Table 3, Page 6
+        """
         I1 = [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 8, 8, 21, 23, 29, 30, 31, 32]
         J1 = [-2, -1, 0, 1, 2, 3, 4, 5, -9, -7, -1, 0, 1, 3, -3, 0, 1, 3, 17, -4, 0, 6, -5, -2, 10, -8, -11, -6, -29, -31, -38, -39, -40, -41]
         n1 = [0.14632971213167, -0.84548187169114, -3.756360367204, 3.3855169168385, -0.95791963387872, 0.15772038513228, -0.016616417199501, 8.1214629983568E-04, 2.8319080123804E-04, -6.0706301565874E-04, -0.018990068218419, -0.032529748770505, -0.021841717175414, -5.283835796993E-05, -4.7184321073267E-04, -3.0001780793026E-04, 4.7661393906987E-05, -4.4141845330846E-06, -7.2694996297594E-16, -3.1679644845054E-05, -2.8270797985312E-06, -8.5205128120103E-10, -2.2425281908E-06, -6.5171222895601E-07, -1.4341729937924E-13, -4.0516996860117E-07, -1.2734301741641E-09, -1.7424871230634E-10, -6.8762131295531E-19, 1.4478307828521E-20, 2.6335781662795E-23, -1.1947622640071E-23, 1.8228094581404E-24, -9.3537087292458E-26]
@@ -29,10 +35,12 @@ class Region1():
 
     @staticmethod
     def h1_pT(p, T):
-        # function h1_pT = h1_pT(p, T)
+        """
+        function h1_pT = h1_pT(p, T)
         # % Release on the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam, September 1997
         # % 5 Equations for Region 1, Section. 5.1 Basic Equation
         # % Eqution 7, Table 3, Page 6
+        """
         I1 = [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 8, 8, 21, 23, 29, 30, 31, 32]
         J1 = [-2, -1, 0, 1, 2, 3, 4, 5, -9, -7, -1, 0, 1, 3, -3, 0, 1, 3, 17, -4, 0, 6, -5, -2, 10, -8, -11, -6, -29, -31, -38, -39, -40, -41]
         n1 = [0.14632971213167, -0.84548187169114, -3.756360367204, 3.3855169168385, -0.95791963387872, 0.15772038513228, -0.016616417199501, 8.1214629983568E-04, 2.8319080123804E-04, -6.0706301565874E-04, -0.018990068218419, -0.032529748770505, -0.021841717175414, -5.283835796993E-05, -4.7184321073267E-04, -3.0001780793026E-04, 4.7661393906987E-05, -4.4141845330846E-06, -7.2694996297594E-16, -3.1679644845054E-05, -2.8270797985312E-06, -8.5205128120103E-10, -2.2425281908E-06, -6.5171222895601E-07, -1.4341729937924E-13, -4.0516996860117E-07, -1.2734301741641E-09, -1.7424871230634E-10, -6.8762131295531E-19, 1.4478307828521E-20, 2.6335781662795E-23, -1.1947622640071E-23, 1.8228094581404E-24, -9.3537087292458E-26]
@@ -48,10 +56,12 @@ class Region1():
 
     @staticmethod
     def u1_pT(p, T):
-        # function u1_pT = u1_pT(p, T)
+        """
+        function u1_pT = u1_pT(p, T)
         # % Release on the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam, September 1997
         # % 5 Equations for Region 1, Section. 5.1 Basic Equation
         # % Eqution 7, Table 3, Page 6
+        """
         I1 = [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 8, 8, 21, 23, 29, 30, 31, 32]
         J1 = [-2, -1, 0, 1, 2, 3, 4, 5, -9, -7, -1, 0, 1, 3, -3, 0, 1, 3, 17, -4, 0, 6, -5, -2, 10, -8, -11, -6, -29, -31, -38, -39, -40, -41]
         n1 = [0.14632971213167, -0.84548187169114, -3.756360367204, 3.3855169168385, -0.95791963387872, 0.15772038513228, -0.016616417199501, 8.1214629983568E-04, 2.8319080123804E-04, -6.0706301565874E-04, -0.018990068218419, -0.032529748770505, -0.021841717175414, -5.283835796993E-05, -4.7184321073267E-04, -3.0001780793026E-04, 4.7661393906987E-05, -4.4141845330846E-06, -7.2694996297594E-16, -3.1679644845054E-05, -2.8270797985312E-06, -8.5205128120103E-10, -2.2425281908E-06, -6.5171222895601E-07, -1.4341729937924E-13, -4.0516996860117E-07, -1.2734301741641E-09, -1.7424871230634E-10, -6.8762131295531E-19, 1.4478307828521E-20, 2.6335781662795E-23, -1.1947622640071E-23, 1.8228094581404E-24, -9.3537087292458E-26]
@@ -69,10 +79,11 @@ class Region1():
 
     @staticmethod
     def s1_pT(p, T):
-        # function s1_pT = s1_pT(p, T)
+        """function s1_pT = s1_pT(p, T)
         # % Release on the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam, September 1997
         # % 5 Equations for Region 1, Section. 5.1 Basic Equation
         # % Eqution 7, Table 3, Page 6
+        """
         I1 = [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 8, 8, 21, 23, 29, 30, 31, 32]
         J1 = [-2, -1, 0, 1, 2, 3, 4, 5, -9, -7, -1, 0, 1, 3, -3, 0, 1, 3, 17, -4, 0, 6, -5, -2, 10, -8, -11, -6, -29, -31, -38, -39, -40, -41]
         n1 = [0.14632971213167, -0.84548187169114, -3.756360367204, 3.3855169168385, -0.95791963387872, 0.15772038513228, -0.016616417199501, 8.1214629983568E-04, 2.8319080123804E-04, -6.0706301565874E-04, -0.018990068218419, -0.032529748770505, -0.021841717175414, -5.283835796993E-05, -4.7184321073267E-04, -3.0001780793026E-04, 4.7661393906987E-05, -4.4141845330846E-06, -7.2694996297594E-16, -3.1679644845054E-05, -2.8270797985312E-06, -8.5205128120103E-10, -2.2425281908E-06, -6.5171222895601E-07, -1.4341729937924E-13, -4.0516996860117E-07, -1.2734301741641E-09, -1.7424871230634E-10, -6.8762131295531E-19, 1.4478307828521E-20, 2.6335781662795E-23, -1.1947622640071E-23, 1.8228094581404E-24, -9.3537087292458E-26]
@@ -90,10 +101,12 @@ class Region1():
 
     @staticmethod
     def Cp1_pT(p, T):
-        # function Cp1_pT = Cp1_pT(p, T)
+        """
+        function Cp1_pT = Cp1_pT(p, T)
         # % Release on the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam, September 1997
         # % 5 Equations for Region 1, Section. 5.1 Basic Equation
         # % Eqution 7, Table 3, Page 6
+        """
         I1 = [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 8, 8, 21, 23, 29, 30, 31, 32]
         J1 = [-2, -1, 0, 1, 2, 3, 4, 5, -9, -7, -1, 0, 1, 3, -3, 0, 1, 3, 17, -4, 0, 6, -5, -2, 10, -8, -11, -6, -29, -31, -38, -39, -40, -41]
         n1 = [0.14632971213167, -0.84548187169114, -3.756360367204, 3.3855169168385, -0.95791963387872, 0.15772038513228, -0.016616417199501, 8.1214629983568E-04, 2.8319080123804E-04, -6.0706301565874E-04, -0.018990068218419, -0.032529748770505, -0.021841717175414, -5.283835796993E-05, -4.7184321073267E-04, -3.0001780793026E-04, 4.7661393906987E-05, -4.4141845330846E-06, -7.2694996297594E-16, -3.1679644845054E-05, -2.8270797985312E-06, -8.5205128120103E-10, -2.2425281908E-06, -6.5171222895601E-07, -1.4341729937924E-13, -4.0516996860117E-07, -1.2734301741641E-09, -1.7424871230634E-10, -6.8762131295531E-19, 1.4478307828521E-20, 2.6335781662795E-23, -1.1947622640071E-23, 1.8228094581404E-24, -9.3537087292458E-26]
@@ -109,10 +122,12 @@ class Region1():
 
     @staticmethod
     def Cv1_pT(p, T):
-        # function Cv1_pT = Cv1_pT(p, T)
+        """
+        function Cv1_pT = Cv1_pT(p, T)
         # % Release on the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam, September 1997
         # % 5 Equations for Region 1, Section. 5.1 Basic Equation
         # % Eqution 7, Table 3, Page 6
+        """
         I1 = [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 8, 8, 21, 23, 29, 30, 31, 32]
         J1 = [-2, -1, 0, 1, 2, 3, 4, 5, -9, -7, -1, 0, 1, 3, -3, 0, 1, 3, 17, -4, 0, 6, -5, -2, 10, -8, -11, -6, -29, -31, -38, -39, -40, -41]
         n1 = [0.14632971213167, -0.84548187169114, -3.756360367204, 3.3855169168385, -0.95791963387872, 0.15772038513228, -0.016616417199501, 8.1214629983568E-04, 2.8319080123804E-04, -6.0706301565874E-04, -0.018990068218419, -0.032529748770505, -0.021841717175414, -5.283835796993E-05, -4.7184321073267E-04, -3.0001780793026E-04, 4.7661393906987E-05, -4.4141845330846E-06, -7.2694996297594E-16, -3.1679644845054E-05, -2.8270797985312E-06, -8.5205128120103E-10, -2.2425281908E-06, -6.5171222895601E-07, -1.4341729937924E-13, -4.0516996860117E-07, -1.2734301741641E-09, -1.7424871230634E-10, -6.8762131295531E-19, 1.4478307828521E-20, 2.6335781662795E-23, -1.1947622640071E-23, 1.8228094581404E-24, -9.3537087292458E-26]
@@ -134,10 +149,10 @@ class Region1():
 
     @staticmethod
     def w1_pT(p, T):
-        # function w1_pT = w1_pT(p, T)
+        """function w1_pT = w1_pT(p, T)
         # % Release on the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam, September 1997
         # % 5 Equations for Region 1, Section. 5.1 Basic Equation
-        # % Eqution 7, Table 3, Page 6
+        # % Eqution 7, Table 3, Page 6"""
         I1 = [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 8, 8, 21, 23, 29, 30, 31, 32]
         J1 = [-2, -1, 0, 1, 2, 3, 4, 5, -9, -7, -1, 0, 1, 3, -3, 0, 1, 3, 17, -4, 0, 6, -5, -2, 10, -8, -11, -6, -29, -31, -38, -39, -40, -41]
         n1 = [0.14632971213167, -0.84548187169114, -3.756360367204, 3.3855169168385, -0.95791963387872, 0.15772038513228, -0.016616417199501, 8.1214629983568E-04, 2.8319080123804E-04, -6.0706301565874E-04, -0.018990068218419, -0.032529748770505, -0.021841717175414, -5.283835796993E-05, -4.7184321073267E-04, -3.0001780793026E-04, 4.7661393906987E-05, -4.4141845330846E-06, -7.2694996297594E-16, -3.1679644845054E-05, -2.8270797985312E-06, -8.5205128120103E-10, -2.2425281908E-06, -6.5171222895601E-07, -1.4341729937924E-13, -4.0516996860117E-07, -1.2734301741641E-09, -1.7424871230634E-10, -6.8762131295531E-19, 1.4478307828521E-20, 2.6335781662795E-23, -1.1947622640071E-23, 1.8228094581404E-24, -9.3537087292458E-26]
@@ -159,10 +174,10 @@ class Region1():
 
     @staticmethod
     def T1_ph(p, h):
-        # function T1_ph = T1_ph(p, h)
+        """function T1_ph = T1_ph(p, h)
         # % Release on the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam, September 1997
         # % 5 Equations for Region 1, Section. 5.1 Basic Equation, 5.2.1 The Backward Equation T (p, h)
-        # % Eqution 11, Table 6, Page 10
+        # % Eqution 11, Table 6, Page 10"""
         I1 = [0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 2, 2, 3, 3, 4, 5, 6]
         J1 = [0, 1, 2, 6, 22, 32, 0, 1, 2, 3, 4, 10, 32, 10, 32, 10, 32, 32, 32, 32]
         n1 = [-238.72489924521, 404.21188637945, 113.49746881718, -5.8457616048039, -1.528548241314E-04, -1.0866707695377E-06, -13.391744872602, 43.211039183559, -54.010067170506, 30.535892203916, -6.5964749423638, 9.3965400878363E-03, 1.157364750534E-07, -2.5858641282073E-05, -4.0644363084799E-09, 6.6456186191635E-08, 8.0670734103027E-11, -9.3477771213947E-13, 5.8265442020601E-15, -1.5020185953503E-17]
@@ -176,10 +191,10 @@ class Region1():
 
     @staticmethod
     def T1_ps(p, s):
-        # function T1_ps = T1_ps(p, s)
+        """function T1_ps = T1_ps(p, s)
         # % Release on the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam, September 1997
         # % 5 Equations for Region 1, Section. 5.1 Basic Equation, 5.2.2 The Backward Equation T (p, s)
-        # % Eqution 13, Table 8, Page 11
+        # % Eqution 13, Table 8, Page 11"""
         I1 = [0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 4]
         J1 = [0, 1, 2, 3, 11, 31, 0, 1, 2, 3, 12, 31, 0, 1, 2, 9, 31, 10, 32, 32]
         n1 = [174.78268058307, 34.806930892873, 6.5292584978455, 0.33039981775489, -1.9281382923196E-07, -2.4909197244573E-23, -0.26107636489332, 0.22592965981586, -0.064256463395226, 7.8876289270526E-03, 3.5672110607366E-10, 1.7332496994895E-24, 5.6608900654837E-04, -3.2635483139717E-04, 4.4778286690632E-05, -5.1322156908507E-10, -4.2522657042207E-26, 2.6400441360689E-13, 7.8124600459723E-29, -3.0732199903668E-31]
@@ -193,10 +208,10 @@ class Region1():
 
     @staticmethod
     def p1_hs(h, s):
-        # function p1_hs = p1_hs(h, s)
+        """function p1_hs = p1_hs(h, s)
         # % Supplementary Release on Backward Equations for Pressure as a Function of Enthalpy and Entropy p(h, s) to the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam
         # % 5 Backward Equation p(h, s) for Region 1
-        # % Eqution 1, Table 2, Page 5
+        # % Eqution 1, Table 2, Page 5"""
         I1 = [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 3, 4, 4, 5]
         J1 = [0, 1, 2, 4, 5, 6, 8, 14, 0, 1, 4, 6, 0, 1, 10, 4, 1, 4, 0]
         n1 = [-0.691997014660582, -18.361254878756, -9.28332409297335, 65.9639569909906, -16.2060388912024, 450.620017338667, 854.68067822417, 6075.23214001162, 32.6487682621856, -26.9408844582931, -319.9478483343, -928.35430704332, 30.3634537455249, -65.0540422444146, -4309.9131651613, -747.512324096068, 730.000345529245, 1142.84032569021, -436.407041874559]
@@ -210,9 +225,9 @@ class Region1():
 
     @staticmethod
     def T1_prho(p, rho):
-        # function T1_prho = T1_prho(p , rho)
+        """function T1_prho = T1_prho(p , rho)
         # % Solve by iteration. Observe that for low temperatures this equation has 2 solutions.
-        # % Solve with half interval method
+        # % Solve with half interval method"""
         Low_Bound = 273.15
         High_Bound = Region4.T4_p(p)
         rhos = -1000
@@ -226,12 +241,17 @@ class Region1():
         return Ts
 
 class Region2():
+    """
+    Section 2.2: IAPWS IF 97 Calling functions to calculate the properties of water in Region 3
+    Release on the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam, September 1997
+    """
+
     @staticmethod
     def v2_pT(p, T):
-        # function v2_pT = v2_pT(p, T)
+        """function v2_pT = v2_pT(p, T)
         # %Release on the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam, September 1997
         # %6 Equations for Region 2, Section. 6.1 Basic Equation
-        # %Table 11 and 12, Page 14 and 15
+        # %Table 11 and 12, Page 14 and 15"""
         # J0 = [0, 1, -5, -4, -3, -2, -1, 2, 3]
         # n0 = [-9.6927686500217, 10.086655968018, -0.005608791128302, 0.071452738081455, -0.40710498223928, 1.4240819171444, -4.383951131945, -0.28408632460772, 0.021268463753307]
         Ir = [1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 5, 6, 6, 6, 7, 7, 7, 8, 8, 9, 10, 10, 10, 16, 16, 18, 20, 20, 20, 21, 22, 23, 24, 24, 24]
@@ -249,10 +269,10 @@ class Region2():
         return R * T / p * Pi * (g0_pi + gr_pi) / 1000
     @staticmethod
     def h2_pT(p, T):
-        # function h2_pT = h2_pT(p, T)
+        """function h2_pT = h2_pT(p, T)
         # %Release on the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam, September 1997
         # %6 Equations for Region 2, Section. 6.1 Basic Equation
-        # %Table 11 and 12, Page 14 and 15
+        # %Table 11 and 12, Page 14 and 15"""
         J0 = [0, 1, -5, -4, -3, -2, -1, 2, 3]
         n0 = [-9.6927686500217, 10.086655968018, -0.005608791128302, 0.071452738081455, -0.40710498223928, 1.4240819171444, -4.383951131945, -0.28408632460772, 0.021268463753307]
         Ir = [1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 5, 6, 6, 6, 7, 7, 7, 8, 8, 9, 10, 10, 10, 16, 16, 18, 20, 20, 20, 21, 22, 23, 24, 24, 24]
@@ -263,6 +283,7 @@ class Region2():
         Pi = p
         tau = 540 / T
         g0_tau = 0
+        # TODO:vvvv Check for mistake vvvvv
         # for i = 1 : 9
         for i in range(0, 9):
             g0_tau = g0_tau + n0[i] * J0[i] * tau ** (J0[i] - 1)
@@ -274,10 +295,10 @@ class Region2():
 
     @staticmethod
     def u2_pT(p, T):
-        # function u2_pT = u2_pT(p, T)
+        """function u2_pT = u2_pT(p, T)
         # %Release on the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam, September 1997
         # %6 Equations for Region 2, Section. 6.1 Basic Equation
-        # %Table 11 and 12, Page 14 and 15
+        # %Table 11 and 12, Page 14 and 15"""
         J0 = [0, 1, -5, -4, -3, -2, -1, 2, 3]
         n0 = [-9.6927686500217, 10.086655968018, -0.005608791128302, 0.071452738081455, -0.40710498223928, 1.4240819171444, -4.383951131945, -0.28408632460772, 0.021268463753307]
         Ir = [1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 5, 6, 6, 6, 7, 7, 7, 8, 8, 9, 10, 10, 10, 16, 16, 18, 20, 20, 20, 21, 22, 23, 24, 24, 24]
@@ -302,10 +323,10 @@ class Region2():
 
     @staticmethod
     def s2_pT(p, T):
-        # function s2_pT = s2_pT(p, T)
+        """function s2_pT = s2_pT(p, T)
         # %Release on the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam, September 1997
         # %6 Equations for Region 2, Section. 6.1 Basic Equation
-        # %Table 11 and 12, Page 14 and 15
+        # %Table 11 and 12, Page 14 and 15"""
         J0 = [0, 1, -5, -4, -3, -2, -1, 2, 3]
         n0 = [-9.6927686500217, 10.086655968018, -0.005608791128302, 0.071452738081455, -0.40710498223928, 1.4240819171444, -4.383951131945, -0.28408632460772, 0.021268463753307]
         Ir = [1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 5, 6, 6, 6, 7, 7, 7, 8, 8, 9, 10, 10, 10, 16, 16, 18, 20, 20, 20, 21, 22, 23, 24, 24, 24]
@@ -331,10 +352,10 @@ class Region2():
 
     @staticmethod
     def Cp2_pT(p, T):
-        # function Cp2_pT = Cp2_pT(p, T)
+        """function Cp2_pT = Cp2_pT(p, T)
         # %Release on the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam, September 1997
         # %6 Equations for Region 2, Section. 6.1 Basic Equation
-        # %Table 11 and 12, Page 14 and 15
+        # %Table 11 and 12, Page 14 and 15"""
         J0 = [0, 1, -5, -4, -3, -2, -1, 2, 3]
         n0 = [-9.6927686500217, 10.086655968018, -0.005608791128302, 0.071452738081455, -0.40710498223928, 1.4240819171444, -4.383951131945, -0.28408632460772, 0.021268463753307]
         Ir = [1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 5, 6, 6, 6, 7, 7, 7, 8, 8, 9, 10, 10, 10, 16, 16, 18, 20, 20, 20, 21, 22, 23, 24, 24, 24]
@@ -356,10 +377,10 @@ class Region2():
 
     @staticmethod
     def Cv2_pT(p, T):
-        # function Cv2_pT = Cv2_pT(p, T)
+        """function Cv2_pT = Cv2_pT(p, T)
         # %Release on the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam, September 1997
         # %6 Equations for Region 2, Section. 6.1 Basic Equation
-        # %Table 11 and 12, Page 14 and 15
+        # %Table 11 and 12, Page 14 and 15"""
         J0 = [0, 1, -5, -4, -3, -2, -1, 2, 3]
         n0 = [-9.6927686500217, 10.086655968018, -0.005608791128302, 0.071452738081455, -0.40710498223928, 1.4240819171444, -4.383951131945, -0.28408632460772, 0.021268463753307]
         Ir = [1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 5, 6, 6, 6, 7, 7, 7, 8, 8, 9, 10, 10, 10, 16, 16, 18, 20, 20, 20, 21, 22, 23, 24, 24, 24]
@@ -387,10 +408,10 @@ class Region2():
 
     @staticmethod
     def w2_pT(p, T):
-        # function w2_pT = w2_pT(p, T)
+        """function w2_pT = w2_pT(p, T)
         # %Release on the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam, September 1997
         # %6 Equations for Region 2, Section. 6.1 Basic Equation
-        # %Table 11 and 12, Page 14 and 15
+        # %Table 11 and 12, Page 14 and 15"""
         J0 = [0, 1, -5, -4, -3, -2, -1, 2, 3]
         n0 = [-9.6927686500217, 10.086655968018, -0.005608791128302, 0.071452738081455, -0.40710498223928, 1.4240819171444, -4.383951131945, -0.28408632460772, 0.021268463753307]
         Ir = [1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 5, 6, 6, 6, 7, 7, 7, 8, 8, 9, 10, 10, 10, 16, 16, 18, 20, 20, 20, 21, 22, 23, 24, 24, 24]
@@ -418,9 +439,9 @@ class Region2():
 
     @staticmethod
     def T2_ph(p, h):
-        # function T2_ph = T2_ph(p, h)
+        """function T2_ph = T2_ph(p, h)
         # % Release on the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam, September 1997
-        # % 6 Equations for Region 2, 6.3.1 The Backward Equations T(p, h) for Subregions 2a, 2b, and 2c
+        # % 6 Equations for Region 2, 6.3.1 The Backward Equations T(p, h) for Subregions 2a, 2b, and 2c"""
         if p < 4:
             sub_reg = 1;
         else:
@@ -470,10 +491,10 @@ class Region2():
 
     @staticmethod
     def T2_ps(p, s):
-        # function T2_ps = T2_ps(p, s)
+        """function T2_ps = T2_ps(p, s)
         # %Release on the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam, September 1997
         # %6 Equations for Region 2,6.3.2 The Backward Equations T( p, s ) for Subregions 2a, 2b, and 2c
-        # %Page 26
+        # %Page 26"""
         if p < 4:
             sub_reg = 1;
         else:
@@ -525,9 +546,9 @@ class Region2():
         return teta
     @staticmethod
     def p2_hs(h, s):
-        # function p2_hs = p2_hs(h, s)
+        """function p2_hs = p2_hs(h, s)
         # %Supplementary Release on Backward Equations for Pressure as a function of Enthalpy and Entropy p(h,s) to the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam
-        # %Chapter 6:Backward Equations p(h,s) for Region 2
+        # %Chapter 6:Backward Equations p(h,s) for Region 2"""
         if h < (-3498.98083432139 + 2575.60716905876 * s - 421.073558227969 * s ** 2 + 27.6349063799944 * s ** 3):
             sub_reg = 1;
         else:
@@ -580,9 +601,9 @@ class Region2():
 
     @staticmethod
     def T2_prho(p, rho):
-        # function T2_prho=T2_prho(p,rho)
+        """function T2_prho=T2_prho(p,rho)
         # %Solve by iteration. Observe that fo low temperatures this equation has 2 solutions.
-        # %Solve with half interval method
+        # %Solve with half interval method"""
         if p < 16.5292:
             Low_Bound = Region4.T4_p(p)
         else:
@@ -601,12 +622,17 @@ class Region2():
         return Ts
 
 class Region3():
+    """
+    Section 2.3: IAPWS IF 97 Calling functions to calculate the properties of water in Region 3
+    Release on the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam, September 1997
+    """
+
     @staticmethod
     def p3_rhoT(rho, T):
-        # function p3_rhoT = p3_rhoT(rho, T)
+        """function p3_rhoT = p3_rhoT(rho, T)
         # %Release on the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam, September 1997
         # %7 Basic Equation for Region 3, Section. 6.1 Basic Equation
-        # %Table 30 and 31, Page 30 and 31
+        # %Table 30 and 31, Page 30 and 31"""
         Ii = [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 6, 6, 6, 7, 8, 9, 9, 10, 10, 11]
         Ji = [0, 0, 1, 2, 7, 10, 12, 23, 2, 6, 15, 17, 0, 2, 6, 7, 22, 26, 0, 2, 4, 16, 26, 0, 2, 4, 26, 1, 3, 26, 0, 2, 26, 2, 26, 2, 26, 0, 1, 26]
         ni = [1.0658070028513, -15.732845290239, 20.944396974307, -7.6867707878716, 2.6185947787954, -2.808078114862, 1.2053369696517, -8.4566812812502E-03, -1.2654315477714, -1.1524407806681, 0.88521043984318, -0.64207765181607, 0.38493460186671, -0.85214708824206, 4.8972281541877, -3.0502617256965, 0.039420536879154, 0.12558408424308, -0.2799932969871, 1.389979956946, -2.018991502357, -8.2147637173963E-03, -0.47596035734923, 0.0439840744735, -0.44476435428739, 0.90572070719733, 0.70522450087967, 0.10770512626332, -0.32913623258954, -0.50871062041158, -0.022175400873096, 0.094260751665092, 0.16436278447961, -0.013503372241348, -0.014834345352472, 5.7922953628084E-04, 3.2308904703711E-03, 8.0964802996215E-05, -1.6557679795037E-04, -4.4923899061815E-05]
@@ -628,10 +654,10 @@ class Region3():
 
     @staticmethod
     def u3_rhoT(rho, T):
-        # function u3_rhoT = u3_rhoT(rho, T)
+        """function u3_rhoT = u3_rhoT(rho, T)
         # %Release on the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam, September 1997
         # %7 Basic Equation for Region 3, Section. 6.1 Basic Equation
-        # %Table 30 and 31, Page 30 and 31
+        # %Table 30 and 31, Page 30 and 31"""
         Ii = [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 6, 6, 6, 7, 8, 9, 9, 10, 10, 11]
         Ji = [0, 0, 1, 2, 7, 10, 12, 23, 2, 6, 15, 17, 0, 2, 6, 7, 22, 26, 0, 2, 4, 16, 26, 0, 2, 4, 26, 1, 3, 26, 0, 2, 26, 2, 26, 2, 26, 0, 1, 26]
         ni = [1.0658070028513, -15.732845290239, 20.944396974307, -7.6867707878716, 2.6185947787954, -2.808078114862, 1.2053369696517, -8.4566812812502E-03, -1.2654315477714, -1.1524407806681, 0.88521043984318, -0.64207765181607, 0.38493460186671, -0.85214708824206, 4.8972281541877, -3.0502617256965, 0.039420536879154, 0.12558408424308, -0.2799932969871, 1.389979956946, -2.018991502357, -8.2147637173963E-03, -0.47596035734923, 0.0439840744735, -0.44476435428739, 0.90572070719733, 0.70522450087967, 0.10770512626332, -0.32913623258954, -0.50871062041158, -0.022175400873096, 0.094260751665092, 0.16436278447961, -0.013503372241348, -0.014834345352472, 5.7922953628084E-04, 3.2308904703711E-03, 8.0964802996215E-05, -1.6557679795037E-04, -4.4923899061815E-05]
@@ -651,10 +677,10 @@ class Region3():
 
     @staticmethod
     def h3_rhoT(rho, T):
-        # function h3_rhoT = h3_rhoT(rho, T)
+        """function h3_rhoT = h3_rhoT(rho, T)
         # %Release on the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam, September 1997
         # %7 Basic Equation for Region 3, Section. 6.1 Basic Equation
-        # %Table 30 and 31, Page 30 and 31
+        # %Table 30 and 31, Page 30 and 31"""
         Ii = [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 6, 6, 6, 7, 8, 9, 9, 10, 10, 11]
         Ji = [0, 0, 1, 2, 7, 10, 12, 23, 2, 6, 15, 17, 0, 2, 6, 7, 22, 26, 0, 2, 4, 16, 26, 0, 2, 4, 26, 1, 3, 26, 0, 2, 26, 2, 26, 2, 26, 0, 1, 26]
         ni = [1.0658070028513, -15.732845290239, 20.944396974307, -7.6867707878716, 2.6185947787954, -2.808078114862, 1.2053369696517, -8.4566812812502E-03, -1.2654315477714, -1.1524407806681, 0.88521043984318, -0.64207765181607, 0.38493460186671, -0.85214708824206, 4.8972281541877, -3.0502617256965, 0.039420536879154, 0.12558408424308, -0.2799932969871, 1.389979956946, -2.018991502357, -8.2147637173963E-03, -0.47596035734923, 0.0439840744735, -0.44476435428739, 0.90572070719733, 0.70522450087967, 0.10770512626332, -0.32913623258954, -0.50871062041158, -0.022175400873096, 0.094260751665092, 0.16436278447961, -0.013503372241348, -0.014834345352472, 5.7922953628084E-04, 3.2308904703711E-03, 8.0964802996215E-05, -1.6557679795037E-04, -4.4923899061815E-05]
@@ -668,6 +694,7 @@ class Region3():
         tau = tc / T
         fidelta = 0
         fitau = 0
+        # for i = 2 : 40
         for i in range(1, 40):
             fidelta = fidelta + ni[i] * Ii[i] * delta ** (Ii[i] - 1) * tau ** Ji[i]
             fitau = fitau + ni[i] * delta ** Ii[i] * Ji[i] * tau ** (Ji[i] - 1)
@@ -675,10 +702,10 @@ class Region3():
         return R * T * (tau * fitau + delta * fidelta)
     @staticmethod
     def s3_rhoT(rho, T):
-        # function s3_rhoT = s3_rhoT(rho, T)
+        """function s3_rhoT = s3_rhoT(rho, T)
         # %Release on the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam, September 1997
         # %7 Basic Equation for Region 3, Section. 6.1 Basic Equation
-        # %Table 30 and 31, Page 30 and 31
+        # %Table 30 and 31, Page 30 and 31"""
         Ii = [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 6, 6, 6, 7, 8, 9, 9, 10, 10, 11]
         Ji = [0, 0, 1, 2, 7, 10, 12, 23, 2, 6, 15, 17, 0, 2, 6, 7, 22, 26, 0, 2, 4, 16, 26, 0, 2, 4, 26, 1, 3, 26, 0, 2, 26, 2, 26, 2, 26, 0, 1, 26]
         ni = [1.0658070028513, -15.732845290239, 20.944396974307, -7.6867707878716, 2.6185947787954, -2.808078114862, 1.2053369696517, -8.4566812812502E-03, -1.2654315477714, -1.1524407806681, 0.88521043984318, -0.64207765181607, 0.38493460186671, -0.85214708824206, 4.8972281541877, -3.0502617256965, 0.039420536879154, 0.12558408424308, -0.2799932969871, 1.389979956946, -2.018991502357, -8.2147637173963E-03, -0.47596035734923, 0.0439840744735, -0.44476435428739, 0.90572070719733, 0.70522450087967, 0.10770512626332, -0.32913623258954, -0.50871062041158, -0.022175400873096, 0.094260751665092, 0.16436278447961, -0.013503372241348, -0.014834345352472, 5.7922953628084E-04, 3.2308904703711E-03, 8.0964802996215E-05, -1.6557679795037E-04, -4.4923899061815E-05]
@@ -701,10 +728,10 @@ class Region3():
 
     @staticmethod
     def Cp3_rhoT(rho, T):
-        # function Cp3_rhoT = Cp3_rhoT(rho, T)
+        """function Cp3_rhoT = Cp3_rhoT(rho, T)
         # %Release on the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam, September 1997
         # %7 Basic Equation for Region 3, Section. 6.1 Basic Equation
-        # %Table 30 and 31, Page 30 and 31
+        # %Table 30 and 31, Page 30 and 31"""
         Ii = [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 6, 6, 6, 7, 8, 9, 9, 10, 10, 11]
         Ji = [0, 0, 1, 2, 7, 10, 12, 23, 2, 6, 15, 17, 0, 2, 6, 7, 22, 26, 0, 2, 4, 16, 26, 0, 2, 4, 26, 1, 3, 26, 0, 2, 26, 2, 26, 2, 26, 0, 1, 26]
         ni = [1.0658070028513, -15.732845290239, 20.944396974307, -7.6867707878716, 2.6185947787954, -2.808078114862, 1.2053369696517, -8.4566812812502E-03, -1.2654315477714, -1.1524407806681, 0.88521043984318, -0.64207765181607, 0.38493460186671, -0.85214708824206, 4.8972281541877, -3.0502617256965, 0.039420536879154, 0.12558408424308, -0.2799932969871, 1.389979956946, -2.018991502357, -8.2147637173963E-03, -0.47596035734923, 0.0439840744735, -0.44476435428739, 0.90572070719733, 0.70522450087967, 0.10770512626332, -0.32913623258954, -0.50871062041158, -0.022175400873096, 0.094260751665092, 0.16436278447961, -0.013503372241348, -0.014834345352472, 5.7922953628084E-04, 3.2308904703711E-03, 8.0964802996215E-05, -1.6557679795037E-04, -4.4923899061815E-05]
@@ -732,10 +759,10 @@ class Region3():
 
     @staticmethod
     def Cv3_rhoT(rho, T):
-        # function Cv3_rhoT = Cv3_rhoT(rho, T)
+        """function Cv3_rhoT = Cv3_rhoT(rho, T)
         # %Release on the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam, September 1997
         # %7 Basic Equation for Region 3, Section. 6.1 Basic Equation
-        # %Table 30 and 31, Page 30 and 31
+        # %Table 30 and 31, Page 30 and 31"""
         Ii = [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 6, 6, 6, 7, 8, 9, 9, 10, 10, 11]
         Ji = [0, 0, 1, 2, 7, 10, 12, 23, 2, 6, 15, 17, 0, 2, 6, 7, 22, 26, 0, 2, 4, 16, 26, 0, 2, 4, 26, 1, 3, 26, 0, 2, 26, 2, 26, 2, 26, 0, 1, 26]
         ni = [1.0658070028513, -15.732845290239, 20.944396974307, -7.6867707878716, 2.6185947787954, -2.808078114862, 1.2053369696517, -8.4566812812502E-03, -1.2654315477714, -1.1524407806681, 0.88521043984318, -0.64207765181607, 0.38493460186671, -0.85214708824206, 4.8972281541877, -3.0502617256965, 0.039420536879154, 0.12558408424308, -0.2799932969871, 1.389979956946, -2.018991502357, -8.2147637173963E-03, -0.47596035734923, 0.0439840744735, -0.44476435428739, 0.90572070719733, 0.70522450087967, 0.10770512626332, -0.32913623258954, -0.50871062041158, -0.022175400873096, 0.094260751665092, 0.16436278447961, -0.013503372241348, -0.014834345352472, 5.7922953628084E-04, 3.2308904703711E-03, 8.0964802996215E-05, -1.6557679795037E-04, -4.4923899061815E-05]
@@ -748,17 +775,19 @@ class Region3():
         delta = rho / rhoc
         tau = tc / T
         fitautau = 0
+        # TODO:vvvv Check for mistake vvvvv
         # for i = 1 : 40
-        for i in range(0, 40):
+        # IAWPS says i=2..40
+        for i in range(1, 40):
             fitautau = fitautau + ni[i] * delta ** Ii[i] * Ji[i] * (Ji[i] - 1) * tau ** (Ji[i] - 2)
         return R * -(tau * tau * fitautau)
 
     @staticmethod
     def w3_rhoT(rho, T):
-        # function w3_rhoT = w3_rhoT(rho, T)
+        """function w3_rhoT = w3_rhoT(rho, T)
         # %Release on the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam, September 1997
         # %7 Basic Equation for Region 3, Section. 6.1 Basic Equation
-        # %Table 30 and 31, Page 30 and 31
+        # %Table 30 and 31, Page 30 and 31"""
         Ii = [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 6, 6, 6, 7, 8, 9, 9, 10, 10, 11]
         Ji = [0, 0, 1, 2, 7, 10, 12, 23, 2, 6, 15, 17, 0, 2, 6, 7, 22, 26, 0, 2, 4, 16, 26, 0, 2, 4, 26, 1, 3, 26, 0, 2, 26, 2, 26, 2, 26, 0, 1, 26]
         ni = [1.0658070028513, -15.732845290239, 20.944396974307, -7.6867707878716, 2.6185947787954, -2.808078114862, 1.2053369696517, -8.4566812812502E-03, -1.2654315477714, -1.1524407806681, 0.88521043984318, -0.64207765181607, 0.38493460186671, -0.85214708824206, 4.8972281541877, -3.0502617256965, 0.039420536879154, 0.12558408424308, -0.2799932969871, 1.389979956946, -2.018991502357, -8.2147637173963E-03, -0.47596035734923, 0.0439840744735, -0.44476435428739, 0.90572070719733, 0.70522450087967, 0.10770512626332, -0.32913623258954, -0.50871062041158, -0.022175400873096, 0.094260751665092, 0.16436278447961, -0.013503372241348, -0.014834345352472, 5.7922953628084E-04, 3.2308904703711E-03, 8.0964802996215E-05, -1.6557679795037E-04, -4.4923899061815E-05]
@@ -786,11 +815,11 @@ class Region3():
 
     @staticmethod
     def T3_ph(p, h):
-        # function T3_ph = T3_ph(p, h)
+        """function T3_ph = T3_ph(p, h)
         # %Revised Supplementary Release on Backward Equations for the functions T(p,h), v(p,h) and T(p,s), v(p,s) for Region 3 of the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam
         # %2004
         # %Section 3.3 Backward Equations T(p,h) and v(p,h) for Subregions 3a and 3b
-        # %Boundary equation, Eq 1 Page 5
+        # %Boundary equation, Eq 1 Page 5"""
         h3ab = 2014.64004206875 + 3.74696550136983 * p - 2.19921901054187E-02 * p ** 2 + 8.7513168600995E-05 * p ** 3
         if h < h3ab:
             # %Subregion 3a
@@ -822,11 +851,11 @@ class Region3():
 
     @staticmethod
     def v3_ph(p, h):
-        # function v3_ph = v3_ph(p, h)
+        """function v3_ph = v3_ph(p, h)
         # % Revised Supplementary Release on Backward Equations for the functions T(p, h), v(p, h) and T(p, s), v(p, s) for Region 3 of the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam
         # % 2004
         # % Section 3.3 Backward Equations T(p, h) and v(p, h) for Subregions 3a and 3b
-        # % Boundary equation, Eq 1 Page 5
+        # % Boundary equation, Eq 1 Page 5"""
         h3ab = 2014.64004206875 + 3.74696550136983 * p - 2.19921901054187E-02 * p ** 2 + 8.7513168600995E-05 * p ** 3
         if h < h3ab:
             # % Subregion 3a
@@ -858,11 +887,11 @@ class Region3():
 
     @staticmethod
     def T3_ps(p, s):
-        # function T3_ps = T3_ps(p, s)
+        """function T3_ps = T3_ps(p, s)
         # %Revised Supplementary Release on Backward Equations for the functions T(p,h), v(p,h) and T(p,s), v(p,s) for Region 3 of the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam
         # %2004
         # %3.4 Backward Equations T(p,s) and v(p,s) for Subregions 3a and 3b
-        # %Boundary equation, Eq 6 Page 11
+        # %Boundary equation, Eq 6 Page 11"""
         if s <= 4.41202148223476:
             # %Subregion 3a
             # %Eq 6, Table 10, Page 11
@@ -893,11 +922,11 @@ class Region3():
 
     @staticmethod
     def v3_ps(p, s):
-        # function v3_ps = v3_ps(p, s)
+        """function v3_ps = v3_ps(p, s)
         # % Revised Supplementary Release on Backward Equations for the functions T(p, h), v(p, h) and T(p, s), v(p, s) for Region 3 of the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam
         # % 2004
         # % 3.4 Backward Equations T(p, s) and v(p, s) for Subregions 3a and 3b
-        # % Boundary equation, Eq 6 Page 11
+        # % Boundary equation, Eq 6 Page 11"""
         if s <= 4.41202148223476:
             # % Subregion 3a
             # % Eq 8, Table 13, Page 14
@@ -928,13 +957,13 @@ class Region3():
 
     @staticmethod
     def p3_hs(h, s):
-        # unction p3_hs = p3_hs(h, s)
+        """# unction p3_hs = p3_hs(h, s)
         # % Supplementary Release on Backward Equations () , p h s for Region 3,
         # % Equations as a function of h and s for the Region Boundaries, and an Equation
         # % () sat , T hs for Region 4 of the IAPWS Industrial formulation 1997 for the
         # % Thermodynamic Properties of Water and Steam
         # % 2004
-        # % Section 3 Backward functions p(h, s), T(h, s), and v(h, s) for Region 3
+        # % Section 3 Backward functions p(h, s), T(h, s), and v(h, s) for Region 3"""
         if s < 4.41202148223476:
             # % Subregion 3a
             # % Eq 1, Table 3, Page 8
@@ -965,10 +994,10 @@ class Region3():
 
     @staticmethod
     def h3_pT(p, T):
-        # function h3_pT = h3_pT(p, T)
+        """function h3_pT = h3_pT(p, T)
         # % Not avalible with if 97
         # % Solve function T3_ph - T = 0 with half interval method.
-        # % ver2.6 Start corrected bug
+        # % ver2.6 Start corrected bug"""
         if p < 22.06395:  # % Bellow tripple point
             Ts = Region4.T4_p(p)  # % Saturation temperature
             if T <= Ts :  # Liquid side
@@ -993,9 +1022,9 @@ class Region3():
 
     @staticmethod
     def T3_prho(p, rho):
-        # function T3_prho = T3_prho(p, rho)
+        """function T3_prho = T3_prho(p, rho)
         # % Solve by iteration. Observe that fo low temperatures this equation has 2 solutions.
-        # % Solve with half interval method
+        # % Solve with half interval method"""
         Low_Bound = 623.15
         High_Bound = 1073.15
         ps = -1000
@@ -1009,13 +1038,17 @@ class Region3():
         return Ts
 
 class Region4():
+    """
+    Section 2.4: IAPWS IF 97 Calling functions to calculate the properties of water in Region 4
+    Release on the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam, September 1997
+    """
 
     @staticmethod
     def p4_T(T):
-        # function p4_T = p4_T(T)
+        """function p4_T = p4_T(T)
         # %Release on the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam, September 1997
         # %Section 8.1 The Saturation-Pressure Equation
-        # %Eq 30, Page 33
+        # %Eq 30, Page 33"""
         teta = T - 0.23855557567849 / (T - 650.17534844798)
         a = teta ** 2 + 1167.0521452767 * teta - 724213.16703206
         B = -17.073846940092 * teta ** 2 + 12020.82470247 * teta - 3232555.0322333
@@ -1024,10 +1057,10 @@ class Region4():
 
     @staticmethod
     def T4_p(p):
-        # function T4_p = T4_p(p)
+        """function T4_p = T4_p(p)
         # %Release on the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam, September 1997
         # %Section 8.2 The Saturation-Temperature Equation
-        # %Eq 31, Page 34
+        # %Eq 31, Page 34"""
         beta = p ** 0.25
         E = beta ** 2 - 17.073846940092 * beta + 14.91510861353
         f = 1167.0521452767 * beta ** 2 + 12020.82470247 * beta - 4823.2657361591
@@ -1037,10 +1070,10 @@ class Region4():
 
     @staticmethod
     def h4_s(s):
-        # function h4_s = h4_s(s)
+        """function h4_s = h4_s(s)
         # % Supplementary Release on Backward Equations () , p h s for Region 3, Equations as a function of h and s for the Region Boundaries, and an Equation() sat , T hs for Region 4 of the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam
         # % 4 Equations for Region Boundaries Given Enthalpy and Entropy
-        # % Se picture page 14
+        # % Se picture page 14"""
         if (s > -0.0001545495919) and (s <= 3.77828134):
             # % hL1_s
             # % Eq 3, Table 9, Page 16
@@ -1097,8 +1130,8 @@ class Region4():
 
     @staticmethod
     def p4_s(s):
-        # function p4_s = p4_s(s)
-        # %Uses h4_s and p_hs for the diffrent regions to determine p4_s
+        """function p4_s = p4_s(s)
+        # %Uses h4_s and p_hs for the diffrent regions to determine p4_s"""
         h_sat = Region4.h4_s(s);
         if (s > -0.0001545495919 & s <= 3.77828134) == 1:
             p4_s = Region1.p1_hs(h_sat, s)
@@ -1112,7 +1145,7 @@ class Region4():
 
     @staticmethod
     def h4L_p(p):
-        # function h4L_p = h4L_p(p)
+        """function h4L_p = h4L_p(p)"""
         if (p > 0.000611657) and (p < 22.06395):
             Ts = Region4.T4_p(p);
             if p < 16.529 :
@@ -1136,7 +1169,7 @@ class Region4():
 
     @staticmethod
     def h4V_p(p):
-        # function h4V_p = h4V_p(p)
+        """function h4V_p = h4V_p(p)"""
         if (p > 0.000611657) and (p < 22.06395) :
             Ts = Region4.T4_p(p)
             if p < 16.529:
@@ -1160,8 +1193,8 @@ class Region4():
 
     @staticmethod
     def x4_ph(p, h):
-        # function x4_ph = x4_ph(p, h)
-        # %Calculate vapour fraction from hL and hV for given p
+        """function x4_ph = x4_ph(p, h)
+        # %Calculate vapour fraction from hL and hV for given p"""
         h4v = Region4.h4V_p(p)
         h4L = Region4.h4L_p(p)
         if h > h4v:
@@ -1174,7 +1207,7 @@ class Region4():
 
     @staticmethod
     def x4_ps(p, s):
-        # function x4_ps = x4_ps(p, s)
+        """function x4_ps = x4_ps(p, s)"""
         if p < 16.529:
             ssv = Region2.s2_pT(p, Region4.T4_p(p))
             ssL = Region1.s1_pT(p, Region4.T4_p(p))
@@ -1191,10 +1224,10 @@ class Region4():
 
     @staticmethod
     def T4_hs(h, s):
-        # function T4_hs = T4_hs(h, s)
+        """function T4_hs = T4_hs(h, s)
         # %Supplementary Release on Backward Equations ( ) , p h s for Region 3,
         # %Chapter 5.3 page 30.
-        # %The if 97 function is only valid for part of region4. Use iteration outsida.
+        # %The if 97 function is only valid for part of region4. Use iteration outsida."""
         Ii = [0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 3, 3, 3, 3, 4, 4, 5, 5, 5, 5, 6, 6, 6, 8, 10, 10, 12, 14, 14, 16, 16, 18, 18, 18, 20, 28]
         Ji = [0, 3, 12, 0, 1, 2, 5, 0, 5, 8, 0, 2, 3, 4, 0, 1, 1, 2, 4, 16, 6, 8, 22, 1, 20, 36, 24, 1, 28, 12, 32, 14, 22, 36, 24, 36]
         ni = [0.179882673606601, -0.267507455199603, 1.162767226126, 0.147545428713616, -0.512871635973248, 0.421333567697984, 0.56374952218987, 0.429274443819153, -3.3570455214214, 10.8890916499278, -0.248483390456012, 0.30415322190639, -0.494819763939905, 1.07551674933261, 7.33888415457688E-02, 1.40170545411085E-02, -0.106110975998808, 1.68324361811875E-02, 1.25028363714877, 1013.16840309509, -1.51791558000712, 52.4277865990866, 23049.5545563912, 2.49459806365456E-02, 2107964.67412137, 366836848.613065, -144814105.365163, -1.7927637300359E-03, 4899556021.00459, 471.262212070518, -82929439019.8652, -1715.45662263191, 3557776.82973575, 586062760258.436, -12988763.5078195, 31724744937.1057]
@@ -1224,7 +1257,6 @@ class Region4():
                 PL = RegionBorders.p3sat_h(h)
             elif (s > 4.41202148223476) and (s <= 5.210887663):
                 PL = RegionBorders.p3sat_h(h)
-
             Low_Bound = 0.000611
             High_Bound = PL
             sss = -1000
@@ -1242,23 +1274,25 @@ class Region4():
                     v4L = Region3.v3_ph(p, Region4.h4L_p(p))
                     s4L = Region3.s3_rhoT(1 / v4L, Ts)
                 sss = (xs * s4v + (1 - xs) * s4L)
-
                 if sss < s:
                     High_Bound = p
                 else:
                     Low_Bound = p
-
             T4_hs = Region4.T4_p(p)
         return T4_hs
 
 class Region5():
+    """
+    Section 2.5: IAPWS IF 97 Calling functions to calculate the properties of water in Region 5
+    Release on the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam, September 1997
+    """
 
     @staticmethod
     def h5_pT(p, T):
-        # function h5_pT = h5_pT(p, T)
+        """function h5_pT = h5_pT(p, T)
         # %Release on the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam, September 1997
         # %Basic Equation for Region 5
-        # %Eq 32,33, Page 36, Tables 37-41
+        # %Eq 32,33, Page 36, Tables 37-41"""
         Ji0 = [0, 1, -3, -2, -1, 2]
         ni0 = [-13.179983674201, 6.8540841634434, -0.024805148933466, 0.36901534980333, -3.1161318213925, -0.32961626538917]
         Iir = [1, 1, 1, 2, 3]
@@ -1272,20 +1306,18 @@ class Region5():
         # for i = 1 : 6
         for i in range(0, 6):
             gamma0_tau = gamma0_tau + ni0[i] * Ji0[i] * tau ** (Ji0[i] - 1)
-
         gammar_tau = 0
         # for i = 1 : 5
         for i in range(0, 5):
             gammar_tau = gammar_tau + nir[i] * Pi ** Iir[i] * Jir[i] * tau ** (Jir[i] - 1)
-
         return R * T * tau * (gamma0_tau + gammar_tau)
 
     @staticmethod
     def v5_pT(p, T):
-        # function v5_pT = v5_pT(p, T)
+        """function v5_pT = v5_pT(p, T)
         # %Release on the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam, September 1997
         # %Basic Equation for Region 5
-        # %Eq 32,33, Page 36, Tables 37-41
+        # %Eq 32,33, Page 36, Tables 37-41"""
         # Ji0 = [0, 1, -3, -2, -1, 2]
         # ni0 = [-13.179983674201, 6.8540841634434, -0.024805148933466, 0.36901534980333, -3.1161318213925, -0.32961626538917]
         Iir = [1, 1, 1, 2, 3]
@@ -1304,10 +1336,10 @@ class Region5():
 
     @staticmethod
     def u5_pT(p, T):
-        # function u5_pT = u5_pT(p, T)
+        """function u5_pT = u5_pT(p, T)
         # %Release on the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam, September 1997
         # %Basic Equation for Region 5
-        # %Eq 32,33, Page 36, Tables 37-41
+        # %Eq 32,33, Page 36, Tables 37-41"""
         Ji0 = [0, 1, -3, -2, -1, 2]
         ni0 = [-13.179983674201, 6.8540841634434, -0.024805148933466, 0.36901534980333, -3.1161318213925, -0.32961626538917]
         Iir = [1, 1, 1, 2, 3]
@@ -1322,22 +1354,20 @@ class Region5():
         # for i = 1 : 6
         for i in range(0, 6):
             gamma0_tau = gamma0_tau + ni0[i] * Ji0[i] * tau ** (Ji0[i] - 1)
-
         gammar_pi = 0
         gammar_tau = 0
         # for i = 1 : 5
         for i in range(0, 5):
             gammar_pi = gammar_pi + nir[i] * Iir[i] * Pi ** (Iir[i] - 1) * tau ** Jir[i]
             gammar_tau = gammar_tau + nir[i] * Pi ** Iir[i] * Jir[i] * tau ** (Jir[i] - 1)
-
         return R * T * (tau * (gamma0_tau + gammar_tau) - Pi * (gamma0_pi + gammar_pi))
 
     @staticmethod
     def Cp5_pT(p, T):
-        # function Cp5_pT = Cp5_pT(p, T)
+        """function Cp5_pT = Cp5_pT(p, T)
         # %Release on the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam, September 1997
         # %Basic Equation for Region 5
-        # %Eq 32,33, Page 36, Tables 37-41
+        # %Eq 32,33, Page 36, Tables 37-41"""
         Ji0 = [0, 1, -3, -2, -1, 2]
         ni0 = [-13.179983674201, 6.8540841634434, -0.024805148933466, 0.36901534980333, -3.1161318213925, -0.32961626538917]
         Iir = [1, 1, 1, 2, 3]
@@ -1351,20 +1381,18 @@ class Region5():
         # for i = 1 : 6
         for i in range(0, 6):
             gamma0_tautau = gamma0_tautau + ni0[i] * Ji0[i] * (Ji0[i] - 1) * tau ** (Ji0[i] - 2)
-
         gammar_tautau = 0
         # for i = 1 : 5
         for i in range(0, 5):
             gammar_tautau = gammar_tautau + nir[i] * Pi ** Iir[i] * Jir[i] * (Jir[i] - 1) * tau ** (Jir[i] - 2)
-
         return -R * tau ** 2 * (gamma0_tautau + gammar_tautau)
 
     @staticmethod
     def s5_pT(p, T):
-        # function s5_pT = s5_pT(p, T)
+        """function s5_pT = s5_pT(p, T)
         # % Release on the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam, September 1997
         # % Basic Equation for Region 5
-        # % Eq 32, 33, Page 36, Tables 37 - 41
+        # % Eq 32, 33, Page 36, Tables 37 - 41"""
         Ji0 = [0, 1, -3, -2, -1, 2]
         ni0 = [-13.179983674201, 6.8540841634434, -0.024805148933466, 0.36901534980333, -3.1161318213925, -0.32961626538917]
         Iir = [1, 1, 1, 2, 3]
@@ -1380,22 +1408,20 @@ class Region5():
         for i in range(0, 6):
             gamma0_tau = gamma0_tau + ni0[i] * Ji0[i] * tau ** (Ji0[i] - 1)
             gamma0 = gamma0 + ni0[i] * tau ** Ji0[i]
-
         gammar = 0
         gammar_tau = 0
         # for i = 1 : 5
         for i in range(0, 5):
             gammar = gammar + nir[i] * Pi ** Iir[i] * tau ** Jir[i]
             gammar_tau = gammar_tau + nir[i] * Pi ** Iir[i] * Jir[i] * tau ** (Jir[i] - 1)
-
         return R * (tau * (gamma0_tau + gammar_tau) - (gamma0 + gammar))
 
     @staticmethod
     def Cv5_pT(p, T):
-        # function Cv5_pT = Cv5_pT(p, T)
+        """function Cv5_pT = Cv5_pT(p, T)
         # % Release on the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam, September 1997
         # % Basic Equation for Region 5
-        # % Eq 32, 33, Page 36, Tables 37 - 41
+        # % Eq 32, 33, Page 36, Tables 37 - 41"""
         Ji0 = [0, 1, -3, -2, -1, 2]
         ni0 = [-13.179983674201, 6.8540841634434, -0.024805148933466, 0.36901534980333, -3.1161318213925, -0.32961626538917]
         Iir = [1, 1, 1, 2, 3]
@@ -1409,7 +1435,6 @@ class Region5():
         # for i = 1 : 6
         for i in range(0, 6):
             gamma0_tautau = gamma0_tautau + ni0[i] * (Ji0[i] - 1) * Ji0[i] * tau ** (Ji0[i] - 2)
-
         gammar_pi = 0
         gammar_pitau = 0
         gammar_pipi = 0
@@ -1420,15 +1445,14 @@ class Region5():
             gammar_pitau = gammar_pitau + nir[i] * Iir[i] * Pi ** (Iir[i] - 1) * Jir[i] * tau ** (Jir[i] - 1)
             gammar_pipi = gammar_pipi + nir[i] * Iir[i] * (Iir[i] - 1) * Pi ** (Iir[i] - 2) * tau ** Jir[i]
             gammar_tautau = gammar_tautau + nir[i] * Pi ** Iir[i] * Jir[i] * (Jir[i] - 1) * tau ** (Jir[i] - 2)
-
         return R * (-(tau ** 2 * (gamma0_tautau + gammar_tautau)) - (1 + Pi * gammar_pi - tau * Pi * gammar_pitau) ** 2 / (1 - Pi ** 2 * gammar_pipi))
 
     @staticmethod
     def w5_pT(p, T):
-        # function w5_pT = w5_pT(p, T)
+        """function w5_pT = w5_pT(p, T)
         # % Release on the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam, September 1997
         # % Basic Equation for Region 5
-        # % Eq 32, 33, Page 36, Tables 37 - 41
+        # % Eq 32, 33, Page 36, Tables 37 - 41"""
         Ji0 = [0, 1, -3, -2, -1, 2]
         ni0 = [-13.179983674201, 6.8540841634434, -0.024805148933466, 0.36901534980333, -3.1161318213925, -0.32961626538917]
         Iir = [1, 1, 1, 2, 3]
@@ -1442,7 +1466,6 @@ class Region5():
         # for i = 1 : 6
         for i in range(0, 6):
             gamma0_tautau = gamma0_tautau + ni0[i] * (Ji0[i] - 1) * Ji0[i] * tau ** (Ji0[i] - 2)
-
         gammar_pi = 0
         gammar_pitau = 0
         gammar_pipi = 0
@@ -1453,13 +1476,12 @@ class Region5():
             gammar_pitau = gammar_pitau + nir[i] * Iir[i] * Pi ** (Iir[i] - 1) * Jir[i] * tau ** (Jir[i] - 1)
             gammar_pipi = gammar_pipi + nir[i] * Iir[i] * (Iir[i] - 1) * Pi ** (Iir[i] - 2) * tau ** Jir[i]
             gammar_tautau = gammar_tautau + nir[i] * Pi ** Iir[i] * Jir[i] * (Jir[i] - 1) * tau ** (Jir[i] - 2)
-
         return (1000 * R * T * (1 + 2 * Pi * gammar_pi + Pi ** 2 * gammar_pi ** 2) / ((1 - Pi ** 2 * gammar_pipi) + (1 + Pi * gammar_pi - tau * Pi * gammar_pitau) ** 2 / (tau ** 2 * (gamma0_tautau + gammar_tautau)))) ** 0.5
 
     @staticmethod
     def T5_ph(p, h):
-        # function T5_ph = T5_ph(p, h)
-        # % Solve with half interval method
+        """function T5_ph = T5_ph(p, h)
+        # % Solve with half interval method"""
         Low_Bound = 1073.15
         High_Bound = 2273.15
         hs = h - 1
@@ -1470,14 +1492,13 @@ class Region5():
                 High_Bound = Ts
             else:
                 Low_Bound = Ts
-
         # T5_ph = Ts;
         return Ts
 
     @staticmethod
     def T5_ps(p, s):
-        # function T5_ps = T5_ps(p, s)
-        # % Solve with half interval method
+        """function T5_ps = T5_ps(p, s)
+        # % Solve with half interval method"""
         Low_Bound = 1073.15
         High_Bound = 2273.15
         ss = s - 1
@@ -1493,9 +1514,9 @@ class Region5():
 
     @staticmethod
     def  T5_prho(p, rho):
-        # function T5_prho = T5_prho(p, rho)
+        """function T5_prho = T5_prho(p, rho)
         # % Solve by iteration. Observe that fo low temperatures this equation has 2 solutions.
-        # % Solve with half interval method
+        # % Solve with half interval method"""
         Low_Bound = 1073.15
         High_Bound = 2073.15
         rhos = -1000
@@ -1506,6 +1527,5 @@ class Region5():
                 High_Bound = Ts
             else:
                 Low_Bound = Ts
-
         # T5_prho = Ts
         return Ts

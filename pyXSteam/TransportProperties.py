@@ -1,18 +1,17 @@
 # -*- coding: UTF-8 -*-
+"""
+Section 5: Transport properties
+"""
 import math
-
 import RegionSelection
 from Regions import Region1, Region2, Region3, Region4, Region5
 import Constants
 
-
-#%***********************************************************************************************************
-# %*5 Transport properties
-#%***********************************************************************************************************
-# %*5.1 Viscosity (IAPWS formulation 1985, Revised 2003)
-#%***********************************************************************************************************
+"""Section 5.1 Viscosity (IAPWS formulation 1985, Revised 2003)"""
 def my_AllRegions_pT(p, T):
-    # function my_AllRegions_pT = my_AllRegions_pT(  p,   T)
+    """
+    function my_AllRegions_pT = my_AllRegions_pT(p, T)
+    """
     h0 = [0.5132047, 0.3205656, 0, 0, -0.7782567, 0.1885447]
     h1 = [0.2151778, 0.7317883, 1.241044, 1.476783, 0, 0]
     h2 = [-0.2818107, -1.070786, -1.263184, 0, 0, 0]
@@ -50,16 +49,27 @@ def my_AllRegions_pT(p, T):
     my0 = Ts ** 0.5 / (1 + 0.978197 / Ts + 0.579829 / (Ts ** 2) - 0.202354 / (Ts ** 3))
     Sum = 0
     # TODO:vvvv Check for mistake? vvvvv
-    # for i = 0 : 5
+    # Original Code: for i = 0 : 5
+    # Matlab: Index of first Element is 1
+    # Python: Index of first Element is 0 -> Pythonindex = Matlabindex - 1
+    # Matlab: For-loop: for i = 0 : 5 -> 0, 1, 2, 3, 4, 5
+    # Python: For-loop: for i in range(0, 5): ->  0, 1, 2, 3, 4
+    # The IAPWS Document says i=0..5 and j=0..6 , so range(0,6) is correct....
     for i in range(0, 6):
         # Sum = Sum + h0(i + 1) * (1 / Ts - 1) ** i + h1(i + 1) * (1 / Ts - 1) ** i * (rhos - 1) ** 1 + h2(i + 1) * (1 / Ts - 1) ** i * (rhos - 1) ** 2 + h3(i + 1) * (1 / Ts - 1) ** i * (rhos - 1) ** 3 + h4(i + 1) * (1 / Ts - 1) ** i * (rhos - 1) ** 4 + h5(i + 1) * (1 / Ts - 1) ** i * (rhos - 1) ** 5 + h6(i + 1) * (1 / Ts - 1) ** i * (rhos - 1) ** 6
-        Sum = Sum + h0[i] * (1 / Ts - 1) ** i + h1[i] * (1 / Ts - 1) ** i * (rhos - 1) ** 1 + h2[i] * (1 / Ts - 1) ** i * (rhos - 1) ** 2 + h3[i] * (1 / Ts - 1) ** i * (rhos - 1) ** 3 + h4[i] * (1 / Ts - 1) ** i * (rhos - 1) ** 4 + h5[i] * (1 / Ts - 1) ** i * (rhos - 1) ** 5 + h6[i] * (1 / Ts - 1) ** i * (rhos - 1) ** 6
+        Sum = Sum + h0[i] * (((1 / Ts) - 1) ** i) + \
+                    h1[i] * (((1 / Ts) - 1) ** i) * ((rhos - 1) ** 1) + \
+                    h2[i] * (((1 / Ts) - 1) ** i) * ((rhos - 1) ** 2) + \
+                    h3[i] * (((1 / Ts) - 1) ** i) * ((rhos - 1) ** 3) + \
+                    h4[i] * (((1 / Ts) - 1) ** i) * ((rhos - 1) ** 4) + \
+                    h5[i] * (((1 / Ts) - 1) ** i) * ((rhos - 1) ** 5) + \
+                    h6[i] * (((1 / Ts) - 1) ** i) * ((rhos - 1) ** 6)
     my1 = math.exp(rhos * Sum)
     mys = my0 * my1
     return mys * 0.000055071
 
 def my_AllRegions_ph(p, h):
-    # function my_AllRegions_ph = my_AllRegions_ph(p, h)
+    """ function my_AllRegions_ph = my_AllRegions_ph(p, h) """
     h0 = [0.5132047, 0.3205656, 0, 0, -0.7782567, 0.1885447]
     h1 = [0.2151778, 0.7317883, 1.241044, 1.476783, 0, 0]
     h2 = [-0.2818107, -1.070786, -1.263184, 0, 0, 0]
@@ -110,24 +120,34 @@ def my_AllRegions_ph(p, h):
     my0 = Ts ** 0.5 / (1 + 0.978197 / Ts + 0.579829 / (Ts ** 2) - 0.202354 / (Ts ** 3))
 
     Sum = 0
-    # TODO:vvvv Check for mistake? vvvvv
-    # for i = 0 : 5
+    # TODO:vvvv Check for mistake vvvvv
+    # Original Code: for i = 0 : 5
+    # Same Problem as in my_AllRegions_pT, see there for explanation
     for i in range(0, 6):
         # Sum = Sum + h0(i + 1) * (1 / Ts - 1) ** i + h1(i + 1) * (1 / Ts - 1) ** i * (rhos - 1) ** 1 + h2(i + 1) * (1 / Ts - 1) ** i * (rhos - 1) ** 2 + h3(i + 1) * (1 / Ts - 1) ** i * (rhos - 1) ** 3 + h4(i + 1) * (1 / Ts - 1) ** i * (rhos - 1) ** 4 + h5(i + 1) * (1 / Ts - 1) ** i * (rhos - 1) ** 5 + h6(i + 1) * (1 / Ts - 1) ** i * (rhos - 1) ** 6;
-        Sum = Sum + h0[i] * (1 / Ts - 1) ** i + h1[i] * (1 / Ts - 1) ** i * (rhos - 1) ** 1 + h2[i] * (1 / Ts - 1) ** i * (rhos - 1) ** 2 + h3[i] * (1 / Ts - 1) ** i * (rhos - 1) ** 3 + h4[i] * (1 / Ts - 1) ** i * (rhos - 1) ** 4 + h5[i] * (1 / Ts - 1) ** i * (rhos - 1) ** 5 + h6[i] * (1 / Ts - 1) ** i * (rhos - 1) ** 6
+        Sum = Sum + h0[i] * (1 / Ts - 1) ** i + \
+            h1[i] * (1 / Ts - 1) ** i * (rhos - 1) ** 1 + \
+            h2[i] * (1 / Ts - 1) ** i * (rhos - 1) ** 2 + \
+            h3[i] * (1 / Ts - 1) ** i * (rhos - 1) ** 3 + \
+            h4[i] * (1 / Ts - 1) ** i * (rhos - 1) ** 4 + \
+            h5[i] * (1 / Ts - 1) ** i * (rhos - 1) ** 5 + \
+            h6[i] * (1 / Ts - 1) ** i * (rhos - 1) ** 6
 
     my1 = math.exp(rhos * Sum)
     mys = my0 * my1
     return mys * 0.000055071
 
-#%***********************************************************************************************************
-# %* 5.2 Thermal Conductivity (IAPWS formulation 1985)
 def tc_ptrho(p, T, rho):
-    # function tc_ptrho = tc_ptrho(p, T, rho)
-    # % Revised release on the IAPWS formulation 1985 for the Thermal Conductivity of ordinary water
-    # % IAPWS September 1998
-    # % Page 8
-    # % ver2.6 Start corrected bug
+    """
+    function tc_ptrho = tc_ptrho(p, T, rho)
+    
+    Section  5.2 Thermal Conductivity (IAPWS formulation 1985)
+    
+    Revised release on the IAPWS formulation 1985 for the Thermal Conductivity of ordinary water IAPWS, September 1998
+    Page 8
+     - ver2.6 Start corrected bug
+    """
+
     if T < 273.15:
         # tc_ptrho = NaN; % Out of range of validity (para. B4)
         return float("NaN")
@@ -158,12 +178,14 @@ def tc_ptrho(p, T, rho):
     tc2 = (0.0701309 / T ** 10 + 0.011852) * rho ** (9 / 5) * math.exp(0.642857 * (1 - rho ** (14 / 5))) + 0.00169937 * s * rho ** Q * math.exp((Q / (1 + Q)) * (1 - rho ** (1 + Q))) - 1.02 * math.exp(-4.11717 * T ** (3 / 2) - 6.17937 / rho ** 5)
     return tc0 + tc1 + tc2
 
-#%***********************************************************************************************************
-# % 5.3 Surface Tension
 def Surface_Tension_T(T):
-    # function Surface_Tension_T = Surface_Tension_T(T)
-    # % IAPWS Release on Surface Tension of Ordinary Water Substance,
-    # % September 1994
+    """ 
+    function Surface_Tension_T = Surface_Tension_T(T)
+    
+    Section 5.3 Surface Tension
+    
+    IAPWS Release on Surface Tension of Ordinary Water Substance, September 1994
+    """
     # tc = 647.096  # % K
     tc = Constants.__CRITICAL_TEMPERATURE__
     B = 0.2358  # % N / m
