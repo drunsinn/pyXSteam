@@ -754,11 +754,9 @@ class CallFunctionTester(unittest.TestCase):
         error = self.steamTable.tcV_t(25.0) - 0.018326723
         self.assertLess(error, self.maxError, 'tcV_t not passed Error %(error)e allowed: %(max)e' % {'error' : error, 'max' : self.maxError})
 
-
     def test_tc_pt(self):
         error = self.steamTable.tc_pt(1.0, 25.0) - 0.607509806
         self.assertLess(error, self.maxError, 'tc_pt not passed Error %(error)e allowed: %(max)e' % {'error' : error, 'max' : self.maxError})
-
 
     def test_tc_ph(self):
         error = self.steamTable.tc_ph(1.0, 100.0) - 0.605710062

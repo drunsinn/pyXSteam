@@ -19,7 +19,7 @@ setup(
                     ],
     platforms = ('Any',),
     packages = ['pyXSteam', 'test'],
-    scripts = ['bin/pyXSteamDemo.py'],
+    scripts = ['bin'],
     url = 'http://pypi.python.org/pypi/TowelStuff/',
     license = 'LICENSE.txt',
     requires = ['numpy(>=1.6.2)', ],

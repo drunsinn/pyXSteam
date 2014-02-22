@@ -113,8 +113,9 @@ def demo_Moillier_Diagramm():
     pyplot.show()
 
 if __name__ == '__main__':
+    demo_simpel_Values()
     # demo_generate_ph_Diagramm()
     # demo_generate_Tp_Diagramm()
     # demo_generate_pvT_Diagramm()
-    demo_Moillier_Diagramm()
+    # demo_Moillier_Diagramm()
 
