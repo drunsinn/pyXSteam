@@ -24,6 +24,12 @@ class Region1Tester(unittest.TestCase):
                 [0.392294792, 0.368563852, 2.58041912],
                 [4.17301218, 4.01008987, 4.65580682],
                 [1507.73921, 1634.69054, 1240.71337]]
+        # IF97 = [[0.100215168e-2, 0.971180894e-3, 0.120241800e-2],
+        #        [0.115331273e3, 0.184142828e3, 0.975542239e3],
+        #        [0.112324818e3, 0.106448356e3, 0.971934985e3],
+        #        [0.392294792e0, 0.368563852e0, 0.258041912e1],
+        #        [0.417301218e1, 0.401008987e1, 0.465580682e1],
+        #        [0.150773921e4, 0.163469054e4, 0.124071337e4]]
         R1 = numpy.zeros((6, 3))
 
         for i in range(0, 3):
@@ -34,6 +40,8 @@ class Region1Tester(unittest.TestCase):
             R1[4][i] = Region1.Cp1_pT(p[i], T[i])
             R1[5][i] = Region1.w1_pT(p[i], T[i])
 
+        print IF97
+        print R1
         Region1_error = numpy.sum(numpy.absolute((R1 - IF97) / IF97))
         self.assertLess(Region1_error, self.maxError, 'Test of p,T Functions for Region 1 failed. Error was %(error)e allowed: %(max)e' % {'error' : Region1_error, 'max' : self.maxError})
 
@@ -754,9 +762,11 @@ class CallFunctionTester(unittest.TestCase):
         error = self.steamTable.tcV_t(25.0) - 0.018326723
         self.assertLess(error, self.maxError, 'tcV_t not passed Error %(error)e allowed: %(max)e' % {'error' : error, 'max' : self.maxError})
 
+
     def test_tc_pt(self):
         error = self.steamTable.tc_pt(1.0, 25.0) - 0.607509806
         self.assertLess(error, self.maxError, 'tc_pt not passed Error %(error)e allowed: %(max)e' % {'error' : error, 'max' : self.maxError})
+
 
     def test_tc_ph(self):
         error = self.steamTable.tc_ph(1.0, 100.0) - 0.605710062
