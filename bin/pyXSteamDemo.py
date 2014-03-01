@@ -14,18 +14,21 @@ def demo_simpel_Values():
 def demo_generate_ph_Diagramm(path = None, precision = 1.0):
     '''Generate a p(h) Diagramm showing the Saturation Line'''
     steamTable = XSteam(mksSystem = True)
-    p_krit = steamTable.criticalPreasure() - 0.0001  # minus 0.0001 or else hL_V return NaN
+    p_krit = steamTable.criticalPressure() - 0.0001  # minus 0.0001 or else hL_V return NaN
     h_krit = steamTable.hL_p(p_krit)
 
     p = np.arange(0.0, 1000, precision)
     p2 = np.arange(0.5, p_krit, precision)
     vaporFrac = np.arange(0.1, 1.0, 0.1)
+    h = np.arange(0, 3000, 100)
 
     nph_px = np.frompyfunc(steamTable.h_px, 2, 1)
     nph_pt = np.frompyfunc(steamTable.h_pt, 2, 1)
     nphL_p = np.frompyfunc(steamTable.hL_p, 1, 1)
     nphV_p = np.frompyfunc(steamTable.hV_p, 1, 1)
+    npp_hrho = np.frompyfunc(steamTable.p_hrho, 2, 1)
 
+    # Siede und Taulinie
     hL = nphL_p(p)
     hV = nphV_p(p)
 
@@ -36,11 +39,18 @@ def demo_generate_ph_Diagramm(path = None, precision = 1.0):
         pyplot.setp(line, linewidth = 1, color = 'g')
 
     # Temperatur
-    for temp in range(0, 800, 50):
+    for temp in range(0, 1000, 100):
         h_pt = nph_pt(p, temp)
         line, = pyplot.plot(h_pt, p)
         pyplot.setp(line, linewidth = 1, color = 'r')
 
+    # Dichte
+    # for rho in range(0, 800, 100):
+    #    p_hrho = npp_hrho(h, rho)
+    #    line, = pyplot.plot(p_hrho, p)
+    #    pyplot.setp(line, linewidth = 1, color = 'r')
+
+    # Kritischer Punkt
     pyplot.plot([h_krit], [ p_krit], marker = 's', mfc = 'k', ms = 8)
 
     line1, = pyplot.plot(hL, p)
@@ -113,8 +123,8 @@ def demo_Moillier_Diagramm():
     pyplot.show()
 
 if __name__ == '__main__':
-    demo_simpel_Values()
-    # demo_generate_ph_Diagramm()
+    # demo_simpel_Values()
+    demo_generate_ph_Diagramm()
     # demo_generate_Tp_Diagramm()
     # demo_generate_pvT_Diagramm()
     # demo_Moillier_Diagramm()
