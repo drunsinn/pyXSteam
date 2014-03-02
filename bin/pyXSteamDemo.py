@@ -4,7 +4,7 @@ from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as pyplot
 import numpy as np
 from pyXSteam.XSteam import XSteam
-
+# import time
 
 def demo_simpel_Values():
     steamTable = XSteam(mksSystem = True)
@@ -20,7 +20,8 @@ def demo_generate_ph_Diagramm(path = None, precision = 1.0):
     p = np.arange(0.0, 1000, precision)
     p2 = np.arange(0.5, p_krit, precision)
     vaporFrac = np.arange(0.1, 1.0, 0.1)
-    h = np.arange(0, 3000, 100)
+    h = np.arange(500.0, 4500.0, 100.0)
+    rho = np.arange(1, 100.0, precision * 10)
 
     nph_px = np.frompyfunc(steamTable.h_px, 2, 1)
     nph_pt = np.frompyfunc(steamTable.h_pt, 2, 1)
@@ -39,27 +40,27 @@ def demo_generate_ph_Diagramm(path = None, precision = 1.0):
         pyplot.setp(line, linewidth = 1, color = 'g')
 
     # Temperatur
-    for temp in range(0, 1000, 100):
+    for temp in range(0, 900, 50):
         h_pt = nph_pt(p, temp)
         line, = pyplot.plot(h_pt, p)
         pyplot.setp(line, linewidth = 1, color = 'r')
 
     # Dichte
-    # for rho in range(0, 800, 100):
-    #    p_hrho = npp_hrho(h, rho)
-    #    line, = pyplot.plot(p_hrho, p)
-    #    pyplot.setp(line, linewidth = 1, color = 'r')
+    for r in rho:
+        p_hrho = npp_hrho(h, r)
+        line, = pyplot.plot(h, p_hrho)
+        pyplot.setp(line, linewidth = 1, color = 'y')
 
     # Kritischer Punkt
     pyplot.plot([h_krit], [ p_krit], marker = 's', mfc = 'k', ms = 8)
 
     line1, = pyplot.plot(hL, p)
     line2, = pyplot.plot(hV, p)
-    pyplot.xlabel("h")
-    pyplot.ylabel("p")
+    pyplot.xlabel("h in [kJ/kg]")
+    pyplot.ylabel("p in [bar]")
     pyplot.setp(line1, linewidth = 2, color = 'b')
     pyplot.setp(line2, linewidth = 2, color = 'r')
-    pyplot.yscale('log')
+    # pyplot.yscale('log')
     pyplot.grid()
 
     if path == None:
@@ -106,26 +107,29 @@ def demo_generate_pvT_Diagramm():
 
 def demo_Moillier_Diagramm():
     steamTable = XSteam(mksSystem = True)
-    pyplot.xlabel("s")
-    pyplot.ylabel("h")
     s = np.arange(2.0 , 10.0, 0.01)
     # h = np.arange(1800 , 4200, 50)
 
     pSteps = [0.006117, 0.01, 0.02, 1.0, 2.0, 3.0, 10, 100, 1000]
+
     nph_ps = np.frompyfunc(steamTable.h_ps, 2, 1)
 
+    # Preasure
     for pstep in pSteps:
-        print pstep
         h = nph_ps(pstep, s)
         hline, = pyplot.plot(s, h)
         pyplot.setp(hline, linewidth = 1, color = 'b')
 
+    pyplot.xlabel("s in [kJ/(kg K)]")
+    pyplot.ylabel("h in [kJ/kg]")
     pyplot.show()
 
 if __name__ == '__main__':
+    # start = time.clock()
     # demo_simpel_Values()
     demo_generate_ph_Diagramm()
     # demo_generate_Tp_Diagramm()
     # demo_generate_pvT_Diagramm()
     # demo_Moillier_Diagramm()
+    # print time.clock() - start, 'Seconds'
 
