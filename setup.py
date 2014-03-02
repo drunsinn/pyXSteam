@@ -23,7 +23,7 @@ setup(
     url = 'http://pypi.python.org/pypi/TowelStuff/',
     license = 'LICENSE.txt',
     requires = ['numpy(>=1.6.2)', ],
-    test_suite = 'test.test_pyXSteam',
+    test_suite = 'test.TestXSteam_MKS',
 )
 
 # sudo pip install .

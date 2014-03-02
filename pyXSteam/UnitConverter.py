@@ -1,12 +1,7 @@
-'''
-Created on 01.03.2014
-
-@author: max
-'''
+# -*- coding: utf-8 -*-
 
 class UnitConverter(object):
     """Helper class to convert user Units to SI-Units and back"""
-    __PSI_CONV_FACTOR__ = 0.00689475729
 
     def __init__(self, mksSystem = True):
         self.mksSystem = mksSystem
@@ -14,37 +9,37 @@ class UnitConverter(object):
     def toSIunit_p(self, ins):
         """ function toSIunit_p = toSIunit_p( ins )"""
         if self.mksSystem:
-            # %Translate bar to MPa
+            # bar to MPa
             return float(ins / 10)
         else:
-            # % Translate psi to MPa
-            return float(ins * self.__PSI_CONV_FACTOR__)
+            # psi to MPa
+            return float(ins * 0.00689475729)
 
     def fromSIunit_p(self, ins):
         """ function fromSIunit_p = fromSIunit_p( ins ) """
         if self.mksSystem:
-            # %Translate bar to MPa
+            # bar to MPa
             return float(ins * 10)
         else:
-            # %Translate MPa to psi
-            return float(ins / self.__PSI_CONV_FACTOR__)
+            # MPa to psi
+            return float(ins / 0.00689475729)
 
     def toSIunit_T(self, ins):
         """ function toSIunit_T = toSIunit_T( ins )"""
         if self.mksSystem:
-            # %Translate degC to Kelvin
+            # degC to Kelvin
             return float(ins + 273.15)
         else:
-            # %Translate degF to Kelvin
+            # degF to Kelvin
             return float((5 / 9) * (ins - 32) + 273.15)
 
     def fromSIunit_T(self, ins):
         """ function fromSIunit_T = fromSIunit_T( ins )"""
         if self.mksSystem:
-            # %Translate Kelvin to degC
+            # Kelvin to degC
             return float(ins - 273.15)
         else:
-            # %Translate Kelvin to degF
+            # Kelvin to degF
             return float((ins - 273.15) * (9 / 5) + 32)
 
     def toSIunit_h(self, ins):
@@ -52,7 +47,7 @@ class UnitConverter(object):
         if self.mksSystem:
             return float(ins)
         else:
-            # %Translate btu/lb to kJ/kg
+            # btu/lb to kJ/kg
             return float(2.32600 * ins)
 
     def fromSIunit_h(self, ins):
@@ -60,7 +55,7 @@ class UnitConverter(object):
         if self.mksSystem:
             return float(ins)
         else:
-            # %Translate kJ/kg to btu/lb
+            # kJ/kg to btu/lb
             return float(ins / 2.32600)
 
     def toSIunit_v(self, ins):
@@ -68,7 +63,7 @@ class UnitConverter(object):
         if self.mksSystem:
             return float(ins)
         else:
-            # %ft^3/lb to m^3/kg
+            # ft^3/lb to m^3/kg
             return float(ins * 0.0624279606)
 
     def fromSIunit_v(self, ins):
@@ -76,7 +71,7 @@ class UnitConverter(object):
         if self.mksSystem:
             return float(ins)
         else:
-            # %m^3/kg to ft^3/lb
+            # m^3/kg to ft^3/lb
             return float(ins / 0.0624279606)
 
     def toSIunit_s(self, ins):
@@ -84,7 +79,7 @@ class UnitConverter(object):
         if self.mksSystem:
             return float(ins)
         else:
-            # %btu/(lb degF) to kJ/(kg degC)
+            # btu/(lb degF) to kJ/(kg degC)
             return float(ins / 0.238845896627)
 
     def fromSIunit_s(self, ins):
@@ -92,7 +87,7 @@ class UnitConverter(object):
         if self.mksSystem:
             return float(ins)
         else:
-            # %kJ/(kg degC) to btu/(lb degF)
+            # kJ/(kg degC) to btu/(lb degF)
             return float(ins * 0.238845896627)
 
     def toSIunit_u(self, ins):
@@ -100,7 +95,7 @@ class UnitConverter(object):
         if self.mksSystem:
             return float(ins)
         else:
-            # %Translate btu/lb to kJ/kg
+            # btu/lb to kJ/kg
             return float(ins * 2.32600)
 
     def fromSIunit_u(self, ins):
@@ -108,7 +103,7 @@ class UnitConverter(object):
         if self.mksSystem:
             return float(ins)
         else:
-            # %Translate kJ/kg to btu/lb
+            # kJ/kg to btu/lb
             return float(ins / 2.32600)
 
     def toSIunit_Cp(self, ins):
@@ -116,7 +111,7 @@ class UnitConverter(object):
         if self.mksSystem:
             return float(ins)
         else:
-            # %btu/(lb degF) to kJ/(kg degC)
+            # btu/(lb degF) to kJ/(kg degC)
             return float(ins / 0.238846)
 
     def fromSIunit_Cp(self, ins):
@@ -124,7 +119,7 @@ class UnitConverter(object):
         if self.mksSystem:
             return float(ins)
         else:
-            # %kJ/(kg degC) to btu/(lb degF)
+            # kJ/(kg degC) to btu/(lb degF)
             return float(ins * 0.238846)
 
     def toSIunit_Cv(self, ins):
@@ -132,7 +127,7 @@ class UnitConverter(object):
         if self.mksSystem:
             return float(ins)
         else:
-            # %btu/(lb degF) to kJ/(kg degC)
+            # btu/(lb degF) to kJ/(kg degC)
             return float(ins / 0.238846)
 
     def fromSIunit_Cv(self, ins):
@@ -140,7 +135,7 @@ class UnitConverter(object):
         if self.mksSystem:
             return float(ins)
         else:
-            # %kJ/(kg degC) to btu/(lb degF)
+            # kJ/(kg degC) to btu/(lb degF)
             return float(ins * 0.238846)
 
     def toSIunit_w(self, ins):
@@ -148,7 +143,7 @@ class UnitConverter(object):
         if self.mksSystem:
             return float(ins)
         else:
-            # %ft/s to m/s
+            # ft/s to m/s
             return float(ins * 0.3048)
 
     def fromSIunit_w(self, ins):
@@ -156,7 +151,7 @@ class UnitConverter(object):
         if self.mksSystem:
             return float(ins)
         else:
-            # %m/s to ft/s
+            # m/s to ft/s
             return float(ins / 0.3048)
 
     def toSIunit_tc(self, ins):
@@ -164,7 +159,7 @@ class UnitConverter(object):
         if self.mksSystem:
             return float(ins)
         else:
-            # %btu/(h*ft*degF) to W/(m*degC)
+            # btu/(h*ft*degF) to W/(m*degC)
             return float(ins / 0.577789)
 
     def fromSIunit_tc(self, ins):
@@ -172,7 +167,7 @@ class UnitConverter(object):
         if self.mksSystem:
             return float(ins)
         else:
-            # %W/(m*degC) to btu/(h*ft*degF)
+            # W/(m*degC) to btu/(h*ft*degF)
             return float(ins * 0.577789)
 
     def toSIunit_st(self, ins):
@@ -180,7 +175,7 @@ class UnitConverter(object):
         if self.mksSystem:
             return float(ins)
         else:
-            # %lb/ft to N/m
+            # lb/ft to N/m
             return float(ins / 0.068521766)
 
     def fromSIunit_st(self, ins):
@@ -188,47 +183,44 @@ class UnitConverter(object):
         if self.mksSystem:
             return float(ins)
         else:
-            # %N/m to lb/ft
+            # N/m to lb/ft
             return float(ins * 0.068521766)
 
     def toSIunit_x(self, ins):
         """ function toSIunit_x = toSIunit_x( ins )"""
-        if self.mksSystem:
+        if ins >= 0.0 and ins <= 1.0:
             return float(ins)
         else:
-            # %Fraction 0-1
-            return float(ins)
+            raise Exception('Vapour fraction out of Range')
 
     def fromSIunit_x(self, ins):
         """ function fromSIunit_x = fromSIunit_x( ins )"""
-        if self.mksSystem:
+        if ins >= 0.0 and ins <= 1.0:
             return float(ins)
         else:
-            # %Fraction 0-1
-            return float(ins)
+            raise Exception('Vapour fraction out of Range')
 
     def toSIunit_vx(self, ins):
         """ function toSIunit_vx = toSIunit_vx( ins )"""
-        if self.mksSystem:
+        if ins >= 0.0 and ins <= 1.0:
             return float(ins)
         else:
-            # %Fraction 0-1
-            return float(ins)
+            raise Exception('Vapour volume fraction out of Range')
+
 
     def fromSIunit_vx(self, ins):
         """ function fromSIunit_vx = fromSIunit_vx( ins )"""
-        if self.mksSystem:
+        if ins >= 0.0 and ins <= 1.0:
             return float(ins)
         else:
-            # %Fraction 0-1
-            return float(ins)
+            raise Exception('Vapour volume fraction out of Range')
 
     def toSIunit_my(self, ins):
         """ function toSIunit_my = toSIunit_my( ins )"""
         if self.mksSystem:
             return float(ins)
         else:
-            # % lbm/ft/hr to PaS (N*s/m^2)
+            #  lbm/ft/hr to PaS (N*s/m^2)
             return float(ins / 2419.088311)
 
     def fromSIunit_my(self, ins):
@@ -236,5 +228,5 @@ class UnitConverter(object):
         if self.mksSystem:
             return float(ins)
         else:
-            # %PaS (N*s/m^2) to lbm/ft/hr
+            # PaS (N*s/m^2) to lbm/ft/hr
             return float(ins * 2419.088311)

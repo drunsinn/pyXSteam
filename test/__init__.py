@@ -1,14 +1,10 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
-'''
-Created on 03.02.2014
 
-@author: max
-'''
 import unittest
 
 from pyXSteam.XSteam import XSteam
-import test_pyXSteam
+from test import TestXSteam
 
 
 def suite():
@@ -16,7 +12,7 @@ def suite():
     # import doctest
     suite = unittest.TestSuite()
     # suite.addTests(doctest.DocTestSuite(helloworld))
-    suite.addTests(test_pyXSteam.suite())
+    suite.addTests(TestXSteam.suite())
     return suite
 
 if __name__ == '__main__':
