@@ -1,15 +1,18 @@
 # -*- coding: utf-8 -*-
 from mpl_toolkits.mplot3d import Axes3D
-
 import matplotlib.pyplot as pyplot
 import numpy as np
 from pyXSteam.XSteam import XSteam
 # import time
 
+
 def demo_simpel_Values():
     steamTable = XSteam(mksSystem = True)
-    print steamTable.hL_p(220.0)  # get saturated liquid enthalpy for a preasure of 220 bar
-    print steamTable.hV_p(220.0)  # get saturated vapour enthalpy for a preasure of 220 bar
+    # get saturated liquid enthalpy for a preasure of 220 bar
+    print steamTable.hL_p(220.0)
+    # get saturated vapour enthalpy for a preasure of 220 bar
+    print steamTable.hV_p(220.0)
+
 
 def demo_generate_ph_Diagramm(path = None, precision = 1.0):
     '''Generate a p(h) Diagramm showing the Saturation Line'''
@@ -20,8 +23,8 @@ def demo_generate_ph_Diagramm(path = None, precision = 1.0):
     p = np.arange(0.0, 1000, precision)
     p2 = np.arange(0.5, p_krit, precision)
     vaporFrac = np.arange(0.1, 1.0, 0.1)
-    h = np.arange(500.0, 4500.0, 100.0)
-    rho = np.arange(1, 100.0, precision * 10)
+    h = np.arange(200.0, 4500.0, 100.0)
+    rho = np.arange(1, 15.0, precision * 2)
 
     nph_px = np.frompyfunc(steamTable.h_px, 2, 1)
     nph_pt = np.frompyfunc(steamTable.h_pt, 2, 1)
@@ -40,7 +43,7 @@ def demo_generate_ph_Diagramm(path = None, precision = 1.0):
         pyplot.setp(line, linewidth = 1, color = 'g')
 
     # Temperatur
-    for temp in range(0, 900, 50):
+    for temp in range(0, 900, 30):
         h_pt = nph_pt(p, temp)
         line, = pyplot.plot(h_pt, p)
         pyplot.setp(line, linewidth = 1, color = 'r')
@@ -60,7 +63,7 @@ def demo_generate_ph_Diagramm(path = None, precision = 1.0):
     pyplot.ylabel("p in [bar]")
     pyplot.setp(line1, linewidth = 2, color = 'b')
     pyplot.setp(line2, linewidth = 2, color = 'r')
-    # pyplot.yscale('log')
+    pyplot.yscale('log')
     pyplot.grid()
 
     if path == None:
@@ -87,6 +90,7 @@ def demo_generate_Tp_Diagramm():
     pyplot.setp(line1, linewidth = 1, color = 'b')
     pyplot.show()
 
+
 def demo_generate_pvT_Diagramm():
     steamTable = XSteam(mksSystem = True)
     fig = pyplot.figure()
@@ -104,6 +108,7 @@ def demo_generate_pvT_Diagramm():
     ax.set_ylabel("p")
     ax.set_zlabel("t")
     pyplot.show()
+
 
 def demo_Moillier_Diagramm():
     steamTable = XSteam(mksSystem = True)
@@ -124,6 +129,7 @@ def demo_Moillier_Diagramm():
     pyplot.ylabel("h in [kJ/kg]")
     pyplot.show()
 
+
 if __name__ == '__main__':
     # start = time.clock()
     # demo_simpel_Values()
@@ -132,4 +138,3 @@ if __name__ == '__main__':
     # demo_generate_pvT_Diagramm()
     # demo_Moillier_Diagramm()
     # print time.clock() - start, 'Seconds'
-
