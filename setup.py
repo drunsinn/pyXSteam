@@ -14,6 +14,7 @@ setup(
                     ],
     platforms = ('Any',),
     packages = ['pyXSteam', 'test'],
+    zip_safe = True,
     scripts = ['bin'],
     url = '',
     license = 'LICENSE.txt',
