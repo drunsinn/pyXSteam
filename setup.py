@@ -9,7 +9,7 @@ from setuptools import setup
 
 setup(
     name = 'pyXSteam',
-    version = '0.1',
+    version = '0.2',
     description = 'pyXSteam is a port of the Matlab/Excel Package XSteam by Magnus Holmgren, www.x-eng.com to Python',
     long_description = open('README.txt').read(),
     author = 'Max Pirkl',
@@ -20,10 +20,10 @@ setup(
     platforms = ('Any',),
     packages = ['pyXSteam', 'test'],
     scripts = ['bin'],
-    url = 'http://pypi.python.org/pypi/TowelStuff/',
+    url = '',
     license = 'LICENSE.txt',
     requires = ['numpy(>=1.6.2)', ],
-    test_suite = 'test.TestXSteam_MKS',
+    test_suite = 'test.TestXSteam',
 )
 
 # sudo pip install .

@@ -1,1 +1,2 @@
 v0.1, 11.02.2014 -- Initial release. - 26 Tests fail
+v0.2, 03.02.2014 -- demos, changes to unitTests and some minor fixes - 8 Tests fail
