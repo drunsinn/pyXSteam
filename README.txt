@@ -1,7 +1,9 @@
 ===========
 XSteam
 ===========
-XSteam provides (mostly) accurate steam and water properties from 0 - 1000 bar and from 0 - 2000 ��C according to the standard IAPWS IF-97.
+Original Released by Magnus Holmgren for Matlab and Excel: http://xsteam.sourceforge.net / http://www.x-eng.com
+
+XSteam provides (mostly) accurate steam and water properties from 0 - 1000 bar and from 0 - 2000 °C according to the standard IAPWS IF-97.
 For accuracy of the functions in different regions see IF-97 Page 4
 (www.iapws.org) http://www.iapws.org/relguide/IF97-Rev.pdf
 Basic usage::
@@ -39,7 +41,7 @@ All Functions follow the same naming schema:
         Cv   Specific isochoric heat capacity	(kJ/(kg °C) or btu/(lb °F))
         w    Speed of sound	(m/s or ft/s)
         my   Viscosity	(N s/m^2 or lbm/ft/hr)
-        tc   Thermal Conductivity	(W/(m ��C) or btu/(h ft ��F))
+        tc   Thermal Conductivity	(W/(m °C) or btu/(h ft °F))
         st   Surface Tension	(N/m or lb/ft)
         x    Vapour fraction
         vx   Vapour Volume Fraction
@@ -47,8 +49,8 @@ All Functions follow the same naming schema:
 Usage
 =========
     By using the mksSystem Parameter, you can tell XSteam witch Unit System to use.
-		mksSystem = True  : m/kg/sec/��C/bar/W
-		mksSystem = False : ft/lb/sec/��F/psi/btu
+		mksSystem = True  : m/kg/sec/°C/bar/W
+		mksSystem = False : ft/lb/sec/°F/psi/btu
 
     to run all Test:
 	>>> from XSteam.XSteamTester import XSteamTester

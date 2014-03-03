@@ -2,6 +2,7 @@
 import unittest
 import TestXSteam_Regions
 import TestXSteam_MKS
+import TestXSteam_FLS
 
 def suite():
     loader = unittest.TestLoader()
@@ -12,6 +13,7 @@ def suite():
     suite.addTest(loader.loadTestsFromTestCase(TestXSteam_Regions.Region4Tester))
     suite.addTest(loader.loadTestsFromTestCase(TestXSteam_Regions.Region5Tester))
     suite.addTest(loader.loadTestsFromTestCase(TestXSteam_MKS.MKS_FunctionTester))
+    # suite.addTest(loader.loadTestsFromTestCase(TestXSteam_FLS.FLS_FunctionTester))
     return suite
 
 if __name__ == '__main__':
