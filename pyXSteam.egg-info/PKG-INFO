@@ -182,4 +182,3 @@ Description: ===========
 Platform: Any
 Classifier: Development Status ::  Alpha
 Classifier: Programming Language :: Python
-Requires: numpy(>=1.6.2)

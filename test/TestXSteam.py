@@ -2,7 +2,7 @@
 import unittest
 import TestXSteam_Regions
 import TestXSteam_MKS
-import TestXSteam_FLS
+# import TestXSteam_FLS
 
 def suite():
     loader = unittest.TestLoader()
@@ -16,9 +16,5 @@ def suite():
     # suite.addTest(loader.loadTestsFromTestCase(TestXSteam_FLS.FLS_FunctionTester))
     return suite
 
-if __name__ == '__main__':
-    unittest.TextTestRunner(verbosity = 2).run(suite())
-
-# if __name__ == "__main__":
-#    # import sys;sys.argv = ['', 'Test.testName']
-#    unittest.main()
+# if __name__ == '__main__':
+#    unittest.TextTestRunner(verbosity = 2).run(suite())

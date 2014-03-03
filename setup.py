@@ -22,8 +22,9 @@ setup(
     scripts = ['bin'],
     url = '',
     license = 'LICENSE.txt',
-    requires = ['numpy(>=1.6.2)', ],
-    test_suite = 'test.TestXSteam',
+    # requires = ['numpy >=1.6.2', ],
+    test_suite = 'test.suite',
+    tests_require = ['numpy >=1.6.2', ]
 )
 
 # sudo pip install .

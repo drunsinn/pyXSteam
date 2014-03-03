@@ -11,7 +11,6 @@ def suite():
     # import unittest
     # import doctest
     suite = unittest.TestSuite()
-    # suite.addTests(doctest.DocTestSuite(helloworld))
     suite.addTests(TestXSteam.suite())
     return suite
 
