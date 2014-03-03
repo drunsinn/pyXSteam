@@ -5,7 +5,8 @@ from setuptools import setup
 setup(
     name = 'pyXSteam',
     version = '0.2',
-    description = 'pyXSteam is a port of the Matlab/Excel Package XSteam by Magnus Holmgren, www.x-eng.com to Python',
+    description = 'pyXSteam is a port of the Matlab/Excel Package XSteam \
+    by Magnus Holmgren, www.x-eng.com to Python',
     long_description = open('README.txt').read(),
     author = 'Max Pirkl',
     author_email = 'pirkl.max@googlemail.com',
@@ -15,7 +16,7 @@ setup(
     platforms = ('Any',),
     packages = ['pyXSteam', 'test'],
     zip_safe = True,
-    scripts = ['bin'],
+    scripts = ['bin/pyXSteamDemo.py'],
     url = '',
     license = 'LICENSE.txt',
     # requires = ['numpy >=1.6.2', ],

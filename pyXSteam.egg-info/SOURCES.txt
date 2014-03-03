@@ -19,6 +19,7 @@ pyXSteam.egg-info/PKG-INFO
 pyXSteam.egg-info/SOURCES.txt
 pyXSteam.egg-info/dependency_links.txt
 pyXSteam.egg-info/top_level.txt
+pyXSteam.egg-info/zip-safe
 test/TestXSteam.py
 test/TestXSteam_FLS.py
 test/TestXSteam_MKS.py
