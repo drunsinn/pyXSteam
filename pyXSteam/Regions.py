@@ -1001,10 +1001,10 @@ class Region3():
         if p < 22.06395:  # % Bellow tripple point
             Ts = Region4.T4_p(p)  # % Saturation temperature
             if T <= Ts :  # Liquid side
-                High_Bound = Region4.h4L_p(p)  # % Max h �r liauid h.
+                High_Bound = Region4.h4L_p(p)  # % Max h ???r liauid h.
                 Low_Bound = Region1.h1_pT(p, 623.15)
             else:
-                Low_Bound = Region4.h4V_p(p)  # % Min h �r Vapour h.
+                Low_Bound = Region4.h4V_p(p)  # % Min h ???r Vapour h.
                 High_Bound = Region2.h2_pT(p, RegionBorders.B23T_p(p))
         else:  # % Above tripple point. R3 from R2 till R3.
             Low_Bound = Region1.h1_pT(p, 623.15)

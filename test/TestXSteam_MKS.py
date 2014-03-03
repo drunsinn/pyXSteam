@@ -186,22 +186,22 @@ class MKS_FunctionTester(unittest.TestCase):
 
     def test_CpV_p(self):
         error = self.steamTable.CpV_p(1.0) - 2.075938025
-        self.assertLess(error, self.maxError, 'CpV_p not passed Error %(error)e allowed: %(max)e' % {'error' : error, 'max' : self.maxError})
+        self.assertLess(error, self.maxError, 'cpV_p not passed Error %(error)e allowed: %(max)e' % {'error' : error, 'max' : self.maxError})
 
     def test_CpL_p(self):
         error = self.steamTable.CpL_p(1.0) - 4.216149431
-        self.assertLess(error, self.maxError, 'CpL_p not passed Error %(error)e allowed: %(max)e' % {'error' : error, 'max' : self.maxError})
+        self.assertLess(error, self.maxError, 'cpL_p not passed Error %(error)e allowed: %(max)e' % {'error' : error, 'max' : self.maxError})
 
     def test_CpV_t(self):
         error = self.steamTable.CpV_t(100.0) - 2.077491868
-        self.assertLess(error, self.maxError, 'CpV_t not passed Error %(error)e allowed: %(max)e' % {'error' : error, 'max' : self.maxError})
+        self.assertLess(error, self.maxError, 'cpV_t not passed Error %(error)e allowed: %(max)e' % {'error' : error, 'max' : self.maxError})
 
     def test_CpL_t(self):
         error = self.steamTable.CpL_t(100.0) - 4.216645119
-        self.assertLess(error, self.maxError, 'CpL_t not passed Error %(error)e allowed: %(max)e' % {'error' : error, 'max' : self.maxError})
+        self.assertLess(error, self.maxError, 'cpL_t not passed Error %(error)e allowed: %(max)e' % {'error' : error, 'max' : self.maxError})
     def test_Cp_pt(self):
         error = self.steamTable.Cp_pt(1.0, 100.0) - 2.074108555
-        self.assertLess(error, self.maxError, 'Cp_pt not passed Error %(error)e allowed: %(max)e' % {'error' : error, 'max' : self.maxError})
+        self.assertLess(error, self.maxError, 'cp_pt not passed Error %(error)e allowed: %(max)e' % {'error' : error, 'max' : self.maxError})
 
     def test_Cp_ph(self):
         error = self.steamTable.Cp_ph(1.0, 200.0) - 4.17913573169

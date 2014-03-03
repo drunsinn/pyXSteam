@@ -178,7 +178,7 @@ def region_hs(h, s):
         # region_hs = 0;
         return 0
 
-    # %******Kolla 1 eller 4. (+liten bit �ver B13)
+    # %******Kolla 1 eller 4. (+liten bit ???ver B13)
     if (s >= -0.0001545495919) and (s <= 3.77828134):
         if h < Region4.h4_s(s):
             # region_hs = 4;
@@ -208,7 +208,7 @@ def region_hs(h, s):
                 # region_hs = 0;
                 return 0
 
-    # %******Kolla region 2 eller 4. (�vre delen av omr�de b23-> max)
+    # %******Kolla region 2 eller 4. (???vre delen av omr???de b23-> max)
     if (s >= 5.260578707) and (s <= 11.9212156897728):
         if s > 9.155759395:  #  %Above region 4
             Tmin = Region2.T2_ps(0.000611, s)
@@ -235,7 +235,7 @@ def region_hs(h, s):
             # %function adapted to h(1073.15,s)
             hMax = -2.988734 * s ** 4 + 121.4015 * s ** 3 - 1805.15 * s ** 2 + 11720.16 * s - 23998.33
 
-        if h < hMax:  #   %Region 2. �ver region 4.
+        if h < hMax:  #   %Region 2. ???ver region 4.
             # region_hs = 2;
             return 2
         else:
@@ -259,13 +259,13 @@ def region_hs(h, s):
             # region_hs = 0;
             return 0
 
-    # %Kolla region 3 eller 4 fr�n kritiska punkten till �vre delen av b23
+    # %Kolla region 3 eller 4 fr???n kritiska punkten till ???vre delen av b23
     if (s >= 4.41202148223476) and (s <= 5.260578707):
         hV = Region4.h4_s(s)
         if h < hV:
             # region_hs = 4;
             return 4
-        # %Kolla om vi �r under b23 giltighetsomr�de.
+        # %Kolla om vi ???r under b23 giltighetsomr???de.
         if s <= 5.048096828:
             TMax = Region3.T3_ps(100, s)
             vmax = Region3.v3_ps(100, s)
@@ -276,8 +276,8 @@ def region_hs(h, s):
             else:
                 # region_hs = 0;
                 return 0
-        else:  # %Inom omr�det f�r B23 i s led.
-            if h > 2812.942061:  #  %Ovanf�r B23 i h_led
+        else:  # %Inom omr???det f???r B23 i s led.
+            if h > 2812.942061:  #  %Ovanf???r B23 i h_led
                 if s > 5.09796573397125:
                     TMax = Region2.T2_ps(100, s)
                     hMax = Region2.h2_pT(100, TMax)
@@ -290,10 +290,10 @@ def region_hs(h, s):
                 else:
                     # region_hs = 0;
                     return 0
-            if h < 2563.592004:  #    %Nedanf�r B23 i h_led men vi har redan kollat ovanf�r hV2c3b
+            if h < 2563.592004:  #    %Nedanf???r B23 i h_led men vi har redan kollat ovanf???r hV2c3b
                 # region_hs = 3;
                 return 3
-            # %Vi �r inom b23 omr�det i b�de s och h led.
+            # %Vi ???r inom b23 omr???det i b???de s och h led.
             Tact = RegionBorders.TB23_hs(h, s)
             pact = Region2.p2_hs(h, s)
             pBound = RegionBorders.B23p_T(Tact)
@@ -320,7 +320,7 @@ def region_prho(p, rho):
         return 0
 
     if p < 16.5292:  #  %Bellow region 3, Check region 1,4,2
-        if v < Region1.v1_pT(p, 273.15):  # %Observe that this is not actually min of v. Not valid Water of 4�C is ligther.
+        if v < Region1.v1_pT(p, 273.15):  # %Observe that this is not actually min of v. Not valid Water of 4???C is ligther.
             # region_prho = 0;
             return 0
         if v <= Region1.v1_pT(p, Region4.T4_p(p)):
@@ -339,7 +339,7 @@ def region_prho(p, rho):
             # region_prho = 5;
             return 5
     else:  # %Check region 1,3,4,3,2 (Above the lowest point of region 3.)
-        if v < Region1.v1_pT(p, 273.15):  # %Observe that this is not actually min of v. Not valid Water of 4�C is ligther.
+        if v < Region1.v1_pT(p, 273.15):  # %Observe that this is not actually min of v. Not valid Water of 4???C is ligther.
             # region_prho = 0;
             return 0
         if v < Region1.v1_pT(p, 623.15):
