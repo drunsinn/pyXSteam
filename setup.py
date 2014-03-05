@@ -5,11 +5,10 @@ from setuptools import setup
 setup(
     name = 'pyXSteam',
     version = '0.2',
-    description = 'pyXSteam is a port of the Matlab/Excel Package XSteam \
-    by Magnus Holmgren, www.x-eng.com to Python',
+    description = 'pyXSteam is a port of the Matlab/Excel Package XSteam by Magnus Holmgren, www.x-eng.com to Python',
     long_description = open('README.txt').read(),
     author = 'Max Pirkl',
-    author_email = 'pirkl.max@googlemail.com',
+    author_email = 'dr.unsinn@googlemail.com',
     classifiers = [ 'Development Status ::  Alpha',
                     'Programming Language :: Python',
                     ],
