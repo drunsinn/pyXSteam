@@ -9,9 +9,18 @@ from pyXSteam.XSteam import XSteam
 def demo_simpel_Values():
     steamTable = XSteam(mksSystem = True)
     # get saturated liquid enthalpy for a preasure of 220 bar
-    print steamTable.hL_p(220.0)
+    print 'hV_p(220.0) =', steamTable.hL_p(220.0)
     # get saturated vapour enthalpy for a preasure of 220 bar
-    print steamTable.hV_p(220.0)
+    print 'hV_p(220.0) =', steamTable.hV_p(220.0)
+
+    print 'tcL_p(1.0) =', steamTable.tcL_p(1.0)
+    print 'tcL_t(25.0) =', steamTable.tcL_t(25.0)
+    print 'tcV_p(1.0) =', steamTable.tcV_p(1.0)
+    print 'tcL_t(25.0) =', steamTable.tcV_t(25.0)
+    print 'tc_hs(100.0, 0.34) =', steamTable.tc_hs(100.0, 0.34)
+    print 'tc_ph(1.0, 100.0) =', steamTable.tc_ph(1.0, 100.0)
+    print 'tc_pt(1.0, 25.0) =', steamTable.tc_pt(1.0, 25.0)
+    print 'w_ps(1.0, 1.0) =', steamTable.w_ps(1.0, 1.0)
 
 
 def demo_generate_ph_Diagramm(path = None, precision = 1.0):
@@ -132,8 +141,8 @@ def demo_Moillier_Diagramm():
 
 if __name__ == '__main__':
     # start = time.clock()
-    # demo_simpel_Values()
-    demo_generate_ph_Diagramm()
+    demo_simpel_Values()
+    # demo_generate_ph_Diagramm()
     # demo_generate_Tp_Diagramm()
     # demo_generate_pvT_Diagramm()
     # demo_Moillier_Diagramm()

@@ -1177,7 +1177,7 @@ class XSteam(object):
         p = self.unitConverter.toSIunit_p(p)
         T = self.unitConverter.toSIunit_T(t)
         v = self.unitConverter.toSIunit_v(v)
-        rho = 1 / v
+        rho = 1.0 / v
         return self.unitConverter.fromSIunit_tc(TransportProperties.tc_ptrho(p, T, rho))
 
 
@@ -1189,7 +1189,7 @@ class XSteam(object):
         p = self.unitConverter.toSIunit_p(p)
         T = self.unitConverter.toSIunit_T(T)
         v = self.unitConverter.toSIunit_v(v)
-        rho = 1 / v
+        rho = 1.0 / v
         return self.unitConverter.fromSIunit_tc(TransportProperties.tc_ptrho(p, T, rho))
 
 

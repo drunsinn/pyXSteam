@@ -51,11 +51,6 @@ Usage
     By using the mksSystem Parameter, you can tell XSteam witch Unit System to use.
 		mksSystem = True  : m/kg/sec/°C/bar/W
 		mksSystem = False : ft/lb/sec/°F/psi/btu
-
-    to run all Test:
-	>>> from XSteam.XSteamTester import XSteamTester
-	>>> steamTableTester = XSteamTester(verbose = True)
-	>>> steamTableTester.runTests()
 		
 	Available Functions:
 		Temperature	

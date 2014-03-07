@@ -263,7 +263,7 @@ class MKS_FunctionTester(unittest.TestCase):
         error = self.steamTable.w_ph(1.0, 200.0) - 1542.682475
         self.assertLess(error, self.maxError, 'w_ph not passed Error %(error)e allowed: %(max)e' % {'error' : error, 'max' : self.maxError})
 
-    def test_w_ps(self):
+    def test_w_ps(self):  # TODO: Check values and calculation
         error = self.steamTable.w_ps(1.0, 1.0) - 1557.8585
         self.assertLess(error, self.maxError, 'w_ps not passed Error %(error)e allowed: %(max)e' % {'error' : error, 'max' : self.maxError})
 
@@ -279,31 +279,31 @@ class MKS_FunctionTester(unittest.TestCase):
         error = self.steamTable.my_ps(1.0, 1.0) - 0.000384222
         self.assertLess(error, self.maxError, 'my_ps not passed Error %(error)e allowed: %(max)e' % {'error' : error, 'max' : self.maxError})
 
-    def test_tcL_p(self):
+    def test_tcL_p(self):  # TODO: Check values and calculation
         error = self.steamTable.tcL_p(1.0) - 0.677593822
         self.assertLess(error, self.maxError, 'tcL_p not passed Error %(error)e allowed: %(max)e' % {'error' : error, 'max' : self.maxError})
 
-    def test_tcV_p(self):
+    def test_tcV_p(self):  # TODO: Check values and calculation
         error = self.steamTable.tcV_p(1.0) - 0.024753668
         self.assertLess(error, self.maxError, 'tcV_p not passed Error %(error)e allowed: %(max)e' % {'error' : error, 'max' : self.maxError})
 
-    def test_tcL_t(self):
+    def test_tcL_t(self):  # TODO: Check values and calculation
         error = self.steamTable.tcL_t(25.0) - 0.607458162
         self.assertLess(error, self.maxError, 'tcL_t not passed Error %(error)e allowed: %(max)e' % {'error' : error, 'max' : self.maxError})
 
-    def test_tcV_t(self):
+    def test_tcV_t(self):  # TODO: Check values and calculation
         error = self.steamTable.tcV_t(25.0) - 0.018326723
         self.assertLess(error, self.maxError, 'tcV_t not passed Error %(error)e allowed: %(max)e' % {'error' : error, 'max' : self.maxError})
 
-    def test_tc_pt(self):
+    def test_tc_pt(self):  # TODO: Check values and calculation
         error = self.steamTable.tc_pt(1.0, 25.0) - 0.607509806
         self.assertLess(error, self.maxError, 'tc_pt not passed Error %(error)e allowed: %(max)e' % {'error' : error, 'max' : self.maxError})
 
-    def test_tc_ph(self):
+    def test_tc_ph(self):  # TODO: Check values and calculation
         error = self.steamTable.tc_ph(1.0, 100.0) - 0.605710062
         self.assertLess(error, self.maxError, 'tc_ph not passed Error %(error)e allowed: %(max)e' % {'error' : error, 'max' : self.maxError})
 
-    def test_tc_hs(self):
+    def test_tc_hs(self):  # TODO: Check values and calculation
         error = self.steamTable.tc_hs(100.0, 0.34) - 0.606283124
         self.assertLess(error, self.maxError, 'tc_hs not passed Error %(error)e allowed: %(max)e' % {'error' : error, 'max' : self.maxError})
 
