@@ -12,7 +12,7 @@ class MKS_FunctionTester(unittest.TestCase):
 
     def setUp(self):
         self.maxError = 1E-6
-        self.steamTable = XSteam(mksSystem = True)
+        self.steamTable = XSteam(XSteam.UNIT_SYSTEM_MKS)
 
     def tearDown(self):
         pass

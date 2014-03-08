@@ -7,7 +7,7 @@ from pyXSteam.XSteam import XSteam
 
 
 def demo_simpel_Values():
-    steamTable = XSteam(mksSystem = True)
+    steamTable = XSteam(XSteam.UNIT_SYSTEM_MKS)
     # get saturated liquid enthalpy for a preasure of 220 bar
     print 'hV_p(220.0) =', steamTable.hL_p(220.0)
     # get saturated vapour enthalpy for a preasure of 220 bar
@@ -25,7 +25,7 @@ def demo_simpel_Values():
 
 def demo_generate_ph_Diagramm(path = None, precision = 1.0):
     '''Generate a p(h) Diagramm showing the Saturation Line'''
-    steamTable = XSteam(mksSystem = True)
+    steamTable = XSteam(XSteam.UNIT_SYSTEM_MKS)
     p_krit = steamTable.criticalPressure() - 0.0001  # minus 0.0001 or else hL_V returns NaN
     h_krit = steamTable.hL_p(p_krit)
 
@@ -83,7 +83,7 @@ def demo_generate_ph_Diagramm(path = None, precision = 1.0):
 
 def demo_generate_Tp_Diagramm():
     '''Generate a T(p) Diagramm showing the Saturation Curve'''
-    steamTable = XSteam(mksSystem = True)
+    steamTable = XSteam(XSteam.UNIT_SYSTEM_MKS)
     p = np.arange(-100.0, 250.0, 1.0)
     ntsat_p = np.frompyfunc(steamTable.tsat_p, 1, 1)
     tsat = ntsat_p(p)
@@ -101,7 +101,7 @@ def demo_generate_Tp_Diagramm():
 
 
 def demo_generate_pvT_Diagramm():
-    steamTable = XSteam(mksSystem = True)
+    steamTable = XSteam(XSteam.UNIT_SYSTEM_MKS)
     fig = pyplot.figure()
     ax = Axes3D(fig)
 
@@ -120,7 +120,7 @@ def demo_generate_pvT_Diagramm():
 
 
 def demo_Moillier_Diagramm():
-    steamTable = XSteam(mksSystem = True)
+    steamTable = XSteam(XSteam.UNIT_SYSTEM_MKS)
     s = np.arange(2.0 , 10.0, 0.01)
     # h = np.arange(1800 , 4200, 50)
 

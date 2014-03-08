@@ -4,7 +4,7 @@ from setuptools import setup
 
 setup(
     name = 'pyXSteam',
-    version = '0.2',
+    version = '0.3',
     description = 'pyXSteam is a port of the Matlab/Excel Package XSteam by Magnus Holmgren, www.x-eng.com to Python',
     long_description = open('README.txt').read(),
     author = 'Max Pirkl',

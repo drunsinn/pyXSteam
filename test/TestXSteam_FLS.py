@@ -16,7 +16,7 @@ class FLS_FunctionTester(unittest.TestCase):
 
     def setUp(self):
         self.maxError = 1E-6
-        self.steamTable = XSteam(mksSystem = False)
+        self.steamTable = XSteam(XSteam.UNIT_SYSTEM_FLS)
 
     def tearDown(self):
         pass

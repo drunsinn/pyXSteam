@@ -20,11 +20,13 @@ Tests require numpy, Demos require numpy and matplotlib
 
 Install
 =========
-First, make shure that numpy is installed
-....
-To test is setup was successful, run pyXSteamDemo.py from the comandline.
-There is still (v0.0) some Error in all Regions, so be warned that almost all Regions excede the Error Range.
+run "python setup.py" install
+To test is setup was successful, run bin/pyXSteamDemo.py from the command line.
+There are still (v0.3) some Errors in Thermal Conductivity and Speed of sound functions, 
+so be warned that they exceed the Error Range.
 Apart form accuracy errors, there should be no warnings.
+to run unittests: "python setup.py test" but make sure numpy is installed
+
 
 Nomenclature
 =========
@@ -52,12 +54,13 @@ Usage
 =========
 Simple Example:
 	from pyXSteam.XSteam import XSteam
-	steamTable = XSteam(mksSystem = True)
+	steamTable = XSteam(XSteam.UNIT_SYSTEM_MKS)
 	print steamTable.hL_p(220.0)
 
-By using the mksSystem Parameter, you can tell XSteam witch Unit System you are using.
-	mksSystem = True  : m/kg/sec/°C/bar/W
-	mksSystem = False : ft/lb/sec/°F/psi/btu
+By using the unitSystem Parameter, you can tell XSteam witch Unit System you are using.
+	steamTable = XSteam(XSteam.UNIT_SYSTEM_MKS): m/kg/sec/°C/bar/W
+	steamTable = XSteam(XSteam.UNIT_SYSTEM_FLS): ft/lb/sec/°F/psi/btu
+	steamTable = XSteam(XSteam.UNIT_SYSTEM_BARE): m/kg/sec/K/MPa/W
 		
 Available Functions:
 	Temperature

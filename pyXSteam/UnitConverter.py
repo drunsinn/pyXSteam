@@ -2,213 +2,215 @@
 
 class UnitConverter(object):
     """Helper class to convert user Units to SI-Units and back"""
+    __UNIT_SYSTEM_BARE__ = 0
+    __UNIT_SYSTEM_MKS__ = 1
+    __UNIT_SYSTEM_FLS__ = 2
 
-
-    def __init__(self, mksSystem = True):
-        self.mksSystem = mksSystem
+    def __init__(self, unitSystem):
+        if unitSystem == self.__UNIT_SYSTEM_BARE__ or unitSystem == self.__UNIT_SYSTEM_MKS__ or unitSystem == self.__UNIT_SYSTEM_FLS__:
+            self.unitSystem = unitSystem
+        else:
+            raise ValueError
 
 
     def toSIunit_p(self, ins):
         """ function toSIunit_p = toSIunit_p( ins )"""
-        if self.mksSystem:
-            # bar to MPa
-            return float(ins / 10)
+        if self.unitSystem == self.__UNIT_SYSTEM_MKS__:
+            return float(ins / 10)  # bar to MPa
+        elif self.unitSystem == self.__UNIT_SYSTEM_FLS__:
+            return float(ins * 0.00689475729)  # psi to MPa
         else:
-            # psi to MPa
-            return float(ins * 0.00689475729)
+            return float(ins)
 
 
     def fromSIunit_p(self, ins):
         """ function fromSIunit_p = fromSIunit_p( ins ) """
-        if self.mksSystem:
-            # bar to MPa
-            return float(ins * 10)
+        if self.unitSystem == self.__UNIT_SYSTEM_MKS__:
+            return float(ins * 10)  # bar to MPa
+        elif self.unitSystem == self.__UNIT_SYSTEM_FLS__:
+            return float(ins / 0.00689475729)  # MPa to psi
         else:
-            # MPa to psi
-            return float(ins / 0.00689475729)
-
+            return float(ins)
 
     def toSIunit_T(self, ins):
         """ function toSIunit_T = toSIunit_T( ins )"""
-        if self.mksSystem:
-            # degC to Kelvin
-            return float(ins + 273.15)
+        if self.unitSystem == self.__UNIT_SYSTEM_MKS__:
+            return float(ins + 273.15)  # degC to Kelvin
+        elif self.unitSystem == self.__UNIT_SYSTEM_FLS__:
+            return float((5 / 9) * (ins - 32) + 273.15)  # degF to Kelvin
         else:
-            # degF to Kelvin
-            return float((5 / 9) * (ins - 32) + 273.15)
-
+            return float(ins)
 
     def fromSIunit_T(self, ins):
         """ function fromSIunit_T = fromSIunit_T( ins )"""
-        if self.mksSystem:
-            # Kelvin to degC
-            return float(ins - 273.15)
+        if self.unitSystem == self.__UNIT_SYSTEM_MKS__:
+            return float(ins - 273.15)  # Kelvin to degC
+        elif self.unitSystem == self.__UNIT_SYSTEM_FLS__:
+            return float((ins - 273.15) * (9 / 5) + 32)  # Kelvin to degF
         else:
-            # Kelvin to degF
-            return float((ins - 273.15) * (9 / 5) + 32)
-
+            return float(ins)
 
     def toSIunit_h(self, ins):
         """ function toSIunit_h = toSIunit_h( ins )"""
-        if self.mksSystem:
+        if self.unitSystem == self.__UNIT_SYSTEM_MKS__:
             return float(ins)
+        elif self.unitSystem == self.__UNIT_SYSTEM_FLS__:
+            return float(2.32600 * ins)  # btu/lb to kJ/kg
         else:
-            # btu/lb to kJ/kg
-            return float(2.32600 * ins)
-
+            return float(ins)
 
     def fromSIunit_h(self, ins):
         """ function  fromSIunit_h = fromSIunit_h( ins )"""
-        if self.mksSystem:
+        if self.unitSystem == self.__UNIT_SYSTEM_MKS__:
             return float(ins)
+        elif self.unitSystem == self.__UNIT_SYSTEM_FLS__:
+            return float(ins / 2.32600)  # kJ/kg to btu/lb
         else:
-            # kJ/kg to btu/lb
-            return float(ins / 2.32600)
-
+            return float(ins)
 
     def toSIunit_v(self, ins):
         """ function toSIunit_v = toSIunit_v( ins )"""
-        if self.mksSystem:
+        if self.unitSystem == self.__UNIT_SYSTEM_MKS__:
             return float(ins)
+        elif self.unitSystem == self.__UNIT_SYSTEM_FLS__:
+            return float(ins * 0.0624279606)  # ft^3/lb to m^3/kg
         else:
-            # ft^3/lb to m^3/kg
-            return float(ins * 0.0624279606)
-
+            return float(ins)
 
     def fromSIunit_v(self, ins):
         """ function fromSIunit_v = fromSIunit_v( ins )"""
-        if self.mksSystem:
+        if self.unitSystem == self.__UNIT_SYSTEM_MKS__:
             return float(ins)
+        elif self.unitSystem == self.__UNIT_SYSTEM_FLS__:
+            return float(ins / 0.0624279606)  # m^3/kg to ft^3/lb
         else:
-            # m^3/kg to ft^3/lb
-            return float(ins / 0.0624279606)
-
+            return float(ins)
 
     def toSIunit_s(self, ins):
         """ function toSIunit_s = toSIunit_s( ins )"""
-        if self.mksSystem:
+        if self.unitSystem == self.__UNIT_SYSTEM_MKS__:
             return float(ins)
+        elif self.unitSystem == self.__UNIT_SYSTEM_FLS__:
+            return float(ins / 0.238845896627)  # btu/(lb degF) to kJ/(kg degC)
         else:
-            # btu/(lb degF) to kJ/(kg degC)
-            return float(ins / 0.238845896627)
-
+            return float(ins)
 
     def fromSIunit_s(self, ins):
         """ function fromSIunit_s = fromSIunit_s( ins )"""
-        if self.mksSystem:
+        if self.unitSystem == self.__UNIT_SYSTEM_MKS__:
             return float(ins)
+        elif self.unitSystem == self.__UNIT_SYSTEM_FLS__:
+            return float(ins * 0.238845896627)  # kJ/(kg degC) to btu/(lb degF)
         else:
-            # kJ/(kg degC) to btu/(lb degF)
-            return float(ins * 0.238845896627)
-
+            return float(ins)
 
     def toSIunit_u(self, ins):
         """ function toSIunit_u = toSIunit_u( ins )"""
-        if self.mksSystem:
+        if self.unitSystem == self.__UNIT_SYSTEM_MKS__:
             return float(ins)
+        elif self.unitSystem == self.__UNIT_SYSTEM_FLS__:
+            return float(ins * 2.32600)  # btu/lb to kJ/kg
         else:
-            # btu/lb to kJ/kg
-            return float(ins * 2.32600)
-
+            return float(ins)
 
     def fromSIunit_u(self, ins):
         """ function fromSIunit_u = fromSIunit_u( ins )"""
-        if self.mksSystem:
+        if self.unitSystem == self.__UNIT_SYSTEM_MKS__:
             return float(ins)
+        elif self.unitSystem == self.__UNIT_SYSTEM_FLS__:
+            return float(ins / 2.32600)  # kJ/kg to btu/lb
         else:
-            # kJ/kg to btu/lb
-            return float(ins / 2.32600)
-
+            return float(ins)
 
     def toSIunit_Cp(self, ins):
         """ function toSIunit_Cp = toSIunit_Cp( ins )"""
-        if self.mksSystem:
+        if self.unitSystem == self.__UNIT_SYSTEM_MKS__:
             return float(ins)
+        elif self.unitSystem == self.__UNIT_SYSTEM_FLS__:
+            return float(ins / 0.238846)  # btu/(lb degF) to kJ/(kg degC)
         else:
-            # btu/(lb degF) to kJ/(kg degC)
-            return float(ins / 0.238846)
-
+            return float(ins)
 
     def fromSIunit_Cp(self, ins):
         """ function fromSIunit_Cp = fromSIunit_Cp( ins )"""
-        if self.mksSystem:
+        if self.unitSystem == self.__UNIT_SYSTEM_MKS__:
             return float(ins)
+        elif self.unitSystem == self.__UNIT_SYSTEM_FLS__:
+            return float(ins * 0.238846)  # kJ/(kg degC) to btu/(lb degF)
         else:
-            # kJ/(kg degC) to btu/(lb degF)
-            return float(ins * 0.238846)
-
+            return float(ins)
 
     def toSIunit_Cv(self, ins):
         """ function toSIunit_Cv = toSIunit_Cv( ins )"""
-        if self.mksSystem:
+        if self.unitSystem == self.__UNIT_SYSTEM_MKS__:
             return float(ins)
+        elif self.unitSystem == self.__UNIT_SYSTEM_FLS__:
+            return float(ins / 0.238846)  # btu/(lb degF) to kJ/(kg degC)
         else:
-            # btu/(lb degF) to kJ/(kg degC)
-            return float(ins / 0.238846)
-
+            return float(ins)
 
     def fromSIunit_Cv(self, ins):
         """ function fromSIunit_Cv = fromSIunit_Cv( ins )"""
-        if self.mksSystem:
+        if self.unitSystem == self.__UNIT_SYSTEM_MKS__:
             return float(ins)
+        elif self.unitSystem == self.__UNIT_SYSTEM_FLS__:
+            return float(ins * 0.238846)  # kJ/(kg degC) to btu/(lb degF)
         else:
-            # kJ/(kg degC) to btu/(lb degF)
-            return float(ins * 0.238846)
-
+            return float(ins)
 
     def toSIunit_w(self, ins):
         """ function toSIunit_w = toSIunit_w( ins )"""
-        if self.mksSystem:
+        if self.unitSystem == self.__UNIT_SYSTEM_MKS__:
             return float(ins)
+        elif self.unitSystem == self.__UNIT_SYSTEM_FLS__:
+            return float(ins * 0.3048)  # ft/s to m/s
         else:
-            # ft/s to m/s
-            return float(ins * 0.3048)
-
+            return float(ins)
 
     def fromSIunit_w(self, ins):
         """ function fromSIunit_w = fromSIunit_w( ins )"""
-        if self.mksSystem:
+        if self.unitSystem == self.__UNIT_SYSTEM_MKS__:
             return float(ins)
+        elif self.unitSystem == self.__UNIT_SYSTEM_FLS__:
+            return float(ins / 0.3048)  # m/s to ft/s
         else:
-            # m/s to ft/s
-            return float(ins / 0.3048)
-
+            return float(ins)
 
     def toSIunit_tc(self, ins):
         """ function toSIunit_tc = toSIunit_tc( ins )"""
-        if self.mksSystem:
+        if self.unitSystem == self.__UNIT_SYSTEM_MKS__:
             return float(ins)
+        elif self.unitSystem == self.__UNIT_SYSTEM_FLS__:
+            return float(ins / 0.577789)  # btu/(h*ft*degF) to W/(m*degC)
         else:
-            # btu/(h*ft*degF) to W/(m*degC)
-            return float(ins / 0.577789)
-
+            return float(ins)
 
     def fromSIunit_tc(self, ins):
         """ function fromSIunit_tc = fromSIunit_tc( ins )"""
-        if self.mksSystem:
+        if self.unitSystem == self.__UNIT_SYSTEM_MKS__:
             return float(ins)
+        elif self.unitSystem == self.__UNIT_SYSTEM_FLS__:
+            return float(ins * 0.577789)  # W/(m*degC) to btu/(h*ft*degF)
         else:
-            # W/(m*degC) to btu/(h*ft*degF)
-            return float(ins * 0.577789)
-
+            return float(ins)
 
     def toSIunit_st(self, ins):
         """ function toSIunit_st = toSIunit_st( ins )"""
-        if self.mksSystem:
+        if self.unitSystem == self.__UNIT_SYSTEM_MKS__:
             return float(ins)
+        elif self.unitSystem == self.__UNIT_SYSTEM_FLS__:
+            return float(ins / 0.068521766)  # lb/ft to N/m
         else:
-            # lb/ft to N/m
-            return float(ins / 0.068521766)
-
+            return float(ins)
 
     def fromSIunit_st(self, ins):
         """ function fromSIunit_st = fromSIunit_st( ins )"""
-        if self.mksSystem:
+        if self.unitSystem == self.__UNIT_SYSTEM_MKS__:
             return float(ins)
+        elif self.unitSystem == self.__UNIT_SYSTEM_FLS__:
+            return float(ins * 0.068521766)  # N/m to lb/ft
         else:
-            # N/m to lb/ft
-            return float(ins * 0.068521766)
-
+            return float(ins)
 
     def toSIunit_x(self, ins):
         """ function toSIunit_x = toSIunit_x( ins )"""
@@ -217,7 +219,6 @@ class UnitConverter(object):
         else:
             raise Exception('Vapour fraction out of Range')
 
-
     def fromSIunit_x(self, ins):
         """ function fromSIunit_x = fromSIunit_x( ins )"""
         if ins >= 0.0 and ins <= 1.0:
@@ -225,14 +226,12 @@ class UnitConverter(object):
         else:
             raise Exception('Vapour fraction out of Range')
 
-
     def toSIunit_vx(self, ins):
         """ function toSIunit_vx = toSIunit_vx( ins )"""
         if ins >= 0.0 and ins <= 1.0:
             return float(ins)
         else:
             raise Exception('Vapour volume fraction out of Range')
-
 
     def fromSIunit_vx(self, ins):
         """ function fromSIunit_vx = fromSIunit_vx( ins )"""
@@ -244,17 +243,18 @@ class UnitConverter(object):
 
     def toSIunit_my(self, ins):
         """ function toSIunit_my = toSIunit_my( ins )"""
-        if self.mksSystem:
+        if self.unitSystem == self.__UNIT_SYSTEM_MKS__:
             return float(ins)
+        elif self.unitSystem == self.__UNIT_SYSTEM_FLS__:
+            return float(ins / 2419.088311)  # lbm/ft/hr to PaS (N*s/m^2)
         else:
-            #  lbm/ft/hr to PaS (N*s/m^2)
-            return float(ins / 2419.088311)
-
+            return float(ins)
 
     def fromSIunit_my(self, ins):
         """ function fromSIunit_my = fromSIunit_my( ins )"""
-        if self.mksSystem:
+        if self.unitSystem == self.__UNIT_SYSTEM_MKS__:
             return float(ins)
+        elif self.unitSystem == self.__UNIT_SYSTEM_FLS__:
+            return float(ins * 2419.088311)  # PaS (N*s/m^2) to lbm/ft/hr
         else:
-            # PaS (N*s/m^2) to lbm/ft/hr
-            return float(ins * 2419.088311)
+            return float(ins)

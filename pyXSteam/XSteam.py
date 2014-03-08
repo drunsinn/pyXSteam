@@ -31,9 +31,16 @@ class XSteam(object):
         of ordinary water substance (IAPWS 1998)
     """
 
-    def __init__(self, mksSystem = True):
+    # Copy constant Values to expose them to the User
+    UNIT_SYSTEM_BARE = UnitConverter.__UNIT_SYSTEM_BARE__
+    UNIT_SYSTEM_MKS = UnitConverter.__UNIT_SYSTEM_MKS__
+    UNIT_SYSTEM_FLS = UnitConverter.__UNIT_SYSTEM_FLS__
+
+
+    def __init__(self, unitSystem):
         """set wich Units are used"""
-        self.unitConverter = UnitConverter(mksSystem)
+        self.unitConverter = UnitConverter(unitSystem)
+
 
     def specificGasConstant(self):
         """returns the specific Gas Constant in kJ kg^-1 K^-1"""
