@@ -2,8 +2,9 @@
 from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as pyplot
 import numpy as np
-from pyXSteam.XSteam import XSteam
+import logging
 # import time
+from pyXSteam.XSteam import XSteam
 
 
 def demo_simpel_Values():
@@ -140,9 +141,15 @@ def demo_Moillier_Diagramm():
 
 
 if __name__ == '__main__':
+    logger = logging.getLogger('pyXSteam')
+    logger.setLevel(logging.DEBUG)
+    sh = logging.StreamHandler()
+    sh.setFormatter(logging.Formatter('%(name)s - %(levelname)s - %(message)s'))
+    logger.addHandler(sh)
+
     # start = time.clock()
-    demo_simpel_Values()
-    # demo_generate_ph_Diagramm()
+    # demo_simpel_Values()
+    demo_generate_ph_Diagramm()
     # demo_generate_Tp_Diagramm()
     # demo_generate_pvT_Diagramm()
     # demo_Moillier_Diagramm()

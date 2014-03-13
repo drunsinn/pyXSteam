@@ -1,11 +1,22 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
 import math
+import logging
 import RegionSelection
 from Regions import Region1, Region2, Region3, Region4, Region5
 import TransportProperties
 import Constants
 from UnitConverter import UnitConverter
+
+try:
+    from logging import NullHandler
+except ImportError:
+    class NullHandler(logging.Handler):
+        def emit(self, record):
+            pass
+
+logger = logging.getLogger('pyXSteam')
+logger.addHandler(NullHandler())
 
 class XSteam(object):
     """
@@ -40,6 +51,7 @@ class XSteam(object):
     def __init__(self, unitSystem):
         """set wich Units are used"""
         self.unitConverter = UnitConverter(unitSystem)
+        logger.info('initialised with Unit System %s', unitSystem)
 
 
     def specificGasConstant(self):
