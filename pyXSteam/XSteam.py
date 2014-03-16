@@ -92,6 +92,7 @@ class XSteam(object):
         if (p > 0.000611657) and (p < 22.06395):
             return self.unitConverter.fromSIunit_T(Region4.T4_p(p))
         else:
+            logger.warning('pressure out of range')
             return float("NaN")
 
 
@@ -102,6 +103,7 @@ class XSteam(object):
             ps = Region4.p4_s(s)
             return self.unitConverter.fromSIunit_T(Region4.T4_p(ps))
         else:
+            logger.warning('Entropy out of range')
             return float("NaN")
 
 
@@ -121,6 +123,7 @@ class XSteam(object):
         elif Region == 5:
             return self.unitConverter.fromSIunit_T(Region5.T5_ph(p, h))
         else:
+            logger.warning('Region switch returned unknown value')
             return float("NaN")
 
 
@@ -140,6 +143,7 @@ class XSteam(object):
         elif Region == 5:
             return self.unitConverter.fromSIunit_T(Region5.T5_ps(p, s))
         else:
+            logger.warning('Region switch returned unknown value')
             return float("NaN")
 
 
@@ -160,8 +164,11 @@ class XSteam(object):
         elif Region == 4:
             return self.unitConverter.fromSIunit_T(Region4.T4_hs(h, s))
         elif Region == 5:
-            raise Exception('functions of hs is not avlaible in region 5')
+            logger.warning('functions of hs is not available in region 5')
+            # raise Exception('functions of hs is not available in region 5')
+            return float("NaN")
         else:
+            logger.warning('Region switch returned unknown value')
             return float("NaN")
 
 
@@ -173,6 +180,7 @@ class XSteam(object):
         if (s > -0.0001545495919) and (s < 9.155759395):
             return self.unitConverter.fromSIunit_p(Region4.p4_s(s))
         else:
+            logger.warning('Entropy out of range')
             return float("NaN")
 
 
@@ -182,6 +190,7 @@ class XSteam(object):
         if (T < 647.096) and (T > 273.1):
             return self.unitConverter.fromSIunit_p(Region4.p4_T(T))
         else:
+            logger.warning('Temperature out of range')
             return float("NaN")
 
 
@@ -200,8 +209,11 @@ class XSteam(object):
             tSat = Region4.T4_hs(h, s)
             return self.unitConverter.fromSIunit_p(Region4.p4_T(tSat))
         elif Region == 5:
-            raise Exception('functions of hs is not avlaible in region 5')
+            logger.warning('functions of hs is not available in region 5')
+            # raise Exception('functions of hs is not available in region 5')
+            return float("NaN")
         else:
+            logger.warning('Region switch returned unknown value')
             return float("NaN")
 
 
@@ -232,20 +244,22 @@ class XSteam(object):
 #%***********************************************************************************************************
 # Section 1.4 Enthalpy (h)
     def hV_p(self, p):
-        """Saturated vapour enthalpy as a function of preasure"""
+        """Saturated vapour enthalpy as a function of pressure"""
         p = self.unitConverter.toSIunit_p(p)
         if (p > 0.000611657) and (p < 22.06395):
             return self.unitConverter.fromSIunit_h(Region4.h4V_p(p))
         else:
+            logger.warning('pressure out of range')
             return float("NaN")
 
 
     def hL_p(self, p):
-        """Saturated liquid enthalpy as a function of preasure"""
+        """Saturated liquid enthalpy as a function of pressure"""
         p = self.unitConverter.toSIunit_p(p)
         if (p > 0.000611657) and (p < 22.06395):
             return self.unitConverter.fromSIunit_h(Region4.h4L_p(p))
         else:
+            logger.warning('pressure out of range')
             return float("NaN")
 
 
@@ -256,6 +270,7 @@ class XSteam(object):
             p = Region4.p4_T(T)
             return self.unitConverter.fromSIunit_h(Region4.h4V_p(p))
         else:
+            logger.warning('Temperature out of range')
             return float("NaN")
 
 
@@ -266,6 +281,7 @@ class XSteam(object):
             p = Region4.p4_T(T)
             return self.unitConverter.fromSIunit_h(Region4.h4L_p(p))
         else:
+            logger.warning('Temperature out of range')
             return float("NaN")
 
 
@@ -281,10 +297,13 @@ class XSteam(object):
         elif Region == 3:
             return self.unitConverter.fromSIunit_h(Region3.h3_pT(p, T))
         elif Region == 4:
+            logger.warning('function h_pt is not available in region 4')
+            # raise Exception('function h_pt is not available in region 4')
             return float("NaN")
         elif Region == 5:
             return self.unitConverter.fromSIunit_h(Region5.h5_pT(p, T))
         else:
+            logger.warning('Region switch returned unknown value')
             return float("NaN")
 
 
@@ -305,6 +324,7 @@ class XSteam(object):
         elif Region == 5:
             return self.unitConverter.fromSIunit_h(Region5.h5_pT(p, Region5.T5_ps(p, s)))
         else:
+            logger.warning('Region switch returned unknown value')
             return float("NaN")
 
 
@@ -313,6 +333,7 @@ class XSteam(object):
         p = self.unitConverter.toSIunit_p(p)
         x = self.unitConverter.toSIunit_x(x)
         if (x > 1) or (x < 0) or (p >= 22.064):
+            logger.warning('Vapor fraction and/or pressure out of range')
             return float("NaN")
         hL = Region4.h4L_p(p)
         hV = Region4.h4V_p(p)
@@ -344,6 +365,7 @@ class XSteam(object):
         elif Region == 5:
             return self.unitConverter.fromSIunit_h(Region5.h5_pT(p, Region5.T5_prho(p, rho)))
         else:
+            logger.warning('Region switch returned unknown value')
             return float("NaN")
 
 
@@ -352,6 +374,7 @@ class XSteam(object):
         T = self.unitConverter.toSIunit_T(t)
         x = self.unitConverter.toSIunit_x(x)
         if (x > 1) or (x < 0) or (T >= 647.096):
+            logger.warning('Vapor fraction and/or pressure out of range')
             return float("NaN")
         p = Region4.p4_T(T)
         hL = Region4.h4L_p(p)
@@ -362,7 +385,7 @@ class XSteam(object):
 #%***********************************************************************************************************
 # Section 1.5 Specific Volume (v)
     def vV_p(self, p):
-        """Saturated vapour volume as a function of preasure"""
+        """Saturated vapour volume as a function of pressure"""
         p = self.unitConverter.toSIunit_p(p)
         if (p > 0.000611657) and (p < 22.06395):
             if p < 16.529:
@@ -370,11 +393,12 @@ class XSteam(object):
             else:
                 return self.unitConverter.fromSIunit_v(Region3.v3_ph(p, Region4.h4V_p(p)))
         else:
+            logger.warning('pressure out of range')
             return float("NaN")
 
 
     def vL_p(self, p):
-        """Saturated liquid volume as a function of preasure"""
+        """Saturated liquid volume as a function of pressure"""
         p = self.unitConverter.toSIunit_p(p)
         if (p > 0.000611657) and (p < 22.06395):
             if p < 16.529:
@@ -382,6 +406,7 @@ class XSteam(object):
             else:
                 return self.unitConverter.fromSIunit_v(Region3.v3_ph(p, Region4.h4L_p(p)))
         else:
+            logger.warning('pressure out of range')
             return float("NaN")
 
 
@@ -394,6 +419,7 @@ class XSteam(object):
             else:
                 return self.unitConverter.fromSIunit_v(Region3.v3_ph(Region4.p4_T(T), Region4.h4V_p(Region4.p4_T(T))))
         else:
+            logger.warning('temperature out of range')
             return float("NaN")
 
 
@@ -406,6 +432,7 @@ class XSteam(object):
             else:
                 return self.unitConverter.fromSIunit_v(Region3.v3_ph(Region4.p4_T(T), Region4.h4L_p(Region4.p4_T(T))))
         else:
+            logger.warning('temperature out of range')
             return float("NaN")
 
 
@@ -421,10 +448,13 @@ class XSteam(object):
         elif Region == 3:
             return self.unitConverter.fromSIunit_v(Region3.v3_ph(p, Region3.h3_pT(p, T)))
         elif Region == 4:
+            logger.warning('function v_pt is not available in region 4')
+            # raise Exception('function v_pt is not available in region 4')
             return float("NaN")
         elif Region == 5:
             return self.unitConverter.fromSIunit_v(Region5.v5_pT(p, T))
         else:
+            logger.warning('Region switch returned unknown value')
             return float("NaN")
 
 
@@ -452,6 +482,7 @@ class XSteam(object):
             Ts = Region5.T5_ph(p, h)
             return self.unitConverter.fromSIunit_v(Region5.v5_pT(p, Ts))
         else:
+            logger.warning('Region switch returned unknown value')
             return float("NaN")
 
 
@@ -479,6 +510,7 @@ class XSteam(object):
             Ts = Region5.T5_ps(p, s)
             return self.unitConverter.fromSIunit_v(Region5.v5_pT(p, Ts))
         else:
+            logger.warning('Region switch returned unknown value')
             return float("NaN")
 
 
@@ -486,12 +518,12 @@ class XSteam(object):
 # Section 1.6 Density (rho)
 # % Density is calculated as 1/v. See section 1.5 Volume
     def rhoV_p(self, p):
-        """Saturated vapour density as a function of preasure"""
+        """Saturated vapour density as a function of pressure"""
         return 1 / self.vV_p(p)
 
 
     def rhoL_p(self, p):
-        """Saturated liquid density as a function of preasure"""
+        """Saturated liquid density as a function of pressure"""
         return 1 / self.vL_p(p)
 
 
@@ -523,7 +555,7 @@ class XSteam(object):
 #%***********************************************************************************************************
 # Section 1.7 Specific entropy (s)
     def sV_p(self, p):
-        """Saturated vapour entropy as a function of preasure"""
+        """Saturated vapour entropy as a function of pressure"""
         p = self.unitConverter.toSIunit_p(p)
         if (p > 0.000611657) and (p < 22.06395):
             if p < 16.529:
@@ -531,11 +563,12 @@ class XSteam(object):
             else:
                 return self.unitConverter.fromSIunit_s(Region3.s3_rhoT(1 / (Region3.v3_ph(p, Region4.h4V_p(p))), Region4.T4_p(p)))
         else:
+            logger.warning('pressure out of range')
             return float("NaN")
 
 
     def sL_p(self, p):
-        """Saturated liquid entropy as a function of preasure"""
+        """Saturated liquid entropy as a function of pressure"""
         p = self.unitConverter.toSIunit_p(p)
         if (p > 0.000611657) and (p < 22.06395):
             if p < 16.529:
@@ -543,6 +576,7 @@ class XSteam(object):
             else:
                 return self.unitConverter.fromSIunit_s(Region3.s3_rhoT(1 / (Region3.v3_ph(p, Region4.h4L_p(p))), Region4.T4_p(p)))
         else:
+            logger.warning('pressure out of range')
             return float("NaN")
 
 
@@ -555,6 +589,7 @@ class XSteam(object):
             else:
                 return self.unitConverter.fromSIunit_s(Region3.s3_rhoT(1 / (Region3.v3_ph(Region4.p4_T(T), Region4.h4V_p(Region4.p4_T(T)))), T))
         else:
+            logger.warning('temperature out of range')
             return float("NaN")
 
 
@@ -567,6 +602,7 @@ class XSteam(object):
             else:
                 return self.unitConverter.fromSIunit_s(Region3.s3_rhoT(1 / (Region3.v3_ph(Region4.p4_T(T), Region4.h4L_p(Region4.p4_T(T)))), T))
         else:
+            logger.warning('temperature out of range')
             return float("NaN")
 
 
@@ -584,10 +620,13 @@ class XSteam(object):
             rhos = 1 / Region3.v3_ph(p, hs)
             return self.unitConverter.fromSIunit_s(Region3.s3_rhoT(rhos, T))
         elif Region == 4:
+            logger.warning('function s_pt is not available in region 4')
+            # raise Exception('function s_pt is not available in region 4')
             return float("NaN")
         elif Region == 5:
             return self.unitConverter.fromSIunit_s(Region5.s5_pT(p, T))
         else:
+            logger.warning('Region switch returned unknown value')
             return float("NaN")
 
 
@@ -622,13 +661,14 @@ class XSteam(object):
             T = Region5.T5_ph(p, h)
             return self.unitConverter.fromSIunit_s(Region5.s5_pT(p, T))
         else:
+            logger.warning('Region switch returned unknown value')
             return float("NaN")
 
 
 #%***********************************************************************************************************
 # Section 1.8 Specific internal energy (u)
     def uV_p(self, p):
-        """Saturated vapour internal energy as a function of preasure"""
+        """Saturated vapour internal energy as a function of pressure"""
         p = self.unitConverter.toSIunit_p(p)
         if (p > 0.000611657) and (p < 22.06395):
             if p < 16.529:
@@ -640,7 +680,7 @@ class XSteam(object):
 
 
     def uL_p(self, p):
-        """Saturated liquid internal energy as a function of preasure"""
+        """Saturated liquid internal energy as a function of pressure"""
         p = self.unitConverter.toSIunit_p(p)
         if (p > 0.000611657) and (p < 22.06395):
             if p < 16.529:
@@ -648,6 +688,7 @@ class XSteam(object):
             else:
                 return self.unitConverter.fromSIunit_u(Region3.u3_rhoT(1 / (Region3.v3_ph(p, Region4.h4L_p(p))), Region4.T4_p(p)))
         else:
+            logger.warning('pressure out of range')
             return float("NaN")
 
 
@@ -660,6 +701,7 @@ class XSteam(object):
             else:
                 return self.unitConverter.fromSIunit_u(Region3.u3_rhoT(1 / (Region3.v3_ph(Region4.p4_T(T), Region4.h4V_p(Region4.p4_T(T)))), T))
         else:
+            logger.warning('temperature out of range')
             return float("NaN")
 
 
@@ -672,6 +714,7 @@ class XSteam(object):
             else:
                 return self.unitConverter.fromSIunit_u(Region3.u3_rhoT(1 / (Region3.v3_ph(Region4.p4_T(T), Region4.h4L_p(Region4.p4_T(T)))), T))
         else:
+            logger.warning('temperature out of range')
             return float("NaN")
 
 
@@ -689,10 +732,13 @@ class XSteam(object):
             rhos = 1 / Region3.v3_ph(p, hs)
             return self.unitConverter.fromSIunit_u(Region3.u3_rhoT(rhos, T))
         elif Region == 4:
+            logger.warning('function u_pt is not available in region 4')
+            # raise Exception('function u_pt is not available in region 4')
             return float("NaN")
         elif Region == 5:
             return self.unitConverter.fromSIunit_u(Region5.u5_pT(p, T))
         else:
+            logger.warning('Region switch returned unknown value')
             return float("NaN")
 
 
@@ -727,6 +773,7 @@ class XSteam(object):
             Ts = Region5.T5_ph(p, h)
             return self.unitConverter.fromSIunit_u(Region5.u5_pT(p, Ts))
         else:
+            logger.warning('Region switch returned unknown value')
             return float("NaN")
 
 
@@ -758,13 +805,14 @@ class XSteam(object):
             Ts = Region5.T5_ps(p, s)
             return self.unitConverter.fromSIunit_u(Region5.u5_pT(p, Ts))
         else:
+            logger.warning('Region switch returned unknown value')
             return float("NaN")
 
 
 #%***********************************************************************************************************
 # Section 1.9 Specific isobaric heat capacity (Cp)
     def CpV_p(self, p):
-        """Saturated vapour heat capacity as a function of preasure"""
+        """Saturated vapour heat capacity as a function of pressure"""
         p = self.unitConverter.toSIunit_p(p)
         if (p > 0.000611657) and (p < 22.06395):
             if p < 16.529:
@@ -772,11 +820,12 @@ class XSteam(object):
             else:
                 return self.unitConverter.fromSIunit_Cp(Region3.Cp3_rhoT(1 / (Region3.v3_ph(p, Region4.h4V_p(p))), Region4.T4_p(p)))
         else:
+            logger.warning('preassure out of range')
             return float("NaN")
 
 
     def CpL_p(self, p):
-        """Saturated liquid heat capacity as a function of preasure"""
+        """Saturated liquid heat capacity as a function of pressure"""
         p = self.unitConverter.toSIunit_p(p)
         if (p > 0.000611657) and (p < 22.06395):
             if p < 16.529:
@@ -784,6 +833,7 @@ class XSteam(object):
             else:
                 return self.unitConverter.fromSIunit_Cp(Region3.Cp3_rhoT(1 / (Region3.v3_ph(p, Region4.h4L_p(p))), Region4.T4_p(p)))
         else:
+            logger.warning('preassure out of range')
             return float("NaN")
 
 
@@ -796,6 +846,7 @@ class XSteam(object):
             else:
                 return self.unitConverter.fromSIunit_Cp(Region3.Cp3_rhoT(1 / (Region3.v3_ph(Region4.p4_T(T), Region4.h4V_p(Region4.p4_T(T)))), T))
         else:
+            logger.warning('temperature out of range')
             return float("NaN")
 
 
@@ -808,6 +859,7 @@ class XSteam(object):
             else:
                 return self.unitConverter.fromSIunit_Cp(Region3.Cp3_rhoT(1 / (Region3.v3_ph(Region4.p4_T(T), Region4.h4L_p(Region4.p4_T(T)))), T))
         else:
+            logger.warning('temperature out of range')
             return float("NaN")
 
 
@@ -825,10 +877,13 @@ class XSteam(object):
             rhos = 1 / Region3.v3_ph(p, hs)
             return self.unitConverter.fromSIunit_Cp(Region3.Cp3_rhoT(rhos, T))
         elif Region == 4:
+            logger.warning('function Cp_pt is not available in region 4')
+            # raise Exception('function Cp_pt is not available in region 4')
             return float("NaN")
         elif Region == 5:
             return self.unitConverter.fromSIunit_Cp(Region5.Cp5_pT(p, T))
         else:
+            logger.warning('Region switch returned unknown value')
             return float("NaN")
 
 
@@ -848,11 +903,14 @@ class XSteam(object):
             Ts = Region3.T3_ph(p, h)
             return self.unitConverter.fromSIunit_Cp(Region3.Cp3_rhoT(rhos, Ts))
         elif Region == 4:
+            logger.warning('function Cp_ph is not available in region 4')
+            # raise Exception('function Cp_ph is not available in region 4')
             return float("NaN")
         elif Region == 5:
             Ts = Region5.T5_ph(p, h)
             return self.unitConverter.fromSIunit_Cp(Region5.Cp5_pT(p, Ts))
         else:
+            logger.warning('Region switch returned unknown value')
             return float("NaN")
 
 
@@ -872,18 +930,21 @@ class XSteam(object):
             Ts = Region3.T3_ps(p, s)
             return self.unitConverter.fromSIunit_Cp(Region3.Cp3_rhoT(rhos, Ts))
         elif Region == 4:
+            logger.warning('function Cp_ps is not available in region 4')
+            # raise Exception('function Cp_ps is not available in region 4')
             return float("NaN")
         elif Region == 5:
             Ts = Region5.T5_ps(p, s)
             return self.unitConverter.fromSIunit_Cp(Region5.Cp5_pT(p, Ts))
         else:
+            logger.warning('Region switch returned unknown value')
             return float("NaN")
 
 
 #%***********************************************************************************************************
 # Section 1.10 Specific isochoric heat capacity (Cv)
     def CvV_p(self, p):
-        """Saturated vapour isochoric heat capacity as a function of preasure"""
+        """Saturated vapour isochoric heat capacity as a function of pressure"""
         p = self.unitConverter.toSIunit_p(p)
         if (p > 0.000611657) and (p < 22.06395):
             if p < 16.529:
@@ -891,11 +952,12 @@ class XSteam(object):
             else:
                 return self.unitConverter.fromSIunit_Cv(Region3.Cv3_rhoT(1 / (Region3.v3_ph(p, Region4.h4V_p(p))), Region4.T4_p(p)))
         else:
+            logger.warning('pressure out of range')
             return float("NaN")
 
 
     def CvL_p(self, p):
-        """Saturated liquid isochoric heat capacity as a function of preasure"""
+        """Saturated liquid isochoric heat capacity as a function of pressure"""
         p = self.unitConverter.toSIunit_p(p)
         if (p > 0.000611657) and (p < 22.06395):
             if p < 16.529:
@@ -903,6 +965,7 @@ class XSteam(object):
             else:
                 return self.unitConverter.fromSIunit_Cv(Region3.Cv3_rhoT(1 / (Region3.v3_ph(p, Region4.h4L_p(p))), Region4.T4_p(p)))
         else:
+            logger.warning('pressure out of range')
             return float("NaN")
 
 
@@ -915,6 +978,7 @@ class XSteam(object):
             else:
                 return self.unitConverter.fromSIunit_Cv(Region3.Cv3_rhoT(1 / (Region3.v3_ph(Region4.p4_T(T), Region4.h4V_p(Region4.p4_T(T)))), T))
         else:
+            logger.warning('temperature out of range')
             return float("NaN")
 
 
@@ -927,6 +991,7 @@ class XSteam(object):
             else:
                 return self.unitConverter.fromSIunit_Cv(Region3.Cv3_rhoT(1 / (Region3.v3_ph(Region4.p4_T(T), Region4.h4L_p(Region4.p4_T(T)))), T))
         else:
+            logger.warning('temperature out of range')
             return float("NaN")
 
 
@@ -944,10 +1009,13 @@ class XSteam(object):
             rhos = 1 / Region3.v3_ph(p, hs)
             return self.unitConverter.fromSIunit_Cv(Region3.Cv3_rhoT(rhos, T))
         elif Region == 4:
+            logger.warning('function Cv_pt is not available in region 4')
+            # raise Exception('function Cv_pt is not available in region 4')
             return float("NaN")
         elif Region == 5:
             return self.unitConverter.fromSIunit_Cv(Region5.Cv5_pT(p, T))
         else:
+            logger.warning('Region switch returned unknown value')
             return float("NaN")
 
 
@@ -967,11 +1035,14 @@ class XSteam(object):
             Ts = Region3.T3_ph(p, h)
             return self.unitConverter.fromSIunit_Cv(Region3.Cv3_rhoT(rhos, Ts))
         elif Region == 4:
+            logger.warning('function Cv_ph is not available in region 4')
+            # raise Exception('function Cv_ph is not available in region 4')
             return float("NaN")
         elif Region == 5:
             Ts = Region5.T5_ph(p, h)
             return self.unitConverter.fromSIunit_Cv(Region5.Cv5_pT(p, Ts))
         else:
+            logger.warning('Region switch returned unknown value')
             return float("NaN")
 
 
@@ -991,18 +1062,21 @@ class XSteam(object):
             Ts = Region3.T3_ps(p, s)
             return self.unitConverter.fromSIunit_Cv(Region3.Cv3_rhoT(rhos, Ts))
         elif Region == 4:
+            logger.warning('function Cv_ps is not available in region 4')
+            # raise Exception('function Cv_ps is not available in region 4')
             return float("NaN")  # % (xs * CvVp + (1 - xs) * CvLp) / Cv_scale - Cv_offset
         elif Region == 5:
             Ts = Region5.T5_ps(p, s)
             return self.unitConverter.fromSIunit_Cv(Region5.Cv5_pT(p, Ts))
         else:
+            logger.warning('Region switch returned unknown value')
             return float("NaN")
 
 
 #%***********************************************************************************************************
 # Section 1.11 Speed of sound
     def wV_p(self, p):
-        """Saturated vapour speed of sound as a function of preasure"""
+        """Saturated vapour speed of sound as a function of pressure"""
         p = self.unitConverter.toSIunit_p(p)
         if (p > 0.000611657) and (p < 22.06395):
             if p < 16.529:
@@ -1010,11 +1084,12 @@ class XSteam(object):
             else:
                 return self.unitConverter.fromSIunit_w(Region3.w3_rhoT(1 / (Region3.v3_ph(p, Region4.h4V_p(p))), Region4.T4_p(p)))
         else:
+            logger.warning('pressure out of range')
             return float("NaN")
 
 
     def wL_p(self, p):
-        """Saturated liquid speed of sound as a function of preasure"""
+        """Saturated liquid speed of sound as a function of pressure"""
         p = self.unitConverter.toSIunit_p(p)
         if (p > 0.000611657) and (p < 22.06395):
             if p < 16.529:
@@ -1022,6 +1097,7 @@ class XSteam(object):
             else:
                 return self.unitConverter.fromSIunit_w(Region3.w3_rhoT(1 / (Region3.v3_ph(p, Region4.h4L_p(p))), Region4.T4_p(p)))
         else:
+            logger.warning('pressure out of range')
             return float("NaN")
 
 
@@ -1034,6 +1110,7 @@ class XSteam(object):
             else:
                 return self.unitConverter.fromSIunit_w(Region3.w3_rhoT(1 / (Region3.v3_ph(Region4.p4_T(T), Region4.h4V_p(Region4.p4_T(T)))), T))
         else:
+            logger.warning('temperature out of range')
             return float("NaN")
 
 
@@ -1046,6 +1123,7 @@ class XSteam(object):
             else:
                 return self.unitConverter.fromSIunit_w(Region3.w3_rhoT(1 / (Region3.v3_ph(Region4.p4_T(T), Region4.h4L_p(Region4.p4_T(T)))), T))
         else:
+            logger.warning('temperature out of range')
             return float("NaN")
 
 
@@ -1063,10 +1141,13 @@ class XSteam(object):
             rhos = 1 / Region3.v3_ph(p, hs)
             return self.unitConverter.fromSIunit_w(Region3.w3_rhoT(rhos, T))
         elif Region == 4:
+            logger.warning('function w_pt is not available in region 4')
+            # raise Exception('function w_pt is not available in region 4')
             return float("NaN")
         elif Region == 5:
             return self.unitConverter.fromSIunit_w(Region5.w5_pT(p, T))
         else:
+            logger.warning('Region switch returned unknown value')
             return float("NaN")
 
 
@@ -1086,11 +1167,14 @@ class XSteam(object):
             Ts = Region3.T3_ph(p, h)
             return self.unitConverter.fromSIunit_w(Region3.w3_rhoT(rhos, Ts))
         elif Region == 4:
+            logger.warning('function w_ph is not available in region 4')
+            # raise Exception('function w_ph is not available in region 4')
             return float("NaN")
         elif Region == 5:
             Ts = Region5.T5_ph(p, h)
             return self.unitConverter.fromSIunit_w(Region5.w5_pT(p, Ts))
         else:
+            logger.warning('Region switch returned unknown value')
             return float("NaN")
 
 
@@ -1110,11 +1194,14 @@ class XSteam(object):
             Ts = Region3.T3_ps(p, s)
             return self.unitConverter.fromSIunit_w(Region3.w3_rhoT(rhos, Ts))
         elif Region == 4:
+            logger.warning('function w_ps is not available in region 4')
+            # raise Exception('function w_ps is not available in region 4')
             return float("NaN")  # % (xs * wVp + (1 - xs) * wLp) / w_scale - w_offset
         elif Region == 5:
             Ts = Region5.T5_ps(p, s)
             return self.unitConverter.fromSIunit_w(Region5.w5_pT(p, Ts))
         else:
+            logger.warning('Region switch returned unknown value')
             return float("NaN")
 
 
@@ -1129,10 +1216,13 @@ class XSteam(object):
         T = self.unitConverter.toSIunit_T(t)
         Region = RegionSelection.region_pT(p, T)
         if Region == 4:
+            logger.warning('function my_pt is not available in region 4')
+            # raise Exception('function my_pt is not available in region 4')
             return float("NaN")
         elif Region in [1, 2, 3, 5]:
             return self.unitConverter.fromSIunit_my(TransportProperties.my_AllRegions_pT(p, T))
         else:
+            logger.warning('Region switch returned unknown value')
             return float("NaN")
 
 
@@ -1144,8 +1234,11 @@ class XSteam(object):
         if Region in [1, 2, 3, 5]:
             return self.unitConverter.fromSIunit_my(TransportProperties.my_AllRegions_ph(p, h))
         elif Region == 4:
+            logger.warning('function my_pt is not available in region 4')
+            # raise Exception('function my_pt is not available in region 4')
             return float("NaN")
         else:
+            logger.warning('Region switch returned unknown value')
             return float("NaN")
 
 
@@ -1190,7 +1283,7 @@ class XSteam(object):
 # Section 1.16 Thermal conductivity
 # %Revised release on the IAPS Formulation 1985 for the Thermal Conductivity of ordinary water substance (IAPWS 1998)
     def tcL_p(self, p):
-        """Saturated vapour thermal conductivity as a function of preasure"""
+        """Saturated vapour thermal conductivity as a function of pressure"""
         t = self.tsat_p(p)
         v = self.vL_p(p)
         p = self.unitConverter.toSIunit_p(p)
@@ -1201,7 +1294,7 @@ class XSteam(object):
 
 
     def tcV_p(self, p):
-        """Saturated liquid thermal conductivity as a function of preasure"""
+        """Saturated liquid thermal conductivity as a function of pressure"""
         ps = p;
         T = self.tsat_p(p)
         v = self.vV_p(ps)
@@ -1284,6 +1377,7 @@ class XSteam(object):
         if (p > 0.000611657) and (p < 22.06395):
             return self.unitConverter.fromSIunit_x(Region4.x4_ph(p, h))
         else:
+            logger.warning('pressure out of range')
             return float("NaN")
 
 
@@ -1294,6 +1388,7 @@ class XSteam(object):
         if (p > 0.000611657) and (p < 22.06395):
             return self.unitConverter.fromSIunit_x(Region4.x4_ps(p, s))
         else:
+            logger.warning('pressure out of range')
             return float("NaN")
 
 
@@ -1313,6 +1408,7 @@ class XSteam(object):
             xs = Region4.x4_ph(p, h)
             return self.unitConverter.fromSIunit_vx((xs * vV / (xs * vV + (1 - xs) * vL)))
         else:
+            logger.warning('pressure out of range')
             return float("NaN")
 
 
@@ -1330,5 +1426,6 @@ class XSteam(object):
             xs = Region4.x4_ps(p, s)
             return self.unitConverter.fromSIunit_vx((xs * vV / (xs * vV + (1 - xs) * vL)))
         else:
+            logger.warning('pressure out of range')
             return float("NaN")
 

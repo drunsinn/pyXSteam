@@ -3,9 +3,12 @@
 Section 5: Transport properties
 """
 import math
+import logging
 import RegionSelection
 from Regions import Region1, Region2, Region3, Region4, Region5
 import Constants
+
+logger = logging.getLogger('pyXSteam')
 
 """Section 5.1 Viscosity (IAPWS formulation 1985, Revised 2003)"""
 def my_AllRegions_pT(p, T):
@@ -30,11 +33,14 @@ def my_AllRegions_pT(p, T):
         hs = Region3.h3_pT(p, T)
         rho = 1 / Region3.v3_ph(p, hs);
     elif RegionSelection.region_pT(p, T) == 4:
-        rho = NaN
+        logger.warning('Region switch returned unknown value')
+        return float('NaN')
+        # rho = NaN
     elif RegionSelection.region_pT(p, T) == 5:
         rho = 1 / Region5.v5_pT(p, T)
     else:
         # my_AllRegions_pT = NaN
+        logger.warning('Region switch returned unknown value')
         return float("NaN")
 
     rhos = rho / 317.763
@@ -44,6 +50,7 @@ def my_AllRegions_pT(p, T):
     # % Check valid area
     if (T > (900 + 273.15)) or ((T > (600 + 273.15)) and (p > 300)) or ((T > (150 + 273.15)) and (p > 350)) or (p > 500):
         # my_AllRegions_pT = NaN
+        logger.warning('Temperature and/or preasure out of range')
         return float("NaN")
 
     my0 = Ts ** 0.5 / (1 + 0.978197 / Ts + 0.579829 / (Ts ** 2) - 0.202354 / (Ts ** 3))
@@ -107,6 +114,7 @@ def my_AllRegions_ph(p, h):
         rho = 1 / Region5.v5_pT(p, Ts)
     else:
         # my_AllRegions_ph = NaN;
+        logger.warning('Region switch returned unknown value')
         return float("NaN")
 
     rhos = rho / 317.763
@@ -150,18 +158,22 @@ def tc_ptrho(p, T, rho):
 
     if T < 273.15:
         # tc_ptrho = NaN; % Out of range of validity (para. B4)
+        logger.warning('Temperature out of range')
         return float("NaN")
     elif T < 500 + 273.15:
         if p > 100:
             # tc_ptrho = NaN; % Out of range of validity (para. B4)
+            logger.warning('Preasure out of range')
             return float("NaN")
     elif T <= 650 + 273.15:
         if p > 70:
             # tc_ptrho = NaN; % Out of range of validity (para. B4)
+            logger.warning('Preasure out of range')
             return float("NaN")
     else:  # T <= 800 + 273.15:
         if p > 40:
             # tc_ptrho = NaN; % Out of range of validity (para. B4)
+            logger.warning('Preasure out of range')
             return float("NaN")
 
     # % ver2.6 End corrected bug
@@ -205,6 +217,7 @@ def Surface_Tension_T(T):
     my = 1.256  #
     if (T < 0.01) or (T > tc):
         # Surface_Tension_T = NaN# % "Out of valid region"
+        logger.warning('Temperature out of range')
         return float("NaN")
 
     tau = 1 - T / tc
