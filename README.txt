@@ -22,7 +22,7 @@ Install
 =========
 run "python setup.py" install
 To test is setup was successful, run bin/pyXSteamDemo.py from the command line.
-There are still (v0.3) some Errors in Thermal Conductivity and Speed of sound functions, 
+There are still (as of v0.3.1) some Errors in Thermal Conductivity and Speed of sound functions, 
 so be warned that they exceed the Error Range.
 Apart form accuracy errors, there should be no warnings.
 to run unittests: "python setup.py test" but make sure numpy is installed
@@ -61,7 +61,15 @@ By using the unitSystem Parameter, you can tell XSteam witch Unit System you are
 	steamTable = XSteam(XSteam.UNIT_SYSTEM_MKS): m/kg/sec/°C/bar/W
 	steamTable = XSteam(XSteam.UNIT_SYSTEM_FLS): ft/lb/sec/°F/psi/btu
 	steamTable = XSteam(XSteam.UNIT_SYSTEM_BARE): m/kg/sec/K/MPa/W
-		
+
+To enable logging, add the following lines to your code:
+	import logging
+	logger = logging.getLogger('pyXSteam')
+	logger.setLevel(logging.DEBUG)
+	sh = logging.StreamHandler()
+	sh.setFormatter(logging.Formatter('%(name)s - %(levelname)s - %(message)s'))
+	logger.addHandler(sh)
+
 Available Functions:
 	Temperature
 		tsat_p	Saturation temperature

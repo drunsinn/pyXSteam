@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import logging
-logger = logging.getLogger('pyXSteam')
+logger = logging.getLogger('pyXSteam-UnitConverter')
 
 class UnitConverter(object):
     """Helper class to convert user Units to SI-Units and back"""
