@@ -6,7 +6,6 @@ import unittest
 from pyXSteam.XSteam import XSteam
 from test import TestXSteam
 
-
 def suite():
     # import unittest
     # import doctest
