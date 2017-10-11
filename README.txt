@@ -98,7 +98,7 @@ Available Functions:
 		vL_p	Saturated liquid volume
 		vV_t	Saturated vapour volume
 		vL_t	Saturated liquid volume
-		v_pT	Specific volume as a function of pressure and temperature.
+		v_pt	Specific volume as a function of pressure and temperature.
 		v_ph	Specific volume as a function of pressure and enthalpy
 		v_ps	Specific volume as a function of pressure and entropy.
 
@@ -124,7 +124,7 @@ Available Functions:
 		uL_p	Saturated liquid internal energy
 		uV_t	Saturated vapour internal energy
 		uL_t	Saturated liquid internal energy
-		u_pT	Specific internal energy as a function of pressure and temperature.
+		u_pt	Specific internal energy as a function of pressure and temperature.
 		u_ph	Specific internal energy as a function of pressure and enthalpy
 		u_ps	Specific internal energy as a function of pressure and entropy.
 
@@ -165,7 +165,7 @@ Available Functions:
 		tcV_p	Saturated liquid thermal conductivity
 		tcL_t	Saturated vapour thermal conductivity
 		tcV_t	Saturated liquid thermal conductivity
-		tc_pT	Thermal conductivity as a function of pressure and temperature
+		tc_pt	Thermal conductivity as a function of pressure and temperature
 		tc_ph	Thermal conductivity as a function of pressure and enthalpy
 		tc_hs	Thermal conductivity as a function of enthalpy and entropy
 
