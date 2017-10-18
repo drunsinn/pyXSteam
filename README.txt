@@ -73,9 +73,9 @@ To enable logging, add the following lines to your code:
 Available Functions:
 	Temperature
 		tsat_p	Saturation temperature
-		t_ph	Temperture as a function of pressure and enthalpy
-		t_ps	Temperture as a function of pressure and entropy
-		t_hs	Temperture as a function of enthalpy and entropy
+		t_ph	Temperature as a function of pressure and enthalpy
+		t_ps	Temperature as a function of pressure and entropy
+		t_hs	Temperature as a function of enthalpy and entropy
 
 	Pressure	
 		psat_t	Saturation pressure
