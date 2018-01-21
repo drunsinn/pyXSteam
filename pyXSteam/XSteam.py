@@ -1195,7 +1195,7 @@ class XSteam(object):
         if region == 4:
             self.logger.warning('function my_pt is not available in region 4')
             return float("NaN")
-        elif Region in [1, 2, 3, 5]:
+        elif region in [1, 2, 3, 5]:
             return self.unitConverter.fromSIunit_my(TransportProperties.my_AllRegions_pT(p, T))
         else:
             self.logger.warning("Region switch my_pt returned unknown value: {:d}".format(region))
@@ -1207,7 +1207,7 @@ class XSteam(object):
         p = self.unitConverter.toSIunit_p(p)
         h = self.unitConverter.toSIunit_h(h)
         region = RegionSelection.region_ph(p, h)
-        if Region in [1, 2, 3, 5]:
+        if region in [1, 2, 3, 5]:
             return self.unitConverter.fromSIunit_my(TransportProperties.my_AllRegions_ph(p, h))
         elif region == 4:
             self.logger.warning('function my_pt is not available in region 4')

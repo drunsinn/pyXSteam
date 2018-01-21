@@ -1,3 +1,6 @@
+## v0.3.3b, 21.01.2018
+* fix for typo
+
 ## v0.3.3, 21.01.2018
 * change changelog to markdown
 * add gitignore
