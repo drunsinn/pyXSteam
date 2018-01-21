@@ -1,29 +1,34 @@
 # -*- coding: utf-8 -*-
-from setuptools import setup
+from setuptools import setup, find_packages
+import sys, os
 
+here = os.path.abspath(os.path.dirname(__file__))
+README = open(os.path.join(here, 'README.rst')).read()
+NEWS = open(os.path.join(here, 'NEWS.txt')).read()
 
-setup(
-    name = 'pyXSteam',
-    version = '0.3',
-    description = 'pyXSteam is a port of the Matlab/Excel Package XSteam by Magnus Holmgren, www.x-eng.com to Python',
-    long_description = open('README.txt').read(),
-    author = 'Max Pirkl',
-    author_email = 'dr.unsinn@googlemail.com',
-    classifiers = [ 'Development Status ::  Alpha',
-                    'Programming Language :: Python',
-                    ],
-    platforms = ('Any',),
-    packages = ['pyXSteam', 'test'],
-    zip_safe = True,
-    scripts = ['bin/pyXSteamDemo.py'],
-    url = '',
-    license = 'LICENSE.txt',
-    # requires = ['numpy >=1.6.2', ],
-    test_suite = 'test.suite',
-    tests_require = ['numpy >=1.6.2', ]
+version = '0.3.3'
+
+install_requires = [ ]
+
+setup(name = 'pyXSteam',
+      version=version,
+      description = 'pyXSteam is a port of the Matlab/Excel Package XSteam by Magnus Holmgren, www.x-eng.com to Python',
+      long_description = README + '\n\n' + NEWS,
+      classifiers = ['Development Status ::  Alpha',
+                     'Programming Language :: Python'],
+      keywords='steam water ice XSteam',
+      author = 'drunsinn',
+      author_email = 'dr.unsinn@googlemail.com',
+      url = 'https://github.com/drunsinn/pyXSteam',
+      license = 'LICENSE.txt',
+      packages=find_packages(exclude=['tests*']),
+      package_dir = {'pyXSteam': 'pyXSteam'},
+      include_package_data=True,
+      zip_safe = True,
+      install_requires=install_requires,
+      platforms = ('Any',),
+      scripts = ['bin/pyXSteamDemo.py'],
+      test_suite = 'pyXSteamTest.suite',
+      tests_require = ['numpy >=1.6.2', ],
+      use_2to3=True
 )
-
-# sudo pip install .
-# python setup.py bdist_egg
-# python setup.py sdist
-# python setup.py test

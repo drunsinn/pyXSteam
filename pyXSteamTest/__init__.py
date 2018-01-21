@@ -4,13 +4,13 @@
 import unittest
 
 from pyXSteam.XSteam import XSteam
-from test import TestXSteam
+from pyXSteamTest import XSteamTest
 
 def suite():
     # import unittest
     # import doctest
     suite = unittest.TestSuite()
-    suite.addTests(TestXSteam.suite())
+    suite.addTests(XSteamTest.suite())
     return suite
 
 if __name__ == '__main__':

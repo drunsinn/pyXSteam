@@ -1,0 +1,18 @@
+## v0.3.3, 21.01.2018
+* change changelog to markdown
+* add gitignore
+* remove unnecessary files
+* reworked setup.py for more sanity
+* cleanup and better logging
+
+## v0.3.1, 18.02.2014
+* logging capability's
+
+## v0.3, 08.02.2014
+* User can now use ft/lb/sec/°F/psi/btu, m/kg/sec/°C/bar/W or m/kg/sec/K/MPa/W
+
+## v0.2, 03.02.2014
+* demos, changes to unitTests and some minor fixes - 8 Tests fail
+
+## v0.1, 11.02.2014
+* Initial release. - 26 Tests fail

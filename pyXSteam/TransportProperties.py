@@ -8,7 +8,7 @@ import RegionSelection
 from Regions import Region1, Region2, Region3, Region4, Region5
 import Constants
 
-logger = logging.getLogger('pyXSteam')
+logger = logging.getLogger(__name__)
 
 """Section 5.1 Viscosity (IAPWS formulation 1985, Revised 2003)"""
 def my_AllRegions_pT(p, T):
@@ -148,9 +148,9 @@ def my_AllRegions_ph(p, h):
 def tc_ptrho(p, T, rho):
     """
     function tc_ptrho = tc_ptrho(p, T, rho)
-    
+
     Section  5.2 Thermal Conductivity (IAPWS formulation 1985)
-    
+
     Revised release on the IAPWS formulation 1985 for the Thermal Conductivity of ordinary water IAPWS, September 1998
     Page 8
      - ver2.6 Start corrected bug
@@ -203,11 +203,11 @@ def tc_ptrho(p, T, rho):
     return tc0 + tc1 + tc2  # Page 9, Eq 8
 
 def Surface_Tension_T(T):
-    """ 
+    """
     function Surface_Tension_T = Surface_Tension_T(T)
-    
+
     Section 5.3 Surface Tension
-    
+
     IAPWS Release on Surface Tension of Ordinary Water Substance, September 1994
     """
     # tc = 647.096  # % K

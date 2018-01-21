@@ -7,7 +7,7 @@ import logging
 import RegionBorders
 from Regions import Region1, Region2, Region3, Region4, Region5
 
-logger = logging.getLogger('pyXSteam')
+logger = logging.getLogger(__name__)
 
 def region_pT(p, T):
     """
@@ -390,4 +390,3 @@ def region_prho(p, rho):
     # region_prho = 0;
     logger.warning('Preasure and Density outside valid area')
     return 0
-
