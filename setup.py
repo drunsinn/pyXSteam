@@ -31,5 +31,5 @@ setup(name = 'pyXSteam',
       scripts = ['bin/pyXSteamDemo.py'],
       test_suite = 'pyXSteamTest.suite',
       tests_require = ['numpy >=1.6.2', ],
-      use_2to3=True
+      use_2to3 = True,
 )
