@@ -1,35 +1,34 @@
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-from setuptools import setup, find_packages
-import sys, os
+import setuptools
 
-here = os.path.abspath(os.path.dirname(__file__))
-README = open(os.path.join(here, 'README.rst')).read()
-NEWS = open(os.path.join(here, 'NEWS.txt')).read()
+with open("README.md", "r") as fh:
+    long_description = fh.read()
 
-version = '0.3.3b1'
+setuptools.setup(
+    name="pyXSteam",
+    version="0.4.0",
+    author="drunsinn",
+    author_email="dr.unsinn@googlemail.com",
+    keywords="steam water ice XSteam",
+    description="pyXSteam is a port of the Matlab/Excel Package XSteam by Magnus Holmgren, www.x-eng.com to Python 3",
+    long_description=long_description,
+    long_description_content_type="text/markdown",
+    url="https://github.com/drunsinn/pyXSteam",
+    classifiers=[
+        "Programming Language :: Python :: 3",
+        "License :: OSI Approved :: GNU General Public License v2 (GPLv2)",
+        "Operating System :: OS Independent",
+        "Topic :: Scientific/Engineering :: Physics",
+        "Development Status :: 4 - Beta"
+    ],
+    packages=setuptools.find_packages(exclude=['docs', 'tests*']),
+    install_requires=[],
+    python_requires='>=3.6',
+    include_package_data=True,
+    zip_safe=True,
+    scripts=['bin/pyXSteamDemo.py'],
+    test_suite='pyXSteamTest.suite',
+    tests_require=['numpy>=1.6.2', 'matplotlib>=2.2.3'],
 
-install_requires = [ ]
-
-setup(name = 'pyXSteam',
-      version=version,
-      description = 'pyXSteam is a port of the Matlab/Excel Package XSteam by Magnus Holmgren, www.x-eng.com to Python',
-      long_description = README + '\n\n' + NEWS,
-      classifiers = ['Development Status :: 3 - Alpha',
-                     'Programming Language :: Python',
-                     'Topic :: Scientific/Engineering :: Physics'],
-      keywords='steam water ice XSteam',
-      author = 'drunsinn',
-      author_email = 'dr.unsinn@googlemail.com',
-      url = 'https://github.com/drunsinn/pyXSteam',
-      license = 'LICENSE.txt',
-      packages=find_packages(exclude=['tests*']),
-      package_dir = {'pyXSteam': 'pyXSteam'},
-      include_package_data=True,
-      zip_safe = True,
-      install_requires=install_requires,
-      platforms = ('Any',),
-      scripts = ['bin/pyXSteamDemo.py'],
-      test_suite = 'pyXSteamTest.suite',
-      tests_require = ['numpy >=1.6.2', ],
-      use_2to3 = True,
 )

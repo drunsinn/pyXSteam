@@ -1,3 +1,13 @@
+## v0.4, 2018
+* support for Python 3
+** handling of math expressions in pyhton 3 fixed problems with some edge cases
+** one test still fails: w_ps Speed of sound as a function of pressure and entropy
+* fix multiple typos
+* linting / cleanup of code
+* add constant for absolute zero point
+* command line selection for demo program
+* new tests for UnitConverter
+
 ## v0.3.3b1, 21.01.2018
 * fix for typo
 

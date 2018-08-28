@@ -1,20 +1,20 @@
-# -*- coding: UTF-8 -*-
+# -*- coding: utf-8 -*-
 """
 Section 5: Transport properties
 """
 import math
 import logging
-import RegionSelection
-from Regions import Region1, Region2, Region3, Region4, Region5
-import Constants
+from . import RegionSelection
+from .Regions import Region1, Region2, Region3, Region4, Region5
+from . import Constants
 
 logger = logging.getLogger(__name__)
 
-"""Section 5.1 Viscosity (IAPWS formulation 1985, Revised 2003)"""
+# Section 5.1 Viscosity (IAPWS formulation 1985, Revised 2003)
+
+
 def my_AllRegions_pT(p, T):
-    """
-    function my_AllRegions_pT = my_AllRegions_pT(p, T)
-    """
+    """function my_AllRegions_pT = my_AllRegions_pT(p, T)"""
     h0 = [0.5132047, 0.3205656, 0, 0, -0.7782567, 0.1885447]
     h1 = [0.2151778, 0.7317883, 1.241044, 1.476783, 0, 0]
     h2 = [-0.2818107, -1.070786, -1.263184, 0, 0, 0]
@@ -31,15 +31,13 @@ def my_AllRegions_pT(p, T):
         rho = 1 / Region2.v2_pT(p, T)
     elif RegionSelection.region_pT(p, T) == 3:
         hs = Region3.h3_pT(p, T)
-        rho = 1 / Region3.v3_ph(p, hs);
+        rho = 1 / Region3.v3_ph(p, hs)
     elif RegionSelection.region_pT(p, T) == 4:
         logger.warning('Region switch returned unknown value')
         return float('NaN')
-        # rho = NaN
     elif RegionSelection.region_pT(p, T) == 5:
         rho = 1 / Region5.v5_pT(p, T)
     else:
-        # my_AllRegions_pT = NaN
         logger.warning('Region switch returned unknown value')
         return float("NaN")
 
@@ -49,12 +47,11 @@ def my_AllRegions_pT(p, T):
 
     # % Check valid area
     if (T > (900 + 273.15)) or ((T > (600 + 273.15)) and (p > 300)) or ((T > (150 + 273.15)) and (p > 350)) or (p > 500):
-        # my_AllRegions_pT = NaN
         logger.warning('Temperature and/or preasure out of range')
         return float("NaN")
 
     my0 = Ts ** 0.5 / (1 + 0.978197 / Ts + 0.579829 / (Ts ** 2) - 0.202354 / (Ts ** 3))
-    Sum = 0
+    sum = 0
     # TODO:vvvv Check for mistake? vvvvv
     # Original Code: for i = 0 : 5
     # Matlab: Index of first Element is 1
@@ -63,17 +60,17 @@ def my_AllRegions_pT(p, T):
     # Python: For-loop: for i in range(0, 5): ->  0, 1, 2, 3, 4
     # The IAPWS Document says i=0..5 and j=0..6 , so range(0,6) is correct....
     for i in range(0, 6):
-        # Sum = Sum + h0(i + 1) * (1 / Ts - 1) ** i + h1(i + 1) * (1 / Ts - 1) ** i * (rhos - 1) ** 1 + h2(i + 1) * (1 / Ts - 1) ** i * (rhos - 1) ** 2 + h3(i + 1) * (1 / Ts - 1) ** i * (rhos - 1) ** 3 + h4(i + 1) * (1 / Ts - 1) ** i * (rhos - 1) ** 4 + h5(i + 1) * (1 / Ts - 1) ** i * (rhos - 1) ** 5 + h6(i + 1) * (1 / Ts - 1) ** i * (rhos - 1) ** 6
-        Sum = Sum + h0[i] * (((1 / Ts) - 1) ** i) + \
+        sum = sum + h0[i] * (((1 / Ts) - 1) ** i) + \
                     h1[i] * (((1 / Ts) - 1) ** i) * ((rhos - 1) ** 1) + \
                     h2[i] * (((1 / Ts) - 1) ** i) * ((rhos - 1) ** 2) + \
                     h3[i] * (((1 / Ts) - 1) ** i) * ((rhos - 1) ** 3) + \
                     h4[i] * (((1 / Ts) - 1) ** i) * ((rhos - 1) ** 4) + \
                     h5[i] * (((1 / Ts) - 1) ** i) * ((rhos - 1) ** 5) + \
                     h6[i] * (((1 / Ts) - 1) ** i) * ((rhos - 1) ** 6)
-    my1 = math.exp(rhos * Sum)
+    my1 = math.exp(rhos * sum)
     mys = my0 * my1
     return mys * 0.000055071
+
 
 def my_AllRegions_ph(p, h):
     """ function my_AllRegions_ph = my_AllRegions_ph(p, h) """
@@ -88,9 +85,9 @@ def my_AllRegions_ph(p, h):
     # % Calcualte density.
     # switch region_ph(p, h)
     if RegionSelection.region_ph(p, h) == 1:
-        Ts = Region1.T1_ph(p, h);
-        T = Ts;
-        rho = 1 / Region1.v1_pT(p, Ts);
+        Ts = Region1.T1_ph(p, h)
+        T = Ts
+        rho = 1 / Region1.v1_pT(p, Ts)
     elif RegionSelection.region_ph(p, h) == 2:
         Ts = Region2.T2_ph(p, h)
         T = Ts
@@ -113,7 +110,6 @@ def my_AllRegions_ph(p, h):
         T = Ts
         rho = 1 / Region5.v5_pT(p, Ts)
     else:
-        # my_AllRegions_ph = NaN;
         logger.warning('Region switch returned unknown value')
         return float("NaN")
 
@@ -127,13 +123,12 @@ def my_AllRegions_ph(p, h):
 
     my0 = Ts ** 0.5 / (1 + 0.978197 / Ts + 0.579829 / (Ts ** 2) - 0.202354 / (Ts ** 3))
 
-    Sum = 0
+    sum = 0
     # TODO:vvvv Check for mistake vvvvv
     # Original Code: for i = 0 : 5
     # Same Problem as in my_AllRegions_pT, see there for explanation
     for i in range(0, 6):
-        # Sum = Sum + h0(i + 1) * (1 / Ts - 1) ** i + h1(i + 1) * (1 / Ts - 1) ** i * (rhos - 1) ** 1 + h2(i + 1) * (1 / Ts - 1) ** i * (rhos - 1) ** 2 + h3(i + 1) * (1 / Ts - 1) ** i * (rhos - 1) ** 3 + h4(i + 1) * (1 / Ts - 1) ** i * (rhos - 1) ** 4 + h5(i + 1) * (1 / Ts - 1) ** i * (rhos - 1) ** 5 + h6(i + 1) * (1 / Ts - 1) ** i * (rhos - 1) ** 6;
-        Sum = Sum + h0[i] * (1 / Ts - 1) ** i + \
+        sum = sum + h0[i] * (1 / Ts - 1) ** i + \
             h1[i] * (1 / Ts - 1) ** i * (rhos - 1) ** 1 + \
             h2[i] * (1 / Ts - 1) ** i * (rhos - 1) ** 2 + \
             h3[i] * (1 / Ts - 1) ** i * (rhos - 1) ** 3 + \
@@ -141,9 +136,10 @@ def my_AllRegions_ph(p, h):
             h5[i] * (1 / Ts - 1) ** i * (rhos - 1) ** 5 + \
             h6[i] * (1 / Ts - 1) ** i * (rhos - 1) ** 6
 
-    my1 = math.exp(rhos * Sum)
+    my1 = math.exp(rhos * sum)
     mys = my0 * my1
     return mys * 0.000055071
+
 
 def tc_ptrho(p, T, rho):
     """
@@ -180,15 +176,9 @@ def tc_ptrho(p, T, rho):
     T = T / 647.26  # Page 8, Eq 4
     rho = rho / 317.7  # Page 8, Eq 5
 
-    tc0 = T ** 0.5 * \
-            (0.0102811 + \
-             0.0299621 * T + \
-             0.0156146 * (T ** 2) - \
-             0.00422464 * (T ** 3))  # Page 9, Eq 9
+    tc0 = T ** 0.5 * (0.0102811 + 0.0299621 * T + 0.0156146 * (T ** 2) - 0.00422464 * (T ** 3))  # Page 9, Eq 9
 
-    tc1 = -0.397070 + \
-            0.400302 * rho + \
-            1.06 * math.exp(-0.171587 * ((rho + 2.392190) ** 2))  # Page 9, Eq 10
+    tc1 = -0.397070 + 0.400302 * rho + 1.06 * math.exp(-0.171587 * ((rho + 2.392190) ** 2))  # Page 9, Eq 10
 
     dT = abs(T - 1) + 0.00308976  # Page 9, Eq 12
     Q = 2 + 0.0822994 / (dT ** (3 / 5))  # Page 10, Eq 13
@@ -197,10 +187,9 @@ def tc_ptrho(p, T, rho):
     else:
         s = 10.0932 / (dT ** (3 / 5))
 
-    tc2 = (0.0701309 / (T ** 10) + 0.0118520) * (rho ** (9 / 5)) * math.exp(0.642857 * (1 - rho ** (14 / 5))) + \
-        0.00169937 * s * (rho ** Q) * math.exp((Q / (1 + Q)) * (1 - rho ** (1 + Q))) - \
-        1.02 * math.exp(-4.11717 * (T ** (3 / 2)) - 6.17937 / (rho ** 5))  # Page 9, Eq 11
+    tc2 = (0.0701309 / (T ** 10) + 0.0118520) * (rho ** (9 / 5)) * math.exp(0.642857 * (1 - rho ** (14 / 5))) + 0.00169937 * s * (rho ** Q) * math.exp((Q / (1 + Q)) * (1 - rho ** (1 + Q))) - 1.02 * math.exp(-4.11717 * (T ** (3 / 2)) - 6.17937 / (rho ** 5))  # Page 9, Eq 11
     return tc0 + tc1 + tc2  # Page 9, Eq 8
+
 
 def Surface_Tension_T(T):
     """

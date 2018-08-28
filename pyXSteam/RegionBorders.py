@@ -1,9 +1,11 @@
-# -*- coding: UTF-8 -*-
+# -*- coding: utf-8 -*-
 """
 Section 4: Region Borders
 """
 
 """Section 4.1 Boundary between region 2 and 3."""
+
+
 def B23p_T(T):
     """
     function B23p_T = B23p_T(T)
@@ -14,6 +16,7 @@ def B23p_T(T):
     """
     return 348.05185628969 - 1.1671859879975 * T + 1.0192970039326E-03 * (T ** 2)
 
+
 def B23T_p(p):
     """function B23T_p = B23T_p(p)
     # %Release on the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam
@@ -23,7 +26,9 @@ def B23T_p(p):
     """
     return 572.54459862746 + ((p - 13.91883977887) / 1.0192970039326E-03) ** 0.5
 
-""""Section 4.2 Region 3. pSat_h  & pSat_s"""
+# Section 4.2 Region 3. pSat_h  & pSat_s
+
+
 def p3sat_h(h):
     """
     function p3sat_h = p3sat_h(h)
@@ -37,10 +42,10 @@ def p3sat_h(h):
     ni = [0.600073641753024, -9.36203654849857, 24.6590798594147, -107.014222858224, -91582131580576.8, -8623.32011700662, -23.5837344740032, 2.52304969384128E+17, -3.89718771997719E+18, -3.33775713645296E+22, 35649946963.6328, -1.48547544720641E+26, 3.30611514838798E+18, 8.13641294467829E+37]
     hs = h / 2600
     ps = 0
-    # for i = 1:14
     for i in range(0, 14):
         ps = ps + ni[i] * (hs - 1.02) ** Ii[i] * (hs - 0.608) ** Ji[i]
     return ps * 22
+
 
 def p3sat_s(s):
     """ function p3sat_s = p3sat_s(s)"""
@@ -49,12 +54,13 @@ def p3sat_s(s):
     ni = [0.639767553612785, -12.9727445396014, -2.24595125848403E+15, 1774667.41801846, 7170793495.71538, -3.78829107169011E+17, -9.55586736431328E+34, 1.87269814676188E+23, 119254746466.473, 1.10649277244882E+36]
     Sigma = s / 5.2
     Pi = 0
-    # for i = 1:10
     for i in range(0, 10):
         Pi = Pi + ni[i] * (Sigma - 1.03) ** Ii[i] * (Sigma - 0.699) ** Ji[i]
-    return Pi * 22;
+    return Pi * 22
 
-"""4.3 Region boundary 1to3  & 3to2 as a functions of s"""
+# 4.3 Region boundary 1to3  & 3to2 as a functions of s
+
+
 def hB13_s(s):
     """
     function hB13_s = hB13_s(s)
@@ -66,10 +72,10 @@ def hB13_s(s):
     ni = [0.913965547600543, -4.30944856041991E-05, 60.3235694765419, 1.17518273082168E-18, 0.220000904781292, -69.0815545851641]
     Sigma = s / 3.8
     eta = 0
-    # for i = 1 : 6
     for i in range(0, 6):
         eta = eta + ni[i] * (Sigma - 0.884) ** Ii[i] * (Sigma - 0.864) ** Ji[i]
     return eta * 1700
+
 
 def TB23_hs(h, s):
     """
@@ -83,8 +89,6 @@ def TB23_hs(h, s):
     Sigma = s / 5.3
     eta = h / 3000
     teta = 0
-    # for i = 1 : 25
     for i in range(0, 25):
         teta = teta + ni[i] * (eta - 0.727) ** Ii[i] * (Sigma - 0.864) ** Ji[i]
     return teta * 900
-

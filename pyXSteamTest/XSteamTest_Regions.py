@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
-import unittest
-import numpy
-from pyXSteam.Regions import Region1, Region2, Region3, Region4, Region5
-
 """
 These Tests are taken form the original XSteam Matlab Script.
 Some Errors are calculated with the help of numpy matrix functions.
 Due to some rounding Errors the max. allowedError had to be increased....
 """
+
+import unittest
+import numpy
+from pyXSteam.Regions import Region1, Region2, Region3, Region4, Region5
+
 
 class Region1Tester(unittest.TestCase):
 
@@ -19,7 +20,7 @@ class Region1Tester(unittest.TestCase):
         pass
 
     def test_pT_functions(self):
-        # '''Tests to verify all functions with the Parameters p and T of Region 1 by comparing the Results to IF-97 Page 9 Table 5'''
+        """Tests to verify all functions with the Parameters p and T of Region 1 by comparing the Results to IF-97 Page 9 Table 5"""
         # %* 7.1 Verifiy region 1
         # %IF-97 Table 5, Page 9
         p = [3.0, 80.0, 3.0]
@@ -41,10 +42,10 @@ class Region1Tester(unittest.TestCase):
             R1[5][i] = Region1.w1_pT(p[i], T[i])
 
         Region1_error = numpy.sum(numpy.absolute((R1 - IF97) / IF97))
-        self.assertLess(Region1_error, self.maxMatrixError, 'Test of p,T Functions for Region 1 failed. Error was %(error)e allowed: %(max)e' % {'error' : Region1_error, 'max' : self.maxMatrixError})
+        self.assertLess(Region1_error, self.maxMatrixError, 'Test of p,T Functions for Region 1 failed. Error was %(error)e allowed: %(max)e' % {'error': Region1_error, 'max': self.maxMatrixError})
 
     def test_ph_function(self):
-        # '''Tests to verify all functions with the Parameters p and h of Region 1 by comparing the Results to IF-97 Page 11 Table 7'''
+        """Tests to verify all functions with the Parameters p and h of Region 1 by comparing the Results to IF-97 Page 11 Table 7"""
         # % IF - 97 Table 7, Page 11
         p = [3.0, 80.0, 80.0]
         h = [500.0, 500.0, 1500.0]
@@ -54,30 +55,23 @@ class Region1Tester(unittest.TestCase):
             R1[i] = Region1.T1_ph(p[i], h[i])
 
         T1_ph_error = numpy.sum(numpy.absolute((R1 - IF97) / IF97))
-        self.assertLess(T1_ph_error, self.maxError, 'Test of T(p,h) Function for Region 1 failed. Error was %(error)e allowed: %(max)e' % {'error' : T1_ph_error, 'max' : self.maxError})
-        # if T1_ph_error > 1E-8:
-        #    if self.verbose:
-        #        print'\tRegion 1 Test of ph functions failed. Error is:' , T1_ph_error
-        #    return False
-        # else:
-        #    return True
+        self.assertLess(T1_ph_error, self.maxError, 'Test of T(p,h) Function for Region 1 failed. Error was %(error)e allowed: %(max)e' % {'error': T1_ph_error, 'max': self.maxError})
 
     def test_ps_function(self):
-        # '''Tests to verify all functions with the Parameters p and s of Region 1 by comparing the Results to IF-97 Page 12 Table 9'''
+        """Tests to verify all functions with the Parameters p and s of Region 1 by comparing the Results to IF-97 Page 12 Table 9"""
         # % IF - 97 Table 9, Page 12
         p = [3.0, 80.0, 80.0]
-        s = [0.5, 0.5, 3.0];
+        s = [0.5, 0.5, 3.0]
         IF97 = [307.842258, 309.979785, 565.899909]
         R1 = numpy.zeros(3)
         for i in range(0, 3):
             R1[i] = Region1.T1_ps(p[i], s[i])
 
         T1_ps_error = numpy.sum(numpy.absolute((R1 - IF97) / IF97))
-        self.assertLess(T1_ps_error, self.maxError, 'Test of T(p,s) Function for Region 1 failed. Error was %(error)e allowed: %(max)e' % {'error' : T1_ps_error, 'max' : self.maxError})
-
+        self.assertLess(T1_ps_error, self.maxError, 'Test of T(p,s) Function for Region 1 failed. Error was %(error)e allowed: %(max)e' % {'error': T1_ps_error, 'max': self.maxError})
 
     def test_hs_function(self):
-        # '''Tests to verify all functions with the Parameters h and s of Region 1 by comparing the Results to IF-97 Page 6 Table 3'''
+        """Tests to verify all functions with the Parameters h and s of Region 1 by comparing the Results to IF-97 Page 6 Table 3"""
         # % Supplementary Release on Backward Equations
         # % for Pressure as a Function of Enthalpy and Entropy p(h, s)
         # % Table 3, Page 6
@@ -89,13 +83,9 @@ class Region1Tester(unittest.TestCase):
             R1[i] = Region1.p1_hs(h[i], s[i])
 
         p1_hs_error = numpy.sum(numpy.absolute((R1 - IF97) / IF97))
-        self.assertLess(p1_hs_error, self.maxError, 'Test of p(h,s) Function for Region 1 failed. Error was %(error)e allowed: %(max)e' % {'error' : p1_hs_error, 'max' : self.maxError})
-        # if p1_hs_error > 1E-8:
-        #    if self.verbose:
-        #        print '\tRegion 1 Test of hs functions failed. Error is:' , p1_hs_error
-        #    return False
-        # else:
-        #    return True
+        self.assertLess(p1_hs_error, self.maxError, 'Test of p(h,s) Function for Region 1 failed. Error was %(error)e allowed: %(max)e' % {'error': p1_hs_error, 'max': self.maxError})
+
+
 class Region2Tester(unittest.TestCase):
 
     def setUp(self):
@@ -106,10 +96,10 @@ class Region2Tester(unittest.TestCase):
         pass
 
     def test_pT_function(self):
-        # '''Tests to verify all functions with the Parameters p and T of Region 2 by comparing the Results to IF-97 Page 17 Table 15'''
+        """ Tests to verify all functions with the Parameters p and T of Region 2 by comparing the Results to IF-97 Page 17 Table 15"""
         # %* 7.2 Verifiy region 2
         # % IF-97 Table 15, Page 17
-        p = [0.0035 , 0.0035 , 30.0]
+        p = [0.0035, 0.0035, 30.0]
         T = [300.0, 700.0, 700.0]
         # Fun = {'v2_pT', 'h2_pT', 'u2_pT', 's2_pT', 'Cp2_pT', 'w2_pT'};
         IF97 = [[39.4913866, 92.3015898, 0.00542946619],
@@ -129,16 +119,10 @@ class Region2Tester(unittest.TestCase):
             R2[5][i] = Region2.w2_pT(p[i], T[i])
 
         Region2_error = numpy.sum(numpy.absolute((R2 - IF97) / IF97))
-        self.assertLess(Region2_error, self.maxMatrixError, 'Test of p,T Functions for Region 2 failed. Error was %(error)e allowed: %(max)e' % {'error' : Region2_error, 'max' : self.maxMatrixError})
-        # if Region2_error > 1E-8:
-        #    if self.verbose:
-        #        print '\tRegion 2 Test of pT functions failed. Error is:', Region2_error
-        #    return False
-        # else:
-        #    return True
+        self.assertLess(Region2_error, self.maxMatrixError, 'Test of p,T Functions for Region 2 failed. Error was %(error)e allowed: %(max)e' % {'error': Region2_error, 'max': self.maxMatrixError})
 
     def test_ph_function(self):
-        # '''Tests to verify all functions with the Parameters p and h of Region 2 by comparing the Results to IF-97 Page 25 Table 24'''
+        """ Tests to verify all functions with the Parameters p and h of Region 2 by comparing the Results to IF-97 Page 25 Table 24"""
         # % IF - 97 Table 24, Page 25
         p = [0.01 / 10, 30 / 10, 30 / 10, 50 / 10, 50 / 10, 250 / 10, 400 / 10, 600 / 10, 600 / 10]
         h = [3000.0, 3000.0, 4000.0, 3500.0, 4000.0, 3500.0, 2700.0, 2700.0, 3200.0]
@@ -147,16 +131,10 @@ class Region2Tester(unittest.TestCase):
         for i in range(0, 9):
             R2[i] = Region2.T2_ph(p[i], h[i])
         T2_ph_error = numpy.sum(numpy.absolute((R2 - IF97) / IF97))
-        self.assertLess(T2_ph_error, self.maxMatrixError, 'Test of ph Function for Region 2 failed. Error was %(error)e allowed: %(max)e' % {'error' : T2_ph_error, 'max' : self.maxMatrixError})
-        # if T2_ph_error > 1E-8:
-        #    if self.verbose:
-        #        print '\tRegion 2 Test of ph functions failed. Error is:', T2_ph_error
-        #    return False
-        # else:
-        #    return True
+        self.assertLess(T2_ph_error, self.maxMatrixError, 'Test of ph Function for Region 2 failed. Error was %(error)e allowed: %(max)e' % {'error': T2_ph_error, 'max': self.maxMatrixError})
 
     def test_ps_function(self):
-        # '''Tests to verify all functions with the Parameters p and s of Region 2 by comparing the Results to IF-97 Page 29 Table 29'''
+        """ Tests to verify all functions with the Parameters p and s of Region 2 by comparing the Results to IF-97 Page 29 Table 29"""
         # % IF - 97 Table 29, Page 29
         p = [0.1, 0.1, 2.5, 8.0, 8.0, 90.0, 20.0, 80.0, 80.0]
         s = [7.5, 8.0, 8.0, 6.0, 7.5, 6.0, 5.75, 5.25, 5.75]
@@ -165,16 +143,10 @@ class Region2Tester(unittest.TestCase):
         for i in range(0, 9):
             R2[i] = Region2.T2_ps(p[i], s[i])
         T2_ps_error = numpy.sum(numpy.absolute((R2 - IF97) / IF97))
-        self.assertLess(T2_ps_error, self.maxMatrixError, 'Test of ps Function for Region 2 failed. Error was %(error)e allowed: %(max)e' % {'error' : T2_ps_error, 'max' : self.maxMatrixError})
-        # if T2_ps_error > 1E-8:
-        #    if self.verbose:
-        #        print '\tRegion 2 Test of ps functions failed. Error is:', T2_ps_error
-        #    return False
-        # else:
-        #    return True
+        self.assertLess(T2_ps_error, self.maxMatrixError, 'Test of ps Function for Region 2 failed. Error was %(error)e allowed: %(max)e' % {'error': T2_ps_error, 'max': self.maxMatrixError})
 
     def test_hs_function(self):
-        # '''Tests to verify all functions with the Parameters h and s of Region 2 by comparing the Results to IF-97 Page 6 Table 3'''
+        """ Tests to verify all functions with the Parameters h and s of Region 2 by comparing the Results to IF-97 Page 6 Table 3"""
         # % Supplementary Release on Backward Equations for Pressure as a Function of Enthalpy and Entropy p(h, s)
         # % Table 3, Page 6
         h = [2800.0, 2800.0, 4100.0, 2800.0, 3600.0, 3600.0, 2800.0, 2800.0, 3400.0]
@@ -184,13 +156,8 @@ class Region2Tester(unittest.TestCase):
         for i in range(0, 9):
             R2[i] = Region2.p2_hs(h[i], s[i])
         p2_hs_error = numpy.sum(numpy.absolute((R2 - IF97) / IF97))
-        self.assertLess(p2_hs_error, self.maxError, 'Test of hs Function for Region 2 failed. Error was %(error)e allowed: %(max)e' % {'error' : p2_hs_error, 'max' : self.maxError})
-        # if p2_hs_error > 1E-8:
-        #    if self.verbose:
-        #        print '\tRegion 2 Test of hs functions failed. Error is:', p2_hs_error
-        #    return False
-        # else:
-        #    return True
+        self.assertLess(p2_hs_error, self.maxError, 'Test of hs Function for Region 2 failed. Error was %(error)e allowed: %(max)e' % {'error': p2_hs_error, 'max': self.maxError})
+
 
 class Region3Tester(unittest.TestCase):
 
@@ -202,7 +169,7 @@ class Region3Tester(unittest.TestCase):
         pass
 
     def test_rhoT_function(self):
-        # '''Tests to verify all functions with the Parameters rho and T of Region 3 by comparing the Results to IF-97 Page 32 Table 33'''
+        """ Tests to verify all functions with the Parameters rho and T of Region 3 by comparing the Results to IF-97 Page 32 Table 33"""
         # % IF-97 Table 33, Page 32
         T = [650.0, 650.0, 750.0]
         rho = [500.0, 200.0, 500.0]
@@ -226,35 +193,22 @@ class Region3Tester(unittest.TestCase):
         # print R3
         # print IF97
         Region3_error = numpy.sum(numpy.absolute((R3 - IF97) / IF97))
-        self.assertLess(Region3_error, self.maxMatrixError, 'Test of rhoT Function for Region 3 failed. Error was %(error)e allowed: %(max)e' % {'error' : Region3_error, 'max' : self.maxMatrixError})
-
-        # if Region3_error > 1E-8:
-        #    if self.verbose:
-        #        print '\tRegion 3 Test of rhoT functions failed. Error is:', Region3_error
-        #    return False
-        # else:
-        #    return True
+        self.assertLess(Region3_error, self.maxMatrixError, 'Test of rhoT Function for Region 3 failed. Error was %(error)e allowed: %(max)e' % {'error': Region3_error, 'max': self.maxMatrixError})
 
     def test_T_ph_function(self):
-        # '''Tests to verify all temperature functions with the Parameters p and h of Region 3'''
+        """ Tests to verify all temperature functions with the Parameters p and h of Region 3"""
         # % T3_ph
         p = [20.0, 50.0, 100.0, 20.0, 50.0, 100.0]
         h = [1700.0, 2000.0, 2100.0, 2500.0, 2400.0, 2700.0]
         IF97 = [629.3083892, 690.5718338, 733.6163014, 641.8418053, 735.1848618, 842.0460876]
         R3 = numpy.zeros(6)
         for i in range(0, 6):
-            R3[i] = Region3.T3_ph(p[i], h[i]);
+            R3[i] = Region3.T3_ph(p[i], h[i])
         T3_ph_error = numpy.sum(numpy.absolute((R3 - IF97) / IF97))
-        self.assertLess(T3_ph_error, self.maxError, 'Test of T(p,h) Function for Region 3 failed. Error was %(error)e allowed: %(max)e' % {'error' : T3_ph_error, 'max' : self.maxError})
-        # if T3_ph_error > 1E-8:
-        #    if self.verbose:
-        #        print '\tRegion 3 Test of T(p,h) functions failed. Error is:', T3_ph_error
-        #    return False
-        # else:
-        #    return True
+        self.assertLess(T3_ph_error, self.maxError, 'Test of T(p,h) Function for Region 3 failed. Error was %(error)e allowed: %(max)e' % {'error': T3_ph_error, 'max': self.maxError})
 
     def test_v_ph_function(self):
-        # '''Tests to verify all v functions with the Parameters p and h of Region 3'''
+        """ Tests to verify all v functions with the Parameters p and h of Region 3"""
         # % v3_ph
         p = [20.0, 50.0, 100.0, 20.0, 50.0, 100.0]
         h = [1700.0, 2000.0, 2100.0, 2500.0, 2400.0, 2700.0]
@@ -263,16 +217,10 @@ class Region3Tester(unittest.TestCase):
         for i in range(0, 6):
             R3[i] = Region3.v3_ph(p[i], h[i])
         v3_ph_error = numpy.sum(numpy.absolute((R3 - IF97) / IF97))
-        self.assertLess(v3_ph_error, 1E-7, 'Test of v(p,h) Function for Region 3 failed. Error was %(error)e allowed: %(max)e' % {'error' : v3_ph_error, 'max' : 1E-7})
-        # if v3_ph_error > 1E-7:
-        #    if self.verbose:
-        #        print '\tRegion 3 Test of v(p,h) functions failed. Error is:', v3_ph_error
-        #    return False
-        # else:
-        #    return True
+        self.assertLess(v3_ph_error, 1E-7, 'Test of v(p,h) Function for Region 3 failed. Error was %(error)e allowed: %(max)e' % {'error': v3_ph_error, 'max': 1E-7})
 
     def test_T_ps_function(self):
-        # '''Tests to verify all T functions with the Parameters p and s of Region 3'''
+        """ Tests to verify all T functions with the Parameters p and s of Region 3"""
         # % T3_ps
         p = [20.0, 50.0, 100.0, 20.0, 50.0, 100.0]
         s = [3.7, 3.5, 4, 5, 4.5, 5.0]
@@ -281,16 +229,10 @@ class Region3Tester(unittest.TestCase):
         for i in range(0, 6):
             R3[i] = Region3.T3_ps(p[i], s[i])
         T3_ps_error = numpy.sum(numpy.absolute((R3 - IF97) / IF97))
-        self.assertLess(T3_ps_error, self.maxError, 'Test of T(p,s) Function for Region 3 failed. Error was %(error)e allowed: %(max)e' % {'error' : T3_ps_error, 'max' : self.maxError})
-        # if T3_ps_error > 1E-8:
-        #    if self.verbose:
-        #        print '\tRegion 3 Test of ps functions failed. Error is:', T3_ps_error
-        #    return False
-        # else:
-        #    return True
+        self.assertLess(T3_ps_error, self.maxError, 'Test of T(p,s) Function for Region 3 failed. Error was %(error)e allowed: %(max)e' % {'error': T3_ps_error, 'max': self.maxError})
 
     def test_v_ps_function(self):
-        # '''Tests to verify all v functions with the Parameters p and s of Region 3'''
+        """ Tests to verify all v functions with the Parameters p and s of Region 3"""
         # % v3_ps
         p = [20.0, 50.0, 100.0, 20.0, 50.0, 100.0]
         s = [3.7, 3.5, 4.0, 5.0, 4.5, 5.0]
@@ -299,16 +241,10 @@ class Region3Tester(unittest.TestCase):
         for i in range(0, 6):
             R3[i] = Region3.v3_ps(p[i], s[i])
         v3_ps_error = numpy.sum(numpy.absolute((R3 - IF97) / IF97))
-        self.assertLess(v3_ps_error, self.maxError, 'Test of v(p,s) Function for Region 3 failed. Error was %(error)e allowed: %(max)e' % {'error' : v3_ps_error, 'max' : self.maxError})
-        # if v3_ps_error > 1E-8:
-        #    if self.verbose:
-        #        print '\tRegion 3 Test of v(p,s) functions failed. Error is:', v3_ps_error
-        #    return False
-        # else:
-        #    return True
+        self.assertLess(v3_ps_error, self.maxError, 'Test of v(p,s) Function for Region 3 failed. Error was %(error)e allowed: %(max)e' % {'error': v3_ps_error, 'max': self.maxError})
 
     def test_hs_function(self):
-        # '''Tests to verify all functions with the Parameters h and s of Region 3'''
+        """ Tests to verify all functions with the Parameters h and s of Region 3"""
         # % p3_hs
         h = [1700.0, 2000.0, 2100.0, 2500.0, 2400.0, 2700.0]
         s = [3.8, 4.2, 4.3, 5.1, 4.7, 5.0]
@@ -317,16 +253,10 @@ class Region3Tester(unittest.TestCase):
         for i in range(0, 6):
             R3[i] = Region3.p3_hs(h[i], s[i])
         p3_hs_error = numpy.sum(numpy.absolute((R3 - IF97) / IF97))
-        self.assertLess(p3_hs_error, self.maxError, 'Test of p(h,s) Function for Region 3 failed. Error was %(error)e allowed: %(max)e' % {'error' : p3_hs_error, 'max' : self.maxError})
-        # if p3_hs_error > 1E-8:
-        #    if self.verbose:
-        #        print '\tRegion 3 Test of hs functions failed. Error is:', p3_hs_error
-        #    return False
-        # else:
-        #    return True
+        self.assertLess(p3_hs_error, self.maxError, 'Test of p(h,s) Function for Region 3 failed. Error was %(error)e allowed: %(max)e' % {'error': p3_hs_error, 'max': self.maxError})
 
     def test_pT_function(self):
-        # '''Tests to verify all functions with the Parameters p and T of Region 3'''
+        """ Tests to verify all functions with the Parameters p and T of Region 3"""
         # % h3_pT (Iteration)
         p = [25.583702, 22.293064, 78.309564]
         T = [650.0, 650.0, 750.0]
@@ -335,13 +265,8 @@ class Region3Tester(unittest.TestCase):
         for i in range(0, 3):
             R3[i] = Region3.h3_pT(p[i], T[i])
         h3_pT_error = numpy.sum(numpy.absolute((R3 - IF97) / IF97))
-        self.assertLess(h3_pT_error, 1E-6, 'Test of h(p,T) Function for Region 3 failed. Error was %(error)e allowed: %(max)e' % {'error' : h3_pT_error, 'max' :  1E-6})
-        # if h3_pT_error > 1E-6:  # % Decimals in IF97
-        #    if self.verbose:
-        #        print '\tRegion 3 Test of pT functions failed. Error is:', h3_pT_error
-        #    return False
-        # else:
-        #    return True
+        self.assertLess(h3_pT_error, 1E-6, 'Test of h(p,T) Function for Region 3 failed. Error was %(error)e allowed: %(max)e' % {'error': h3_pT_error, 'max':  1E-6})
+
 
 class Region4Tester(unittest.TestCase):
 
@@ -353,7 +278,7 @@ class Region4Tester(unittest.TestCase):
         pass
 
     def test_T_function(self):
-        # '''Tests to verify all functions with the Parameter T of Region 4 by comparing the Results to IF-97 Page 34 Table 35'''
+        """ Tests to verify all functions with the Parameter T of Region 4 by comparing the Results to IF-97 Page 34 Table 35"""
         # %Saturation pressure, If97, Table 35, Page 34
         T = [300.0, 500.0, 600.0]
         IF97 = [0.00353658941, 2.63889776, 12.3443146]
@@ -361,45 +286,28 @@ class Region4Tester(unittest.TestCase):
         for i in range(0, 3):
             R4[i] = Region4.p4_T(T[i])
         p4_t_error = numpy.sum(numpy.absolute((R4 - IF97) / IF97))
-        self.assertLess(p4_t_error, self.maxError, 'Test of p(T) Function for Region 4 failed. Error was %(error)e allowed: %(max)e' % {'error' : p4_t_error, 'max' : self.maxError})
-        # if p4_t_error > 1E-7:
-        #    if self.verbose:
-        #        print '\tRegion 4 Test of T functions failed. Error is:', p4_t_error
-        #    return False
-        # else:
-        #    return True
+        self.assertLess(p4_t_error, self.maxError, 'Test of p(T) Function for Region 4 failed. Error was %(error)e allowed: %(max)e' % {'error': p4_t_error, 'max': self.maxError})
 
     def test_p_functions(self):
-        # '''Tests to verify all functions with the Parameters p of Region 4'''
+        """ Tests to verify all functions with the Parameters p of Region 4"""
         p = [0.1, 1.0, 10.0]
         IF97 = [372.755919, 453.035632, 584.149488]
         R4 = numpy.zeros(3)
         for i in range(0, 3):
             R4[i] = Region4.T4_p(p[i])
         T4_p_error = numpy.sum(numpy.absolute((R4 - IF97) / IF97))
-        self.assertLess(T4_p_error, self.maxError, 'Test of T(p) Function for Region 4 failed. Error was %(error)e allowed: %(max)e' % {'error' : T4_p_error, 'max' : self.maxError})
-        # if T4_p_error > 1E-7:
-        #    if self.verbose:
-        #        print '\tRegion 4 Test of p functions failed. Error is:', T4_p_error
-        #    return False
-        # else:
-        #    return True
+        self.assertLess(T4_p_error, self.maxError, 'Test of T(p) Function for Region 4 failed. Error was %(error)e allowed: %(max)e' % {'error': T4_p_error, 'max': self.maxError})
 
     def test_s_functions(self):
-        # '''Tests to verify all functions with the Parameters s of Region 4'''
+        """ Tests to verify all functions with the Parameters s of Region 4"""
         s = [1.0, 2.0, 3.0, 3.8, 4.0, 4.2, 7.0, 8.0, 9.0, 5.5, 5.0, 4.5]
         IF97 = [308.5509647, 700.6304472, 1198.359754, 1685.025565, 1816.891476, 1949.352563, 2723.729985, 2599.04721, 2511.861477, 2687.69385, 2451.623609, 2144.360448]
         R4 = numpy.zeros(12)
         for i in range(0, 12):
             R4[i] = Region4.h4_s(s[i])
         h4_s_error = numpy.sum(numpy.absolute((R4 - IF97) / IF97))
-        self.assertLess(h4_s_error, self.maxError, 'Test of h(s) Function for Region 4 failed. Error was %(error)e allowed: %(max)e' % {'error' : h4_s_error, 'max' : self.maxError})
-        # if h4_s_error > 1E-7:
-        #    if self.verbose:
-        #        print '\tRegion 4 Test of s functions failed. Error is:', h4_s_error
-        #    return False
-        # else:
-        #    return True
+        self.assertLess(h4_s_error, self.maxError, 'Test of h(s) Function for Region 4 failed. Error was %(error)e allowed: %(max)e' % {'error': h4_s_error, 'max': self.maxError})
+
 
 class Region5Tester(unittest.TestCase):
 
@@ -411,7 +319,7 @@ class Region5Tester(unittest.TestCase):
         pass
 
     def test_pT_function(self):
-        # '''Tests to verify all functions with the Parameters p and T of Region 5 by comparing the Results to IF-97 Page 39 Table 42'''
+        """ Tests to verify all functions with the Parameters p and T of Region 5 by comparing the Results to IF-97 Page 39 Table 42"""
         # % IF-97 Table 42, Page 39
         T = [1500.0, 1500.0, 2000.0]
         p = [0.5, 8.0, 8.0]
@@ -431,46 +339,28 @@ class Region5Tester(unittest.TestCase):
             R5[5][i] = Region5.w5_pT(p[i], T[i])
 
         Region5_error = numpy.sum(numpy.absolute((R5 - IF97) / IF97))
-        self.assertLess(Region5_error, self.maxMatrixError, 'Test of p,T Function for Region 5 failed. Error was %(error)e allowed: %(max)e' % {'error' : Region5_error, 'max' : self.maxMatrixError})
-        # if Region5_error > 1E-8:
-        #    if self.verbose:
-        #        print '\tRegion 5 Test of pT functions failed. Error is:', Region5_error
-        #    return False
-        # else:
-        #    return True
+        self.assertLess(Region5_error, self.maxMatrixError, 'Test of p,T Function for Region 5 failed. Error was %(error)e allowed: %(max)e' % {'error': Region5_error, 'max': self.maxMatrixError})
 
     def test_ph_function(self):
-        # '''Tests to verify all functions with the Parameters p and h of Region 5'''
+        """ Tests to verify all functions with the Parameters p and h of Region 5"""
         # %T5_ph (Iteration)
         p = [0.5, 8.0, 8.0]
         h = [5219.76331549428, 5206.09634477373, 6583.80290533381]
-        IF97 = [1500.0, 1500.0, 2000.0];
+        IF97 = [1500.0, 1500.0, 2000.0]
         R5 = numpy.zeros(3)
         for i in range(0, 3):
             R5[i] = Region5.T5_ph(p[i], h[i])
         T5_ph_error = numpy.sum(numpy.absolute((R5 - IF97) / IF97))
-        self.assertLess(T5_ph_error, self.maxError, 'Test of T(p,h) Function for Region 5 failed. Error was %(error)e allowed: %(max)e' % {'error' : T5_ph_error, 'max' : self.maxError})
-        # if T5_ph_error > 1E-7:  # % Decimals in IF97
-        #    if self.verbose:
-        #        print '\tRegion 5 Test of ph functions failed. Error is:', T5_ph_error
-        #    return False
-        # else:
-        #    return True
+        self.assertLess(T5_ph_error, self.maxError, 'Test of T(p,h) Function for Region 5 failed. Error was %(error)e allowed: %(max)e' % {'error': T5_ph_error, 'max': self.maxError})
 
     def test_ps_function(self):
-        # '''Tests to verify all functions with the Parameters p and s of Region 5'''
+        """ Tests to verify all functions with the Parameters p and s of Region 5"""
         # %T5_ps (Iteration)
         p = [0.5, 8.0, 8.0]
         s = [9.65408430982588, 8.36546724495503, 9.15671044273249]
         IF97 = [1500.0, 1500.0, 2000.0]
         R5 = numpy.zeros(3)
         for i in range(0, 3):
-            R5[i] = Region5.T5_ps(p[i], s[i]);
+            R5[i] = Region5.T5_ps(p[i], s[i])
         T5_ps_error = numpy.sum(numpy.absolute((R5 - IF97) / IF97))
-        self.assertLess(T5_ps_error, 1E-4, 'Test of T(p,s) Function for Region 5 failed. Error was %(error)e allowed: %(max)e' % {'error' : T5_ps_error, 'max' : 1E-4})
-        # if T5_ps_error > 1E-4:  # % Decimals in IF97
-        #    if self.verbose:
-        #        print '\tRegion 5 Test of ps functions failed. Error is:', T5_ps_error
-        #    return False
-        # else:
-        #    return True
+        self.assertLess(T5_ps_error, 1E-4, 'Test of T(p,s) Function for Region 5 failed. Error was %(error)e allowed: %(max)e' % {'error': T5_ps_error, 'max': 1E-4})
