@@ -1,6 +1,0 @@
-Link to the official IAPWS releases:
-http://www.iapws.org
-http://www.iapws.org/release.html
-
-Link to Manual for Matlab-XSteam:
-http://assets.openstudy.com/updates/attachments/4e134b420b8b56e555996beb-slnkktn-1310012884358-xsteamformatlab.pdf

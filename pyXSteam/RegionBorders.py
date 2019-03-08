@@ -3,39 +3,37 @@
 Section 4: Region Borders
 """
 
-"""Section 4.1 Boundary between region 2 and 3."""
-
-
 def B23p_T(T):
-    """
-    function B23p_T = B23p_T(T)
-    # %Release on the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam
-    # %1997
-    # %Section 4 Auxiliary Equation for the Boundary between Regions 2 and 3
-    # %Eq 5, Page 5
+    """function B23p_T = B23p_T(T)
+
+    Section 4.1 Boundary between region 2 and 3.
+
+    Release on the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam 1997 Section 4 Auxiliary Equation for the Boundary between Regions 2 and 3
+
+    Eq 5, Page 5
     """
     return 348.05185628969 - 1.1671859879975 * T + 1.0192970039326E-03 * (T ** 2)
 
 
 def B23T_p(p):
     """function B23T_p = B23T_p(p)
-    # %Release on the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam
-    # %1997
-    # %Section 4 Auxiliary Equation for the Boundary between Regions 2 and 3
-    # %Eq 6, Page 6
+
+    Section 4.1 Boundary between region 2 and 3.
+
+    Release on the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam 1997 Section 4 Auxiliary Equation for the Boundary between Regions 2 and 3
+
+    Eq 6, Page 6
     """
     return 572.54459862746 + ((p - 13.91883977887) / 1.0192970039326E-03) ** 0.5
 
-# Section 4.2 Region 3. pSat_h  & pSat_s
-
-
 def p3sat_h(h):
-    """
-    function p3sat_h = p3sat_h(h)
-    # %Revised Supplementary Release on Backward Equations for the functions T(p,h), v(p,h)  & T(p,s), v(p,s) for Region 3 of the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water  & Steam
-    # %2004
-    # %Section 4 Boundary Equations psat(h)  & psat(s) for the Saturation Lines of Region 3
-    # %Se pictures Page 17, Eq 10, Table 17, Page 18
+    """function p3sat_h = p3sat_h(h)
+
+    Section 4.2 Region 3. pSat_h  & pSat_s
+
+    Revised Supplementary Release on Backward Equations for the functions T(p,h), v(p,h) s& T(p,s), v(p,s) for Region 3 of the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water & Steam 2004 Section 4 Boundary Equations psat(h) & psat(s) for the Saturation Lines of Region 3
+
+    See pictures Page 17, Eq 10, Table 17, Page 18
     """
     Ii = [0, 1, 1, 1, 1, 5, 7, 8, 14, 20, 22, 24, 28, 36]
     Ji = [0, 1, 3, 4, 36, 3, 0, 24, 16, 16, 3, 18, 8, 24]
@@ -48,7 +46,10 @@ def p3sat_h(h):
 
 
 def p3sat_s(s):
-    """ function p3sat_s = p3sat_s(s)"""
+    """function p3sat_s = p3sat_s(s)
+
+    Section 4.2 Region 3. pSat_h  & pSat_s
+    """
     Ii = [0, 1, 1, 4, 12, 12, 16, 24, 28, 32]
     Ji = [0, 1, 32, 7, 4, 14, 36, 10, 0, 18]
     ni = [0.639767553612785, -12.9727445396014, -2.24595125848403E+15, 1774667.41801846, 7170793495.71538, -3.78829107169011E+17, -9.55586736431328E+34, 1.87269814676188E+23, 119254746466.473, 1.10649277244882E+36]
@@ -58,14 +59,13 @@ def p3sat_s(s):
         Pi = Pi + ni[i] * (Sigma - 1.03) ** Ii[i] * (Sigma - 0.699) ** Ji[i]
     return Pi * 22
 
-# 4.3 Region boundary 1to3  & 3to2 as a functions of s
-
 
 def hB13_s(s):
-    """
-    function hB13_s = hB13_s(s)
-    # %Supplementary Release on Backward Equations ( ) , p h s for Region 3,
-    # %Chapter 4.5 page 23.
+    """function hB13_s = hB13_s(s)
+
+    Section 4.3 Region boundary 1 to 3  & 3to2 as a functions of s
+
+    Supplementary Release on Backward Equations ( ) , p h s for Region 3, Chapter 4.5 page 23.
     """
     Ii = [0, 1, 1, 3, 5, 6]
     Ji = [0, -2, 2, -12, -4, -3]
@@ -78,10 +78,11 @@ def hB13_s(s):
 
 
 def TB23_hs(h, s):
-    """
-    function TB23_hs = TB23_hs(h, s)
-    # % Supplementary Release on Backward Equations () , p h s for Region 3,
-    # % Chapter 4.6 page 25.
+    """function TB23_hs = TB23_hs(h, s)
+
+    Section 4.3 Region boundary 1to3  & 3to2 as a functions of s
+
+    Supplementary Release on Backward Equations () , p h s for Region 3, Chapter 4.6 page 25.
     """
     Ii = [-12, -10, -8, -4, -3, -2, -2, -2, -2, 0, 1, 1, 1, 3, 3, 5, 6, 6, 8, 8, 8, 12, 12, 14, 14]
     Ji = [10, 8, 3, 4, 3, -6, 2, 3, 4, 0, -3, -2, 10, -2, -1, -5, -6, -3, -8, -2, -1, -12, -1, -12, 1]
