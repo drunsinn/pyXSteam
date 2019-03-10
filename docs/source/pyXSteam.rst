@@ -4,6 +4,22 @@ pyXSteam package
 Submodules
 ----------
 
+pyXSteam.XSteam module
+----------------------
+
+.. automodule:: pyXSteam.XSteam
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+pyXSteam.UnitConverter module
+-----------------------------
+
+.. automodule:: pyXSteam.UnitConverter
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 pyXSteam.Constants module
 -------------------------
 
@@ -16,6 +32,14 @@ pyXSteam.Constants module
     :linenos:
     :language: python
     :lines: 13-20, 25-32, 35-36
+
+pyXSteam.Regions module
+-----------------------
+
+.. automodule:: pyXSteam.Regions
+    :members:
+    :undoc-members:
+    :show-inheritance:
 
 pyXSteam.RegionBorders module
 -----------------------------
@@ -33,14 +57,6 @@ pyXSteam.RegionSelection module
     :undoc-members:
     :show-inheritance:
 
-pyXSteam.Regions module
------------------------
-
-.. automodule:: pyXSteam.Regions
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 pyXSteam.TransportProperties module
 -----------------------------------
 
@@ -48,23 +64,6 @@ pyXSteam.TransportProperties module
     :members:
     :undoc-members:
     :show-inheritance:
-
-pyXSteam.UnitConverter module
------------------------------
-
-.. automodule:: pyXSteam.UnitConverter
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-pyXSteam.XSteam module
-----------------------
-
-.. automodule:: pyXSteam.XSteam
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 
 Module contents
 ---------------

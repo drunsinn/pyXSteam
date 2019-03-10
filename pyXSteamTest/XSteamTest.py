@@ -4,9 +4,7 @@
 Test runner for pyXSteam
 """
 import unittest
-import XSteamTest_Regions
-import XSteamTest_MKS
-import XSteamTest_UnitConverter
+from pyXSteamTest import XSteamTest_Regions, XSteamTest_MKS, XSteamTest_UnitConverter
 
 
 def suite():

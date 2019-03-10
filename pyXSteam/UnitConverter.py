@@ -11,9 +11,9 @@ logger = logging.getLogger('pyXSteam-UnitConverter')
 class UnitConverter(object):
     """Helper class to convert user units to SI-units and back"""
 
-    __UNIT_SYSTEM_BARE__ = 0
-    __UNIT_SYSTEM_MKS__ = 1
-    __UNIT_SYSTEM_FLS__ = 2
+    __UNIT_SYSTEM_BARE__ = 0 # m/kg/sec/K/MPa/W
+    __UNIT_SYSTEM_MKS__ = 1 # m/kg/sec/°C/bar/W
+    __UNIT_SYSTEM_FLS__ = 2 # ft/lb/sec/°F/psi/btu
 
     def __init__(self, unitSystem=__UNIT_SYSTEM_BARE__):
         """Initialise the unit converter. Parameter is the user system"""
@@ -202,3 +202,12 @@ class UnitConverter(object):
         if self.unitSystem is self.__UNIT_SYSTEM_FLS__:
             return float(ins * 2419.088311)  # PaS (N*s/m^2) to lbm/ft/hr
         return float(ins)
+
+    def __str__(self):
+        """string representation of the selected unit system"""
+        if self.unitSystem is self.__UNIT_SYSTEM_FLS__:
+            return 'FLS (ft/lb/sec/°F/psi/btu)'
+        elif self.unitSystem is self.__UNIT_SYSTEM_MKS__:
+            return 'MKS (m/kg/sec/°C/bar/W)'
+        else:
+            return 'BARE (m/kg/sec/K/MPa/W)'
