@@ -38,10 +38,38 @@ Thermal conductivity
 Revised release on the IAPS Formulation 1985 for the Thermal Conductivity
 of ordinary water substance (IAPWS 1998)
 
+Nomenclature
+============
+All Functions follow the same naming schema: First the wanted property,
+then a underscore `_`, then the wanted input properties Example:
+`t_ph` is temperature as a function of pressure and enthalpy. For a list
+of valid functions se bellow:
+
+========   ============================================================
+Property   Description
+========   ============================================================
+t          Temperature (°C or °F)
+p          Pressure (bar or psi)
+h          Enthalpy (kJ/kg or btu/lb)
+v          Specific volume (m3/kg or ft\^3/lb)|
+rho        Density (kg/m3 or lb/ft\^3)
+s          Specific entropy (kJ/(kg °C) or btu/(lb °F))
+u          Specific internal energy (kJ/kg or btu/lb)
+Cp         Specific isobaric heat capacity (kJ/(kg °C) or btu/(lb °F))
+Cv         Specific isochoric heat capacity (kJ/(kg °C) or btu/(lb °F))
+w          Speed of sound (m/s or ft/s)
+my         Viscosity (N s/m\^2 or lbm/ft/hr)
+tc         Thermal Conductivity (W/(m °C) or btu/(h ft °F))
+st         Surface Tension (N/m or lb/ft)
+x          Vapor fraction
+vx         Vapor Volume Fraction
+========   ============================================================
+
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
+   pyXSteamAvailibleFunctions
    pyXSteam
    pyXSteamDemo
 

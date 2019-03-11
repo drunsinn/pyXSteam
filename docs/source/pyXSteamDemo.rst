@@ -1,6 +1,27 @@
 Tutorial and Demos
 ##################
 
+Usage
++++++
+
+Simple Example::
+
+    from pyXSteam.XSteam import XSteam
+    steamTable = XSteam(XSteam.UNIT_SYSTEM_MKS) print steamTable.hL_p(220.0)
+
+By using the unitSystem Parameter, you can tell XSteam witch Unit System you are using.::
+
+    steamTable = XSteam(XSteam.UNIT_SYSTEM_MKS) # m/kg/sec/°C/bar/W
+    steamTable = XSteam(XSteam.UNIT_SYSTEM_FLS) # ft/lb/sec/°F/psi/btu
+    steamTable = XSteam(XSteam.UNIT_SYSTEM_BARE) # m/kg/sec/K/MPa/W
+
+To enable logging, add the following lines to your code::
+
+    import logging logger = logging.getLogger('pyXSteam')
+    logger.setLevel(logging.DEBUG) sh = logging.StreamHandler()
+    sh.setFormatter(logging.Formatter('%(name)s - %(levelname)s - %(message)s'))
+    logger.addHandler(sh)
+
 Calculate single values
 +++++++++++++++++++++++
 This is a simple example::
