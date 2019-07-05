@@ -716,7 +716,7 @@ class XSteam(object):
         Returns:
             rho (float): density
         """
-        return 1 / self.v_pt(p, h)
+        return 1 / self.v_ph(p, h)
 
     def rho_ps(self, p, s):
         """Density as a function of pressure and entropy
