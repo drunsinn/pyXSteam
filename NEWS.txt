@@ -1,3 +1,7 @@
+
+## v0.4.2, 07.2019
+* fix for error in table selection for calculations for density as a function of pressure and enthalpy. Current tests did not indicate this problem - thanks to gonmolina!
+
 ## v0.4, 2018
 * support for Python 3
 ** handling of math expressions in pyhton 3 fixed problems with some edge cases
