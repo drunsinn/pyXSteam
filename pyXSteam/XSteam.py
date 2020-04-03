@@ -21,6 +21,11 @@ class XSteam(object):
     UNIT_SYSTEM_BARE = UnitConverter.__UNIT_SYSTEM_BARE__
     UNIT_SYSTEM_MKS = UnitConverter.__UNIT_SYSTEM_MKS__
     UNIT_SYSTEM_FLS = UnitConverter.__UNIT_SYSTEM_FLS__
+    TYPE_ICE_Ih = R14.__TYPE_ICE_Ih__
+    TYPE_ICE_III = R14.__TYPE_ICE_III__
+    TYPE_ICE_V = R14.__TYPE_ICE_V__
+    TYPE_ICE_VI = R14.__TYPE_ICE_VI__
+    TYPE_ICE_VII = R14.__TYPE_ICE_VII__
 
     def __init__(self, unitSystem=UnitConverter.__UNIT_SYSTEM_BARE__):
         self.logger = logging.getLogger(__name__)
@@ -1933,4 +1938,99 @@ class XSteam(object):
             return self.unitConverter.fromSIunit_vx((xs * vV / (xs * vV + (1 - xs) * vL)))
         else:
             self.logger.warning('pressure out of range')
+            return float("NaN")
+
+# ***********************************************************************************************************
+# Revised Release on the Pressure along the Melting and Sublimation Curves of Ordinary Water Substance
+# Release IAPWS R14-08(2011)
+# http://www.iapws.org/relguide/MeltSub2011.pdf
+    def pmelt_t(self, t, hint=None):
+        """Pressure along the melting curve as a function of temperature. Based on IAPWS R14-08(2011)
+        http://www.iapws.org/relguide/MeltSub2011.pdf
+        Because of the shape of the meltin curve it is not possible to automaticaly select the correct region
+        automaticaly. Therfore the optional hint-parameter is used to tell the function which area you are interested in.
+        The hint-values are namend after the ice types.
+        XSteam.TYPE_ICE_Ih = 1
+        XSteam.TYPE_ICE_III = 3
+        XSteam.TYPE_ICE_V = 5
+        XSteam.TYPE_ICE_VI = 6
+        XSteam.TYPE_ICE_VII = 7
+        If the hint is not one of the values above or None(Default), an Exception is raised
+
+        Args:
+            t (float): temperatur value
+            hint (int): (optional) hint for the selection logic to decide which part of the melting curve to use
+
+        Returns:
+            p (float): preassure or NaN if arguments are out of range
+        """
+        T = self.unitConverter.toSIunit_T(t)
+
+        if hint is None:
+            if T >= 251.165 and T < 256.164:
+                self.logger.error('cant select ice type based on temperatur, hint reqired')
+            elif T >= 256.164 and T < 273.31:
+                return self.unitConverter.fromSIunit_p(R14.pmelt_T_iceV(T))
+            elif T >= 273.31 and T < 355:
+                return self.unitConverter.fromSIunit_p(R14.pmelt_T_iceVI(T))
+            elif T >= 355 and T < 751:
+                return self.unitConverter.fromSIunit_p(R14.pmelt_T_iceVII(T))
+            else:
+                self.logger.warning('temperature out of range')
+                return float("NaN")
+
+        elif hint is self.TYPE_ICE_Ih:
+            if T >= 251.165 and T < 273.16:
+                return self.unitConverter.fromSIunit_p(R14.pmelt_T_iceIh(T))
+            else:
+                self.logger.warning('pressure out of range')
+                return float("NaN")
+
+        elif hint is self.TYPE_ICE_III:
+            if T >= 251.165 and T < 256.164:
+                return self.unitConverter.fromSIunit_p(R14.pmelt_T_iceIII(T))
+            else:
+                self.logger.warning('pressure out of range')
+                return float("NaN")
+
+        elif hint is self.TYPE_ICE_V:
+            if T >= 256.164 and T < 273.31:
+                return self.unitConverter.fromSIunit_p(R14.pmelt_T_iceV(T))
+            else:
+                self.logger.warning('pressure out of range')
+                return float("NaN")
+
+        elif hint is self.TYPE_ICE_VI:
+            if T >= 273.31 and T < 355:
+                return self.unitConverter.fromSIunit_p(R14.pmelt_T_iceVI(T))
+            else:
+                self.logger.warning('pressure out of range')
+                return float("NaN")
+
+        elif hint is self.TYPE_ICE_VII:
+            if T >= 355 and T < 751:
+                return self.unitConverter.fromSIunit_p(R14.pmelt_T_iceVII(T))
+            else:
+                self.logger.warning('pressure out of range')
+                return float("NaN")
+
+        else:
+            self.logger.error('unknown hint, cant select ice type')
+            raise ValueError('unknown hint')
+
+    def psubl_t(self, t):
+        """Pressure along the sublimation curve as a function of temperature. Based on IAPWS R14-08(2011)
+        http://www.iapws.org/relguide/MeltSub2011.pdf
+
+        Args:
+            t (float): temperatur value
+
+        Returns:
+            p (float): preassure or NaN if arguments are out of range
+        """
+        T = self.unitConverter.toSIunit_T(t)
+        if T >= 50 and T < 273.16:
+            return self.unitConverter.fromSIunit_p(R14.psubl_t(T))
+        else:
+            self.logger.warning('temperature out of range')
             return float("NaN")

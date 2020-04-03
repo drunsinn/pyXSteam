@@ -4,7 +4,7 @@
 Test runner for pyXSteam
 """
 import unittest
-from pyXSteamTest import XSteamTest_Regions, XSteamTest_MKS, XSteamTest_UnitConverter
+from pyXSteamTest import XSteamTest_Regions, XSteamTest_MKS, XSteamTest_UnitConverter, XSteamTest_R14
 
 
 def suite():
@@ -19,6 +19,7 @@ def suite():
     suite.addTest(loader.loadTestsFromTestCase(XSteamTest_MKS.MKS_FunctionTester))
     suite.addTest(loader.loadTestsFromTestCase(XSteamTest_UnitConverter.UnitConverter_MKS_FunctionTester))
     suite.addTest(loader.loadTestsFromTestCase(XSteamTest_UnitConverter.UnitConverter_FLS_FunctionTester))
+    suite.addTest(loader.loadTestsFromTestCase(XSteamTest_R14.R14_FunctionTester))
     return suite
 
 
