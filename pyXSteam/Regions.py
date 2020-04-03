@@ -1487,7 +1487,7 @@ class Region5():
     def T5_prho(p, rho):
         """function T5_prho = T5_prho(p, rho)
 
-        Solve by iteration. Observe that fo low temperatures this equation has 2 solutions. Solve with half interval method
+        Solve by iteration. Observe that for low temperatures this equation has 2 solutions. Solve with half interval method
         """
         Low_Bound = 1073.15
         High_Bound = 2073.15

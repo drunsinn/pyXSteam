@@ -254,7 +254,7 @@ class XSteam(object):
             p (float): pressure or NaN if arguments are out of range
         """
         if rho <= 0.0:
-            raise Exception('roh aout of range')
+            raise Exception('rho out of range')
             return float("NaN")
         h = self.unitConverter.toSIunit_h(h)
         High_Bound = self.unitConverter.fromSIunit_p(100)
