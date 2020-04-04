@@ -115,6 +115,34 @@ def demo_Moillier_Diagramm():
     pyplot.ylabel("h in [kJ/kg]")
     pyplot.show()
 
+def demo_ICE_Diagramm():
+    steamTable = XSteam(XSteam.UNIT_SYSTEM_BARE)
+    t_subl = np.arange(50.0, 273.16, 2.0)
+    t_melt_Ih = np.arange(251.165, 273.16, 2.0)
+    t_melt_III = np.arange(251.165, 256.164, 2.0)
+    t_melt_V = np.arange(256.164, 273.31, 2.0)
+    t_melt_VI = np.arange(273.31, 355.0, 2.0)
+    t_melt_VII = np.arange(355.0, 751.0, 2.0)
+
+    psubl_func = np.frompyfunc(steamTable.psubl_t, 1, 1)
+    pmelt_func = np.frompyfunc(steamTable.pmelt_t, 2, 1)
+
+    line1, = pyplot.plot(t_subl, psubl_func(t_subl))
+    line2, = pyplot.plot(t_melt_Ih, pmelt_func(t_melt_Ih, steamTable.TYPE_ICE_Ih))
+    line3, = pyplot.plot(t_melt_III, pmelt_func(t_melt_III, steamTable.TYPE_ICE_III))
+    line4, = pyplot.plot(t_melt_V, pmelt_func(t_melt_V, steamTable.TYPE_ICE_V))
+    line5, = pyplot.plot(t_melt_VI, pmelt_func(t_melt_VI, steamTable.TYPE_ICE_VI))
+    line6, = pyplot.plot(t_melt_VII, pmelt_func(t_melt_VII, steamTable.TYPE_ICE_VII))
+
+    pyplot.xlabel("T in [K]")
+    pyplot.ylabel("p in [MPa]")
+    pyplot.setp(line1, linewidth=1, color='b')
+    pyplot.setp(line2, linewidth=1, color='g')
+    pyplot.setp(line3, linewidth=1, color='r')
+    pyplot.setp(line4, linewidth=1, color='y')
+    pyplot.setp(line5, linewidth=1, color='g')
+    pyplot.show()
+
 
 if __name__ == '__main__':
     logger = logging.getLogger('pyXSteam')
@@ -129,13 +157,12 @@ if __name__ == '__main__':
     print("3. generate Tp diagram")
     print("4. generate pvT diagramm")
     print("5. generate moillier diagram")
+    print("6. generate ice metling and sublimation diagram")
 
-    var = str(input("Please enter selection [1-5]: "))
+    var = str(input("Please enter selection [1-6]: "))
     print("You selected " + var)
 
-    if len(var) is not 1 or var not in ('1', '2', '3', '4', '5'):
-        print("Unknown selection")
-    elif var is '1':
+    if var is '1':
         start = time.process_time()
         demo_simpel_Values()
         print("Demo took", time.process_time() - start, "seconds to complete")
@@ -151,7 +178,13 @@ if __name__ == '__main__':
         start = time.process_time()
         demo_generate_pvT_Diagramm()
         print("Demo took", time.process_time() - start, "seconds to complete")
-    else:
+    elif var is '5':
         start = time.process_time()
         demo_Moillier_Diagramm()
         print("Demo took", time.process_time() - start, "seconds to complete")
+    elif var is '6':
+        start = time.process_time()
+        demo_ICE_Diagramm()
+        print("Demo took", time.process_time() - start, "seconds to complete")
+    else:
+        print("Unknown selection")

@@ -87,7 +87,10 @@ To enable logging, add the following lines to your code:
 |----------|----------------------------------------------------------------------------------------------------------------|
 | psat_t   | Saturation pressure                                                                                            |
 | p_hs     | Pressure as a function of h and s.                                                                             |
-| p_hrho   | Pressure as a function of h and rho. Very inaccurate for solid water region since it's almost incompressible! |
+| p_hrho   | Pressure as a function of h and rho. Very inaccurate for solid water region since it's almost incompressible!  |
+| pmelt_t  | Pressure as a function of temperature along the melting curve. Optional parameter to select ice region         |
+| psubl_t  | Pressure as a function of temperature along the sublimation curve.                                             |
+
 
 ### Enthalpy
 | Function | Description                                                                                                         |

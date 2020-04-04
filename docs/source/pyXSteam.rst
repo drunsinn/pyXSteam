@@ -65,6 +65,14 @@ pyXSteam.TransportProperties module
     :undoc-members:
     :show-inheritance:
 
+pyXSteam.IAPWS_R14 module
+-----------------------------------
+
+.. automodule:: pyXSteam.IAPWS_R14
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 Module contents
 ---------------
 

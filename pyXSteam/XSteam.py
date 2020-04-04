@@ -6,6 +6,7 @@ from .Regions import Region1, Region2, Region3, Region4, Region5
 from . import TransportProperties
 from . import Constants
 from .UnitConverter import UnitConverter
+from .IAPWS_R14 import IAPWS_R14 as R14
 
 
 class XSteam(object):
@@ -2030,7 +2031,7 @@ class XSteam(object):
         """
         T = self.unitConverter.toSIunit_T(t)
         if T >= 50 and T < 273.16:
-            return self.unitConverter.fromSIunit_p(R14.psubl_t(T))
+            return self.unitConverter.fromSIunit_p(R14.psubl_T(T))
         else:
             self.logger.warning('temperature out of range')
             return float("NaN")
