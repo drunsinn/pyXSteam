@@ -1,4 +1,4 @@
-## v0.x.y,
+## v0.4.4,
 * add functions from IAPWS 14 for pressure along the melting and sublimation curves
 ** test cases from documentation
 ** demo diagram
