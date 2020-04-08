@@ -26,7 +26,7 @@ author = 'drunsinn, Magnus Holmgren'
 # The short X.Y version
 version = '0.4'
 # The full version, including alpha/beta/rc tags
-release = '0.4.2'
+release = '0.4.3'
 
 
 # -- General configuration ---------------------------------------------------
