@@ -7,7 +7,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="pyXSteam",
-    version="0.4.2", # version number for documentation does not auto-update
+    version="0.4.3", # version number for documentation does not auto-update
     author="drunsinn",
     author_email="dr.unsinn@googlemail.com",
     keywords="steam water ice XSteam",
@@ -22,13 +22,11 @@ setuptools.setup(
         "Topic :: Scientific/Engineering :: Physics",
         "Development Status :: 4 - Beta"
     ],
-    packages=setuptools.find_packages(exclude=['docs', 'tests*']),
+    packages=setuptools.find_packages(exclude=['docs', 'tests']),
     install_requires=[],
     python_requires='>=3.6',
     include_package_data=True,
     zip_safe=True,
     scripts=['bin/pyXSteamDemo.py'],
-    test_suite='pyXSteamTest.suite',
-    tests_require=['numpy>=1.6.2', 'matplotlib>=2.2.3'],
 
 )

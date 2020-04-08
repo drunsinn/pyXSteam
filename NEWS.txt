@@ -3,6 +3,9 @@
 ** test cases from documentation
 ** demo diagram
 
+## v0.4.3, 04.2020
+* switch to pytest for testing because of 'setup.py test' is deprecated, see https://github.com/pypa/setuptools/issues/1684.
+
 ## v0.4.2, 07.2019
 * fix for error in table selection for calculations for density as a function of pressure and enthalpy. Current tests did not indicate this problem - thanks to gonmolina!
 
