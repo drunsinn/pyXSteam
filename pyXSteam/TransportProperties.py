@@ -141,10 +141,9 @@ def tc_ptrho(p, T, rho):
     Revised release on the IAPWS formulation 1985 for the Thermal Conductivity of ordinary water IAPWS, September 1998
 
     Page 8
-
-    ver2.6 Start corrected bug
     """
 
+    # ver2.6 Start corrected bug
     if T < 273.15:
         logger.warning('Temperature out of range of validity')
         return float("NaN")
@@ -160,8 +159,8 @@ def tc_ptrho(p, T, rho):
         if p > 40:
             logger.warning('Preasure out of range of validity')
             return float("NaN")
-
     # ver2.6 End corrected bug
+
     T = T / 647.26  # Page 8, Eq 4
     rho = rho / 317.7  # Page 8, Eq 5
 

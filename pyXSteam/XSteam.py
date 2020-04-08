@@ -6,7 +6,8 @@ from .Regions import Region1, Region2, Region3, Region4, Region5
 from . import TransportProperties
 from . import Constants
 from .UnitConverter import UnitConverter
-from .IAPWS_R14 import IAPWS_R14 as R14
+from . import IAPWS_R14
+from . import IAPWS_R15
 
 
 class XSteam(object):
@@ -22,16 +23,17 @@ class XSteam(object):
     UNIT_SYSTEM_BARE = UnitConverter.__UNIT_SYSTEM_BARE__
     UNIT_SYSTEM_MKS = UnitConverter.__UNIT_SYSTEM_MKS__
     UNIT_SYSTEM_FLS = UnitConverter.__UNIT_SYSTEM_FLS__
-    TYPE_ICE_Ih = R14.__TYPE_ICE_Ih__
-    TYPE_ICE_III = R14.__TYPE_ICE_III__
-    TYPE_ICE_V = R14.__TYPE_ICE_V__
-    TYPE_ICE_VI = R14.__TYPE_ICE_VI__
-    TYPE_ICE_VII = R14.__TYPE_ICE_VII__
+
+    TYPE_ICE_Ih = IAPWS_R14.__TYPE_ICE_Ih__
+    TYPE_ICE_III = IAPWS_R14.__TYPE_ICE_III__
+    TYPE_ICE_V = IAPWS_R14.__TYPE_ICE_V__
+    TYPE_ICE_VI = IAPWS_R14.__TYPE_ICE_VI__
+    TYPE_ICE_VII = IAPWS_R14.__TYPE_ICE_VII__
 
     def __init__(self, unitSystem=UnitConverter.__UNIT_SYSTEM_BARE__):
         self.logger = logging.getLogger(__name__)
         self.unitConverter = UnitConverter(unitSystem)
-        self.logger.info('initialised pyXSteam with Unit System %s', self.unitConverter)
+        self.logger.info('initialised pyXSteam with Unit System "{}"'.format(self.unitConverter))
 
     def specificGasConstant(self):
         """returns the specific Gas Constant R in kJ kg^-1 K^-1"""
@@ -1801,6 +1803,8 @@ class XSteam(object):
         Returns:
             tc (float): thermal conductivity
         """
+        mode = None
+
         Ts = t
         ps = p
         v = self.v_pt(ps, Ts)
@@ -1808,7 +1812,15 @@ class XSteam(object):
         T = self.unitConverter.toSIunit_T(Ts)
         v = self.unitConverter.toSIunit_v(v)
         rho = 1 / v
-        return self.unitConverter.fromSIunit_tc(TransportProperties.tc_ptrho(p, T, rho))
+
+        if mode is None:
+            tc = self.unitConverter.fromSIunit_tc(TransportProperties.tc_ptrho(p, T, rho))
+        else:
+            cp = self.Cp_pt(p, t)
+            cv = self.Cv_pt(p, t)
+            my = self.my_pt(p, t)
+            tc = self.unitConverter.fromSIunit_tc(IAPWS_R15.tc_ptrhocp_R15(p, T, rho, my, cp, cv))
+        return tc
 
     def tc_ph(self, p, h):
         """Thermal conductivity as a function of pressure and enthalpy
@@ -1970,11 +1982,15 @@ class XSteam(object):
         if hint is None:
             if T >= 251.165 and T < 256.164:
                 self.logger.error('cant select ice type based on temperatur, hint reqired')
+                return float("NaN")
             elif T >= 256.164 and T < 273.31:
+                self.logger.debug('chose ice type V based on temperature')
                 return self.unitConverter.fromSIunit_p(R14.pmelt_T_iceV(T))
             elif T >= 273.31 and T < 355:
+                self.logger.debug('chose ice type VI based on temperature')
                 return self.unitConverter.fromSIunit_p(R14.pmelt_T_iceVI(T))
             elif T >= 355 and T < 751:
+                self.logger.debug('chose ice type VII based on temperature')
                 return self.unitConverter.fromSIunit_p(R14.pmelt_T_iceVII(T))
             else:
                 self.logger.warning('temperature out of range')
@@ -1982,35 +1998,35 @@ class XSteam(object):
 
         elif hint is self.TYPE_ICE_Ih:
             if T >= 251.165 and T < 273.16:
-                return self.unitConverter.fromSIunit_p(R14.pmelt_T_iceIh(T))
+                return self.unitConverter.fromSIunit_p(IAPWS_R14.pmelt_T_iceIh(T))
             else:
                 self.logger.warning('pressure out of range')
                 return float("NaN")
 
         elif hint is self.TYPE_ICE_III:
             if T >= 251.165 and T < 256.164:
-                return self.unitConverter.fromSIunit_p(R14.pmelt_T_iceIII(T))
+                return self.unitConverter.fromSIunit_p(IAPWS_R14.pmelt_T_iceIII(T))
             else:
                 self.logger.warning('pressure out of range')
                 return float("NaN")
 
         elif hint is self.TYPE_ICE_V:
             if T >= 256.164 and T < 273.31:
-                return self.unitConverter.fromSIunit_p(R14.pmelt_T_iceV(T))
+                return self.unitConverter.fromSIunit_p(IAPWS_R14.pmelt_T_iceV(T))
             else:
                 self.logger.warning('pressure out of range')
                 return float("NaN")
 
         elif hint is self.TYPE_ICE_VI:
             if T >= 273.31 and T < 355:
-                return self.unitConverter.fromSIunit_p(R14.pmelt_T_iceVI(T))
+                return self.unitConverter.fromSIunit_p(IAPWS_R14.pmelt_T_iceVI(T))
             else:
                 self.logger.warning('pressure out of range')
                 return float("NaN")
 
         elif hint is self.TYPE_ICE_VII:
             if T >= 355 and T < 751:
-                return self.unitConverter.fromSIunit_p(R14.pmelt_T_iceVII(T))
+                return self.unitConverter.fromSIunit_p(IAPWS_R14.pmelt_T_iceVII(T))
             else:
                 self.logger.warning('pressure out of range')
                 return float("NaN")
@@ -2031,7 +2047,7 @@ class XSteam(object):
         """
         T = self.unitConverter.toSIunit_T(t)
         if T >= 50 and T < 273.16:
-            return self.unitConverter.fromSIunit_p(R14.psubl_T(T))
+            return self.unitConverter.fromSIunit_p(IAPWS_R14.psubl_T(T))
         else:
             self.logger.warning('temperature out of range')
             return float("NaN")
