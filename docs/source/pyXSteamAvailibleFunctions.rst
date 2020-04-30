@@ -185,3 +185,23 @@ Function   Description
 vx_ph      vapor volume fraction as a function of pressure and enthalpy
 vx_ps      vapor volume fraction as a function of pressure and entropy
 ========   =================================================
+
+Pressure along the Melting and Sublimation Curves
++++++++++++++++++++++
+========   =================================================
+Function   Description
+========   =================================================
+pmelt_t    Pressure along the melting curve as a function of temperature
+psubl_t    Pressure along the sublimation curve as a function of temperature
+========   =================================================
+
+
+Available Functions for Heavy Water
+###################################
+
+========   =================================================
+Function   Description
+========   =================================================
+my_rhoT    Viscosity as a function of density and temperature
+tc_rhoT    Thermal conductivity as a function of density and temperature
+========   =================================================

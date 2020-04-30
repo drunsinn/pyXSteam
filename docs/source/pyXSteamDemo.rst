@@ -55,5 +55,15 @@ Example: To draw a T(p) diagramm showing the saturation curve::
 
 For more demos, see pyXSteamDemo.py
 
+Heavy Water functions
++++++++++++++++++++++
+The functions to calculate values for heavy water are available through the
+class XSteamHW
+
+    >>> from pyXSteam.XSteamHW import XSteamHW
+    >>> steamTable = XSteamHW(XSteam.UNIT_SYSTEM_MKS)
+    >>> steamTable.my_rhoT(1.2, 300.0)
+
+
 .. literalinclude:: ../../bin/pyXSteamDemo.py
     :language: python

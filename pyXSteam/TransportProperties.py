@@ -33,7 +33,7 @@ def my_AllRegions_pT(p, T):
         hs = Region3.h3_pT(p, T)
         rho = 1 / Region3.v3_ph(p, hs)
     elif RegionSelection.region_pT(p, T) == 4:
-        logger.warning('Region switch returned unknown value')
+        logger.warning('function my_AllRegions_pT is not available in region 4')
         return float('NaN')
     elif RegionSelection.region_pT(p, T) == 5:
         rho = 1 / Region5.v5_pT(p, T)
@@ -185,9 +185,13 @@ def Surface_Tension_T(T):
     Section 5.3 Surface Tension
 
     IAPWS Release on Surface Tension of Ordinary Water Substance, September 1994
+
+    also
+
+    IAPWS Revised Release on Surface Tension of Ordinary Water Substance, June 2014 R1-76(2014)
     """
     tc = Constants.__CRITICAL_TEMPERATURE__
-    B = 0.2358  # N / m
+    B = 0.2358  # N/m
     bb = -0.625  #
     my = 1.256  #
     if (T < 0.01) or (T > tc):

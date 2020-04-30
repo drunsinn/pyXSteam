@@ -20,6 +20,12 @@ from Magnus Holmgren, www.x-eng.com.
 We take no responsibilities for any errors in the code or damage thereby!
 See README.md for examples
 
+Some effort has been made to include the refined function of more recent releases
+and also functions for calculations on heavy water. This includes:
+* IAPWS R4
+* IAPWS R14
+* IAPWS R15-11
+
 Notes
 *****
 Density (rho)

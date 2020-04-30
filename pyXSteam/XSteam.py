@@ -9,7 +9,6 @@ from .UnitConverter import UnitConverter
 from . import IAPWS_R14
 from . import IAPWS_R15
 
-
 class XSteam(object):
     """Main pyXSteam object. Abstract of all other functions to allow auto selection of
     the correct region for each set of parameters.
@@ -1793,17 +1792,17 @@ class XSteam(object):
         rho = 1 / v
         return self.unitConverter.fromSIunit_tc(TransportProperties.tc_ptrho(p, T, rho))
 
-    def tc_pt(self, p, t):
+    def tc_pt(self, p, t, mode=None):
         """Thermal conductivity as a function of pressure and temperature
 
         Args:
             p (float): preasure value
             t (float): temperature value
+            mode (optional): swith to using formular from R15
 
         Returns:
             tc (float): thermal conductivity
         """
-        mode = None
 
         Ts = t
         ps = p

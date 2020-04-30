@@ -107,3 +107,4 @@ venv.bak/
 [Tt]humbs.db
 .DS_Store
 *.todo
+/extern_docs

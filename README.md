@@ -13,6 +13,12 @@ the IF97 release.
 <http://www.iapws.org/relguide/ThCond.pdf>
 * Viscosity: (2003)
 
+Some effort has been made to include the refined function of more recent releases
+and also functions for calculations on heavy water. This includes:
+* IAPWS R4
+* IAPWS R14
+* IAPWS R15-11
+
 ## Requirements
 
 There are no requirements for installing pyXSteam with Python 3.6 and up.
@@ -216,3 +222,15 @@ To enable logging, add the following lines to your code:
 |----------|--------------------------------------------------------------|
 | vx_ph    | vapor volume fraction as a function of pressure and enthalpy |
 | vx_ps    | vapor volume fraction as a function of pressure and entropy  |
+
+## Pressure along the Melting and Sublimation Curves
+| Function     | Description                                                        |
+|--------------|--------------------------------------------------------------------|
+| pmelt_t      | Pressure along the melting curve as a function of temperature      |
+| vx_psubl_tps | Pressure along the sublimation curve as a function of temperature  |
+
+# Available Functions for Heavy Water
+| Function | Description                                                   |
+|----------|---------------------------------------------------------------|
+| my_rhoT  | Viscosity as a function of density and temperature            |
+| tc_rhoT  | Thermal conductivity as a function of density and temperature |
