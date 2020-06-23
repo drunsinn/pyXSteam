@@ -7,7 +7,8 @@ Usage
 Simple Example::
 
     from pyXSteam.XSteam import XSteam
-    steamTable = XSteam(XSteam.UNIT_SYSTEM_MKS) print steamTable.hL_p(220.0)
+    steamTable = XSteam(XSteam.UNIT_SYSTEM_MKS)
+    print steamTable.hL_p(220.0)
 
 By using the unitSystem Parameter, you can tell XSteam witch Unit System you are using.::
 
