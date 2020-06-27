@@ -1,7 +1,11 @@
-## v0.4.
-* add functions from IAPWS 14 for pressure along the melting and sublimation curves
+## v0.4.5, 07.2020
+* add functions from IAPWS R4, R14, and R14
+** R14: pressure along the melting and sublimation curves
+** R4: viscosity and thermal conductivity as a function of density and temperature for heavy water substance
+** R15: updated thermal conductivity as a function of preasure, temperature, density, viscosity, specific isobaric heat capacity an specific isochoric heat capacity
 ** test cases from documentation
 ** demo diagram
+** add new constants
 
 ## v0.4.4, 06.2020
 * fix bug in value check code in region_pT(p, T). Thanks to @sbatururimi for reporting this!

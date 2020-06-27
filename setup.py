@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+"""create python packages for publishing"""
 import setuptools
 
 with open("README.md", "r") as fh:
@@ -7,11 +8,12 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="pyXSteam",
-    version="0.4.4", # version number for documentation does not auto-update
+    version="0.4.5", # version number for documentation does not auto-update
     author="drunsinn",
     author_email="dr.unsinn@googlemail.com",
     keywords="steam water ice XSteam",
-    description="pyXSteam is a port of the Matlab/Excel Package XSteam by Magnus Holmgren, www.x-eng.com to Python 3",
+    description="""pyXSteam is a port of the Matlab/Excel Package XSteam
+    by Magnus Holmgren, www.x-eng.com to Python 3""",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/drunsinn/pyXSteam",
