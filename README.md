@@ -31,7 +31,7 @@ run `python3 setup.py install`
 To run unittests: `python setup.py test` but make sure numpy is installed
 
 To test if setup was successful, run `python3 bin/pyXSteamDemo.py`. This will require numpy and matplotlib to be installed.
-There are still (as of v0.4.2) some Errors in the speed of sound functions, so be warned that they exceed the Error Range. Apart form accuracy errors, there should be no warnings.
+There are still (as of v0.4.2) some Errors in the speed of sound functions (w_ps), so be warned that they exceed the Error Range. Apart form accuracy errors, there should be no warnings.
 
 ## Nomenclature
 
@@ -63,7 +63,8 @@ of valid functions se bellow:
 Simple Example:
 
     from pyXSteam.XSteam import XSteam
-    steamTable = XSteam(XSteam.UNIT_SYSTEM_MKS) print steamTable.hL_p(220.0)
+    steamTable = XSteam(XSteam.UNIT_SYSTEM_MKS)
+    print steamTable.hL_p(220.0)
 
 By using the unitSystem Parameter, you can tell XSteam witch Unit System you are using.
 

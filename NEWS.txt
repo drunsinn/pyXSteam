@@ -3,6 +3,9 @@
 ** test cases from documentation
 ** demo diagram
 
+## v0.4.4, 06.2020
+* fix bug in value check code in region_pT(p, T). Thanks to @sbatururimi for reporting this!
+
 ## v0.4.3, 04.2020
 * switch to pytest for testing because of 'setup.py test' is deprecated, see https://github.com/pypa/setuptools/issues/1684.
 

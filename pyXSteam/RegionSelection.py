@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 def region_pT(p, T):
     """function region_pT = region_pT(p, T)
     """
-    if (T > 1073.15) and (p < 10) and (T < 2273.15) and (p > 0.000611):
+    if (T > 1073.15) and (p < 50.0) and (T < 2273.15) and (p > 0.000611):
         region_pT = 5
     elif (T <= 1073.15) and (T > 273.15) and (p <= 100) and (p > 0.000611):
         if T > 623.15:
