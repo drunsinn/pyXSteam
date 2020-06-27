@@ -1,9 +1,15 @@
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 import math
 import logging
 from . import Constants
 
 logger = logging.getLogger(__name__)
+"""
+IAPWS R4-84(2007)
+Revised Release on Viscosity and Thermal Conductivity of Heavy Water Substance
+http://www.iapws.org/relguide/TransD2O-2007.pdf
+"""
 
 def myHW_rhoT_R4(rho, T):
     """Viscosity as a function of density and temperature for heavy water
@@ -27,7 +33,7 @@ def myHW_rhoT_R4(rho, T):
 
     A = [1.0, 0.940695, 0.578377, -0.202044]
     sum_A_T = 0
-    for i in range(0,4):
+    for i in range(0, 4):
         sum_A_T += A[i] / (T_dash ** i)
     my_0_dash = math.sqrt(T_dash) / sum_A_T
 

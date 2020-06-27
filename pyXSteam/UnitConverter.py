@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 Class to convert between the unit system used by pyXSteam and the ones
@@ -169,25 +170,25 @@ class UnitConverter(object):
 
     def toSIunit_x(self, ins):
         """function toSIunit_x = toSIunit_x( ins )"""
-        if ins >= 0.0 and ins <= 1.0:
+        if 0.0 <= ins <= 1.0:
             return float(ins)
         raise Exception('Vapour fraction out of Range')
 
     def fromSIunit_x(self, ins):
         """function fromSIunit_x = fromSIunit_x( ins )"""
-        if ins >= 0.0 and ins <= 1.0:
+        if 0.0 <= ins <= 1.0:
             return float(ins)
         raise Exception('Vapour fraction out of Range')
 
     def toSIunit_vx(self, ins):
         """function toSIunit_vx = toSIunit_vx( ins )"""
-        if ins >= 0.0 and ins <= 1.0:
+        if 0.0 <= ins <= 1.0:
             return float(ins)
         raise Exception('Vapour volume fraction out of Range')
 
     def fromSIunit_vx(self, ins):
         """function fromSIunit_vx = fromSIunit_vx( ins )"""
-        if ins >= 0.0 and ins <= 1.0:
+        if 0.0 <= ins <= 1.0:
             return float(ins)
         raise Exception('Vapour volume fraction out of Range')
 
@@ -205,9 +206,11 @@ class UnitConverter(object):
 
     def __str__(self):
         """string representation of the selected unit system"""
+        result = ''
         if self.unitSystem is self.__UNIT_SYSTEM_FLS__:
-            return 'FLS (ft/lb/sec/°F/psi/btu)'
+            result = 'FLS (ft/lb/sec/°F/psi/btu)'
         elif self.unitSystem is self.__UNIT_SYSTEM_MKS__:
-            return 'MKS (m/kg/sec/°C/bar/W)'
+            result = 'MKS (m/kg/sec/°C/bar/W)'
         else:
-            return 'BARE (m/kg/sec/K/MPa/W)'
+            result = 'BARE (m/kg/sec/K/MPa/W)'
+        return result

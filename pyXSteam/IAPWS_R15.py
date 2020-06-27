@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 import math
 import logging
@@ -6,6 +7,11 @@ from .Regions import Region1, Region2, Region3, Region4, Region5
 from . import Constants
 
 logger = logging.getLogger(__name__)
+"""
+IAPWS R15-11
+Release on the IAPWS Formulation 2011 for the Thermal Conductivity of Ordinary Water Substance
+http://www.iapws.org/relguide/ThCond.pdf
+"""
 
 def tc_ptrhocp_R15(p, T, rho, my, cp, cv):
     """Thermal conductivity as a function of preasure, temperature, density,

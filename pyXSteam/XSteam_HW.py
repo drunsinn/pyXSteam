@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 import math
 import logging
@@ -5,7 +6,7 @@ from . import Constants
 from .UnitConverter import UnitConverter
 from . import IAPWS_R4
 
-class XSteamHW(object):
+class XSteam_HW(object):
     """Main pyXSteam for Heavy Water object. Abstract of all other functions to allow auto selection of
     the correct region for each set of parameters.
 
@@ -52,8 +53,8 @@ class XSteamHW(object):
         Returns:
             my (float): viscosity or NaN if arguments are out of range
         """
-        rho = self.unitConverter.toSIunit_p(p)
-        T = self.unitConverter.toSIunit_T(t)
+        rho = self.unitConverter.toSIunit_p(rho)
+        T = self.unitConverter.toSIunit_T(T)
 
         if T < 277.0 or T > 775.0:
             self.logger.error('temperature out of range')
@@ -79,8 +80,8 @@ class XSteamHW(object):
         Returns:
             λ (float): thermal conductivity or NaN if arguments are out of range
         """
-        rho = self.unitConverter.toSIunit_p(p)
-        T = self.unitConverter.toSIunit_T(t)
+        rho = self.unitConverter.toSIunit_p(rho)
+        T = self.unitConverter.toSIunit_T(T)
 
         if T < 277.0 or T > 825.0:
             self.logger.error('temperature out of range')
