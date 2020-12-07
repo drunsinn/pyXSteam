@@ -1977,13 +1977,13 @@ class XSteam(object):
                 return float("NaN")
             elif T >= 256.164 and T < 273.31:
                 self.logger.debug('chose ice type V based on temperature')
-                return self.unitConverter.fromSIunit_p(R14.pmelt_T_iceV(T))
+                return self.unitConverter.fromSIunit_p(IAPWS_R14.pmelt_T_iceV(T))
             elif T >= 273.31 and T < 355:
                 self.logger.debug('chose ice type VI based on temperature')
-                return self.unitConverter.fromSIunit_p(R14.pmelt_T_iceVI(T))
+                return self.unitConverter.fromSIunit_p(IAPWS_R14.pmelt_T_iceVI(T))
             elif T >= 355 and T < 751:
                 self.logger.debug('chose ice type VII based on temperature')
-                return self.unitConverter.fromSIunit_p(R14.pmelt_T_iceVII(T))
+                return self.unitConverter.fromSIunit_p(IAPWS_R14.pmelt_T_iceVII(T))
             else:
                 self.logger.warning('temperature out of range')
                 return float("NaN")
