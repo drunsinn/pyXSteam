@@ -17,7 +17,6 @@ Some effort has been made to include the refined function of more recent release
 and also functions for calculations on heavy water. This includes:
 * IAPWS R4
 * IAPWS R14
-* IAPWS R15-11
 
 ## Requirements
 

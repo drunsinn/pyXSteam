@@ -1,8 +1,10 @@
+## v0.4.x, TBD
+* removed stump for IAPWS R15 as it containd a error that need further work but left the constants define in R15
+
 ## v0.4.5, 07.2020
-* add functions from IAPWS R4, R14, and R14
+* add functions from IAPWS R4 and R14
 ** R14: pressure along the melting and sublimation curves
 ** R4: viscosity and thermal conductivity as a function of density and temperature for heavy water substance
-** R15: updated thermal conductivity as a function of preasure, temperature, density, viscosity, specific isobaric heat capacity an specific isochoric heat capacity
 ** test cases from documentation
 ** demo diagram
 ** add new constants
