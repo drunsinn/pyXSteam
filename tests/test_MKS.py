@@ -265,8 +265,8 @@ class MKS_FunctionTester(unittest.TestCase):
         error = self.steamTable.w_ph(1.0, 200.0) - 1542.682475
         self.assertLess(error, self.maxError, 'w_ph not passed Error %(error)e allowed: %(max)e' % {'error': error, 'max': self.maxError})
 
-    def test_w_ps(self):  # TODO: Check values and calculation
-        error = self.steamTable.w_ps(1.0, 1.0) - 1557.8585
+    def test_w_ps(self):
+        error = self.steamTable.w_ps(1.0, 1.0) - 1557.858535
         self.assertLess(error, self.maxError, 'w_ps not passed Error %(error)e allowed: %(max)e' % {'error': error, 'max': self.maxError})
 
     def test_my_pt(self):
