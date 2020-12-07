@@ -1,12 +1,15 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """create python packages for publishing"""
-import setuptools
+try:
+    from setuptools import setup
+except ImportError:
+    from distutils.core import setup
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
-setuptools.setup(
+setup(
     name="pyXSteam",
     version="0.4.6",  # version number for documentation does not auto-update
     author="drunsinn",
@@ -24,7 +27,7 @@ setuptools.setup(
         "Topic :: Scientific/Engineering :: Physics",
         "Development Status :: 4 - Beta"
     ],
-    packages=setuptools.find_packages(exclude=['docs', 'tests']),
+    packages=['pyXSteam'],
     install_requires=[],
     python_requires='>=3.6',
     include_package_data=True,
