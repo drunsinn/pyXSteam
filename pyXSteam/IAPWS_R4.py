@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 import math
 import logging
-from . import Constants
 
 logger = logging.getLogger(__name__)
 """
@@ -10,6 +9,7 @@ IAPWS R4-84(2007)
 Revised Release on Viscosity and Thermal Conductivity of Heavy Water Substance
 http://www.iapws.org/relguide/TransD2O-2007.pdf
 """
+
 
 def myHW_rhoT_R4(rho, T):
     """Viscosity as a function of density and temperature for heavy water
@@ -24,9 +24,9 @@ def myHW_rhoT_R4(rho, T):
     """
     logger.debug("myHW_rhoT_R4 input: ρ {} kg/m^3, T {} K".format(rho, T))
 
-    T_star = 643.847 # K
-    rho_star = 358 # kg / m^3
-    my_star = 55.2651 # µ Pa s
+    T_star = 643.847  # K
+    rho_star = 358  # kg / m^3
+    my_star = 55.2651  # µ Pa s
 
     T_dash = T / T_star
     rho_dash = rho / rho_star
@@ -38,13 +38,13 @@ def myHW_rhoT_R4(rho, T):
     my_0_dash = math.sqrt(T_dash) / sum_A_T
 
     B = list()
-    B.append([ 0.4864192,  -0.2448372,  -0.8702035,  0.8716056,  -1.051126, 0.3458395]) # j= 0
-    B.append([ 0.3509007,   1.315436,    1.297752,   1.353448,    0.0,      0.0]) # j= 1
-    B.append([-0.2847572,  -1.037026,   -1.287846,   0.0,         0.0,     -0.02148229]) # j= 2
-    B.append([ 0.07013759,  0.4660127,   0.2292075, -0.4857462,   0.0,      0.0]) # j= 3
-    B.append([ 0.01641220, -0.02884911,  0.0,        0.1607171,   0.0,     -0.009603846]) # j= 4
-    B.append([-0.01163815, -0.008239587, 0.0,        0.0,         0.0,      0.004559914]) # j= 5
-    B.append([ 0.0,         0.0,         0.0,       -0.003886659, 0.0,      0.0]) # j= 6
+    B.append([ 0.4864192,  -0.2448372,  -0.8702035,  0.8716056,  -1.051126, 0.3458395])  # j= 0
+    B.append([ 0.3509007,   1.315436,    1.297752,   1.353448,    0.0,      0.0])  # j= 1
+    B.append([-0.2847572,  -1.037026,   -1.287846,   0.0,         0.0,     -0.02148229])  # j= 2
+    B.append([ 0.07013759,  0.4660127,   0.2292075, -0.4857462,   0.0,      0.0])  # j= 3
+    B.append([ 0.01641220, -0.02884911,  0.0,        0.1607171,   0.0,     -0.009603846])  # j= 4
+    B.append([-0.01163815, -0.008239587, 0.0,        0.0,         0.0,      0.004559914])  # j= 5
+    B.append([ 0.0,         0.0,         0.0,       -0.003886659, 0.0,      0.0])  # j= 6
 
     sum = 0
     for i in range(0, 6):
@@ -64,6 +64,7 @@ def myHW_rhoT_R4(rho, T):
 
     return my
 
+
 def tcHW_rhoT_R4(rho, T):
     """Thermal conductivity as a function of density and temperature for heavy water
     substance
@@ -79,9 +80,9 @@ def tcHW_rhoT_R4(rho, T):
     """
     logger.debug("tcHW_rhoT_R4 input: ρ {} kg/m^3, T {} K".format(rho, T))
 
-    T_star = 643.847 # K
-    rho_star = 358 # kg / m^3
-    tc_star = 0.742128 # mW/(m K)
+    T_star = 643.847  # K
+    rho_star = 358  # kg / m^3
+    tc_star = 0.742128  # mW/(m K)
 
     T_dash = T / T_star
     rho_dash = rho / rho_star
@@ -98,11 +99,11 @@ def tcHW_rhoT_R4(rho, T):
     C_R3 = -17.9430
     rho_r1 = 0.125698
     D_1 = -741.112
-    tau = T_dash / (math.fabs(T_dash - 1.1) + 1.1) # B15
-    f_1 = math.exp(C_T1 * T_dash + C_T2 * (T_dash**2)) # B12
-    f_2 = math.exp(C_R1 * (rho_dash-1.0)**2) + C_R2 * math.exp(C_R3*(rho_dash-rho_r1)**2) # B13
-    f_3 = 1 + math.exp(60.0 * (tau-1.0) + 20.0) # B14
-    f_4 = 1 + math.exp(100.0 * (tau-1.0) + 15.0) # B14
+    tau = T_dash / (math.fabs(T_dash - 1.1) + 1.1)  # B15
+    f_1 = math.exp(C_T1 * T_dash + C_T2 * (T_dash**2))  # B12
+    f_2 = math.exp(C_R1 * (rho_dash-1.0)**2) + C_R2 * math.exp(C_R3*(rho_dash-rho_r1)**2)  # B13
+    f_3 = 1 + math.exp(60.0 * (tau-1.0) + 20.0)  # B14
+    f_4 = 1 + math.exp(100.0 * (tau-1.0) + 15.0)  # B14
     part_C2 = (C_2 * f_1**4) / f_3
     part_f2 = (3.5 * f_2) / f_4
 

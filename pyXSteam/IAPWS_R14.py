@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 import math
 import logging
-from . import Constants
 
 logger = logging.getLogger(__name__)
 """
@@ -16,6 +15,7 @@ __TYPE_ICE_III__ = 3
 __TYPE_ICE_V__ = 5
 __TYPE_ICE_VI__ = 6
 __TYPE_ICE_VII__ = 7
+
 
 def pmelt_T_iceIh(T):
     """
@@ -32,6 +32,7 @@ def pmelt_T_iceIh(T):
     pi_melt = 1 + sum
     return pi_melt * p_star
 
+
 def pmelt_T_iceIII(T):
     """
     EQ 2 / Melting pressure of ice III
@@ -41,6 +42,7 @@ def pmelt_T_iceIII(T):
     theta = T / T_star
     pi_melt = 1 - 0.299948 * (1.0 - theta ** 60)
     return pi_melt * p_star
+
 
 def pmelt_T_iceV(T):
     """
@@ -52,6 +54,7 @@ def pmelt_T_iceV(T):
     pi_melt = 1 - 1.18721 * (1.0 - theta ** 8)
     return pi_melt * p_star
 
+
 def pmelt_T_iceVI(T):
     """
     EQ 4 / Melting pressure of ice VI
@@ -62,7 +65,8 @@ def pmelt_T_iceVI(T):
     pi_melt = 1 - 1.07476 * (1.0 - theta ** 4.6)
     return pi_melt * p_star
 
-def pmelt_T_iceVII(T): #
+
+def pmelt_T_iceVII(T):
     """
     EQ 5 / Melting pressure of ice VII
     """
@@ -74,6 +78,7 @@ def pmelt_T_iceVII(T): #
     p3 = 0.806106E-7 * (1 - (theta ** 22))
     pi_melt = math.exp(p1 - p2 + p3)
     return pi_melt * p_star
+
 
 def psubl_T(T):
     """

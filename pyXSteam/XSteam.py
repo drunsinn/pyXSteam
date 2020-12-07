@@ -9,6 +9,7 @@ from . import Constants
 from .UnitConverter import UnitConverter
 from . import IAPWS_R14
 
+
 class XSteam(object):
     """Main pyXSteam object. Abstract of all other functions to allow auto selection of
     the correct region for each set of parameters.
@@ -441,16 +442,16 @@ class XSteam(object):
         elif region == 3:
             return self.unitConverter.fromSIunit_h(Region3.h3_rhoT(rho, Region3.T3_prho(p, rho)))
         elif region == 4:
-                if p < 16.529:
-                    vV = Region2.v2_pT(p, Region4.T4_p(p))
-                    vL = Region1.v1_pT(p, Region4.T4_p(p))
-                else:
-                    vV = Region3.v3_ph(p, Region4.h4V_p(p))
-                    vL = Region3.v3_ph(p, Region4.h4L_p(p))
-                hV = Region4.h4V_p(p)
-                hL = Region4.h4L_p(p)
-                x = (1 / rho - vL) / (vV - vL)
-                return self.unitConverter.fromSIunit_h((1 - x) * hL + x * hV)
+            if p < 16.529:
+                vV = Region2.v2_pT(p, Region4.T4_p(p))
+                vL = Region1.v1_pT(p, Region4.T4_p(p))
+            else:
+                vV = Region3.v3_ph(p, Region4.h4V_p(p))
+                vL = Region3.v3_ph(p, Region4.h4L_p(p))
+            hV = Region4.h4V_p(p)
+            hL = Region4.h4L_p(p)
+            x = (1 / rho - vL) / (vV - vL)
+            return self.unitConverter.fromSIunit_h((1 - x) * hL + x * hV)
         elif region == 5:
             return self.unitConverter.fromSIunit_h(Region5.h5_pT(p, Region5.T5_prho(p, rho)))
         else:
@@ -1812,7 +1813,6 @@ class XSteam(object):
         rho = 1 / v
 
         return self.unitConverter.fromSIunit_tc(TransportProperties.tc_ptrho(p, T, rho))
-
 
     def tc_ph(self, p, h):
         """Thermal conductivity as a function of pressure and enthalpy

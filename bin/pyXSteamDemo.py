@@ -120,6 +120,7 @@ def demo_moillier_diagramm():
     pyplot.ylabel("h in [kJ/kg]")
     pyplot.show()
 
+
 def demo_ice_diagramm():
     """Generate a diagram showing the sublimation and melting preasure"""
     steam_table = XSteam(XSteam.UNIT_SYSTEM_BARE)
@@ -150,11 +151,13 @@ def demo_ice_diagramm():
     pyplot.setp(line6, linewidth=1, color='r')
     pyplot.show()
 
+
 def demo_simpel_values_heavy_water():
     """calculate values for heavy water and print the results"""
     steam_table_hw = XSteam_HW(XSteam_HW.UNIT_SYSTEM_MKS)
     print('my_rhoT(1.0, 320.0) =', steam_table_hw.my_rhoT(1.0, 320.0))
     print('my_rhoT(1.0, 320.0) =', steam_table_hw.tc_rhoT(1.0, 320.0))
+
 
 if __name__ == '__main__':
     logger = logging.getLogger('pyXSteam')

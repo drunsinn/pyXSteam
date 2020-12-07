@@ -12,9 +12,9 @@ logger = logging.getLogger('pyXSteam-UnitConverter')
 class UnitConverter(object):
     """Helper class to convert user units to SI-units and back"""
 
-    __UNIT_SYSTEM_BARE__ = 0 # m/kg/sec/K/MPa/W
-    __UNIT_SYSTEM_MKS__ = 1 # m/kg/sec/°C/bar/W
-    __UNIT_SYSTEM_FLS__ = 2 # ft/lb/sec/°F/psi/btu
+    __UNIT_SYSTEM_BARE__ = 0  # m/kg/sec/K/MPa/W
+    __UNIT_SYSTEM_MKS__ = 1  # m/kg/sec/°C/bar/W
+    __UNIT_SYSTEM_FLS__ = 2  # ft/lb/sec/°F/psi/btu
 
     def __init__(self, unitSystem=__UNIT_SYSTEM_BARE__):
         """Initialise the unit converter. Parameter is the user system"""
