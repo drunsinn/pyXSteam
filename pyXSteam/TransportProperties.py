@@ -55,12 +55,12 @@ def my_AllRegions_pT(p, T):
     sum = 0
     for i in range(0, 6):
         sum = sum + h0[i] * (((1 / Ts) - 1) ** i) + \
-                    h1[i] * (((1 / Ts) - 1) ** i) * ((rhos - 1) ** 1) + \
-                    h2[i] * (((1 / Ts) - 1) ** i) * ((rhos - 1) ** 2) + \
-                    h3[i] * (((1 / Ts) - 1) ** i) * ((rhos - 1) ** 3) + \
-                    h4[i] * (((1 / Ts) - 1) ** i) * ((rhos - 1) ** 4) + \
-                    h5[i] * (((1 / Ts) - 1) ** i) * ((rhos - 1) ** 5) + \
-                    h6[i] * (((1 / Ts) - 1) ** i) * ((rhos - 1) ** 6)
+            h1[i] * (((1 / Ts) - 1) ** i) * ((rhos - 1) ** 1) + \
+            h2[i] * (((1 / Ts) - 1) ** i) * ((rhos - 1) ** 2) + \
+            h3[i] * (((1 / Ts) - 1) ** i) * ((rhos - 1) ** 3) + \
+            h4[i] * (((1 / Ts) - 1) ** i) * ((rhos - 1) ** 4) + \
+            h5[i] * (((1 / Ts) - 1) ** i) * ((rhos - 1) ** 5) + \
+            h6[i] * (((1 / Ts) - 1) ** i) * ((rhos - 1) ** 6)
     my1 = math.exp(rhos * sum)
     mys = my0 * my1
     return mys * 0.000055071

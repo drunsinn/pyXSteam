@@ -100,11 +100,11 @@ def tcHW_rhoT_R4(rho, T):
     rho_r1 = 0.125698
     D_1 = -741.112
     tau = T_dash / (math.fabs(T_dash - 1.1) + 1.1)  # B15
-    f_1 = math.exp(C_T1 * T_dash + C_T2 * (T_dash**2))  # B12
-    f_2 = math.exp(C_R1 * (rho_dash-1.0)**2) + C_R2 * math.exp(C_R3*(rho_dash-rho_r1)**2)  # B13
-    f_3 = 1 + math.exp(60.0 * (tau-1.0) + 20.0)  # B14
-    f_4 = 1 + math.exp(100.0 * (tau-1.0) + 15.0)  # B14
-    part_C2 = (C_2 * f_1**4) / f_3
+    f_1 = math.exp(C_T1 * T_dash + C_T2 * (T_dash ** 2))  # B12
+    f_2 = math.exp(C_R1 * (rho_dash - 1.0) ** 2) + C_R2 * math.exp(C_R3 * (rho_dash - rho_r1) ** 2)  # B13
+    f_3 = 1 + math.exp(60.0 * (tau - 1.0) + 20.0)  # B14
+    f_4 = 1 + math.exp(100.0 * (tau - 1.0) + 15.0)  # B14
+    part_C2 = (C_2 * f_1 ** 4) / f_3
     part_f2 = (3.5 * f_2) / f_4
 
     # equation B8
@@ -116,14 +116,14 @@ def tcHW_rhoT_R4(rho, T):
     # equation B9
     sum = 0
     for i in range(1, 5):
-        sum += B[i] * (rho_dash**i)
-    delta_tc = B[0] * (1.0-math.exp(B_e * rho_dash)) + sum
+        sum += B[i] * (rho_dash ** i)
+    delta_tc = B[0] * (1.0 - math.exp(B_e * rho_dash)) + sum
 
     # equation B10
     delta_tc_c = C_1 * f_1 * f_2 * (1.0 + f_2**2 * (part_C2 + part_f2))
 
     # equation B11
-    delta_tc_L = D_1 * f_1**1.2 * (1.0 - math.exp(-1.0 * (rho_dash/2.5)**10))
+    delta_tc_L = D_1 * f_1 ** 1.2 * (1.0 - math.exp(-1.0 * (rho_dash / 2.5) ** 10))
 
     # equation B7
     tc_dash = tc_o + delta_tc + delta_tc_c + delta_tc_L
