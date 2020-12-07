@@ -1,5 +1,8 @@
-## v0.4.x, TBD
+## v0.4.6, 12.2020
 * removed stump for IAPWS R15 as it containd a error that need further work but left the constants define in R15
+* non functional changes
+** fix code style in multible locations
+** add github workflows for package and publish
 
 ## v0.4.5, 07.2020
 * add functions from IAPWS R4 and R14
