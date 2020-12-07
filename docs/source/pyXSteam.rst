@@ -81,14 +81,6 @@ pyXSteam.IAPWS_R14 module
     :undoc-members:
     :show-inheritance:
 
-pyXSteam.IAPWS_R15 module
------------------------------------
-
-.. automodule:: pyXSteam.IAPWS_R15
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 Module contents
 ---------------
 

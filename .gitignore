@@ -108,5 +108,4 @@ venv.bak/
 .DS_Store
 *.todo
 /extern_docs
-
-/.vscode
+.vscode/
