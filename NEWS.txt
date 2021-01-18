@@ -1,3 +1,6 @@
+## v0.4.7, 01.2021
+* Setup: add fallback to distutil if setuptools is not availible
+
 ## v0.4.6, 12.2020
 * removed stump for IAPWS R15 as it containd a error that need further work but left the constants define in R15
 * non functional changes
