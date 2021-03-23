@@ -73,8 +73,10 @@ By using the unitSystem Parameter, you can tell XSteam witch Unit System you are
 
 To enable logging, add the following lines to your code:
 
-    import logging logger = logging.getLogger(\'pyXSteam\')
-    logger.setLevel(logging.DEBUG) sh = logging.StreamHandler()
+    import logging
+    logger = logging.getLogger(\'pyXSteam\')
+    logger.setLevel(logging.DEBUG)
+    sh = logging.StreamHandler()
     sh.setFormatter(logging.Formatter(\'%(name)s - %(levelname)s - %(message)s\'))
     logger.addHandler(sh)
 
