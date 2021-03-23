@@ -33,7 +33,7 @@ class XSteam(object):
     def __init__(self, unitSystem=UnitConverter.__UNIT_SYSTEM_BARE__):
         self.logger = logging.getLogger(__name__)
         self.unitConverter = UnitConverter(unitSystem)
-        self.logger.info('initialised pyXSteam with Unit System "{}"'.format(self.unitConverter))
+        self.logger.info("initialised pyXSteam with Unit System '{}'".format(self.unitConverter))
 
     def specificGasConstant(self):
         """returns the specific Gas Constant R in kJ kg^-1 K^-1"""
@@ -78,7 +78,7 @@ class XSteam(object):
         if (p > 0.000611657) and (p < 22.06395):
             return self.unitConverter.fromSIunit_T(Region4.T4_p(p))
         else:
-            self.logger.warning('pressure out of range')
+            self.logger.warning("pressure out of range")
             return float("NaN")
 
     def tsat_s(self, s):
@@ -122,7 +122,7 @@ class XSteam(object):
         elif region == 5:
             return self.unitConverter.fromSIunit_T(Region5.T5_ph(p, h))
         else:
-            self.logger.warning("Region switch t_ph returned unknown value: {:d}".format(region))
+            self.logger.warning("Region switch t_ph returned unknown value: %d", region)
             return float("NaN")
 
     def t_ps(self, p, s):
@@ -150,7 +150,7 @@ class XSteam(object):
         elif region == 5:
             return self.unitConverter.fromSIunit_T(Region5.T5_ps(p, s))
         else:
-            self.logger.warning("Region switch t_ps returned unknown value: {:d}".format(region))
+            self.logger.warning("Region switch t_ps returned unknown value: %d", region)
             return float("NaN")
 
     def t_hs(self, h, s):
@@ -181,7 +181,7 @@ class XSteam(object):
             self.logger.error("Functions of hs is not available in region 5")
             return float("NaN")
         else:
-            self.logger.warning("Region switch t_hs returned unknown value: {:d}".format(region))
+            self.logger.warning("Region switch t_hs returned unknown value: %d", region)
             return float("NaN")
 
 # ***********************************************************************************************************
@@ -241,10 +241,10 @@ class XSteam(object):
             tSat = Region4.T4_hs(h, s)
             return self.unitConverter.fromSIunit_p(Region4.p4_T(tSat))
         elif region == 5:
-            self.logger.warning('functions of hs is not available in region 5')
+            self.logger.warning("functions of hs is not available in region 5")
             return float("NaN")
         else:
-            self.logger.warning("Region switch p_hs returned unknown value: {:d}".format(region))
+            self.logger.warning("Region switch p_hs returned unknown value: %d", region)
             return float("NaN")
 
     def p_hrho(self, h, rho):
@@ -262,16 +262,24 @@ class XSteam(object):
             p (float): pressure or NaN if arguments are out of range
         """
         if rho <= 0.0:
-            raise Exception('rho out of range')
+            raise Exception("rho out of range")
             return float("NaN")
         h = self.unitConverter.toSIunit_h(h)
         High_Bound = self.unitConverter.fromSIunit_p(100)
         Low_Bound = self.unitConverter.fromSIunit_p(0.000611657)
         ps = self.unitConverter.fromSIunit_p(10)
         rhos = 1 / self.v_ph(ps, h)
+        step_counter = 0
         while math.fabs(rho - rhos) > 0.0000001:
-            # rhos = 1 / XSteam('v_ph', ps, h)
+            step_counter += 1
+            last_rhos = rhos
+
             rhos = 1 / self.v_ph(ps, h)
+
+            if last_rhos == rhos:
+                self.logger.warning("p_hrho stopped iterating after %d steps because values did not converge", step_counter)
+                break
+
             if rhos >= rho:
                 High_Bound = ps
             else:
@@ -294,7 +302,7 @@ class XSteam(object):
         if (p > 0.000611657) and (p < 22.06395):
             return self.unitConverter.fromSIunit_h(Region4.h4V_p(p))
         else:
-            self.logger.warning('pressure out of range')
+            self.logger.warning("pressure out of range")
             return float("NaN")
 
     def hL_p(self, p):
@@ -310,7 +318,7 @@ class XSteam(object):
         if (p > 0.000611657) and (p < 22.06395):
             return self.unitConverter.fromSIunit_h(Region4.h4L_p(p))
         else:
-            self.logger.warning('pressure out of range')
+            self.logger.warning("pressure out of range")
             return float("NaN")
 
     def hV_t(self, t):
@@ -327,7 +335,7 @@ class XSteam(object):
             p = Region4.p4_T(T)
             return self.unitConverter.fromSIunit_h(Region4.h4V_p(p))
         else:
-            self.logger.warning('Temperature out of range')
+            self.logger.warning("Temperature out of range")
             return float("NaN")
 
     def hL_t(self, t):
@@ -344,7 +352,7 @@ class XSteam(object):
             p = Region4.p4_T(T)
             return self.unitConverter.fromSIunit_h(Region4.h4L_p(p))
         else:
-            self.logger.warning('Temperature out of range')
+            self.logger.warning("Temperature out of range")
             return float("NaN")
 
     def h_pt(self, p, t):
@@ -367,12 +375,12 @@ class XSteam(object):
         elif region == 3:
             return self.unitConverter.fromSIunit_h(Region3.h3_pT(p, T))
         elif region == 4:
-            self.logger.warning('function h_pt is not available in region 4')
+            self.logger.warning("function h_pt is not available in region 4")
             return float("NaN")
         elif region == 5:
             return self.unitConverter.fromSIunit_h(Region5.h5_pT(p, T))
         else:
-            self.logger.warning("Region switch h_pt returned unknown value: {:d}".format(region))
+            self.logger.warning("Region switch h_pt returned unknown value: %d", region)
             return float("NaN")
 
     def h_ps(self, p, s):
@@ -400,7 +408,7 @@ class XSteam(object):
         elif region == 5:
             return self.unitConverter.fromSIunit_h(Region5.h5_pT(p, Region5.T5_ps(p, s)))
         else:
-            self.logger.warning("Region switch h_ps returned unknown value: {:d}".format(region))
+            self.logger.warning("Region switch h_ps returned unknown value: %d", region)
             return float("NaN")
 
     def h_px(self, p, x):
@@ -416,7 +424,7 @@ class XSteam(object):
         p = self.unitConverter.toSIunit_p(p)
         x = self.unitConverter.toSIunit_x(x)
         if (x > 1) or (x < 0) or (p >= 22.064):
-            self.logger.warning('Vapor fraction and/or pressure out of range')
+            self.logger.warning("Vapor fraction and/or pressure out of range")
             return float("NaN")
         hL = Region4.h4L_p(p)
         hV = Region4.h4V_p(p)
@@ -455,7 +463,7 @@ class XSteam(object):
         elif region == 5:
             return self.unitConverter.fromSIunit_h(Region5.h5_pT(p, Region5.T5_prho(p, rho)))
         else:
-            self.logger.warning("Region switch h_prho returned unknown value: {:d}".format(region))
+            self.logger.warning("Region switch h_prho returned unknown value: %d", region)
             return float("NaN")
 
     def h_tx(self, t, x):
@@ -471,7 +479,7 @@ class XSteam(object):
         T = self.unitConverter.toSIunit_T(t)
         x = self.unitConverter.toSIunit_x(x)
         if (x > 1) or (x < 0) or (T >= 647.096):
-            self.logger.warning('Vapor fraction and/or pressure out of range')
+            self.logger.warning("Vapor fraction and/or pressure out of range")
             return float("NaN")
         p = Region4.p4_T(T)
         hL = Region4.h4L_p(p)
@@ -497,7 +505,7 @@ class XSteam(object):
             else:
                 return self.unitConverter.fromSIunit_v(Region3.v3_ph(p, Region4.h4V_p(p)))
         else:
-            self.logger.warning('pressure out of range')
+            self.logger.warning("pressure out of range")
             return float("NaN")
 
     def vL_p(self, p):
@@ -516,7 +524,7 @@ class XSteam(object):
             else:
                 return self.unitConverter.fromSIunit_v(Region3.v3_ph(p, Region4.h4L_p(p)))
         else:
-            self.logger.warning('pressure out of range')
+            self.logger.warning("pressure out of range")
             return float("NaN")
 
     def vV_t(self, t):
@@ -535,7 +543,7 @@ class XSteam(object):
             else:
                 return self.unitConverter.fromSIunit_v(Region3.v3_ph(Region4.p4_T(T), Region4.h4V_p(Region4.p4_T(T))))
         else:
-            self.logger.warning('temperature out of range')
+            self.logger.warning("temperature out of range")
             return float("NaN")
 
     def vL_t(self, t):
@@ -554,7 +562,7 @@ class XSteam(object):
             else:
                 return self.unitConverter.fromSIunit_v(Region3.v3_ph(Region4.p4_T(T), Region4.h4L_p(Region4.p4_T(T))))
         else:
-            self.logger.warning('temperature out of range')
+            self.logger.warning("temperature out of range")
             return float("NaN")
 
     def v_pt(self, p, t):
@@ -577,12 +585,12 @@ class XSteam(object):
         elif region == 3:
             return self.unitConverter.fromSIunit_v(Region3.v3_ph(p, Region3.h3_pT(p, T)))
         elif region == 4:
-            self.logger.warning('function v_pt is not available in region 4')
+            self.logger.warning("function v_pt is not available in region 4")
             return float("NaN")
         elif region == 5:
             return self.unitConverter.fromSIunit_v(Region5.v5_pT(p, T))
         else:
-            self.logger.warning("Region switch v_pt returned unknown value: {:d}".format(region))
+            self.logger.warning("Region switch v_pt returned unknown value: %d", region)
             return float("NaN")
 
     def v_ph(self, p, h):
@@ -617,7 +625,7 @@ class XSteam(object):
             Ts = Region5.T5_ph(p, h)
             return self.unitConverter.fromSIunit_v(Region5.v5_pT(p, Ts))
         else:
-            self.logger.warning("Region switch v_ph returned unknown value: {:d}".format(region))
+            self.logger.warning("Region switch v_ph returned unknown value: %d", region)
             return float("NaN")
 
     def v_ps(self, p, s):
@@ -652,7 +660,7 @@ class XSteam(object):
             Ts = Region5.T5_ps(p, s)
             return self.unitConverter.fromSIunit_v(Region5.v5_pT(p, Ts))
         else:
-            self.logger.warning("Region switch v_ps returned unknown value: {:d}".format(region))
+            self.logger.warning("Region switch v_ps returned unknown value: %d", region)
             return float("NaN")
 
 # ***********************************************************************************************************
@@ -756,7 +764,7 @@ class XSteam(object):
             else:
                 return self.unitConverter.fromSIunit_s(Region3.s3_rhoT(1 / (Region3.v3_ph(p, Region4.h4V_p(p))), Region4.T4_p(p)))
         else:
-            self.logger.warning('pressure out of range')
+            self.logger.warning("pressure out of range")
             return float("NaN")
 
     def sL_p(self, p):
@@ -775,7 +783,7 @@ class XSteam(object):
             else:
                 return self.unitConverter.fromSIunit_s(Region3.s3_rhoT(1 / (Region3.v3_ph(p, Region4.h4L_p(p))), Region4.T4_p(p)))
         else:
-            self.logger.warning('pressure out of range')
+            self.logger.warning("pressure out of range")
             return float("NaN")
 
     def sV_t(self, t):
@@ -794,7 +802,7 @@ class XSteam(object):
             else:
                 return self.unitConverter.fromSIunit_s(Region3.s3_rhoT(1 / (Region3.v3_ph(Region4.p4_T(T), Region4.h4V_p(Region4.p4_T(T)))), T))
         else:
-            self.logger.warning('temperature out of range')
+            self.logger.warning("temperature out of range")
             return float("NaN")
 
     def sL_t(self, t):
@@ -813,7 +821,7 @@ class XSteam(object):
             else:
                 return self.unitConverter.fromSIunit_s(Region3.s3_rhoT(1 / (Region3.v3_ph(Region4.p4_T(T), Region4.h4L_p(Region4.p4_T(T)))), T))
         else:
-            self.logger.warning('temperature out of range')
+            self.logger.warning("temperature out of range")
             return float("NaN")
 
     def s_pt(self, p, t):
@@ -838,12 +846,12 @@ class XSteam(object):
             rhos = 1 / Region3.v3_ph(p, hs)
             return self.unitConverter.fromSIunit_s(Region3.s3_rhoT(rhos, T))
         elif region == 4:
-            self.logger.warning('function s_pt is not available in region 4')
+            self.logger.warning("function s_pt is not available in region 4")
             return float("NaN")
         elif region == 5:
             return self.unitConverter.fromSIunit_s(Region5.s5_pT(p, T))
         else:
-            self.logger.warning("Region switch s_pt returned unknown value: {:d}".format(region))
+            self.logger.warning("Region switch s_pt returned unknown value: %d", region)
             return float("NaN")
 
     def s_ph(self, p, h):
@@ -885,7 +893,7 @@ class XSteam(object):
             T = Region5.T5_ph(p, h)
             return self.unitConverter.fromSIunit_s(Region5.s5_pT(p, T))
         else:
-            self.logger.warning("Region switch s_ph returned unknown value: {:d}".format(region))
+            self.logger.warning("Region switch s_ph returned unknown value: %d", region)
             return float("NaN")
 
 # ***********************************************************************************************************
@@ -924,7 +932,7 @@ class XSteam(object):
             else:
                 return self.unitConverter.fromSIunit_u(Region3.u3_rhoT(1 / (Region3.v3_ph(p, Region4.h4L_p(p))), Region4.T4_p(p)))
         else:
-            self.logger.warning('pressure out of range')
+            self.logger.warning("pressure out of range")
             return float("NaN")
 
     def uV_t(self, t):
@@ -943,7 +951,7 @@ class XSteam(object):
             else:
                 return self.unitConverter.fromSIunit_u(Region3.u3_rhoT(1 / (Region3.v3_ph(Region4.p4_T(T), Region4.h4V_p(Region4.p4_T(T)))), T))
         else:
-            self.logger.warning('temperature out of range')
+            self.logger.warning("temperature out of range")
             return float("NaN")
 
     def uL_t(self, t):
@@ -962,7 +970,7 @@ class XSteam(object):
             else:
                 return self.unitConverter.fromSIunit_u(Region3.u3_rhoT(1 / (Region3.v3_ph(Region4.p4_T(T), Region4.h4L_p(Region4.p4_T(T)))), T))
         else:
-            self.logger.warning('temperature out of range')
+            self.logger.warning("temperature out of range")
             return float("NaN")
 
     def u_pt(self, p, t):
@@ -987,12 +995,12 @@ class XSteam(object):
             rhos = 1 / Region3.v3_ph(p, hs)
             return self.unitConverter.fromSIunit_u(Region3.u3_rhoT(rhos, T))
         elif region == 4:
-            self.logger.warning('function u_pt is not available in region 4')
+            self.logger.warning("function u_pt is not available in region 4")
             return float("NaN")
         elif region == 5:
             return self.unitConverter.fromSIunit_u(Region5.u5_pT(p, T))
         else:
-            self.logger.warning("Region switch u_pt returned unknown value: {:d}".format(region))
+            self.logger.warning("Region switch u_pt returned unknown value: %d", region)
             return float("NaN")
 
     def u_ph(self, p, h):
@@ -1034,7 +1042,7 @@ class XSteam(object):
             Ts = Region5.T5_ph(p, h)
             return self.unitConverter.fromSIunit_u(Region5.u5_pT(p, Ts))
         else:
-            self.logger.warning("Region switch u_ph returned unknown value: {:d}".format(region))
+            self.logger.warning("Region switch u_ph returned unknown value: %d", region)
             return float("NaN")
 
     def u_ps(self, p, s):
@@ -1073,7 +1081,7 @@ class XSteam(object):
             Ts = Region5.T5_ps(p, s)
             return self.unitConverter.fromSIunit_u(Region5.u5_pT(p, Ts))
         else:
-            self.logger.warning("Region switch u_ps returned unknown value: {:d}".format(region))
+            self.logger.warning("Region switch u_ps returned unknown value: %d", region)
             return float("NaN")
 
 # ***********************************************************************************************************
@@ -1094,7 +1102,7 @@ class XSteam(object):
             else:
                 return self.unitConverter.fromSIunit_Cp(Region3.Cp3_rhoT(1 / (Region3.v3_ph(p, Region4.h4V_p(p))), Region4.T4_p(p)))
         else:
-            self.logger.warning('preassure out of range')
+            self.logger.warning("preassure out of range")
             return float("NaN")
 
     def CpL_p(self, p):
@@ -1113,7 +1121,7 @@ class XSteam(object):
             else:
                 return self.unitConverter.fromSIunit_Cp(Region3.Cp3_rhoT(1 / (Region3.v3_ph(p, Region4.h4L_p(p))), Region4.T4_p(p)))
         else:
-            self.logger.warning('preassure out of range')
+            self.logger.warning("preassure out of range")
             return float("NaN")
 
     def CpV_t(self, t):
@@ -1132,7 +1140,7 @@ class XSteam(object):
             else:
                 return self.unitConverter.fromSIunit_Cp(Region3.Cp3_rhoT(1 / (Region3.v3_ph(Region4.p4_T(T), Region4.h4V_p(Region4.p4_T(T)))), T))
         else:
-            self.logger.warning('temperature out of range')
+            self.logger.warning("temperature out of range")
             return float("NaN")
 
     def CpL_t(self, t):
@@ -1151,7 +1159,7 @@ class XSteam(object):
             else:
                 return self.unitConverter.fromSIunit_Cp(Region3.Cp3_rhoT(1 / (Region3.v3_ph(Region4.p4_T(T), Region4.h4L_p(Region4.p4_T(T)))), T))
         else:
-            self.logger.warning('temperature out of range')
+            self.logger.warning("temperature out of range")
             return float("NaN")
 
     def Cp_pt(self, p, t):
@@ -1176,12 +1184,12 @@ class XSteam(object):
             rhos = 1 / Region3.v3_ph(p, hs)
             return self.unitConverter.fromSIunit_Cp(Region3.Cp3_rhoT(rhos, T))
         elif region == 4:
-            self.logger.warning('function Cp_pt is not available in region 4')
+            self.logger.warning("function Cp_pt is not available in region 4")
             return float("NaN")
         elif region == 5:
             return self.unitConverter.fromSIunit_Cp(Region5.Cp5_pT(p, T))
         else:
-            self.logger.warning("Region switch Cp_pt returned unknown value: {:d}".format(region))
+            self.logger.warning("Region switch Cp_pt returned unknown value: %d", region)
             return float("NaN")
 
     def Cp_ph(self, p, h):
@@ -1208,13 +1216,13 @@ class XSteam(object):
             Ts = Region3.T3_ph(p, h)
             return self.unitConverter.fromSIunit_Cp(Region3.Cp3_rhoT(rhos, Ts))
         elif region == 4:
-            self.logger.warning('function Cp_ph is not available in region 4')
+            self.logger.warning("function Cp_ph is not available in region 4")
             return float("NaN")
         elif region == 5:
             Ts = Region5.T5_ph(p, h)
             return self.unitConverter.fromSIunit_Cp(Region5.Cp5_pT(p, Ts))
         else:
-            self.logger.warning("Region switch Cp_ph returned unknown value: {:d}".format(region))
+            self.logger.warning("Region switch Cp_ph returned unknown value: %d", region)
             return float("NaN")
 
     def Cp_ps(self, p, s):
@@ -1241,13 +1249,13 @@ class XSteam(object):
             Ts = Region3.T3_ps(p, s)
             return self.unitConverter.fromSIunit_Cp(Region3.Cp3_rhoT(rhos, Ts))
         elif region == 4:
-            self.logger.warning('function Cp_ps is not available in region 4')
+            self.logger.warning("function Cp_ps is not available in region 4")
             return float("NaN")
         elif region == 5:
             Ts = Region5.T5_ps(p, s)
             return self.unitConverter.fromSIunit_Cp(Region5.Cp5_pT(p, Ts))
         else:
-            self.logger.warning("Region switch Cp_ps returned unknown value: {:d}".format(region))
+            self.logger.warning("Region switch Cp_ps returned unknown value: %d", region)
             return float("NaN")
 
 # ***********************************************************************************************************
@@ -1268,7 +1276,7 @@ class XSteam(object):
             else:
                 return self.unitConverter.fromSIunit_Cv(Region3.Cv3_rhoT(1 / (Region3.v3_ph(p, Region4.h4V_p(p))), Region4.T4_p(p)))
         else:
-            self.logger.warning('pressure out of range')
+            self.logger.warning("pressure out of range")
             return float("NaN")
 
     def CvL_p(self, p):
@@ -1287,7 +1295,7 @@ class XSteam(object):
             else:
                 return self.unitConverter.fromSIunit_Cv(Region3.Cv3_rhoT(1 / (Region3.v3_ph(p, Region4.h4L_p(p))), Region4.T4_p(p)))
         else:
-            self.logger.warning('pressure out of range')
+            self.logger.warning("pressure out of range")
             return float("NaN")
 
     def CvV_t(self, t):
@@ -1306,7 +1314,7 @@ class XSteam(object):
             else:
                 return self.unitConverter.fromSIunit_Cv(Region3.Cv3_rhoT(1 / (Region3.v3_ph(Region4.p4_T(T), Region4.h4V_p(Region4.p4_T(T)))), T))
         else:
-            self.logger.warning('temperature out of range')
+            self.logger.warning("temperature out of range")
             return float("NaN")
 
     def CvL_t(self, t):
@@ -1325,7 +1333,7 @@ class XSteam(object):
             else:
                 return self.unitConverter.fromSIunit_Cv(Region3.Cv3_rhoT(1 / (Region3.v3_ph(Region4.p4_T(T), Region4.h4L_p(Region4.p4_T(T)))), T))
         else:
-            self.logger.warning('temperature out of range')
+            self.logger.warning("temperature out of range")
             return float("NaN")
 
     def Cv_pt(self, p, t):
@@ -1350,12 +1358,12 @@ class XSteam(object):
             rhos = 1 / Region3.v3_ph(p, hs)
             return self.unitConverter.fromSIunit_Cv(Region3.Cv3_rhoT(rhos, T))
         elif region == 4:
-            self.logger.warning('function Cv_pt is not available in region 4')
+            self.logger.warning("function Cv_pt is not available in region 4")
             return float("NaN")
         elif region == 5:
             return self.unitConverter.fromSIunit_Cv(Region5.Cv5_pT(p, T))
         else:
-            self.logger.warning("Region switch Cv_pt returned unknown value: {:d}".format(region))
+            self.logger.warning("Region switch Cv_pt returned unknown value: %d", region)
             return float("NaN")
 
     def Cv_ph(self, p, h):
@@ -1382,13 +1390,13 @@ class XSteam(object):
             Ts = Region3.T3_ph(p, h)
             return self.unitConverter.fromSIunit_Cv(Region3.Cv3_rhoT(rhos, Ts))
         elif region == 4:
-            self.logger.warning('function Cv_ph is not available in region 4')
+            self.logger.warning("function Cv_ph is not available in region 4")
             return float("NaN")
         elif region == 5:
             Ts = Region5.T5_ph(p, h)
             return self.unitConverter.fromSIunit_Cv(Region5.Cv5_pT(p, Ts))
         else:
-            self.logger.warning("Region switch Cv_ph returned unknown value: {:d}".format(region))
+            self.logger.warning("Region switch Cv_ph returned unknown value: %d", region)
             return float("NaN")
 
     def Cv_ps(self, p, s):
@@ -1415,13 +1423,13 @@ class XSteam(object):
             Ts = Region3.T3_ps(p, s)
             return self.unitConverter.fromSIunit_Cv(Region3.Cv3_rhoT(rhos, Ts))
         elif region == 4:
-            self.logger.warning('function Cv_ps is not available in region 4')
+            self.logger.warning("function Cv_ps is not available in region 4")
             return float("NaN")  # (xs * CvVp + (1 - xs) * CvLp) / Cv_scale - Cv_offset
         elif region == 5:
             Ts = Region5.T5_ps(p, s)
             return self.unitConverter.fromSIunit_Cv(Region5.Cv5_pT(p, Ts))
         else:
-            self.logger.warning("Region switch Cv_ps returned unknown value: {:d}".format(region))
+            self.logger.warning("Region switch Cv_ps returned unknown value: %d", region)
             return float("NaN")
 
 # ***********************************************************************************************************
@@ -1442,7 +1450,7 @@ class XSteam(object):
             else:
                 return self.unitConverter.fromSIunit_w(Region3.w3_rhoT(1 / (Region3.v3_ph(p, Region4.h4V_p(p))), Region4.T4_p(p)))
         else:
-            self.logger.warning('pressure out of range')
+            self.logger.warning("pressure out of range")
             return float("NaN")
 
     def wL_p(self, p):
@@ -1461,7 +1469,7 @@ class XSteam(object):
             else:
                 return self.unitConverter.fromSIunit_w(Region3.w3_rhoT(1 / (Region3.v3_ph(p, Region4.h4L_p(p))), Region4.T4_p(p)))
         else:
-            self.logger.warning('pressure out of range')
+            self.logger.warning("pressure out of range")
             return float("NaN")
 
     def wV_t(self, t):
@@ -1480,7 +1488,7 @@ class XSteam(object):
             else:
                 return self.unitConverter.fromSIunit_w(Region3.w3_rhoT(1 / (Region3.v3_ph(Region4.p4_T(T), Region4.h4V_p(Region4.p4_T(T)))), T))
         else:
-            self.logger.warning('temperature out of range')
+            self.logger.warning("temperature out of range")
             return float("NaN")
 
     def wL_t(self, t):
@@ -1499,7 +1507,7 @@ class XSteam(object):
             else:
                 return self.unitConverter.fromSIunit_w(Region3.w3_rhoT(1 / (Region3.v3_ph(Region4.p4_T(T), Region4.h4L_p(Region4.p4_T(T)))), T))
         else:
-            self.logger.warning('temperature out of range')
+            self.logger.warning("temperature out of range")
             return float("NaN")
 
     def w_pt(self, p, t):
@@ -1524,12 +1532,12 @@ class XSteam(object):
             rhos = 1 / Region3.v3_ph(p, hs)
             return self.unitConverter.fromSIunit_w(Region3.w3_rhoT(rhos, T))
         elif region == 4:
-            self.logger.warning('function w_pt is not available in region 4')
+            self.logger.warning("function w_pt is not available in region 4")
             return float("NaN")
         elif region == 5:
             return self.unitConverter.fromSIunit_w(Region5.w5_pT(p, T))
         else:
-            self.logger.warning("Region switch w_pt returned unknown value: {:d}".format(region))
+            self.logger.warning("Region switch w_pt returned unknown value: %d", region)
             return float("NaN")
 
     def w_ph(self, p, h):
@@ -1556,13 +1564,13 @@ class XSteam(object):
             Ts = Region3.T3_ph(p, h)
             return self.unitConverter.fromSIunit_w(Region3.w3_rhoT(rhos, Ts))
         elif region == 4:
-            self.logger.warning('function w_ph is not available in region 4')
+            self.logger.warning("function w_ph is not available in region 4")
             return float("NaN")
         elif region == 5:
             Ts = Region5.T5_ph(p, h)
             return self.unitConverter.fromSIunit_w(Region5.w5_pT(p, Ts))
         else:
-            self.logger.warning("Region switch w_ph returned unknown value: {:d}".format(region))
+            self.logger.warning("Region switch w_ph returned unknown value: %d", region)
             return float("NaN")
 
     def w_ps(self, p, s):
@@ -1589,13 +1597,13 @@ class XSteam(object):
             Ts = Region3.T3_ps(p, s)
             return self.unitConverter.fromSIunit_w(Region3.w3_rhoT(rhos, Ts))
         elif region == 4:
-            self.logger.warning('function w_ps is not available in region 4')
+            self.logger.warning("function w_ps is not available in region 4")
             return float("NaN")  # (xs * wVp + (1 - xs) * wLp) / w_scale - w_offset
         elif region == 5:
             Ts = Region5.T5_ps(p, s)
             return self.unitConverter.fromSIunit_w(Region5.w5_pT(p, Ts))
         else:
-            self.logger.warning("Region switch w_ps returned unknown value: {:d}".format(region))
+            self.logger.warning("Region switch w_ps returned unknown value: %d", region)
             return float("NaN")
 
 # ***********************************************************************************************************
@@ -1617,12 +1625,12 @@ class XSteam(object):
         T = self.unitConverter.toSIunit_T(t)
         region = RegionSelection.region_pT(p, T)
         if region == 4:
-            self.logger.warning('function my_pt is not available in region 4')
+            self.logger.warning("function my_pt is not available in region 4")
             return float("NaN")
         elif region in [1, 2, 3, 5]:
             return self.unitConverter.fromSIunit_my(TransportProperties.my_AllRegions_pT(p, T))
         else:
-            self.logger.warning("Region switch my_pt returned unknown value: {:d}".format(region))
+            self.logger.warning("Region switch my_pt returned unknown value: %d", region)
             return float("NaN")
 
     def my_ph(self, p, h):
@@ -1641,10 +1649,10 @@ class XSteam(object):
         if region in [1, 2, 3, 5]:
             return self.unitConverter.fromSIunit_my(TransportProperties.my_AllRegions_ph(p, h))
         elif region == 4:
-            self.logger.warning('function my_pt is not available in region 4')
+            self.logger.warning("function my_pt is not available in region 4")
             return float("NaN")
         else:
-            self.logger.warning("Region switch my_ph returned unknown value: {:d}".format(region))
+            self.logger.warning("Region switch my_ph returned unknown value: %d", region)
             return float("NaN")
 
     def my_ps(self, p, s):
@@ -1872,7 +1880,7 @@ class XSteam(object):
         if (p > 0.000611657) and (p < 22.06395):
             return self.unitConverter.fromSIunit_x(Region4.x4_ph(p, h))
         else:
-            self.logger.warning('pressure out of range')
+            self.logger.warning("pressure out of range")
             return float("NaN")
 
     def x_ps(self, p, s):
@@ -1890,7 +1898,7 @@ class XSteam(object):
         if (p > 0.000611657) and (p < 22.06395):
             return self.unitConverter.fromSIunit_x(Region4.x4_ps(p, s))
         else:
-            self.logger.warning('pressure out of range')
+            self.logger.warning("pressure out of range")
             return float("NaN")
 
 # ***********************************************************************************************************
@@ -1917,7 +1925,7 @@ class XSteam(object):
             xs = Region4.x4_ph(p, h)
             return self.unitConverter.fromSIunit_vx((xs * vV / (xs * vV + (1 - xs) * vL)))
         else:
-            self.logger.warning('pressure out of range')
+            self.logger.warning("pressure out of range")
             return float("NaN")
 
     def vx_ps(self, p, s):
@@ -1942,7 +1950,7 @@ class XSteam(object):
             xs = Region4.x4_ps(p, s)
             return self.unitConverter.fromSIunit_vx((xs * vV / (xs * vV + (1 - xs) * vL)))
         else:
-            self.logger.warning('pressure out of range')
+            self.logger.warning("pressure out of range")
             return float("NaN")
 
 # ***********************************************************************************************************
@@ -1973,59 +1981,59 @@ class XSteam(object):
 
         if hint is None:
             if T >= 251.165 and T < 256.164:
-                self.logger.error('cant select ice type based on temperatur, hint reqired')
+                self.logger.error("cant select ice type based on temperatur, hint reqired")
                 return float("NaN")
             elif T >= 256.164 and T < 273.31:
-                self.logger.debug('chose ice type V based on temperature')
+                self.logger.debug("chose ice type V based on temperature")
                 return self.unitConverter.fromSIunit_p(IAPWS_R14.pmelt_T_iceV(T))
             elif T >= 273.31 and T < 355:
-                self.logger.debug('chose ice type VI based on temperature')
+                self.logger.debug("chose ice type VI based on temperature")
                 return self.unitConverter.fromSIunit_p(IAPWS_R14.pmelt_T_iceVI(T))
             elif T >= 355 and T < 751:
-                self.logger.debug('chose ice type VII based on temperature')
+                self.logger.debug("chose ice type VII based on temperature")
                 return self.unitConverter.fromSIunit_p(IAPWS_R14.pmelt_T_iceVII(T))
             else:
-                self.logger.warning('temperature out of range')
+                self.logger.warning("temperature out of range")
                 return float("NaN")
 
         elif hint is self.TYPE_ICE_Ih:
             if T >= 251.165 and T < 273.16:
                 return self.unitConverter.fromSIunit_p(IAPWS_R14.pmelt_T_iceIh(T))
             else:
-                self.logger.warning('pressure out of range')
+                self.logger.warning("pressure out of range")
                 return float("NaN")
 
         elif hint is self.TYPE_ICE_III:
             if T >= 251.165 and T < 256.164:
                 return self.unitConverter.fromSIunit_p(IAPWS_R14.pmelt_T_iceIII(T))
             else:
-                self.logger.warning('pressure out of range')
+                self.logger.warning("pressure out of range")
                 return float("NaN")
 
         elif hint is self.TYPE_ICE_V:
             if T >= 256.164 and T < 273.31:
                 return self.unitConverter.fromSIunit_p(IAPWS_R14.pmelt_T_iceV(T))
             else:
-                self.logger.warning('pressure out of range')
+                self.logger.warning("pressure out of range")
                 return float("NaN")
 
         elif hint is self.TYPE_ICE_VI:
             if T >= 273.31 and T < 355:
                 return self.unitConverter.fromSIunit_p(IAPWS_R14.pmelt_T_iceVI(T))
             else:
-                self.logger.warning('pressure out of range')
+                self.logger.warning("pressure out of range")
                 return float("NaN")
 
         elif hint is self.TYPE_ICE_VII:
             if T >= 355 and T < 751:
                 return self.unitConverter.fromSIunit_p(IAPWS_R14.pmelt_T_iceVII(T))
             else:
-                self.logger.warning('pressure out of range')
+                self.logger.warning("pressure out of range")
                 return float("NaN")
 
         else:
-            self.logger.error('unknown hint, cant select ice type')
-            raise ValueError('unknown hint')
+            self.logger.error("unknown hint, cant select ice type")
+            raise ValueError("unknown hint")
 
     def psubl_t(self, t):
         """Pressure along the sublimation curve as a function of temperature. Based on IAPWS R14-08(2011)
@@ -2041,5 +2049,5 @@ class XSteam(object):
         if T >= 50 and T < 273.16:
             return self.unitConverter.fromSIunit_p(IAPWS_R14.psubl_T(T))
         else:
-            self.logger.warning('temperature out of range')
+            self.logger.warning("temperature out of range")
             return float("NaN")
