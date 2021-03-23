@@ -228,12 +228,22 @@ class Region1():
 
         Solve by iteration. Observe that for low temperatures this equation has 2 solutions. Solve with half interval method
         """
+        logger = logging.getLogger('pyXSteam')
         Low_Bound = 273.15
         High_Bound = Region4.T4_p(p)
         rhos = -1000
+        step_counter = 0
         while math.fabs(rho - rhos) > 0.00001:
+            step_counter += 1
+            last_rhos = rhos
+
             Ts = (Low_Bound + High_Bound) / 2
             rhos = 1 / Region1.v1_pT(p, Ts)
+
+            if last_rhos == rhos:
+                logger.warning("T1_prho stopped iterating after %d steps because values did not converge", step_counter)
+                break
+
             if rhos < rho:
                 High_Bound = Ts
             else:
@@ -582,15 +592,25 @@ class Region2():
         """function T2_prho=T2_prho(p,rho)
         Solve by iteration. Observe that fo low temperatures this equation has 2 solutions. Solve with half interval method
         """
+        logger = logging.getLogger('pyXSteam')
         if p < 16.5292:
             Low_Bound = Region4.T4_p(p)
         else:
             Low_Bound = RegionBorders.B23T_p(p)
         High_Bound = 1073.15
         rhos = -1000
+        step_counter = 0
         while math.fabs(rho - rhos) > 0.000001:
+            step_counter += 1
+            last_rhos = rhos
+
             Ts = (Low_Bound + High_Bound) / 2
             rhos = 1 / Region2.v2_pT(p, Ts)
+            
+            if last_rhos == rhos:
+                logger.warning("T2_prho stopped iterating after %d steps because values did not converge", step_counter)
+                break
+
             if rhos < rho:
                 High_Bound = Ts
             else:
@@ -982,7 +1002,7 @@ class Region3():
 
         Ts = T + 1
         step_counter = 0
-        while abs(T - Ts) > 0.00001:
+        while math.fabs(T - Ts) > 0.00001:
             step_counter += 1
             last_Ts = Ts
 
@@ -1010,7 +1030,7 @@ class Region3():
         High_Bound = 1073.15
         ps = -1000
         step_counter = 0
-        while abs(p - ps) > 0.00000001:
+        while math.fabs(p - ps) > 0.00000001:
             step_counter += 1
             last_ps = ps
 
@@ -1151,7 +1171,7 @@ class Region4():
                 High_Bound = 2087.23500164864
                 ps = -1000
                 step_counter = 0
-                while abs(p - ps) > 0.00001:
+                while math.fabs(p - ps) > 0.00001:
                     step_counter += 1
                     last_ps = ps
 
@@ -1174,6 +1194,7 @@ class Region4():
     @staticmethod
     def h4V_p(p):
         """function h4V_p = h4V_p(p)"""
+        logger = logging.getLogger('pyXSteam')
         if (p > 0.000611657) and (p < 22.06395):
             Ts = Region4.T4_p(p)
             if p < 16.529:
@@ -1183,9 +1204,18 @@ class Region4():
                 Low_Bound = 2087.23500164864
                 High_Bound = 2563.592004 + 5
                 ps = -1000
+                step_counter = 0
                 while math.fabs(p - ps) > 0.000001:
+                    step_counter += 1
+                    last_ps = ps
+
                     hs = (Low_Bound + High_Bound) / 2
                     ps = RegionBorders.p3sat_h(hs)
+
+                    if last_ps == ps:
+                        logger.warning("h4V_p stopped iterating after %d steps because values did not converge", step_counter)
+                        break
+
                     if ps < p:
                         High_Bound = hs
                     else:
@@ -1485,12 +1515,22 @@ class Region5():
 
         Solve with half interval method
         """
+        logger = logging.getLogger('pyXSteam')
         Low_Bound = 1073.15
         High_Bound = 2273.15
         hs = h - 1
+        step_counter = 0
         while math.fabs(h - hs) > 0.00001:
+            step_counter += 1
+            last_hs = hs
+
             Ts = (Low_Bound + High_Bound) / 2
             hs = Region5.h5_pT(p, Ts)
+
+            if last_hs == hs:
+                logger.warning("T5_ph stopped iterating after %d steps because values did not converge", step_counter)
+                break
+
             if hs > h:
                 High_Bound = Ts
             else:
@@ -1508,7 +1548,7 @@ class Region5():
         High_Bound = 2273.15
         ss = s - 1
         step_counter = 0
-        while abs(s - ss) > 0.00001:
+        while math.fabs(s - ss) > 0.00001:
             step_counter += 1
             last_ss = ss
 
@@ -1531,12 +1571,22 @@ class Region5():
 
         Solve by iteration. Observe that for low temperatures this equation has 2 solutions. Solve with half interval method
         """
+        logger = logging.getLogger('pyXSteam')
         Low_Bound = 1073.15
         High_Bound = 2073.15
         rhos = -1000
+        step_counter = 0
         while math.fabs(rho - rhos) > 0.000001:
+            step_counter += 1
+            last_rhos = rhos
+
             Ts = (Low_Bound + High_Bound) / 2
             rhos = 1 / Region2.v2_pT(p, Ts)
+
+            if last_rhos == rhos:
+                logger.warning("T5_prho stopped iterating after %d steps because values did not converge", step_counter)
+                break
+
             if rhos < rho:
                 High_Bound = Ts
             else:
