@@ -34,12 +34,12 @@ def my_AllRegions_pT(p, T):
         hs = Region3.h3_pT(p, T)
         rho = 1 / Region3.v3_ph(p, hs)
     elif RegionSelection.region_pT(p, T) == 4:
-        logger.warning('function my_AllRegions_pT is not available in region 4')
-        return float('NaN')
+        logger.warning("function my_AllRegions_pT is not available in region 4")
+        return float("NaN")
     elif RegionSelection.region_pT(p, T) == 5:
         rho = 1 / Region5.v5_pT(p, T)
     else:
-        logger.warning('Region switch returned unknown value')
+        logger.warning("Region switch returned unknown value")
         return float("NaN")
 
     rhos = rho / 317.763
@@ -48,7 +48,7 @@ def my_AllRegions_pT(p, T):
 
     # Check valid area
     if (T > (900 + 273.15)) or ((T > (600 + 273.15)) and (p > 300)) or ((T > (150 + 273.15)) and (p > 350)) or (p > 500):
-        logger.warning('Temperature and/or Preasure out of range of validity')
+        logger.warning("Temperature and/or Preasure out of range of validity")
         return float("NaN")
 
     my0 = Ts ** 0.5 / (1 + 0.978197 / Ts + 0.579829 / (Ts ** 2) - 0.202354 / (Ts ** 3))
@@ -106,7 +106,7 @@ def my_AllRegions_ph(p, h):
         T = Ts
         rho = 1 / Region5.v5_pT(p, Ts)
     else:
-        logger.warning('Region switch returned unknown value')
+        logger.warning("Region switch returned unknown value")
         return float("NaN")
 
     rhos = rho / 317.763
@@ -114,7 +114,7 @@ def my_AllRegions_ph(p, h):
 
     # Check valid area
     if (T > (900 + 273.15)) or (T > (600 + 273.15) and (p > 300)) or (T > (150 + 273.15) and (p > 350)) or (p > 500):
-        logger.warning('Temperature and/or Preasure out of range of validity')
+        logger.warning("Temperature and/or Preasure out of range of validity")
         return float("NaN")
 
     my0 = Ts ** 0.5 / (1 + 0.978197 / Ts + 0.579829 / (Ts ** 2) - 0.202354 / (Ts ** 3))
@@ -146,19 +146,19 @@ def tc_ptrho(p, T, rho):
 
     # ver2.6 Start corrected bug
     if T < 273.15:
-        logger.warning('Temperature out of range of validity')
+        logger.warning("Temperature out of range of validity")
         return float("NaN")
     elif T < 500 + 273.15:
         if p > 100:
-            logger.warning('Preasure out of range of validity')
+            logger.warning("Preasure out of range of validity")
             return float("NaN")
     elif T <= 650 + 273.15:
         if p > 70:
-            logger.warning('Preasure out of range of validity')
+            logger.warning("Preasure out of range of validity")
             return float("NaN")
     else:  # T <= 800 + 273.15:
         if p > 40:
-            logger.warning('Preasure out of range of validity')
+            logger.warning("Preasure out of range of validity")
             return float("NaN")
     # ver2.6 End corrected bug
 
@@ -196,7 +196,7 @@ def Surface_Tension_T(T):
     bb = -0.625  #
     my = 1.256  #
     if (T < 0.01) or (T > tc):
-        logger.warning('Temperature out of range of validity')
+        logger.warning("Temperature out of range of validity")
         return float("NaN")
 
     tau = 1 - T / tc

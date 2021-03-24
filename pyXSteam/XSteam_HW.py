@@ -23,7 +23,7 @@ class XSteam_HW(object):
     def __init__(self, unitSystem=UnitConverter.__UNIT_SYSTEM_BARE__):
         self.logger = logging.getLogger(__name__)
         self.unitConverter = UnitConverter(unitSystem)
-        self.logger.info('initialised pyXSteam for Heavy Water with Unit System "{}"'.format(self.unitConverter))
+        self.logger.info("initialised pyXSteam for Heavy Water with Unit System '{}'".format(self.unitConverter))
 
     def criticalTemperatur(self):
         """returns the specific temperature with conversion to the selected unit system"""
@@ -57,10 +57,10 @@ class XSteam_HW(object):
         T = self.unitConverter.toSIunit_T(T)
 
         if T < 277.0 or T > 775.0:
-            self.logger.error('temperature out of range')
+            self.logger.error("temperature out of range")
             return float("NaN")
 
-        self.logger.warning('input for desity wasnt checked!')
+        self.logger.warning("input for desity wasnt checked!")
 
         return self.unitConverter.fromSIunit_T(IAPWS_R4.myHW_rhoT_R4(rho, T))
 
@@ -84,9 +84,9 @@ class XSteam_HW(object):
         T = self.unitConverter.toSIunit_T(T)
 
         if T < 277.0 or T > 825.0:
-            self.logger.error('temperature out of range')
+            self.logger.error("temperature out of range")
             return float("NaN")
 
-        self.logger.warning('input for desity wasnt checked!')
+        self.logger.warning("input for desity wasnt checked!")
 
         return self.unitConverter.fromSIunit_tc(IAPWS_R4.tcHW_rhoT_R4(rho, T))

@@ -228,7 +228,7 @@ class Region1():
 
         Solve by iteration. Observe that for low temperatures this equation has 2 solutions. Solve with half interval method
         """
-        logger = logging.getLogger('pyXSteam')
+        logger = logging.getLogger("pyXSteam")
         Low_Bound = 273.15
         High_Bound = Region4.T4_p(p)
         rhos = -1000
@@ -592,7 +592,7 @@ class Region2():
         """function T2_prho=T2_prho(p,rho)
         Solve by iteration. Observe that fo low temperatures this equation has 2 solutions. Solve with half interval method
         """
-        logger = logging.getLogger('pyXSteam')
+        logger = logging.getLogger("pyXSteam")
         if p < 16.5292:
             Low_Bound = Region4.T4_p(p)
         else:
@@ -987,7 +987,7 @@ class Region3():
 
         ver2.6 Start corrected bug
         """
-        logger = logging.getLogger('pyXSteam')
+        logger = logging.getLogger("pyXSteam")
         if p < 22.06395:  # Bellow tripple point
             Ts = Region4.T4_p(p)  # Saturation temperature
             if T <= Ts:  # Liquid side
@@ -1025,7 +1025,7 @@ class Region3():
 
         Solve by iteration. Observe that fo low temperatures this equation has 2 solutions. Solve with half interval method
         """
-        logger = logging.getLogger('pyXSteam')
+        logger = logging.getLogger("pyXSteam")
         Low_Bound = 623.15
         High_Bound = 1073.15
         ps = -1000
@@ -1160,7 +1160,7 @@ class Region4():
     @staticmethod
     def h4L_p(p):
         """function h4L_p = h4L_p(p)"""
-        logger = logging.getLogger('pyXSteam')
+        logger = logging.getLogger("pyXSteam")
         if (p > 0.000611657) and (p < 22.06395):
             Ts = Region4.T4_p(p)
             if p < 16.529:
@@ -1194,7 +1194,7 @@ class Region4():
     @staticmethod
     def h4V_p(p):
         """function h4V_p = h4V_p(p)"""
-        logger = logging.getLogger('pyXSteam')
+        logger = logging.getLogger("pyXSteam")
         if (p > 0.000611657) and (p < 22.06395):
             Ts = Region4.T4_p(p)
             if p < 16.529:
@@ -1515,7 +1515,7 @@ class Region5():
 
         Solve with half interval method
         """
-        logger = logging.getLogger('pyXSteam')
+        logger = logging.getLogger("pyXSteam")
         Low_Bound = 1073.15
         High_Bound = 2273.15
         hs = h - 1
@@ -1543,7 +1543,7 @@ class Region5():
 
         Solve with half interval method
         """
-        logger = logging.getLogger('pyXSteam')
+        logger = logging.getLogger("pyXSteam")
         Low_Bound = 1073.15
         High_Bound = 2273.15
         ss = s - 1
@@ -1571,7 +1571,7 @@ class Region5():
 
         Solve by iteration. Observe that for low temperatures this equation has 2 solutions. Solve with half interval method
         """
-        logger = logging.getLogger('pyXSteam')
+        logger = logging.getLogger("pyXSteam")
         Low_Bound = 1073.15
         High_Bound = 2073.15
         rhos = -1000

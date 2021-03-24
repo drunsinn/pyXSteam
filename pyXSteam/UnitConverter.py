@@ -6,7 +6,7 @@ a enduser might use.
 """
 import logging
 from . import Constants
-logger = logging.getLogger('pyXSteam-UnitConverter')
+logger = logging.getLogger("pyXSteam-UnitConverter")
 
 
 class UnitConverter(object):
@@ -22,8 +22,8 @@ class UnitConverter(object):
         if unitSystem is self.__UNIT_SYSTEM_BARE__ or unitSystem is self.__UNIT_SYSTEM_MKS__ or unitSystem is self.__UNIT_SYSTEM_FLS__:
             self.unitSystem = unitSystem
         else:
-            self.logger.critical('Unknown Unit System')
-            raise ValueError('Unknown Unit System')
+            self.logger.critical("Unknown Unit System")
+            raise ValueError("Unknown Unit System")
 
     def set_unitSystem(self, unitSystem):
         self.unitSystem = unitSystem
@@ -172,25 +172,25 @@ class UnitConverter(object):
         """function toSIunit_x = toSIunit_x( ins )"""
         if 0.0 <= ins <= 1.0:
             return float(ins)
-        raise Exception('Vapour fraction out of Range')
+        raise Exception("Vapour fraction out of Range")
 
     def fromSIunit_x(self, ins):
         """function fromSIunit_x = fromSIunit_x( ins )"""
         if 0.0 <= ins <= 1.0:
             return float(ins)
-        raise Exception('Vapour fraction out of Range')
+        raise Exception("Vapour fraction out of Range")
 
     def toSIunit_vx(self, ins):
         """function toSIunit_vx = toSIunit_vx( ins )"""
         if 0.0 <= ins <= 1.0:
             return float(ins)
-        raise Exception('Vapour volume fraction out of Range')
+        raise Exception("Vapour volume fraction out of Range")
 
     def fromSIunit_vx(self, ins):
         """function fromSIunit_vx = fromSIunit_vx( ins )"""
         if 0.0 <= ins <= 1.0:
             return float(ins)
-        raise Exception('Vapour volume fraction out of Range')
+        raise Exception("Vapour volume fraction out of Range")
 
     def toSIunit_my(self, ins):
         """function toSIunit_my = toSIunit_my( ins )"""
@@ -206,11 +206,11 @@ class UnitConverter(object):
 
     def __str__(self):
         """string representation of the selected unit system"""
-        result = ''
+        result = ""
         if self.unitSystem is self.__UNIT_SYSTEM_FLS__:
-            result = 'FLS (ft/lb/sec/°F/psi/btu)'
+            result = "FLS (ft/lb/sec/°F/psi/btu)"
         elif self.unitSystem is self.__UNIT_SYSTEM_MKS__:
-            result = 'MKS (m/kg/sec/°C/bar/W)'
+            result = "MKS (m/kg/sec/°C/bar/W)"
         else:
-            result = 'BARE (m/kg/sec/K/MPa/W)'
+            result = "BARE (m/kg/sec/K/MPa/W)"
         return result

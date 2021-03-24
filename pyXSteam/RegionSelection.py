@@ -37,7 +37,7 @@ def region_pT(p, T):
             else:
                 region_pT = 2
     else:
-        logger.warning('Temperature outside valid area')
+        logger.warning("Temperature outside valid area")
         region_pT = 0  # **Error, Outside valid area
 
     return region_pT
@@ -50,12 +50,12 @@ def region_ph(p, h):
     """
     # Check if outside pressure limits
     if (p < 0.000611657) or (p > 100):
-        logger.warning('Preasure outside valid area')
+        logger.warning("Preasure outside valid area")
         return 0
     # Check if outside low h.
     if h < (0.963 * p + 2.2):  # Linear adaption to h1_pt()+2 to speed up calcualations.
         if h < Region1.h1_pT(p, 273.15):
-            logger.warning('Enthalpy outside valid area')
+            logger.warning("Enthalpy outside valid area")
             return 0
     if p < 16.5292:  # Bellow region 3, Check region 1, 4, 2, 5
         # Check Region 1
@@ -80,12 +80,12 @@ def region_ph(p, h):
             return 2
         # Check region 5
         if p > 10:
-            logger.warning('Preasure outside valid area')
+            logger.warning("Preasure outside valid area")
             return 0
         h_5u = Region5.h5_pT(p, 2273.15)
         if h < h_5u:
             return 5
-        logger.warning('Enthalpy outside valid area')
+        logger.warning("Enthalpy outside valid area")
         return 0
     else:  # for p > 16.5292
         # Check if in region1
@@ -102,7 +102,7 @@ def region_ph(p, h):
         # Check if region 2
         if h < Region2.h2_pT(p, 1073.15):
             return 2
-    logger.warning('Preasure outside valid area')
+    logger.warning("Preasure outside valid area")
     return 0
 
 
@@ -112,14 +112,14 @@ def region_ps(p, s):
     Section 3.3 Regions as a function of ps
     """
     if (p < 0.000611657) or (p > 100) or (s < 0) or (s > Region5.s5_pT(p, 2273.15)):
-        logger.warning('Preasure or Entropy outside valid area')
+        logger.warning("Preasure or Entropy outside valid area")
         return 0
     # Check region 5
     if s > Region2.s2_pT(p, 1073.15):
         if p <= 10:
             return 5
         else:
-            logger.warning('Preasure outside valid area')
+            logger.warning("Preasure outside valid area")
             return 0
     # Check region 2
     if p > 16.529:
@@ -150,12 +150,12 @@ def region_hs(h, s):
     Section 3.4 Regions as a function of hs
     """
     if s < -0.0001545495919:
-        logger.warning('Entropy outside valid area')
+        logger.warning("Entropy outside valid area")
         return 0
     # Check linear adaption to p=0.000611. if bellow region 4.
     hMin = (((-0.0415878 - 2500.89262) / (-0.00015455 - 9.155759)) * s)
     if (s < 9.155759395) and (h < hMin):
-        logger.warning('Entalpy or Entropy outside valid area')
+        logger.warning("Entalpy or Entropy outside valid area")
         return 0
     # Kolla 1 eller 4. (+liten bit ???ver B13)
     if (s >= -0.0001545495919) and (s <= 3.77828134):
@@ -167,7 +167,7 @@ def region_hs(h, s):
             if h < hMax:
                 return 1
             else:
-                logger.warning('Entalpy outside valid area')
+                logger.warning("Entalpy outside valid area")
                 return 0
         else:  # The point is either in region 4,1,3. Check B23
             hB = RegionBorders.hB13_s(s)
@@ -179,7 +179,7 @@ def region_hs(h, s):
             if h < hMax:
                 return 3
             else:
-                logger.warning('Entalpy outside valid area')
+                logger.warning("Entalpy outside valid area")
                 return 0
 
     # Kolla region 2 eller 4. (???vre delen av omr???de b23-> max)
@@ -192,7 +192,7 @@ def region_hs(h, s):
             if (h > hMin) and (h < hMax):
                 return 2
             else:
-                logger.warning('Entalpy outside valid area')
+                logger.warning("Entalpy outside valid area")
                 return 0
         hV = Region4.h4_s(s)
         if h < hV:  # Region 4. Under region 3.
@@ -206,7 +206,7 @@ def region_hs(h, s):
         if h < hMax:  # Region 2. ???ver region 4.
             return 2
         else:
-            logger.warning('Entalpy outside valid area')
+            logger.warning("Entalpy outside valid area")
             return 0
     # Kolla region 3 eller 4. Under kritiska punkten.
     if (s >= 3.77828134) and (s <= 4.41202148223476):
@@ -219,7 +219,7 @@ def region_hs(h, s):
         if h < hMax:
             return 3
         else:
-            logger.warning('Entalpy outside valid area')
+            logger.warning("Entalpy outside valid area")
             return 0
     # Kolla region 3 eller 4 fr???n kritiska punkten till ???vre delen av b23
     if (s >= 4.41202148223476) and (s <= 5.260578707):
@@ -234,7 +234,7 @@ def region_hs(h, s):
             if h < hMax:
                 return 3
             else:
-                logger.warning('Entalpy outside valid area')
+                logger.warning("Entalpy outside valid area")
                 return 0
         else:  # Inom omr???det f???r B23 i s led.
             if h > 2812.942061:  # Ovanf???r B23 i h_led
@@ -244,10 +244,10 @@ def region_hs(h, s):
                     if h < hMax:
                         return 2
                     else:
-                        logger.warning('Entalpy outside valid area')
+                        logger.warning("Entalpy outside valid area")
                         return 0
                 else:
-                    logger.warning('Entropy outside valid area')
+                    logger.warning("Entropy outside valid area")
                     return 0
             if h < 2563.592004:  # Nedanf???r B23 i h_led men vi har redan kollat ovanf???r hV2c3b
                 return 3
@@ -259,7 +259,7 @@ def region_hs(h, s):
                 return 3
             else:
                 return 2
-    logger.warning('Entropy and Entalpy outside valid area')
+    logger.warning("Entropy and Entalpy outside valid area")
     return 0
 
 
@@ -270,11 +270,11 @@ def region_prho(p, rho):
     """
     v = 1 / rho
     if (p < 0.000611657) or (p > 100):
-        logger.warning('Preasure outside valid area')
+        logger.warning("Preasure outside valid area")
         return 0
     if p < 16.5292:  # Bellow region 3, Check region 1,4,2
         if v < Region1.v1_pT(p, 273.15):  # Observe that this is not actually min of v. Not valid Water of 4???C is ligther.
-            logger.warning('Specific volume outside valid area')
+            logger.warning("Specific volume outside valid area")
             return 0
         if v <= Region1.v1_pT(p, Region4.T4_p(p)):
             return 1
@@ -283,13 +283,13 @@ def region_prho(p, rho):
         if v <= Region2.v2_pT(p, 1073.15):
             return 2
         if p > 10:  # Above region 5
-            logger.warning('Preasure outside valid area')
+            logger.warning("Preasure outside valid area")
             return 0
         if v <= Region5.v5_pT(p, 2073.15):
             return 5
     else:  # Check region 1,3,4,3,2 (Above the lowest point of region 3.)
         if v < Region1.v1_pT(p, 273.15):  # Observe that this is not actually min of v. Not valid Water of 4???C is ligther.
-            logger.warning('Specific volume outside valid area')
+            logger.warning("Specific volume outside valid area")
             return 0
         if v < Region1.v1_pT(p, 623.15):
             return 1
@@ -305,5 +305,5 @@ def region_prho(p, rho):
         # Check if region 2
         if v < Region2.v2_pT(p, 1073.15):
             return 2
-    logger.warning('Preasure and Density outside valid area')
+    logger.warning("Preasure and Density outside valid area")
     return 0
