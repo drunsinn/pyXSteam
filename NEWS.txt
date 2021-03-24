@@ -1,10 +1,14 @@
+## v0.4.8, 03.2021
+* Fix issue #10: certain values lead to an infinite loop, stop if values dont change anymore and warn user
+* Spelling
+
 ## v0.4.7, 01.2021
-* Setup: add fallback to distutil if setuptools is not availible
+* Setup: add fallback to distutil if setuptools is not available
 
 ## v0.4.6, 12.2020
 * removed stump for IAPWS R15 as it containd a error that need further work but left the constants define in R15
 * non functional changes
-** fix code style in multible locations
+** fix code style in multiple locations
 ** add github workflows for package and publish
 
 ## v0.4.5, 07.2020
@@ -26,7 +30,7 @@
 
 ## v0.4, 2018
 * support for Python 3
-** handling of math expressions in pyhton 3 fixed problems with some edge cases
+** handling of math expressions in python 3 fixed problems with some edge cases
 ** one test still fails: w_ps Speed of sound as a function of pressure and entropy
 * fix multiple typos
 * linting / cleanup of code

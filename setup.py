@@ -11,7 +11,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name="pyXSteam",
-    version="0.4.7",  # version number for documentation does not auto-update
+    version="0.4.8",  # version number for documentation does not auto-update
     author="drunsinn",
     author_email="dr.unsinn@googlemail.com",
     keywords="steam water ice XSteam",
