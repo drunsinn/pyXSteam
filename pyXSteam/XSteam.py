@@ -1610,7 +1610,7 @@ class XSteam(object):
 # Section  1.12 Viscosity
 # Viscosity is not part of IAPWS Steam IF97. Equations from
 # "Revised Release on the IAPWS Formulation 1985 for the Viscosity of Ordinary Water Substance", 2003 are used.
-# Viscosity in the mixed region (4) is interpolated according to the density. This is not true since it will be two fases.
+# Viscosity in the mixed region (4) is interpolated according to the density. This is not true since it will be two phases.
     def my_pt(self, p, t):
         """Viscosity as a function of pressure and temperature
 
@@ -1960,8 +1960,8 @@ class XSteam(object):
     def pmelt_t(self, t, hint=None):
         """Pressure along the melting curve as a function of temperature. Based on IAPWS R14-08(2011)
         http://www.iapws.org/relguide/MeltSub2011.pdf
-        Because of the shape of the meltin curve it is not possible to automaticaly select the correct region
-        automaticaly. Therfore the optional hint-parameter is used to tell the function which area you are interested in.
+        Because of the shape of the meltin curve it is not possible to automatically select the correct region
+        automatically. Therefore the optional hint-parameter is used to tell the function which area you are interested in.
         The hint-values are namend after the ice types.
         XSteam.TYPE_ICE_Ih = 1
         XSteam.TYPE_ICE_III = 3
@@ -1971,7 +1971,7 @@ class XSteam(object):
         If the hint is not one of the values above or None(Default), an Exception is raised
 
         Args:
-            t (float): temperatur value
+            t (float): temperature value
             hint (int): (optional) hint for the selection logic to decide which part of the melting curve to use
 
         Returns:
@@ -1981,7 +1981,7 @@ class XSteam(object):
 
         if hint is None:
             if T >= 251.165 and T < 256.164:
-                self.logger.error("cant select ice type based on temperatur, hint reqired")
+                self.logger.error("can't select ice type based on temperature, hint reqired")
                 return float("NaN")
             elif T >= 256.164 and T < 273.31:
                 self.logger.debug("chose ice type V based on temperature")
@@ -2032,7 +2032,7 @@ class XSteam(object):
                 return float("NaN")
 
         else:
-            self.logger.error("unknown hint, cant select ice type")
+            self.logger.error("unknown hint, can't select ice type")
             raise ValueError("unknown hint")
 
     def psubl_t(self, t):
@@ -2040,7 +2040,7 @@ class XSteam(object):
         http://www.iapws.org/relguide/MeltSub2011.pdf
 
         Args:
-            t (float): temperatur value
+            t (float): temperature value
 
         Returns:
             p (float): preassure or NaN if arguments are out of range

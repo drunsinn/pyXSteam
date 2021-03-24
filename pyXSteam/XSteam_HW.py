@@ -60,7 +60,7 @@ class XSteam_HW(object):
             self.logger.error("temperature out of range")
             return float("NaN")
 
-        self.logger.warning("input for desity wasnt checked!")
+        self.logger.warning("input for desity wasn't checked!")
 
         return self.unitConverter.fromSIunit_T(IAPWS_R4.myHW_rhoT_R4(rho, T))
 
@@ -87,6 +87,6 @@ class XSteam_HW(object):
             self.logger.error("temperature out of range")
             return float("NaN")
 
-        self.logger.warning("input for desity wasnt checked!")
+        self.logger.warning("input for desity wasn't checked!")
 
         return self.unitConverter.fromSIunit_tc(IAPWS_R4.tcHW_rhoT_R4(rho, T))

@@ -7,7 +7,7 @@ Sources:
 
 * IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam, September 1997
 
-* IAWPS Releas on Vaues of Temperature, Pressure and Density of Ordinary and Heavy Water Substances at their Respective Critical Points Released September 1992, Revision of the Release of 1992
+* IAWPS Release on Vaues of Temperature, Pressure and Density of Ordinary and Heavy Water Substances at their Respective Critical Points Released September 1992, Revision of the Release of 1992
 
 """
 
@@ -20,7 +20,7 @@ __TRIPLE_POINT_PRESSURE__ = 0.000611657  # MPa (Eq9 Page 7)
 __TRIPLE_POINT_SPECIFIC_ENTHALPY__ = 0.611783E-3  # kJ kg^-1 (Eq10 Page 7)
 
 
-# IAWPS Releas on Vaues of Temperature, Pressure and Density of Ordinary and
+# IAWPS Release on Vaues of Temperature, Pressure and Density of Ordinary and
 # Heavy Water Substances at their Respective Critical Points
 # Released September 1992, Revision of the Release of 1992
 __CRITICAL_TEMPERATURE_H20_1992__ = 647.096  # +-0.1 K

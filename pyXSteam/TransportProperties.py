@@ -25,7 +25,7 @@ def my_AllRegions_pT(p, T):
     h5 = [0, -0.01578386, 0, 0, 0, 0]
     h6 = [0, 0, 0, -0.003629481, 0, 0]
 
-    # Calcualte density.
+    # Calculate density.
     if RegionSelection.region_pT(p, T) == 1:
         rho = 1 / Region1.v1_pT(p, T)
     elif RegionSelection.region_pT(p, T) == 2:
@@ -79,7 +79,7 @@ def my_AllRegions_ph(p, h):
     h5 = [0, -0.01578386, 0, 0, 0, 0]
     h6 = [0, 0, 0, -0.003629481, 0, 0]
 
-    # Calcualte density.
+    # Calculate density.
     if RegionSelection.region_ph(p, h) == 1:
         Ts = Region1.T1_ph(p, h)
         T = Ts

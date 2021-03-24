@@ -590,7 +590,7 @@ class Region2():
     @staticmethod
     def T2_prho(p, rho):
         """function T2_prho=T2_prho(p,rho)
-        Solve by iteration. Observe that fo low temperatures this equation has 2 solutions. Solve with half interval method
+        Solve by iteration. Observe that of low temperatures this equation has 2 solutions. Solve with half interval method
         """
         logger = logging.getLogger("pyXSteam")
         if p < 16.5292:
@@ -981,14 +981,14 @@ class Region3():
     def h3_pT(p, T):
         """function h3_pT = h3_pT(p, T)
 
-        Not avalible with if 97
+        Not available with if 97
 
         Solve function T3_ph - T = 0 with half interval method.
 
         ver2.6 Start corrected bug
         """
         logger = logging.getLogger("pyXSteam")
-        if p < 22.06395:  # Bellow tripple point
+        if p < 22.06395:  # Bellow triple point
             Ts = Region4.T4_p(p)  # Saturation temperature
             if T <= Ts:  # Liquid side
                 High_Bound = Region4.h4L_p(p)  # Max h ???r liauid h.
@@ -996,7 +996,7 @@ class Region3():
             else:
                 Low_Bound = Region4.h4V_p(p)  # Min h ???r Vapour h.
                 High_Bound = Region2.h2_pT(p, RegionBorders.B23T_p(p))
-        else:  # Above tripple point. R3 from R2 till R3.
+        else:  # Above triple point. R3 from R2 till R3.
             Low_Bound = Region1.h1_pT(p, 623.15)
             High_Bound = Region2.h2_pT(p, RegionBorders.B23T_p(p))
 
@@ -1023,7 +1023,7 @@ class Region3():
     def T3_prho(p, rho):
         """function T3_prho = T3_prho(p, rho)
 
-        Solve by iteration. Observe that fo low temperatures this equation has 2 solutions. Solve with half interval method
+        Solve by iteration. Observe that of low temperatures this equation has 2 solutions. Solve with half interval method
         """
         logger = logging.getLogger("pyXSteam")
         Low_Bound = 623.15
@@ -1144,7 +1144,7 @@ class Region4():
     def p4_s(s):
         """function p4_s = p4_s(s)
 
-        Uses h4_s and p_hs for the diffrent regions to determine p4_s
+        Uses h4_s and p_hs for the different regions to determine p4_s
         """
         h_sat = Region4.h4_s(s)
         if s > -0.0001545495919 and s <= 3.77828134:

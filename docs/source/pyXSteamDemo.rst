@@ -39,7 +39,7 @@ Generate Diagrams
 +++++++++++++++++
 Diagrams based on the calculated values can easily be created using numpy and matplotlib.
 
-Example: To draw a T(p) diagramm showing the saturation curve::
+Example: To draw a T(p) diagram showing the saturation curve::
 
     from pyXSteam.XSteam import XSteam
     import matplotlib.pyplot as pyplot
