@@ -262,8 +262,8 @@ class XSteam(object):
             p (float): pressure or NaN if arguments are out of range
         """
         if rho <= 0.0:
-            raise Exception("rho out of range")
-            return float("NaN")
+            self.logger.error("negarive values for density rho not allowed")
+            raise ValueError("rho out of range")
         h = self.unitConverter.toSIunit_h(h)
         High_Bound = self.unitConverter.fromSIunit_p(100)
         Low_Bound = self.unitConverter.fromSIunit_p(0.000611657)
@@ -2032,8 +2032,8 @@ class XSteam(object):
                 return float("NaN")
 
         else:
-            self.logger.error("unknown hint, can't select ice type")
-            raise ValueError("unknown hint")
+            self.logger.error("unknown value for parameter 'hint', can't select ice type")
+            raise ValueError("unknown value for parameter 'hint'")
 
     def psubl_t(self, t):
         """Pressure along the sublimation curve as a function of temperature. Based on IAPWS R14-08(2011)
