@@ -606,7 +606,7 @@ class Region2():
 
             Ts = (Low_Bound + High_Bound) / 2
             rhos = 1 / Region2.v2_pT(p, Ts)
-            
+
             if last_rhos == rhos:
                 logger.warning("T2_prho stopped iterating after %d steps because values did not converge", step_counter)
                 break
