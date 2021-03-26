@@ -6,7 +6,6 @@ a enduser might use.
 """
 import logging
 from . import Constants
-logger = logging.getLogger("pyXSteam-UnitConverter")
 
 
 class UnitConverter(object):
@@ -17,16 +16,17 @@ class UnitConverter(object):
     __UNIT_SYSTEM_FLS__ = 2  # ft/lb/sec/°F/psi/btu
 
     def __init__(self, unitSystem=__UNIT_SYSTEM_BARE__):
-        """Initialise the unit converter. Parameter is the user system"""
-        self.logger = logging.getLogger(__name__)
+        """Initialise the unit converter. Parameter is the unit system used by the application"""
+        self.logger = logging.getLogger("pyXSteam-UnitConverter")
+        self.set_unitSystem(unitSystem)
+        self.logger.debug("set unit converter to %s", self.__str__())
+
+    def set_unitSystem(self, unitSystem):
         if unitSystem is self.__UNIT_SYSTEM_BARE__ or unitSystem is self.__UNIT_SYSTEM_MKS__ or unitSystem is self.__UNIT_SYSTEM_FLS__:
             self.unitSystem = unitSystem
         else:
             self.logger.error("Unknown Unit System selected")
             raise ValueError("Unknown Unit System")
-
-    def set_unitSystem(self, unitSystem):
-        self.unitSystem = unitSystem
 
     def toSIunit_p(self, ins):
         """function toSIunit_p = toSIunit_p( ins )"""
@@ -209,7 +209,7 @@ class UnitConverter(object):
         return float(ins)
 
     def __str__(self):
-        """string representation of the selected unit system"""
+        """returns string representation of the selected unit system"""
         result = ""
         if self.unitSystem is self.__UNIT_SYSTEM_FLS__:
             result = "FLS (ft/lb/sec/°F/psi/btu)"
