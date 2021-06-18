@@ -262,7 +262,7 @@ class XSteam(object):
             p (float): pressure or NaN if arguments are out of range
         """
         if rho <= 0.0:
-            self.logger.error("negarive values for density rho not allowed")
+            self.logger.error("negative values for density rho not allowed")
             raise ValueError("rho out of range")
         h = self.unitConverter.toSIunit_h(h)
         High_Bound = self.unitConverter.fromSIunit_p(100)
