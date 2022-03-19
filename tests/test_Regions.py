@@ -47,8 +47,7 @@ class Region1Tester(unittest.TestCase):
             Region1_error,
             self.maxMatrixError,
             "Test of p,T Functions for Region 1 failed. Error was %(error)e allowed:"
-            " %(max)e"
-            % {"error": Region1_error, "max": self.maxMatrixError},
+            " %(max)e" % {"error": Region1_error, "max": self.maxMatrixError},
         )
 
     def test_ph_function(self):
@@ -66,8 +65,7 @@ class Region1Tester(unittest.TestCase):
             T1_ph_error,
             self.maxError,
             "Test of T(p,h) Function for Region 1 failed. Error was %(error)e allowed:"
-            " %(max)e"
-            % {"error": T1_ph_error, "max": self.maxError},
+            " %(max)e" % {"error": T1_ph_error, "max": self.maxError},
         )
 
     def test_ps_function(self):
@@ -85,8 +83,7 @@ class Region1Tester(unittest.TestCase):
             T1_ps_error,
             self.maxError,
             "Test of T(p,s) Function for Region 1 failed. Error was %(error)e allowed:"
-            " %(max)e"
-            % {"error": T1_ps_error, "max": self.maxError},
+            " %(max)e" % {"error": T1_ps_error, "max": self.maxError},
         )
 
     def test_hs_function(self):
@@ -106,8 +103,7 @@ class Region1Tester(unittest.TestCase):
             p1_hs_error,
             self.maxError,
             "Test of p(h,s) Function for Region 1 failed. Error was %(error)e allowed:"
-            " %(max)e"
-            % {"error": p1_hs_error, "max": self.maxError},
+            " %(max)e" % {"error": p1_hs_error, "max": self.maxError},
         )
 
 
@@ -149,8 +145,7 @@ class Region2Tester(unittest.TestCase):
             Region2_error,
             self.maxMatrixError,
             "Test of p,T Functions for Region 2 failed. Error was %(error)e allowed:"
-            " %(max)e"
-            % {"error": Region2_error, "max": self.maxMatrixError},
+            " %(max)e" % {"error": Region2_error, "max": self.maxMatrixError},
         )
 
     def test_ph_function(self):
@@ -187,8 +182,7 @@ class Region2Tester(unittest.TestCase):
             T2_ph_error,
             self.maxMatrixError,
             "Test of ph Function for Region 2 failed. Error was %(error)e allowed:"
-            " %(max)e"
-            % {"error": T2_ph_error, "max": self.maxMatrixError},
+            " %(max)e" % {"error": T2_ph_error, "max": self.maxMatrixError},
         )
 
     def test_ps_function(self):
@@ -215,8 +209,7 @@ class Region2Tester(unittest.TestCase):
             T2_ps_error,
             self.maxMatrixError,
             "Test of ps Function for Region 2 failed. Error was %(error)e allowed:"
-            " %(max)e"
-            % {"error": T2_ps_error, "max": self.maxMatrixError},
+            " %(max)e" % {"error": T2_ps_error, "max": self.maxMatrixError},
         )
 
     def test_hs_function(self):
@@ -244,8 +237,7 @@ class Region2Tester(unittest.TestCase):
             p2_hs_error,
             self.maxError,
             "Test of hs Function for Region 2 failed. Error was %(error)e allowed:"
-            " %(max)e"
-            % {"error": p2_hs_error, "max": self.maxError},
+            " %(max)e" % {"error": p2_hs_error, "max": self.maxError},
         )
 
 
@@ -288,8 +280,7 @@ class Region3Tester(unittest.TestCase):
             Region3_error,
             self.maxMatrixError,
             "Test of rhoT Function for Region 3 failed. Error was %(error)e allowed:"
-            " %(max)e"
-            % {"error": Region3_error, "max": self.maxMatrixError},
+            " %(max)e" % {"error": Region3_error, "max": self.maxMatrixError},
         )
 
     def test_T_ph_function(self):
@@ -313,8 +304,7 @@ class Region3Tester(unittest.TestCase):
             T3_ph_error,
             self.maxError,
             "Test of T(p,h) Function for Region 3 failed. Error was %(error)e allowed:"
-            " %(max)e"
-            % {"error": T3_ph_error, "max": self.maxError},
+            " %(max)e" % {"error": T3_ph_error, "max": self.maxError},
         )
 
     def test_v_ph_function(self):
@@ -338,8 +328,7 @@ class Region3Tester(unittest.TestCase):
             v3_ph_error,
             1e-7,
             "Test of v(p,h) Function for Region 3 failed. Error was %(error)e allowed:"
-            " %(max)e"
-            % {"error": v3_ph_error, "max": 1e-7},
+            " %(max)e" % {"error": v3_ph_error, "max": 1e-7},
         )
 
     def test_T_ps_function(self):
@@ -363,8 +352,7 @@ class Region3Tester(unittest.TestCase):
             T3_ps_error,
             self.maxError,
             "Test of T(p,s) Function for Region 3 failed. Error was %(error)e allowed:"
-            " %(max)e"
-            % {"error": T3_ps_error, "max": self.maxError},
+            " %(max)e" % {"error": T3_ps_error, "max": self.maxError},
         )
 
     def test_v_ps_function(self):
@@ -388,8 +376,7 @@ class Region3Tester(unittest.TestCase):
             v3_ps_error,
             self.maxError,
             "Test of v(p,s) Function for Region 3 failed. Error was %(error)e allowed:"
-            " %(max)e"
-            % {"error": v3_ps_error, "max": self.maxError},
+            " %(max)e" % {"error": v3_ps_error, "max": self.maxError},
         )
 
     def test_hs_function(self):
@@ -413,8 +400,7 @@ class Region3Tester(unittest.TestCase):
             p3_hs_error,
             self.maxError,
             "Test of p(h,s) Function for Region 3 failed. Error was %(error)e allowed:"
-            " %(max)e"
-            % {"error": p3_hs_error, "max": self.maxError},
+            " %(max)e" % {"error": p3_hs_error, "max": self.maxError},
         )
 
     def test_pT_function(self):
@@ -431,8 +417,7 @@ class Region3Tester(unittest.TestCase):
             h3_pT_error,
             1e-6,
             "Test of h(p,T) Function for Region 3 failed. Error was %(error)e allowed:"
-            " %(max)e"
-            % {"error": h3_pT_error, "max": 1e-6},
+            " %(max)e" % {"error": h3_pT_error, "max": 1e-6},
         )
 
 
@@ -457,8 +442,7 @@ class Region4Tester(unittest.TestCase):
             p4_t_error,
             self.maxError,
             "Test of p(T) Function for Region 4 failed. Error was %(error)e allowed:"
-            " %(max)e"
-            % {"error": p4_t_error, "max": self.maxError},
+            " %(max)e" % {"error": p4_t_error, "max": self.maxError},
         )
 
     def test_p_functions(self):
@@ -473,8 +457,7 @@ class Region4Tester(unittest.TestCase):
             T4_p_error,
             self.maxError,
             "Test of T(p) Function for Region 4 failed. Error was %(error)e allowed:"
-            " %(max)e"
-            % {"error": T4_p_error, "max": self.maxError},
+            " %(max)e" % {"error": T4_p_error, "max": self.maxError},
         )
 
     def test_s_functions(self):
@@ -502,8 +485,7 @@ class Region4Tester(unittest.TestCase):
             h4_s_error,
             self.maxError,
             "Test of h(s) Function for Region 4 failed. Error was %(error)e allowed:"
-            " %(max)e"
-            % {"error": h4_s_error, "max": self.maxError},
+            " %(max)e" % {"error": h4_s_error, "max": self.maxError},
         )
 
 
@@ -542,8 +524,7 @@ class Region5Tester(unittest.TestCase):
             Region5_error,
             self.maxMatrixError,
             "Test of p,T Function for Region 5 failed. Error was %(error)e allowed:"
-            " %(max)e"
-            % {"error": Region5_error, "max": self.maxMatrixError},
+            " %(max)e" % {"error": Region5_error, "max": self.maxMatrixError},
         )
 
     def test_ph_function(self):
@@ -560,8 +541,7 @@ class Region5Tester(unittest.TestCase):
             T5_ph_error,
             self.maxError,
             "Test of T(p,h) Function for Region 5 failed. Error was %(error)e allowed:"
-            " %(max)e"
-            % {"error": T5_ph_error, "max": self.maxError},
+            " %(max)e" % {"error": T5_ph_error, "max": self.maxError},
         )
 
     def test_ps_function(self):
@@ -578,6 +558,5 @@ class Region5Tester(unittest.TestCase):
             T5_ps_error,
             1e-4,
             "Test of T(p,s) Function for Region 5 failed. Error was %(error)e allowed:"
-            " %(max)e"
-            % {"error": T5_ps_error, "max": 1e-4},
+            " %(max)e" % {"error": T5_ps_error, "max": 1e-4},
         )
