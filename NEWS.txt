@@ -1,3 +1,9 @@
+## vTODO
+* improve code readability by using additional tools
+** enforce code styling with black
+** reduce minimal python version to 3.4 based on report from vermin
+** fix more spelling mistakes with codespell
+
 ## v0.4.8, 03.2021
 * Fix issue #10: certain values lead to an infinite loop, stop if values dont change anymore and warn user
 * Spelling
