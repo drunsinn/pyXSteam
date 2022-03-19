@@ -37,7 +37,7 @@ There are still (as of v0.4.2) some Errors in the speed of sound functions (w_ps
 All Functions follow the same naming schema: First the wanted property,
 then a underscore `_`, then the wanted input properties Example:
 `t_ph` is temperature as a function of pressure and enthalpy. For a list
-of valid functions se bellow:
+of valid functions se below:
 
 | Property | Description                                                  |
 |----------|--------------------------------------------------------------|
@@ -76,7 +76,7 @@ To enable logging, add the following lines to your code:
     import logging
     logging.basicConfig(level=logging.INFO)
 
-or alternativly
+or alternatively
 
     import logging
     logger = logging.getLogger('pyXSteam')

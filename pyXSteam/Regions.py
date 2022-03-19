@@ -22,7 +22,7 @@ class Region1:
 
         5 Equations for Region 1, Section. 5.1 Basic Equation
 
-        Eqution 7, Table 3, Page 6
+        Equation 7, Table 3, Page 6
         """
         I1 = [
             0,
@@ -150,7 +150,7 @@ class Region1:
 
         5 Equations for Region 1, Section. 5.1 Basic Equation
 
-        Eqution 7, Table 3, Page 6
+        Equation 7, Table 3, Page 6
         """
         I1 = [
             0,
@@ -276,7 +276,7 @@ class Region1:
 
         5 Equations for Region 1, Section. 5.1 Basic Equation
 
-        Eqution 7, Table 3, Page 6
+        Equation 7, Table 3, Page 6
         """
         I1 = [
             0,
@@ -407,7 +407,7 @@ class Region1:
 
         5 Equations for Region 1, Section. 5.1 Basic Equation
 
-        Eqution 7, Table 3, Page 6
+        Equation 7, Table 3, Page 6
         """
         I1 = [
             0,
@@ -535,7 +535,7 @@ class Region1:
 
         5 Equations for Region 1, Section. 5.1 Basic Equation
 
-        Eqution 7, Table 3, Page 6
+        Equation 7, Table 3, Page 6
         """
         I1 = [
             0,
@@ -665,7 +665,7 @@ class Region1:
 
         5 Equations for Region 1, Section. 5.1 Basic Equation
 
-        Eqution 7, Table 3, Page 6
+        Equation 7, Table 3, Page 6
         """
         I1 = [
             0,
@@ -812,7 +812,7 @@ class Region1:
 
         5 Equations for Region 1, Section. 5.1 Basic Equation
 
-        Eqution 7, Table 3, Page 6
+        Equation 7, Table 3, Page 6
         """
         I1 = [
             0,
@@ -966,7 +966,7 @@ class Region1:
 
         5 Equations for Region 1, Section. 5.1 Basic Equation, 5.2.1 The Backward Equation T (p, h)
 
-        Eqution 11, Table 6, Page 10
+        Equation 11, Table 6, Page 10
         """
         I1 = [0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 2, 2, 3, 3, 4, 5, 6]
         J1 = [0, 1, 2, 6, 22, 32, 0, 1, 2, 3, 4, 10, 32, 10, 32, 10, 32, 32, 32, 32]
@@ -1005,7 +1005,7 @@ class Region1:
 
         5 Equations for Region 1, Section. 5.1 Basic Equation, 5.2.2 The Backward Equation T (p, s)
 
-        Eqution 13, Table 8, Page 11
+        Equation 13, Table 8, Page 11
         """
         I1 = [0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 4]
         J1 = [0, 1, 2, 3, 11, 31, 0, 1, 2, 3, 12, 31, 0, 1, 2, 9, 31, 10, 32, 32]
@@ -1046,7 +1046,7 @@ class Region1:
 
         5 Backward Equation p(h, s) for Region 1
 
-        Eqution 1, Table 2, Page 5
+        Equation 1, Table 2, Page 5
         """
         I1 = [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 3, 4, 4, 5]
         J1 = [0, 1, 2, 4, 5, 6, 8, 14, 0, 1, 4, 6, 0, 1, 10, 4, 1, 4, 0]
@@ -5694,7 +5694,7 @@ class Region3:
         ver2.6 Start corrected bug
         """
         logger = logging.getLogger("pyXSteam")
-        if p < 22.06395:  # Bellow triple point
+        if p < 22.06395:  # Below triple point
             Ts = Region4.T4_p(p)  # Saturation temperature
             if T <= Ts:  # Liquid side
                 High_Bound = Region4.h4L_p(p)  # Max h ???r liauid h.

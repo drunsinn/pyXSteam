@@ -56,7 +56,7 @@ def region_ph(p, h):
         if h < Region1.h1_pT(p, 273.15):
             logger.warning("Enthalpy outside valid area")
             return 0
-    if p < 16.5292:  # Bellow region 3, Check region 1, 4, 2, 5
+    if p < 16.5292:  # Below region 3, Check region 1, 4, 2, 5
         # Check Region 1
         Ts = Region4.T4_p(p)
         hL = (
@@ -97,7 +97,7 @@ def region_ph(p, h):
         if h < Region1.h1_pT(p, 623.15):
             # region_ph = 1;
             return 1
-        # Check if in region 3 or 4 (Bellow Reg 2)
+        # Check if in region 3 or 4 (Below Reg 2)
         if h < Region2.h2_pT(p, RegionBorders.B23T_p(p)):
             # Region 3 or 4
             if p > RegionBorders.p3sat_h(h):
@@ -159,7 +159,7 @@ def region_hs(h, s):
     if s < -0.0001545495919:
         logger.warning("Entropy outside valid area")
         return 0
-    # Check linear adaption to p=0.000611. if bellow region 4.
+    # Check linear adaption to p=0.000611. if below region 4.
     hMin = ((-0.0415878 - 2500.89262) / (-0.00015455 - 9.155759)) * s
     if (s < 9.155759395) and (h < hMin):
         logger.warning("Entalpy or Entropy outside valid area")
@@ -293,7 +293,7 @@ def region_prho(p, rho):
     if (p < 0.000611657) or (p > 100):
         logger.warning("Preasure outside valid area")
         return 0
-    if p < 16.5292:  # Bellow region 3, Check region 1,4,2
+    if p < 16.5292:  # Below region 3, Check region 1,4,2
         if v < Region1.v1_pT(
             p, 273.15
         ):  # Observe that this is not actually min of v. Not valid Water of 4???C is ligther.
@@ -318,7 +318,7 @@ def region_prho(p, rho):
             return 0
         if v < Region1.v1_pT(p, 623.15):
             return 1
-        # Check if in region 3 or 4 (Bellow Reg 2)
+        # Check if in region 3 or 4 (Below Reg 2)
         if v < Region2.v2_pT(p, RegionBorders.B23T_p(p)):
             # Region 3 or 4
             if p > 22.064:  # Above region 4

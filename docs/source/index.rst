@@ -48,7 +48,7 @@ Nomenclature
 All Functions follow the same naming schema: First the wanted property,
 then a underscore `_`, then the wanted input properties Example:
 `t_ph` is temperature as a function of pressure and enthalpy. For a list
-of valid functions se bellow:
+of valid functions se below:
 
 ========   ============================================================
 Property   Description

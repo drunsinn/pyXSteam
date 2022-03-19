@@ -28,7 +28,7 @@ def demo_simpel_values():
 
 
 def demo_generate_ph_diagramm(path=None, precision=1.0):
-    """Generate a p(h) Diagramm showing the Saturation Line"""
+    """Generate a p(h) Diagram showing the Saturation Line"""
     steam_table = XSteam(XSteam.UNIT_SYSTEM_MKS)
     p_krit = (
         steam_table.criticalPressure() - 0.0001
@@ -52,7 +52,7 @@ def demo_generate_ph_diagramm(path=None, precision=1.0):
         h_px = nph_px(p2, vf)
         (line,) = pyplot.plot(h_px, p2)
         pyplot.setp(line, linewidth=1, color="g")
-    # Temperatur
+    # Temperature
     for temp in range(0, 900, 30):
         h_pt = nph_pt(p, temp)
         (line,) = pyplot.plot(h_pt, p)
@@ -79,7 +79,7 @@ def demo_generate_ph_diagramm(path=None, precision=1.0):
 
 
 def demo_generate_Tp_diagramm():
-    """Generate a T(p) Diagramm showing the Saturation Curve"""
+    """Generate a T(p) Diagram showing the Saturation Curve"""
     steam_table = XSteam(XSteam.UNIT_SYSTEM_MKS)
     p = np.arange(-100.0, 250.0, 1.0)
     ntsat_p = np.frompyfunc(steam_table.tsat_p, 1, 1)
@@ -92,7 +92,7 @@ def demo_generate_Tp_diagramm():
 
 
 def demo_generate_pvT_diagramm():
-    """Generate a Diagramm showing the v(p,T) as a 3D survace"""
+    """Generate a Diagram showing the v(p,T) as a 3D survace"""
     steam_table = XSteam(XSteam.UNIT_SYSTEM_MKS)
     fig = pyplot.figure()
     ax = Axes3D(fig)
@@ -109,7 +109,7 @@ def demo_generate_pvT_diagramm():
 
 
 def demo_moillier_diagramm():
-    """Generate a moillier diagramm"""
+    """Generate a moillier diagram"""
     steam_table = XSteam(XSteam.UNIT_SYSTEM_MKS)
     s = np.arange(2.0, 10.0, 0.01)
     pSteps = [0.006117, 0.01, 0.02, 1.0, 2.0, 3.0, 10, 100, 1000]
@@ -172,7 +172,7 @@ if __name__ == "__main__":
     print("1. Run simple calculations")
     print("2. generate ph diagram")
     print("3. generate Tp diagram")
-    print("4. generate pvT diagramm")
+    print("4. generate pvT diagram")
     print("5. generate moillier diagram")
     print("6. generate ice metling and sublimation diagram")
     print("7. Run sinple calculations for heavy water")
