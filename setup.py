@@ -29,7 +29,7 @@ setup(
     ],
     packages=["pyXSteam"],
     install_requires=[],
-    python_requires=">=3.6",
+    python_requires=">=3.4",
     include_package_data=True,
     zip_safe=True,
     scripts=["bin/pyXSteamDemo.py"],
