@@ -21,16 +21,18 @@ and also functions for calculations on heavy water. This includes:
 ## Requirements
 
 There are no requirements for installing pyXSteam with Python 3.6 and up.
+
 Tests require numpy, demos require numpy and matplotlib
 
 ## Install
 
 run `python3 setup.py install`
 
-To run unittests: `python setup.py test` but make sure numpy is installed
+To run unittests you need two additional packages: `pytest` and `numpy`. After installing both, just run pytest in
+the base directory. The tests use some fixed values from the documentation to make sure that every coefficient
+and formula works as intended.
 
 To test if setup was successful, run `python3 bin/pyXSteamDemo.py`. This will require numpy and matplotlib to be installed.
-There are still (as of v0.4.2) some Errors in the speed of sound functions (w_ps), so be warned that they exceed the Error Range. Apart form accuracy errors, there should be no warnings.
 
 ## Nomenclature
 
@@ -241,3 +243,8 @@ or alternatively
 |----------|---------------------------------------------------------------|
 | my_rhoT  | Viscosity as a function of density and temperature            |
 | tc_rhoT  | Thermal conductivity as a function of density and temperature |
+
+
+# Development
+- pull requests are always wellcome!
+- code style is enforced by black
