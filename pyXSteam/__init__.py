@@ -8,3 +8,4 @@
 this is the pyXSteam package"""
 
 name = "pyXSteam"
+__version__ = "0.4.8"

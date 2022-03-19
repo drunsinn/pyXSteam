@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """create python packages for publishing"""
+from pyXSteam import __version__
+
 try:
     from setuptools import setup
 except ImportError:
@@ -11,7 +13,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name="pyXSteam",
-    version="0.4.8",  # version number for documentation does not auto-update
+    version=__version__,
     author="drunsinn",
     author_email="dr.unsinn@googlemail.com",
     keywords="steam water ice XSteam",
