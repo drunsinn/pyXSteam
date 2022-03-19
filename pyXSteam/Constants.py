@@ -17,7 +17,7 @@ __CRITICAL_PRESSURE__ = 22.06395  # MPa
 __CRITICAL_DENSITY__ = 322  # kg m^-1
 __TRIPLE_POINT_TEMPERATURE__ = 273.16  # K (Eq9 Page 7)
 __TRIPLE_POINT_PRESSURE__ = 0.000611657  # MPa (Eq9 Page 7)
-__TRIPLE_POINT_SPECIFIC_ENTHALPY__ = 0.611783E-3  # kJ kg^-1 (Eq10 Page 7)
+__TRIPLE_POINT_SPECIFIC_ENTHALPY__ = 0.611783e-3  # kJ kg^-1 (Eq10 Page 7)
 
 
 # IAWPS Release on Vaues of Temperature, Pressure and Density of Ordinary and

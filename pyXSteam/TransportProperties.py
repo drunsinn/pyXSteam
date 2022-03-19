@@ -47,20 +47,28 @@ def my_AllRegions_pT(p, T):
     # ps = p / 22.115
 
     # Check valid area
-    if (T > (900 + 273.15)) or ((T > (600 + 273.15)) and (p > 300)) or ((T > (150 + 273.15)) and (p > 350)) or (p > 500):
+    if (
+        (T > (900 + 273.15))
+        or ((T > (600 + 273.15)) and (p > 300))
+        or ((T > (150 + 273.15)) and (p > 350))
+        or (p > 500)
+    ):
         logger.warning("Temperature and/or Preasure out of range of validity")
         return float("NaN")
 
-    my0 = Ts ** 0.5 / (1 + 0.978197 / Ts + 0.579829 / (Ts ** 2) - 0.202354 / (Ts ** 3))
+    my0 = Ts**0.5 / (1 + 0.978197 / Ts + 0.579829 / (Ts**2) - 0.202354 / (Ts**3))
     sum = 0
     for i in range(0, 6):
-        sum = sum + h0[i] * (((1 / Ts) - 1) ** i) + \
-            h1[i] * (((1 / Ts) - 1) ** i) * ((rhos - 1) ** 1) + \
-            h2[i] * (((1 / Ts) - 1) ** i) * ((rhos - 1) ** 2) + \
-            h3[i] * (((1 / Ts) - 1) ** i) * ((rhos - 1) ** 3) + \
-            h4[i] * (((1 / Ts) - 1) ** i) * ((rhos - 1) ** 4) + \
-            h5[i] * (((1 / Ts) - 1) ** i) * ((rhos - 1) ** 5) + \
-            h6[i] * (((1 / Ts) - 1) ** i) * ((rhos - 1) ** 6)
+        sum = (
+            sum
+            + h0[i] * (((1 / Ts) - 1) ** i)
+            + h1[i] * (((1 / Ts) - 1) ** i) * ((rhos - 1) ** 1)
+            + h2[i] * (((1 / Ts) - 1) ** i) * ((rhos - 1) ** 2)
+            + h3[i] * (((1 / Ts) - 1) ** i) * ((rhos - 1) ** 3)
+            + h4[i] * (((1 / Ts) - 1) ** i) * ((rhos - 1) ** 4)
+            + h5[i] * (((1 / Ts) - 1) ** i) * ((rhos - 1) ** 5)
+            + h6[i] * (((1 / Ts) - 1) ** i) * ((rhos - 1) ** 6)
+        )
     my1 = math.exp(rhos * sum)
     mys = my0 * my1
     return mys * 0.000055071
@@ -113,21 +121,29 @@ def my_AllRegions_ph(p, h):
     Ts = T / 647.226
 
     # Check valid area
-    if (T > (900 + 273.15)) or (T > (600 + 273.15) and (p > 300)) or (T > (150 + 273.15) and (p > 350)) or (p > 500):
+    if (
+        (T > (900 + 273.15))
+        or (T > (600 + 273.15) and (p > 300))
+        or (T > (150 + 273.15) and (p > 350))
+        or (p > 500)
+    ):
         logger.warning("Temperature and/or Preasure out of range of validity")
         return float("NaN")
 
-    my0 = Ts ** 0.5 / (1 + 0.978197 / Ts + 0.579829 / (Ts ** 2) - 0.202354 / (Ts ** 3))
+    my0 = Ts**0.5 / (1 + 0.978197 / Ts + 0.579829 / (Ts**2) - 0.202354 / (Ts**3))
 
     sum = 0
     for i in range(0, 6):
-        sum = sum + h0[i] * (1 / Ts - 1) ** i + \
-            h1[i] * (1 / Ts - 1) ** i * (rhos - 1) ** 1 + \
-            h2[i] * (1 / Ts - 1) ** i * (rhos - 1) ** 2 + \
-            h3[i] * (1 / Ts - 1) ** i * (rhos - 1) ** 3 + \
-            h4[i] * (1 / Ts - 1) ** i * (rhos - 1) ** 4 + \
-            h5[i] * (1 / Ts - 1) ** i * (rhos - 1) ** 5 + \
-            h6[i] * (1 / Ts - 1) ** i * (rhos - 1) ** 6
+        sum = (
+            sum
+            + h0[i] * (1 / Ts - 1) ** i
+            + h1[i] * (1 / Ts - 1) ** i * (rhos - 1) ** 1
+            + h2[i] * (1 / Ts - 1) ** i * (rhos - 1) ** 2
+            + h3[i] * (1 / Ts - 1) ** i * (rhos - 1) ** 3
+            + h4[i] * (1 / Ts - 1) ** i * (rhos - 1) ** 4
+            + h5[i] * (1 / Ts - 1) ** i * (rhos - 1) ** 5
+            + h6[i] * (1 / Ts - 1) ** i * (rhos - 1) ** 6
+        )
 
     my1 = math.exp(rhos * sum)
     mys = my0 * my1
@@ -165,9 +181,15 @@ def tc_ptrho(p, T, rho):
     T = T / 647.26  # Page 8, Eq 4
     rho = rho / 317.7  # Page 8, Eq 5
 
-    tc0 = T ** 0.5 * (0.0102811 + 0.0299621 * T + 0.0156146 * (T ** 2) - 0.00422464 * (T ** 3))  # Page 9, Eq 9
+    tc0 = T**0.5 * (
+        0.0102811 + 0.0299621 * T + 0.0156146 * (T**2) - 0.00422464 * (T**3)
+    )  # Page 9, Eq 9
 
-    tc1 = -0.397070 + 0.400302 * rho + 1.06 * math.exp(-0.171587 * ((rho + 2.392190) ** 2))  # Page 9, Eq 10
+    tc1 = (
+        -0.397070
+        + 0.400302 * rho
+        + 1.06 * math.exp(-0.171587 * ((rho + 2.392190) ** 2))
+    )  # Page 9, Eq 10
 
     dT = abs(T - 1) + 0.00308976  # Page 9, Eq 12
     Q = 2 + 0.0822994 / (dT ** (3 / 5))  # Page 10, Eq 13
@@ -176,7 +198,13 @@ def tc_ptrho(p, T, rho):
     else:
         s = 10.0932 / (dT ** (3 / 5))
 
-    tc2 = (0.0701309 / (T ** 10) + 0.0118520) * (rho ** (9 / 5)) * math.exp(0.642857 * (1 - rho ** (14 / 5))) + 0.00169937 * s * (rho ** Q) * math.exp((Q / (1 + Q)) * (1 - rho ** (1 + Q))) - 1.02 * math.exp(-4.11717 * (T ** (3 / 2)) - 6.17937 / (rho ** 5))  # Page 9, Eq 11
+    tc2 = (
+        (0.0701309 / (T**10) + 0.0118520)
+        * (rho ** (9 / 5))
+        * math.exp(0.642857 * (1 - rho ** (14 / 5)))
+        + 0.00169937 * s * (rho**Q) * math.exp((Q / (1 + Q)) * (1 - rho ** (1 + Q)))
+        - 1.02 * math.exp(-4.11717 * (T ** (3 / 2)) - 6.17937 / (rho**5))
+    )  # Page 9, Eq 11
     return tc0 + tc1 + tc2  # Page 9, Eq 8
 
 
@@ -200,4 +228,4 @@ def Surface_Tension_T(T):
         return float("NaN")
 
     tau = 1 - T / tc
-    return B * tau ** my * (1 + bb * tau)
+    return B * tau**my * (1 + bb * tau)

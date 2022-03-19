@@ -25,13 +25,12 @@ setup(
         "License :: OSI Approved :: GNU General Public License v2 (GPLv2)",
         "Operating System :: OS Independent",
         "Topic :: Scientific/Engineering :: Physics",
-        "Development Status :: 4 - Beta"
+        "Development Status :: 4 - Beta",
     ],
-    packages=['pyXSteam'],
+    packages=["pyXSteam"],
     install_requires=[],
-    python_requires='>=3.6',
+    python_requires=">=3.6",
     include_package_data=True,
     zip_safe=True,
-    scripts=['bin/pyXSteamDemo.py'],
-
+    scripts=["bin/pyXSteamDemo.py"],
 )

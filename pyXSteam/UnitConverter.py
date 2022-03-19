@@ -22,7 +22,11 @@ class UnitConverter(object):
         self.logger.debug("set unit converter to %s", self.__str__())
 
     def set_unitSystem(self, unitSystem):
-        if unitSystem is self.__UNIT_SYSTEM_BARE__ or unitSystem is self.__UNIT_SYSTEM_MKS__ or unitSystem is self.__UNIT_SYSTEM_FLS__:
+        if (
+            unitSystem is self.__UNIT_SYSTEM_BARE__
+            or unitSystem is self.__UNIT_SYSTEM_MKS__
+            or unitSystem is self.__UNIT_SYSTEM_FLS__
+        ):
             self.unitSystem = unitSystem
         else:
             self.logger.error("Unknown Unit System selected")
@@ -37,7 +41,7 @@ class UnitConverter(object):
         return float(ins)
 
     def fromSIunit_p(self, ins):
-        """function fromSIunit_p = fromSIunit_p( ins ) """
+        """function fromSIunit_p = fromSIunit_p( ins )"""
         if self.unitSystem is self.__UNIT_SYSTEM_MKS__:
             return float(ins * 10)  # bar to MPa
         elif self.unitSystem is self.__UNIT_SYSTEM_FLS__:
@@ -49,7 +53,9 @@ class UnitConverter(object):
         if self.unitSystem is self.__UNIT_SYSTEM_MKS__:
             return float(ins - Constants.__ABSOLUTE_ZERO_CELSIUS__)  # degC to Kelvin
         elif self.unitSystem is self.__UNIT_SYSTEM_FLS__:
-            return float((5 / 9) * (ins - 32) - Constants.__ABSOLUTE_ZERO_CELSIUS__)  # degF to Kelvin
+            return float(
+                (5 / 9) * (ins - 32) - Constants.__ABSOLUTE_ZERO_CELSIUS__
+            )  # degF to Kelvin
         return float(ins)
 
     def fromSIunit_T(self, ins):
@@ -57,7 +63,9 @@ class UnitConverter(object):
         if self.unitSystem is self.__UNIT_SYSTEM_MKS__:
             return float(ins + Constants.__ABSOLUTE_ZERO_CELSIUS__)  # Kelvin to degC
         elif self.unitSystem is self.__UNIT_SYSTEM_FLS__:
-            return float((ins + Constants.__ABSOLUTE_ZERO_CELSIUS__) * (9 / 5) + 32)  # Kelvin to degF
+            return float(
+                (ins + Constants.__ABSOLUTE_ZERO_CELSIUS__) * (9 / 5) + 32
+            )  # Kelvin to degF
         return float(ins)
 
     def toSIunit_h(self, ins):

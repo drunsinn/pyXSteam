@@ -14,8 +14,7 @@ logger = logging.getLogger(__name__)
 
 
 def region_pT(p, T):
-    """function region_pT = region_pT(p, T)
-    """
+    """function region_pT = region_pT(p, T)"""
     if (T > 1073.15) and (p < 50.0) and (T < 2273.15) and (p > 0.000611):
         region_pT = 5
     elif (T <= 1073.15) and (T > 273.15) and (p <= 100) and (p > 0.000611):
@@ -60,13 +59,19 @@ def region_ph(p, h):
     if p < 16.5292:  # Bellow region 3, Check region 1, 4, 2, 5
         # Check Region 1
         Ts = Region4.T4_p(p)
-        hL = 109.6635 * math.log(p) + 40.3481 * p + 734.58  # Approximate function for hL_p
-        if math.fabs(h - hL) < 100:  # if approximate is not god enough use real function
+        hL = (
+            109.6635 * math.log(p) + 40.3481 * p + 734.58
+        )  # Approximate function for hL_p
+        if (
+            math.fabs(h - hL) < 100
+        ):  # if approximate is not god enough use real function
             hL = Region1.h1_pT(p, Ts)
         if h <= hL:
             return 1
         # Check Region 4
-        hV = 45.1768 * math.log(p) - 20.158 * p + 2804.4  # Approximate function for hV_p
+        hV = (
+            45.1768 * math.log(p) - 20.158 * p + 2804.4
+        )  # Approximate function for hV_p
         if math.fabs(h - hV) < 50:  # if approximate is not god enough use real function
             hV = Region2.h2_pT(p, Ts)
         if h < hV:
@@ -107,7 +112,7 @@ def region_ph(p, h):
 
 
 def region_ps(p, s):
-    """ function region_ps = region_ps(p, s)
+    """function region_ps = region_ps(p, s)
 
     Section 3.3 Regions as a function of ps
     """
@@ -123,7 +128,9 @@ def region_ps(p, s):
             return 0
     # Check region 2
     if p > 16.529:
-        ss = Region2.s2_pT(p, RegionBorders.B23T_p(p))  # Between 5.047 & 5.261. Use to speed up !
+        ss = Region2.s2_pT(
+            p, RegionBorders.B23T_p(p)
+        )  # Between 5.047 & 5.261. Use to speed up !
     else:
         ss = Region2.s2_pT(p, Region4.T4_p(p))
     if s > ss:
@@ -153,7 +160,7 @@ def region_hs(h, s):
         logger.warning("Entropy outside valid area")
         return 0
     # Check linear adaption to p=0.000611. if bellow region 4.
-    hMin = (((-0.0415878 - 2500.89262) / (-0.00015455 - 9.155759)) * s)
+    hMin = ((-0.0415878 - 2500.89262) / (-0.00015455 - 9.155759)) * s
     if (s < 9.155759395) and (h < hMin):
         logger.warning("Entalpy or Entropy outside valid area")
         return 0
@@ -188,7 +195,13 @@ def region_hs(h, s):
             Tmin = Region2.T2_ps(0.000611, s)
             hMin = Region2.h2_pT(0.000611, Tmin)
             # function adapted to h(1073.15,s)
-            hMax = -0.07554022 * s ** 4 + 3.341571 * s ** 3 - 55.42151 * s ** 2 + 408.515 * s + 3031.338
+            hMax = (
+                -0.07554022 * s**4
+                + 3.341571 * s**3
+                - 55.42151 * s**2
+                + 408.515 * s
+                + 3031.338
+            )
             if (h > hMin) and (h < hMax):
                 return 2
             else:
@@ -202,7 +215,13 @@ def region_hs(h, s):
             hMax = Region2.h2_pT(100, TMax)
         else:
             # function adapted to h(1073.15,s)
-            hMax = -2.988734 * s ** 4 + 121.4015 * s ** 3 - 1805.15 * s ** 2 + 11720.16 * s - 23998.33
+            hMax = (
+                -2.988734 * s**4
+                + 121.4015 * s**3
+                - 1805.15 * s**2
+                + 11720.16 * s
+                - 23998.33
+            )
         if h < hMax:  # Region 2. ???ver region 4.
             return 2
         else:
@@ -249,7 +268,9 @@ def region_hs(h, s):
                 else:
                     logger.warning("Entropy outside valid area")
                     return 0
-            if h < 2563.592004:  # Nedanf???r B23 i h_led men vi har redan kollat ovanf???r hV2c3b
+            if (
+                h < 2563.592004
+            ):  # Nedanf???r B23 i h_led men vi har redan kollat ovanf???r hV2c3b
                 return 3
             # Vi ???r inom b23 omr???det i b???de s och h led.
             Tact = RegionBorders.TB23_hs(h, s)
@@ -273,7 +294,9 @@ def region_prho(p, rho):
         logger.warning("Preasure outside valid area")
         return 0
     if p < 16.5292:  # Bellow region 3, Check region 1,4,2
-        if v < Region1.v1_pT(p, 273.15):  # Observe that this is not actually min of v. Not valid Water of 4???C is ligther.
+        if v < Region1.v1_pT(
+            p, 273.15
+        ):  # Observe that this is not actually min of v. Not valid Water of 4???C is ligther.
             logger.warning("Specific volume outside valid area")
             return 0
         if v <= Region1.v1_pT(p, Region4.T4_p(p)):
@@ -288,7 +311,9 @@ def region_prho(p, rho):
         if v <= Region5.v5_pT(p, 2073.15):
             return 5
     else:  # Check region 1,3,4,3,2 (Above the lowest point of region 3.)
-        if v < Region1.v1_pT(p, 273.15):  # Observe that this is not actually min of v. Not valid Water of 4???C is ligther.
+        if v < Region1.v1_pT(
+            p, 273.15
+        ):  # Observe that this is not actually min of v. Not valid Water of 4???C is ligther.
             logger.warning("Specific volume outside valid area")
             return 0
         if v < Region1.v1_pT(p, 623.15):
@@ -298,7 +323,9 @@ def region_prho(p, rho):
             # Region 3 or 4
             if p > 22.064:  # Above region 4
                 return 3
-            if (v < Region3.v3_ph(p, Region4.h4L_p(p))) or (v > Region3.v3_ph(p, Region4.h4V_p(p))):  # Uses iteration!!
+            if (v < Region3.v3_ph(p, Region4.h4L_p(p))) or (
+                v > Region3.v3_ph(p, Region4.h4V_p(p))
+            ):  # Uses iteration!!
                 return 3
             else:
                 return 4

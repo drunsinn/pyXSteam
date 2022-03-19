@@ -23,11 +23,17 @@ class XSteam_HW(object):
     def __init__(self, unitSystem=UnitConverter.__UNIT_SYSTEM_BARE__):
         self.logger = logging.getLogger(__name__)
         self.unitConverter = UnitConverter(unitSystem)
-        self.logger.info("initialised pyXSteam for Heavy Water with Unit System '{}'".format(self.unitConverter))
+        self.logger.info(
+            "initialised pyXSteam for Heavy Water with Unit System '{}'".format(
+                self.unitConverter
+            )
+        )
 
     def criticalTemperatur(self):
         """returns the specific temperature with conversion to the selected unit system"""
-        return self.unitConverter.fromSIunit_T(Constants.__CRITICAL_TEMPERATURE_D20_1992__)
+        return self.unitConverter.fromSIunit_T(
+            Constants.__CRITICAL_TEMPERATURE_D20_1992__
+        )
 
     def criticalPressure(self):
         """returns the specific pressure with conversion to the selected unit system"""
