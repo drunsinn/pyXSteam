@@ -16,6 +16,7 @@
 # import sys
 # sys.path.insert(0, os.path.abspath('.'))
 
+from pyXSteam import __version__
 
 # -- Project information -----------------------------------------------------
 
@@ -24,9 +25,9 @@ copyright = "2020, drunsinn, Magnus Holmgren"
 author = "drunsinn, Magnus Holmgren"
 
 # The short X.Y version
-version = "0.4"
+version = __version__
 # The full version, including alpha/beta/rc tags
-release = "0.4.8"
+release = __version__
 
 
 # -- General configuration ---------------------------------------------------
