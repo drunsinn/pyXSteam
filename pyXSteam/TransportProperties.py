@@ -57,10 +57,10 @@ def my_AllRegions_pT(p, T):
         return float("NaN")
 
     my0 = Ts**0.5 / (1 + 0.978197 / Ts + 0.579829 / (Ts**2) - 0.202354 / (Ts**3))
-    sum = 0
+    temp_sum = 0
     for i in range(0, 6):
-        sum = (
-            sum
+        temp_sum = (
+            temp_sum
             + h0[i] * (((1 / Ts) - 1) ** i)
             + h1[i] * (((1 / Ts) - 1) ** i) * ((rhos - 1) ** 1)
             + h2[i] * (((1 / Ts) - 1) ** i) * ((rhos - 1) ** 2)
@@ -69,7 +69,7 @@ def my_AllRegions_pT(p, T):
             + h5[i] * (((1 / Ts) - 1) ** i) * ((rhos - 1) ** 5)
             + h6[i] * (((1 / Ts) - 1) ** i) * ((rhos - 1) ** 6)
         )
-    my1 = math.exp(rhos * sum)
+    my1 = math.exp(rhos * temp_sum)
     mys = my0 * my1
     return mys * 0.000055071
 
@@ -132,10 +132,10 @@ def my_AllRegions_ph(p, h):
 
     my0 = Ts**0.5 / (1 + 0.978197 / Ts + 0.579829 / (Ts**2) - 0.202354 / (Ts**3))
 
-    sum = 0
+    temp_sum = 0
     for i in range(0, 6):
-        sum = (
-            sum
+        temp_sum = (
+            temp_sum
             + h0[i] * (1 / Ts - 1) ** i
             + h1[i] * (1 / Ts - 1) ** i * (rhos - 1) ** 1
             + h2[i] * (1 / Ts - 1) ** i * (rhos - 1) ** 2
@@ -145,7 +145,7 @@ def my_AllRegions_ph(p, h):
             + h6[i] * (1 / Ts - 1) ** i * (rhos - 1) ** 6
         )
 
-    my1 = math.exp(rhos * sum)
+    my1 = math.exp(rhos * temp_sum)
     mys = my0 * my1
     return mys * 0.000055071
 

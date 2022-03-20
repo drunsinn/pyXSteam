@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-import math
-import logging
-
-logger = logging.getLogger(__name__)
 """
 IAPWS R14-08(2011)
 Pressure along the Melting and Sublimation Curves of Ordinary Water Substance
 http://www.iapws.org/relguide/MeltSub2011.pdf
 """
+import math
+import logging
+
+logger = logging.getLogger(__name__)
 
 __TYPE_ICE_Ih__ = 1
 __TYPE_ICE_III__ = 3
@@ -26,10 +26,10 @@ def pmelt_T_iceIh(T):
     theta = T / T_star
     a = (0.119539337e7, 0.808183159e5, 0.333826860e4)
     b = (0.300000e1, 0.257500e2, 0.103750e3)
-    sum = 0
+    temp_sum = 0
     for i in range(0, 3):
-        sum += a[i] * (1 - theta ** b[i])
-    pi_melt = 1 + sum
+        temp_sum += a[i] * (1 - theta ** b[i])
+    pi_melt = 1 + temp_sum
     return pi_melt * p_star
 
 
@@ -89,8 +89,8 @@ def psubl_T(T):
     a = (-0.212144006e2, 0.273203819e2, -0.610598130e1)
     b = (0.333333333e-2, 0.120666667e1, 0.170333333e1)
     theta = T / T_star
-    sum = 0
+    temp_sum = 0
     for i in range(0, 3):
-        sum += a[i] * theta ** b[i]
-    pi_subl = math.exp((theta**-1) * sum)
+        temp_sum += a[i] * theta ** b[i]
+    pi_subl = math.exp((theta**-1) * temp_sum)
     return pi_subl * p_star

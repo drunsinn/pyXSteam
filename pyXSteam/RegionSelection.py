@@ -16,30 +16,30 @@ logger = logging.getLogger(__name__)
 def region_pT(p, T):
     """function region_pT = region_pT(p, T)"""
     if (T > 1073.15) and (p < 50.0) and (T < 2273.15) and (p > 0.000611):
-        region_pT = 5
+        region_pT_number = 5
     elif (T <= 1073.15) and (T > 273.15) and (p <= 100) and (p > 0.000611):
         if T > 623.15:
             if p > RegionBorders.B23p_T(T):
-                region_pT = 3
+                region_pT_number = 3
                 if T < 647.096:
                     ps = Region4.p4_T(T)
                     if math.fabs(p - ps) < 0.00001:
-                        region_pT = 4
+                        region_pT_number = 4
             else:
-                region_pT = 2
+                region_pT_number = 2
         else:
             ps = Region4.p4_T(T)
             if math.fabs(p - ps) < 0.00001:
-                region_pT = 4
+                region_pT_number = 4
             elif p > ps:
-                region_pT = 1
+                region_pT_number = 1
             else:
-                region_pT = 2
+                region_pT_number = 2
     else:
         logger.warning("Temperature outside valid area")
-        region_pT = 0  # **Error, Outside valid area
+        region_pT_number = 0  # **Error, Outside valid area
 
-    return region_pT
+    return region_pT_number
 
 
 def region_ph(p, h):

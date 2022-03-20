@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-import math
-import logging
-
-logger = logging.getLogger(__name__)
 """
 IAPWS R4-84(2007)
 Revised Release on Viscosity and Thermal Conductivity of Heavy Water Substance
 http://www.iapws.org/relguide/TransD2O-2007.pdf
 """
+import math
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 def myHW_rhoT_R4(rho, T):
@@ -22,7 +22,7 @@ def myHW_rhoT_R4(rho, T):
     Returns:
         my (float): viscosity or NaN if arguments are out of range
     """
-    logger.debug("myHW_rhoT_R4 input: ρ {} kg/m^3, T {} K".format(rho, T))
+    logger.debug("myHW_rhoT_R4 input: ρ %f kg/m^3, T %f K", rho, T)
 
     T_star = 643.847  # K
     rho_star = 358  # kg / m^3
@@ -48,21 +48,21 @@ def myHW_rhoT_R4(rho, T):
     B.append([-0.01163815, -0.008239587, 0.0, 0.0, 0.0, 0.004559914])  # j= 5
     B.append([0.0, 0.0, 0.0, -0.003886659, 0.0, 0.0])  # j= 6
 
-    sum = 0
+    temp_sum = 0
     for i in range(0, 6):
         part_T = ((1.0 / T_dash) - 1.0) ** i
 
         sum_B = 0
         for j in range(0, 7):
             sum_B += B[j][i] * (rho_dash - 1.0) ** j
-        sum += part_T * sum_B
+        temp_sum += part_T * sum_B
 
-    my_1_dash = math.exp(rho_dash * sum)
+    my_1_dash = math.exp(rho_dash * temp_sum)
 
     my_dash = my_0_dash * my_1_dash
 
     my = my_dash * my_star
-    logger.debug("myHW_rhoT_R4 result: my {}".format(my))
+    logger.debug("myHW_rhoT_R4 result: my %f", my)
 
     return my
 
@@ -80,7 +80,7 @@ def tcHW_rhoT_R4(rho, T):
     Returns:
         λ (float): thermal conductivity or NaN if arguments are out of range
     """
-    logger.debug("tcHW_rhoT_R4 input: ρ {} kg/m^3, T {} K".format(rho, T))
+    logger.debug("tcHW_rhoT_R4 input: ρ %f kg/m^3, T %f K", rho, T)
 
     T_star = 643.847  # K
     rho_star = 358  # kg / m^3
@@ -112,16 +112,16 @@ def tcHW_rhoT_R4(rho, T):
     part_f2 = (3.5 * f_2) / f_4
 
     # equation B8
-    sum = 0
+    temp_sum = 0
     for i in range(0, 6):
-        sum += A[i] * (T_dash**i)
-    tc_o = sum
+        temp_sum += A[i] * (T_dash**i)
+    tc_o = temp_sum
 
     # equation B9
-    sum = 0
+    temp_sum = 0
     for i in range(1, 5):
-        sum += B[i] * (rho_dash**i)
-    delta_tc = B[0] * (1.0 - math.exp(B_e * rho_dash)) + sum
+        temp_sum += B[i] * (rho_dash**i)
+    delta_tc = B[0] * (1.0 - math.exp(B_e * rho_dash)) + temp_sum
 
     # equation B10
     delta_tc_c = C_1 * f_1 * f_2 * (1.0 + f_2**2 * (part_C2 + part_f2))
@@ -133,5 +133,5 @@ def tcHW_rhoT_R4(rho, T):
     tc_dash = tc_o + delta_tc + delta_tc_c + delta_tc_L
 
     tc = tc_dash * tc_star
-    logger.debug("tcHW_rhoT_R4 result: λ {}".format(tc))
+    logger.debug("tcHW_rhoT_R4 result: λ %f", tc)
     return tc
