@@ -18,6 +18,17 @@ and also functions for calculations on heavy water. This includes:
 * IAPWS R4
 * IAPWS R14
 
+
+## Contributors
+In chronological order:
+- IAPWS
+- Magnus Holmgren
+- drunsinn
+- mohit0749
+- gonmolina
+- xjtu-blacksmith
+
+
 ## Requirements
 
 There are no requirements for installing pyXSteam with Python 3.6 and up.
