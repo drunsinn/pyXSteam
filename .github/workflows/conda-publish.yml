@@ -1,11 +1,11 @@
 # Publish Conda package to Anaconda.org
-# https://github.com/marketplace/actions/publish-conda-package-to-anaconda-org 
+# https://github.com/MichaelsJP/conda-package-publish-action
 
 name: Publish release on Anaconda.org
 
 on:
   release:
-    types: [created]
+    types: [push]
     
 jobs:
   publish:
@@ -13,8 +13,10 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: publish-to-conda
-      uses: maxibor/conda-package-publish-action@v1.1
+      uses: MichaelsJP/conda-package-publish-action@v1.0.0
       with:
         subDir: '.conda'
         AnacondaToken: ${{ secrets.ANACONDA_TOKEN }}
-
+        platforms: 'all'
+        override: true
+        dry_run: true
