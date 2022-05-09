@@ -1,11 +1,11 @@
 # Publish Conda package to Anaconda.org
 # https://github.com/marketplace/actions/publish-conda-package-to-anaconda-org 
 
-name: publish_conda
+name: Publish release on Anaconda.org
 
 on:
   release:
-    types: [published]
+    types: [created]
     
 jobs:
   publish:
