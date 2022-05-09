@@ -45,6 +45,9 @@ and formula works as intended.
 
 To test if setup was successful, run `python3 bin/pyXSteamDemo.py`. This will require numpy and matplotlib to be installed.
 
+### Anaconda
+If you prefere you can also install pyXSteam from the anaconda package index
+
 ## Nomenclature
 
 All Functions follow the same naming schema: First the wanted property,
