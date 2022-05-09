@@ -1,11 +1,9 @@
 # Publish Conda package to Anaconda.org
 # https://github.com/MichaelsJP/conda-package-publish-action
 
-name: Publish release on Anaconda.org
+name: Publish to Anaconda.org
 
-on:
-  release:
-    types: [push]
+on: [push]
     
 jobs:
   publish:
