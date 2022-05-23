@@ -6,7 +6,7 @@ import logging
 from . import RegionSelection
 from .Regions import Region1, Region2, Region3, Region4, Region5
 from . import TransportProperties
-from . import Constants
+from .Constants import __SPECIFIC_GAS_CONSTANT__, __CRITICAL_TEMPERATURE__, __CRITICAL_DENSITY__, __CRITICAL_PRESSURE__, __TRIPLE_POINT_TEMPERATURE__, __TRIPLE_POINT_PRESSURE__, UnitSystem
 from .UnitConverter import UnitConverter
 from . import IAPWS_R14
 
@@ -20,18 +20,7 @@ class XSteam(object):
             Can be eather 0 (UNIT_SYSTEM_BARE), 1 (UNIT_SYSTEM_MKS) or 2 (UNIT_SYSTEM_FLS).
     """
 
-    # Copy constant Values to expose them to the User
-    UNIT_SYSTEM_BARE = UnitConverter.__UNIT_SYSTEM_BARE__
-    UNIT_SYSTEM_MKS = UnitConverter.__UNIT_SYSTEM_MKS__
-    UNIT_SYSTEM_FLS = UnitConverter.__UNIT_SYSTEM_FLS__
-
-    TYPE_ICE_Ih = IAPWS_R14.__TYPE_ICE_Ih__
-    TYPE_ICE_III = IAPWS_R14.__TYPE_ICE_III__
-    TYPE_ICE_V = IAPWS_R14.__TYPE_ICE_V__
-    TYPE_ICE_VI = IAPWS_R14.__TYPE_ICE_VI__
-    TYPE_ICE_VII = IAPWS_R14.__TYPE_ICE_VII__
-
-    def __init__(self, unitSystem=UnitConverter.__UNIT_SYSTEM_BARE__):
+    def __init__(self, unitSystem: UnitSystem = UnitSystem.BARE):
         self.logger = logging.getLogger(__name__)
         self._unit_converter = UnitConverter(unitSystem)
         self.logger.info(
@@ -40,27 +29,27 @@ class XSteam(object):
 
     def specificGasConstant(self):
         """returns the specific Gas Constant R in kJ kg^-1 K^-1"""
-        return Constants.__SPECIFIC_GAS_CONSTANT__
+        return __SPECIFIC_GAS_CONSTANT__
 
     def criticalTemperatur(self):
         """returns the specific temperature with conversion to the selected unit system"""
-        return self._unit_converter.fromSIunit_T(Constants.__CRITICAL_TEMPERATURE__)
+        return self._unit_converter.fromSIunit_T(__CRITICAL_TEMPERATURE__)
 
     def criticalPressure(self):
         """returns the specific pressure with conversion to the selected unit system"""
-        return self._unit_converter.fromSIunit_p(Constants.__CRITICAL_PRESSURE__)
+        return self._unit_converter.fromSIunit_p(__CRITICAL_PRESSURE__)
 
     def criticalDensity(self):
         """returns the specific density with conversion to the selected unit system"""
-        return self._unit_converter.fromSIunit_p(Constants.__CRITICAL_DENSITY__)
+        return self._unit_converter.fromSIunit_p(__CRITICAL_DENSITY__)
 
     def triplePointTemperatur(self):
         """returns the temperature of the triple point with conversion to the selected unit system"""
-        return self._unit_converter.fromSIunit_T(Constants.__TRIPLE_POINT_TEMPERATURE__)
+        return self._unit_converter.fromSIunit_T(__TRIPLE_POINT_TEMPERATURE__)
 
     def triplePointPressure(self):
         """returns the Pressure of the triple poin with conversion to the selected unit systemt"""
-        return self._unit_converter.fromSIunit_p(Constants.__TRIPLE_POINT_PRESSURE__)
+        return self._unit_converter.fromSIunit_p(__TRIPLE_POINT_PRESSURE__)
 
     def zeroPointTemperature(self):
         """returns the absolute zero temperature with conversion to the selected unit system"""

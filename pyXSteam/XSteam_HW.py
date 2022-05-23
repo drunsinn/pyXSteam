@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """Main module for the heavy water parts of pyXSteam"""
 import logging
-from . import Constants
+from .Constants import __CRITICAL_TEMPERATURE_D20_1992__, __CRITICAL_PRESSURE_D20_1992__, __CRITICAL_DENSITY_D20_1992__, UnitSystem
 from .UnitConverter import UnitConverter
 from . import IAPWS_R4
 
@@ -16,12 +16,7 @@ class XSteam_HW:
             Can be eather 0 (UNIT_SYSTEM_BARE), 1 (UNIT_SYSTEM_MKS) or 2 (UNIT_SYSTEM_FLS).
     """
 
-    # Copy constant Values to expose them to the User
-    UNIT_SYSTEM_BARE = UnitConverter.__UNIT_SYSTEM_BARE__
-    UNIT_SYSTEM_MKS = UnitConverter.__UNIT_SYSTEM_MKS__
-    UNIT_SYSTEM_FLS = UnitConverter.__UNIT_SYSTEM_FLS__
-
-    def __init__(self, unitSystem=UnitConverter.__UNIT_SYSTEM_BARE__):
+    def __init__(self, unitSystem: UnitSystem = UnitSystem.BARE):
         self.logger = logging.getLogger(__name__)
         self.unit_converter = UnitConverter(unitSystem)
         self.logger.info(
@@ -32,18 +27,18 @@ class XSteam_HW:
     def criticalTemperatur(self):
         """returns the specific temperature with conversion to the selected unit system"""
         return self.unit_converter.fromSIunit_T(
-            Constants.__CRITICAL_TEMPERATURE_D20_1992__
+            __CRITICAL_TEMPERATURE_D20_1992__
         )
 
     def criticalPressure(self):
         """returns the specific pressure with conversion to the selected unit system"""
         return self.unit_converter.fromSIunit_p(
-            Constants.__CRITICAL_PRESSURE_D20_1992__
+            __CRITICAL_PRESSURE_D20_1992__
         )
 
     def criticalDensity(self):
         """returns the specific density with conversion to the selected unit system"""
-        return self.unit_converter.fromSIunit_p(Constants.__CRITICAL_DENSITY_D20_1992__)
+        return self.unit_converter.fromSIunit_p(__CRITICAL_DENSITY_D20_1992__)
 
     def my_rhoT(self, rho: float, T: float) -> float:
         """Viscosity as a function of density and temperature for heavy water

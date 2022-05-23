@@ -10,6 +10,7 @@ Sources:
 * IAWPS Release on Vaues of Temperature, Pressure and Density of Ordinary and Heavy Water Substances at their Respective Critical Points Released September 1992, Revision of the Release of 1992
 
 """
+from enum import IntEnum
 
 __SPECIFIC_GAS_CONSTANT__ = 0.461526  # kJ kg^-1 K^-1
 __CRITICAL_TEMPERATURE__ = 647.096  # K
@@ -41,3 +42,25 @@ __ABSOLUTE_ZERO_FAHRENHEIT__ = -459.67  # °F
 __SPECIFIC_GAS_CONSTANT_IAPWS_R15_11__ = 0.46151805  # kJ kg^-1 K^-1
 __CRITICAL_TEMPERATURE_IAPWS_R15_11__ = 647.096  # K
 __CRITICAL_DENSITY_IAPWS_R15_11__ = 322.0  # kg m^-1
+
+
+class UnitSystem(IntEnum):
+    BARE = 1  # m/kg/sec/K/MPa/W
+    MKS = 1  # m/kg/sec/°C/bar/W
+    FLS = 2  # ft/lb/sec/°F/psi/btu
+
+    @classmethod
+    def has_value(cls, value):
+        return value in cls._value2member_map_
+
+
+class IceType(IntEnum):
+    Ih = 1
+    III = 3
+    V = 5
+    VI = 6
+    VII = 7
+
+    @classmethod
+    def has_value(cls, value):
+        return value in cls._value2member_map_

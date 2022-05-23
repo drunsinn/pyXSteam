@@ -10,12 +10,6 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-__TYPE_ICE_Ih__ = 1
-__TYPE_ICE_III__ = 3
-__TYPE_ICE_V__ = 5
-__TYPE_ICE_VI__ = 6
-__TYPE_ICE_VII__ = 7
-
 
 def pmelt_T_iceIh(T: float) -> float:
     """

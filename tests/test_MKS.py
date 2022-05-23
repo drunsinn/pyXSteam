@@ -5,13 +5,13 @@ Some Errors are calculated with the help of numpy matrix functions.
 """
 
 import unittest
-from pyXSteam.XSteam import XSteam
+from pyXSteam import XSteam, UnitSystem
 
 
 class MKS_FunctionTester(unittest.TestCase):
     def setUp(self):
         self.maxError = 1e-6
-        self.steamTable = XSteam(XSteam.UNIT_SYSTEM_MKS)
+        self.steamTable = XSteam(UnitSystem.MKS)
 
     def tearDown(self):
         pass

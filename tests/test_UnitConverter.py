@@ -4,14 +4,13 @@ Test cases for the unit converter used by pyXSteam
 """
 
 import unittest
-from pyXSteam.XSteam import XSteam
-from pyXSteam.UnitConverter import UnitConverter
+from pyXSteam import UnitSystem, UnitConverter
 
 
 class UnitConverter_MKS_FunctionTester(unittest.TestCase):
     def setUp(self):
         self.maxError = 1e-8
-        self.uc = UnitConverter(XSteam.UNIT_SYSTEM_MKS)
+        self.uc = UnitConverter(UnitSystem.MKS)
 
     def tearDown(self):
         pass
@@ -92,7 +91,7 @@ class UnitConverter_MKS_FunctionTester(unittest.TestCase):
 class UnitConverter_FLS_FunctionTester(unittest.TestCase):
     def setUp(self):
         self.maxError = 1e-8
-        self.uc = UnitConverter(XSteam.UNIT_SYSTEM_FLS)
+        self.uc = UnitConverter(UnitSystem.FLS)
 
     def tearDown(self):
         pass
