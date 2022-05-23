@@ -5,7 +5,7 @@ Section 4: Region Borders
 """
 
 
-def B23p_T(T):
+def B23p_T(T: float) -> float:
     """function B23p_T = B23p_T(T)
 
     Section 4.1 Boundary between region 2 and 3.
@@ -17,7 +17,7 @@ def B23p_T(T):
     return 348.05185628969 - 1.1671859879975 * T + 1.0192970039326e-03 * (T**2)
 
 
-def B23T_p(p):
+def B23T_p(p: float) -> float:
     """function B23T_p = B23T_p(p)
 
     Section 4.1 Boundary between region 2 and 3.
@@ -29,7 +29,7 @@ def B23T_p(p):
     return 572.54459862746 + ((p - 13.91883977887) / 1.0192970039326e-03) ** 0.5
 
 
-def p3sat_h(h):
+def p3sat_h(h: float) -> float:
     """function p3sat_h = p3sat_h(h)
 
     Section 4.2 Region 3. pSat_h  & pSat_s
@@ -63,7 +63,7 @@ def p3sat_h(h):
     return ps * 22
 
 
-def p3sat_s(s):
+def p3sat_s(s: float) -> float:
     """function p3sat_s = p3sat_s(s)
 
     Section 4.2 Region 3. pSat_h  & pSat_s
@@ -89,7 +89,7 @@ def p3sat_s(s):
     return Pi * 22
 
 
-def hB13_s(s):
+def hB13_s(s: float) -> float:
     """function hB13_s = hB13_s(s)
 
     Section 4.3 Region boundary 1 to 3  & 3to2 as a functions of s
@@ -113,7 +113,7 @@ def hB13_s(s):
     return eta * 1700
 
 
-def TB23_hs(h, s):
+def TB23_hs(h: float, s: float) -> float:
     """function TB23_hs = TB23_hs(h, s)
 
     Section 4.3 Region boundary 1to3  & 3to2 as a functions of s

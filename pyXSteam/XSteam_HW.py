@@ -45,7 +45,7 @@ class XSteam_HW:
         """returns the specific density with conversion to the selected unit system"""
         return self.unit_converter.fromSIunit_p(Constants.__CRITICAL_DENSITY_D20_1992__)
 
-    def my_rhoT(self, rho, T):
+    def my_rhoT(self, rho: float, T: float) -> float:
         """Viscosity as a function of density and temperature for heavy water
         substance
 
@@ -72,7 +72,7 @@ class XSteam_HW:
 
         return self.unit_converter.fromSIunit_T(IAPWS_R4.myHW_rhoT_R4(rho, T))
 
-    def tc_rhoT(self, rho, T):
+    def tc_rhoT(self, rho: float, T: float) -> float:
         """Thermal conductivity as a function of density and temperature for heavy water
         substance
 

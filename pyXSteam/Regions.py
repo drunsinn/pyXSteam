@@ -17,7 +17,7 @@ class Region1:
     """
 
     @staticmethod
-    def v1_pT(p, T):
+    def v1_pT(p: float, T: float) -> float:
         """function v1_pT = v1_pT(p, T)
 
         5 Equations for Region 1, Section. 5.1 Basic Equation
@@ -139,12 +139,13 @@ class Region1:
         for i in range(0, 34):
             gamma_der_pi = (
                 gamma_der_pi
-                - n1[i] * I1[i] * (7.1 - Pi) ** (I1[i] - 1) * (tau - 1.222) ** J1[i]
+                - n1[i] * I1[i] * (7.1 - Pi) ** (I1[i] - 1) *
+                (tau - 1.222) ** J1[i]
             )
         return R * T / p * Pi * gamma_der_pi / 1000
 
     @staticmethod
-    def h1_pT(p, T):
+    def h1_pT(p: float, T: float) -> float:
         """
         function h1_pT = h1_pT(p, T)
 
@@ -266,12 +267,13 @@ class Region1:
         gamma_der_tau = 0
         for i in range(0, 34):
             gamma_der_tau = gamma_der_tau + (
-                n1[i] * (7.1 - Pi) ** I1[i] * J1[i] * (tau - 1.222) ** (J1[i] - 1)
+                n1[i] * (7.1 - Pi) ** I1[i] * J1[i] *
+                (tau - 1.222) ** (J1[i] - 1)
             )
         return R * T * tau * gamma_der_tau
 
     @staticmethod
-    def u1_pT(p, T):
+    def u1_pT(p: float, T: float) -> float:
         """function u1_pT = u1_pT(p, T)
 
         5 Equations for Region 1, Section. 5.1 Basic Equation
@@ -394,15 +396,17 @@ class Region1:
         for i in range(0, 34):
             gamma_der_pi = (
                 gamma_der_pi
-                - n1[i] * I1[i] * (7.1 - Pi) ** (I1[i] - 1) * (tau - 1.222) ** J1[i]
+                - n1[i] * I1[i] * (7.1 - Pi) ** (I1[i] - 1) *
+                (tau - 1.222) ** J1[i]
             )
             gamma_der_tau = gamma_der_tau + (
-                n1[i] * (7.1 - Pi) ** I1[i] * J1[i] * (tau - 1.222) ** (J1[i] - 1)
+                n1[i] * (7.1 - Pi) ** I1[i] * J1[i] *
+                (tau - 1.222) ** (J1[i] - 1)
             )
         return R * T * (tau * gamma_der_tau - Pi * gamma_der_pi)
 
     @staticmethod
-    def s1_pT(p, T):
+    def s1_pT(p: float, T: float) -> float:
         """function s1_pT = s1_pT(p, T)
 
         5 Equations for Region 1, Section. 5.1 Basic Equation
@@ -524,13 +528,15 @@ class Region1:
         gamma_der_tau = 0
         for i in range(0, 34):
             gamma_der_tau = gamma_der_tau + (
-                n1[i] * (7.1 - Pi) ** I1[i] * J1[i] * (tau - 1.222) ** (J1[i] - 1)
+                n1[i] * (7.1 - Pi) ** I1[i] * J1[i] *
+                (tau - 1.222) ** (J1[i] - 1)
             )
-            gamma = gamma + n1[i] * (7.1 - Pi) ** I1[i] * (tau - 1.222) ** J1[i]
+            gamma = gamma + n1[i] * (7.1 - Pi) ** I1[i] * \
+                (tau - 1.222) ** J1[i]
         return R * tau * gamma_der_tau - R * gamma
 
     @staticmethod
-    def Cp1_pT(p, T):
+    def Cp1_pT(p: float, T: float) -> float:
         """function Cp1_pT = Cp1_pT(p, T)
 
         5 Equations for Region 1, Section. 5.1 Basic Equation
@@ -660,7 +666,7 @@ class Region1:
         return -R * tau**2 * gamma_der_tautau
 
     @staticmethod
-    def Cv1_pT(p, T):
+    def Cv1_pT(p: float, T: float) -> float:
         """function Cv1_pT = Cv1_pT(p, T)
 
         5 Equations for Region 1, Section. 5.1 Basic Equation
@@ -785,7 +791,8 @@ class Region1:
         for i in range(0, 34):
             gamma_der_pi = (
                 gamma_der_pi
-                - n1[i] * I1[i] * (7.1 - Pi) ** (I1[i] - 1) * (tau - 1.222) ** J1[i]
+                - n1[i] * I1[i] * (7.1 - Pi) ** (I1[i] - 1) *
+                (tau - 1.222) ** J1[i]
             )
             gamma_der_pipi = (
                 gamma_der_pipi
@@ -802,12 +809,11 @@ class Region1:
                 i
             ] * (J1[i] - 1) * (tau - 1.222) ** (J1[i] - 2)
         return R * (
-            -(tau**2) * gamma_der_tautau
-            + (gamma_der_pi - tau * gamma_der_pitau) ** 2 / gamma_der_pipi
-        )
+            - (tau**2) * gamma_der_tautau
+            + (gamma_der_pi - tau * gamma_der_pitau) ** 2 / gamma_der_pipi)
 
     @staticmethod
-    def w1_pT(p, T):
+    def w1_pT(p: float, T: float) -> float:
         """function w1_pT = w1_pT(p, T)
 
         5 Equations for Region 1, Section. 5.1 Basic Equation
@@ -932,7 +938,8 @@ class Region1:
         for i in range(0, 34):
             gamma_der_pi = (
                 gamma_der_pi
-                - n1[i] * I1[i] * (7.1 - Pi) ** (I1[i] - 1) * (tau - 1.222) ** J1[i]
+                - n1[i] * I1[i] * (7.1 - Pi) ** (I1[i] - 1) *
+                (tau - 1.222) ** J1[i]
             )
             gamma_der_pipi = (
                 gamma_der_pipi
@@ -961,7 +968,7 @@ class Region1:
         ) ** 0.5
 
     @staticmethod
-    def T1_ph(p, h):
+    def T1_ph(p: float, h: float) -> float:
         """function T1_ph = T1_ph(p, h)
 
         5 Equations for Region 1, Section. 5.1 Basic Equation, 5.2.1 The Backward Equation T (p, h)
@@ -969,7 +976,8 @@ class Region1:
         Equation 11, Table 6, Page 10
         """
         I1 = [0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 2, 2, 3, 3, 4, 5, 6]
-        J1 = [0, 1, 2, 6, 22, 32, 0, 1, 2, 3, 4, 10, 32, 10, 32, 10, 32, 32, 32, 32]
+        J1 = [0, 1, 2, 6, 22, 32, 0, 1, 2, 3, 4,
+              10, 32, 10, 32, 10, 32, 32, 32, 32]
         n1 = [
             -238.72489924521,
             404.21188637945,
@@ -1000,7 +1008,7 @@ class Region1:
         return T
 
     @staticmethod
-    def T1_ps(p, s):
+    def T1_ps(p: float, s: float) -> float:
         """function T1_ps = T1_ps(p, s)
 
         5 Equations for Region 1, Section. 5.1 Basic Equation, 5.2.2 The Backward Equation T (p, s)
@@ -1008,7 +1016,8 @@ class Region1:
         Equation 13, Table 8, Page 11
         """
         I1 = [0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 4]
-        J1 = [0, 1, 2, 3, 11, 31, 0, 1, 2, 3, 12, 31, 0, 1, 2, 9, 31, 10, 32, 32]
+        J1 = [0, 1, 2, 3, 11, 31, 0, 1, 2, 3,
+              12, 31, 0, 1, 2, 9, 31, 10, 32, 32]
         n1 = [
             174.78268058307,
             34.806930892873,
@@ -1039,7 +1048,7 @@ class Region1:
         return T
 
     @staticmethod
-    def p1_hs(h, s):
+    def p1_hs(h: float, s: float) -> float:
         """function p1_hs = p1_hs(h, s)
 
         Supplementary Release on Backward Equations for Pressure as a Function of Enthalpy and Entropy p(h, s) to the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam
@@ -1079,7 +1088,7 @@ class Region1:
         return p * 100
 
     @staticmethod
-    def T1_prho(p, rho):
+    def T1_prho(p: float, rho: float) -> float:
         """function T1_prho = T1_prho(p , rho)
 
         Solve by iteration. Observe that for low temperatures this equation has 2 solutions. Solve with half interval method
@@ -1116,7 +1125,7 @@ class Region2:
     """
 
     @staticmethod
-    def v2_pT(p, T):
+    def v2_pT(p: float, T: float) -> float:
         """function v2_pT = v2_pT(p, T)
 
         6 Equations for Region 2, Section. 6.1 Basic Equation
@@ -1264,11 +1273,12 @@ class Region2:
         g0_pi = 1 / Pi
         gr_pi = 0
         for i in range(0, 43):
-            gr_pi = gr_pi + nr[i] * Ir[i] * Pi ** (Ir[i] - 1) * (tau - 0.5) ** Jr[i]
+            gr_pi = gr_pi + nr[i] * Ir[i] * \
+                Pi ** (Ir[i] - 1) * (tau - 0.5) ** Jr[i]
         return R * T / p * Pi * (g0_pi + gr_pi) / 1000
 
     @staticmethod
-    def h2_pT(p, T):
+    def h2_pT(p: float, T: float) -> float:
         """function h2_pT = h2_pT(p, T)
 
         6 Equations for Region 2, Section. 6.1 Basic Equation
@@ -1430,11 +1440,12 @@ class Region2:
             g0_tau = g0_tau + n0[i] * J0[i] * tau ** (J0[i] - 1)
         gr_tau = 0
         for i in range(0, 43):
-            gr_tau = gr_tau + nr[i] * Pi ** Ir[i] * Jr[i] * (tau - 0.5) ** (Jr[i] - 1)
+            gr_tau = gr_tau + nr[i] * Pi ** Ir[i] * \
+                Jr[i] * (tau - 0.5) ** (Jr[i] - 1)
         return R * T * tau * (g0_tau + gr_tau)
 
     @staticmethod
-    def u2_pT(p, T):
+    def u2_pT(p: float, T: float) -> float:
         """function u2_pT = u2_pT(p, T)
 
         6 Equations for Region 2, Section. 6.1 Basic Equation
@@ -1598,12 +1609,14 @@ class Region2:
         gr_pi = 0
         gr_tau = 0
         for i in range(0, 43):
-            gr_pi = gr_pi + nr[i] * Ir[i] * Pi ** (Ir[i] - 1) * (tau - 0.5) ** Jr[i]
-            gr_tau = gr_tau + nr[i] * Pi ** Ir[i] * Jr[i] * (tau - 0.5) ** (Jr[i] - 1)
+            gr_pi = gr_pi + nr[i] * Ir[i] * \
+                Pi ** (Ir[i] - 1) * (tau - 0.5) ** Jr[i]
+            gr_tau = gr_tau + nr[i] * Pi ** Ir[i] * \
+                Jr[i] * (tau - 0.5) ** (Jr[i] - 1)
         return R * T * (tau * (g0_tau + gr_tau) - Pi * (g0_pi + gr_pi))
 
     @staticmethod
-    def s2_pT(p, T):
+    def s2_pT(p: float, T: float) -> float:
         """function s2_pT = s2_pT(p, T)
 
         6 Equations for Region 2, Section. 6.1 Basic Equation
@@ -1769,11 +1782,12 @@ class Region2:
         gr_tau = 0
         for i in range(0, 43):
             gr = gr + nr[i] * Pi ** Ir[i] * (tau - 0.5) ** Jr[i]
-            gr_tau = gr_tau + nr[i] * Pi ** Ir[i] * Jr[i] * (tau - 0.5) ** (Jr[i] - 1)
+            gr_tau = gr_tau + nr[i] * Pi ** Ir[i] * \
+                Jr[i] * (tau - 0.5) ** (Jr[i] - 1)
         return R * (tau * (g0_tau + gr_tau) - (g0 + gr))
 
     @staticmethod
-    def Cp2_pT(p, T):
+    def Cp2_pT(p: float, T: float) -> float:
         """function Cp2_pT = Cp2_pT(p, T)
 
         6 Equations for Region 2, Section. 6.1 Basic Equation
@@ -1932,7 +1946,8 @@ class Region2:
         tau = 540 / T
         g0_tautau = 0
         for i in range(0, 9):
-            g0_tautau = g0_tautau + n0[i] * J0[i] * (J0[i] - 1) * tau ** (J0[i] - 2)
+            g0_tautau = g0_tautau + n0[i] * J0[i] * \
+                (J0[i] - 1) * tau ** (J0[i] - 2)
         gr_tautau = 0
         for i in range(0, 43):
             gr_tautau = gr_tautau + nr[i] * Pi ** Ir[i] * Jr[i] * (Jr[i] - 1) * (
@@ -1941,7 +1956,7 @@ class Region2:
         return -R * tau**2 * (g0_tautau + gr_tautau)
 
     @staticmethod
-    def Cv2_pT(p, T):
+    def Cv2_pT(p: float, T: float) -> float:
         """function Cv2_pT = Cv2_pT(p, T)
 
         6 Equations for Region 2, Section. 6.1 Basic Equation
@@ -2100,16 +2115,19 @@ class Region2:
         tau = 540 / T
         g0_tautau = 0
         for i in range(0, 9):
-            g0_tautau = g0_tautau + n0[i] * J0[i] * (J0[i] - 1) * tau ** (J0[i] - 2)
+            g0_tautau = g0_tautau + n0[i] * J0[i] * \
+                (J0[i] - 1) * tau ** (J0[i] - 2)
         gr_pi = 0
         gr_pitau = 0
         gr_pipi = 0
         gr_tautau = 0
         for i in range(0, 43):
-            gr_pi = gr_pi + nr[i] * Ir[i] * Pi ** (Ir[i] - 1) * (tau - 0.5) ** Jr[i]
+            gr_pi = gr_pi + nr[i] * Ir[i] * \
+                Pi ** (Ir[i] - 1) * (tau - 0.5) ** Jr[i]
             gr_pipi = (
                 gr_pipi
-                + nr[i] * Ir[i] * (Ir[i] - 1) * Pi ** (Ir[i] - 2) * (tau - 0.5) ** Jr[i]
+                + nr[i] * Ir[i] * (Ir[i] - 1) *
+                Pi ** (Ir[i] - 2) * (tau - 0.5) ** Jr[i]
             )
             gr_pitau = gr_pitau + nr[i] * Ir[i] * Pi ** (Ir[i] - 1) * Jr[i] * (
                 tau - 0.5
@@ -2123,7 +2141,7 @@ class Region2:
         )
 
     @staticmethod
-    def w2_pT(p, T):
+    def w2_pT(p: float, T: float) -> float:
         """function w2_pT = w2_pT(p, T)
 
         6 Equations for Region 2, Section. 6.1 Basic Equation
@@ -2282,16 +2300,19 @@ class Region2:
         tau = 540 / T
         g0_tautau = 0
         for i in range(0, 9):
-            g0_tautau = g0_tautau + n0[i] * J0[i] * (J0[i] - 1) * tau ** (J0[i] - 2)
+            g0_tautau = g0_tautau + n0[i] * J0[i] * \
+                (J0[i] - 1) * tau ** (J0[i] - 2)
         gr_pi = 0
         gr_pitau = 0
         gr_pipi = 0
         gr_tautau = 0
         for i in range(0, 43):
-            gr_pi = gr_pi + nr[i] * Ir[i] * Pi ** (Ir[i] - 1) * (tau - 0.5) ** Jr[i]
+            gr_pi = gr_pi + nr[i] * Ir[i] * \
+                Pi ** (Ir[i] - 1) * (tau - 0.5) ** Jr[i]
             gr_pipi = (
                 gr_pipi
-                + nr[i] * Ir[i] * (Ir[i] - 1) * Pi ** (Ir[i] - 2) * (tau - 0.5) ** Jr[i]
+                + nr[i] * Ir[i] * (Ir[i] - 1) *
+                Pi ** (Ir[i] - 2) * (tau - 0.5) ** Jr[i]
             )
             gr_pitau = gr_pitau + nr[i] * Ir[i] * Pi ** (Ir[i] - 1) * Jr[i] * (
                 tau - 0.5
@@ -2312,7 +2333,7 @@ class Region2:
         ) ** 0.5
 
     @staticmethod
-    def T2_ph(p, h):
+    def T2_ph(p: float, h: float) -> float:
         """function T2_ph = T2_ph(p, h)
 
         6 Equations for Region 2, 6.3.1 The Backward Equations T(p, h) for Subregions 2a, 2b, and 2c
@@ -2652,7 +2673,7 @@ class Region2:
         return Ts
 
     @staticmethod
-    def T2_ps(p, s):
+    def T2_ps(p: float, s: float) -> float:
         """function T2_ps = T2_ps(p, s)
 
         6 Equations for Region 2,6.3.2 The Backward Equations T( p, s ) for Subregions 2a, 2b, and 2c
@@ -3072,7 +3093,7 @@ class Region2:
         return teta
 
     @staticmethod
-    def p2_hs(h, s):
+    def p2_hs(h: float, s: float) -> float:
         """function p2_hs = p2_hs(h, s)
 
         Supplementary Release on Backward Equations for Pressure as a function of Enthalpy and Entropy p(h,s) to the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam
@@ -3305,7 +3326,8 @@ class Region2:
             Sigma = s / 7.9
             Pi = 0
             for i in range(0, 33):
-                Pi = Pi + ni[i] * (eta - 0.6) ** Ii[i] * (Sigma - 1.01) ** Ji[i]
+                Pi = Pi + ni[i] * (eta - 0.6) ** Ii[i] * \
+                    (Sigma - 1.01) ** Ji[i]
             p2_hs = Pi**4 * 100
         else:
             # Subregion C
@@ -3418,7 +3440,7 @@ class Region2:
         return p2_hs
 
     @staticmethod
-    def T2_prho(p, rho):
+    def T2_prho(p: float, rho: float) -> float:
         """function T2_prho=T2_prho(p,rho)
         Solve by iteration. Observe that of low temperatures this equation has 2 solutions. Solve with half interval method
         """
@@ -3457,7 +3479,7 @@ class Region3:
     """
 
     @staticmethod
-    def p3_rhoT(rho, T):
+    def p3_rhoT(rho: float, T: float) -> float:
         """function p3_rhoT = p3_rhoT(rho, T)
 
         7 Basic Equation for Region 3, Section. 6.1 Basic Equation
@@ -3597,13 +3619,14 @@ class Region3:
         tau = tc / T
         fidelta = 0
         for i in range(1, 40):
-            fidelta = fidelta + ni[i] * Ii[i] * delta ** (Ii[i] - 1) * tau ** Ji[i]
+            fidelta = fidelta + ni[i] * Ii[i] * \
+                delta ** (Ii[i] - 1) * tau ** Ji[i]
 
         fidelta = fidelta + (ni[0] / delta)
         return (rho * R * T * delta * fidelta) / 1000.0
 
     @staticmethod
-    def u3_rhoT(rho, T):
+    def u3_rhoT(rho: float, T: float) -> float:
         """function u3_rhoT = u3_rhoT(rho, T)
 
         7 Basic Equation for Region 3, Section. 6.1 Basic Equation
@@ -3747,7 +3770,7 @@ class Region3:
         return R * T * (tau * fitau)
 
     @staticmethod
-    def h3_rhoT(rho, T):
+    def h3_rhoT(rho: float, T: float) -> float:
         """function h3_rhoT = h3_rhoT(rho, T)
 
         7 Basic Equation for Region 3, Section. 6.1 Basic Equation
@@ -3888,13 +3911,14 @@ class Region3:
         fidelta = 0
         fitau = 0
         for i in range(1, 40):
-            fidelta = fidelta + ni[i] * Ii[i] * delta ** (Ii[i] - 1) * tau ** Ji[i]
+            fidelta = fidelta + ni[i] * Ii[i] * \
+                delta ** (Ii[i] - 1) * tau ** Ji[i]
             fitau = fitau + ni[i] * delta ** Ii[i] * Ji[i] * tau ** (Ji[i] - 1)
         fidelta = fidelta + ni[0] / delta
         return R * T * (tau * fitau + delta * fidelta)
 
     @staticmethod
-    def s3_rhoT(rho, T):
+    def s3_rhoT(rho: float, T: float) -> float:
         """function s3_rhoT = s3_rhoT(rho, T)
 
         7 Basic Equation for Region 3, Section. 6.1 Basic Equation
@@ -4041,7 +4065,7 @@ class Region3:
         return R * (tau * fitau - fi)
 
     @staticmethod
-    def Cp3_rhoT(rho, T):
+    def Cp3_rhoT(rho: float, T: float) -> float:
         """function Cp3_rhoT = Cp3_rhoT(rho, T)
 
         7 Basic Equation for Region 3, Section. 6.1 Basic Equation
@@ -4187,13 +4211,15 @@ class Region3:
             fitautau = fitautau + ni[i] * delta ** Ii[i] * Ji[i] * (
                 Ji[i] - 1
             ) * tau ** (Ji[i] - 2)
-            fidelta = fidelta + ni[i] * Ii[i] * delta ** (Ii[i] - 1) * tau ** Ji[i]
+            fidelta = fidelta + ni[i] * Ii[i] * \
+                delta ** (Ii[i] - 1) * tau ** Ji[i]
             fideltatau = fideltatau + ni[i] * Ii[i] * delta ** (Ii[i] - 1) * Ji[
                 i
             ] * tau ** (Ji[i] - 1)
             fideltadelta = (
                 fideltadelta
-                + ni[i] * Ii[i] * (Ii[i] - 1) * delta ** (Ii[i] - 2) * tau ** Ji[i]
+                + ni[i] * Ii[i] * (Ii[i] - 1) *
+                delta ** (Ii[i] - 2) * tau ** Ji[i]
             )
         fidelta = fidelta + ni[0] / delta
         fideltadelta = fideltadelta - ni[0] / (delta**2)
@@ -4204,7 +4230,7 @@ class Region3:
         )
 
     @staticmethod
-    def Cv3_rhoT(rho, T):
+    def Cv3_rhoT(rho: float, T: float) -> float:
         """function Cv3_rhoT = Cv3_rhoT(rho, T)
 
         7 Basic Equation for Region 3, Section. 6.1 Basic Equation
@@ -4353,7 +4379,7 @@ class Region3:
         return R * -(tau * tau * fitautau)
 
     @staticmethod
-    def w3_rhoT(rho, T):
+    def w3_rhoT(rho: float, T: float) -> float:
         """function w3_rhoT = w3_rhoT(rho, T)
 
         7 Basic Equation for Region 3, Section. 6.1 Basic Equation
@@ -4499,13 +4525,15 @@ class Region3:
             fitautau = fitautau + ni[i] * delta ** Ii[i] * Ji[i] * (
                 Ji[i] - 1
             ) * tau ** (Ji[i] - 2)
-            fidelta = fidelta + ni[i] * Ii[i] * delta ** (Ii[i] - 1) * tau ** Ji[i]
+            fidelta = fidelta + ni[i] * Ii[i] * \
+                delta ** (Ii[i] - 1) * tau ** Ji[i]
             fideltatau = fideltatau + ni[i] * Ii[i] * delta ** (Ii[i] - 1) * Ji[
                 i
             ] * tau ** (Ji[i] - 1)
             fideltadelta = (
                 fideltadelta
-                + ni[i] * Ii[i] * (Ii[i] - 1) * delta ** (Ii[i] - 2) * tau ** Ji[i]
+                + ni[i] * Ii[i] * (Ii[i] - 1) *
+                delta ** (Ii[i] - 2) * tau ** Ji[i]
             )
         fidelta = fidelta + ni[0] / delta
         fideltadelta = fideltadelta - ni[0] / (delta**2)
@@ -4522,7 +4550,7 @@ class Region3:
         ) ** 0.5
 
     @staticmethod
-    def T3_ph(p, h):
+    def T3_ph(p: float, h: float) -> float:
         """function T3_ph = T3_ph(p, h)
 
         Revised Supplementary Release on Backward Equations for the functions T(p,h), v(p,h) and T(p,s), v(p,s) for Region 3 of the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam 2004
@@ -4762,7 +4790,7 @@ class Region3:
         return T3_ph
 
     @staticmethod
-    def v3_ph(p, h):
+    def v3_ph(p: float, h: float) -> float:
         """function v3_ph = v3_ph(p, h)
         Revised Supplementary Release on Backward Equations for the functions T(p, h), v(p, h) and T(p, s), v(p, s) for Region 3 of the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam 2004
 
@@ -4995,7 +5023,7 @@ class Region3:
         return v3_ph
 
     @staticmethod
-    def T3_ps(p, s):
+    def T3_ps(p: float, s: float) -> float:
         """function T3_ps = T3_ps(p, s)
 
         Revised Supplementary Release on Backward Equations for the functions T(p,h), v(p,h) and T(p,s), v(p,s) for Region 3 of the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam 2004
@@ -5116,7 +5144,8 @@ class Region3:
             Pi = p / 100
             teta = 0
             for i in range(0, 33):
-                teta = teta + ni[i] * (Pi + 0.24) ** Ii[i] * (Sigma - 0.703) ** Ji[i]
+                teta = teta + ni[i] * (Pi + 0.24) ** Ii[i] * \
+                    (Sigma - 0.703) ** Ji[i]
             T3_ps = teta * 760
         else:
             # Subregion 3b
@@ -5215,12 +5244,13 @@ class Region3:
             Pi = p / 100
             teta = 0
             for i in range(0, 28):
-                teta = teta + ni[i] * (Pi + 0.76) ** Ii[i] * (Sigma - 0.818) ** Ji[i]
+                teta = teta + ni[i] * (Pi + 0.76) ** Ii[i] * \
+                    (Sigma - 0.818) ** Ji[i]
             T3_ps = teta * 860
         return T3_ps
 
     @staticmethod
-    def v3_ps(p, s):
+    def v3_ps(p: float, s: float) -> float:
         """function v3_ps = v3_ps(p, s)
 
         Revised Supplementary Release on Backward Equations for the functions T(p, h), v(p, h) and T(p, s), v(p, s) for Region 3 of the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam 2004
@@ -5326,7 +5356,8 @@ class Region3:
             Sigma = s / 4.4
             omega = 0
             for i in range(0, 28):
-                omega = omega + ni[i] * (Pi + 0.187) ** Ii[i] * (Sigma - 0.755) ** Ji[i]
+                omega = omega + \
+                    ni[i] * (Pi + 0.187) ** Ii[i] * (Sigma - 0.755) ** Ji[i]
             v3_ps = omega * 0.0028
         else:
             # Subregion 3b
@@ -5434,12 +5465,13 @@ class Region3:
             Sigma = s / 5.3
             omega = 0
             for i in range(0, 31):
-                omega = omega + ni[i] * (Pi + 0.298) ** Ii[i] * (Sigma - 0.816) ** Ji[i]
+                omega = omega + \
+                    ni[i] * (Pi + 0.298) ** Ii[i] * (Sigma - 0.816) ** Ji[i]
             v3_ps = omega * 0.0088
         return v3_ps
 
     @staticmethod
-    def p3_hs(h, s):
+    def p3_hs(h: float, s: float) -> float:
         """function p3_hs = p3_hs(h, s)
 
         Supplementary Release on Backward Equations () , p h s for Region 3, Equations as a function of h and s for the Region Boundaries, and an Equation sat , T hs for Region 4 of the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam 2004
@@ -5558,7 +5590,8 @@ class Region3:
             eta = h / 2300
             Pi = 0
             for i in range(0, 33):
-                Pi = Pi + ni[i] * (eta - 1.01) ** Ii[i] * (Sigma - 0.75) ** Ji[i]
+                Pi = Pi + ni[i] * (eta - 1.01) ** Ii[i] * \
+                    (Sigma - 0.75) ** Ji[i]
             p3_hs = Pi * 99
         else:
             # Subregion 3b
@@ -5679,12 +5712,13 @@ class Region3:
             Pi = 0
             # for i = 1 : 35
             for i in range(0, 35):
-                Pi = Pi + ni[i] * (eta - 0.681) ** Ii[i] * (Sigma - 0.792) ** Ji[i]
+                Pi = Pi + ni[i] * (eta - 0.681) ** Ii[i] * \
+                    (Sigma - 0.792) ** Ji[i]
             p3_hs = 16.6 / Pi
         return p3_hs
 
     @staticmethod
-    def h3_pT(p, T):
+    def h3_pT(p: float, T: float) -> float:
         """function h3_pT = h3_pT(p, T)
 
         Not available with if 97
@@ -5729,7 +5763,7 @@ class Region3:
         return hs
 
     @staticmethod
-    def T3_prho(p, rho):
+    def T3_prho(p: float, rho: float) -> float:
         """function T3_prho = T3_prho(p, rho)
 
         Solve by iteration. Observe that of low temperatures this equation has 2 solutions. Solve with half interval method
@@ -5766,7 +5800,7 @@ class Region4:
     """
 
     @staticmethod
-    def p4_T(T):
+    def p4_T(T: float) -> float:
         """function p4_T = p4_T(T)
 
         Section 8.1 The Saturation-Pressure Equation
@@ -5780,7 +5814,7 @@ class Region4:
         return (2 * C / (-B + (B**2 - 4 * a * C) ** 0.5)) ** 4
 
     @staticmethod
-    def T4_p(p):
+    def T4_p(p: float) -> float:
         """function T4_p = T4_p(p)
 
         Section 8.2 The Saturation-Temperature Equation
@@ -5803,7 +5837,7 @@ class Region4:
         ) / 2
 
     @staticmethod
-    def h4_s(s):
+    def h4_s(s: float) -> float:
         """function h4_s = h4_s(s)
 
         Supplementary Release on Backward Equations () , p h s for Region 3, Equations as a function of h and s for the Region Boundaries, and an Equation() sat , T hs for Region 4 of the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam 4 Equations for Region Boundaries Given Enthalpy and Entropy
@@ -5904,14 +5938,16 @@ class Region4:
             eta = 0
             for i in range(0, 27):
                 eta = (
-                    eta + ni[i] * (Sigma - 1.09) ** Ii[i] * (Sigma + 0.0000366) ** Ji[i]
+                    eta + ni[i] * (Sigma - 1.09) ** Ii[i] *
+                    (Sigma + 0.0000366) ** Ji[i]
                 )
             h4_s = eta * 1700
         elif (s > 3.77828134) and (s <= 4.41202148223476):
             # hL3_s
             # Eq 4, Table 10, Page 16
             Ii = [0, 0, 0, 0, 2, 3, 4, 4, 5, 5, 6, 7, 7, 7, 10, 10, 10, 32, 32]
-            Ji = [1, 4, 10, 16, 1, 36, 3, 16, 20, 36, 4, 2, 28, 32, 14, 32, 36, 0, 6]
+            Ji = [1, 4, 10, 16, 1, 36, 3, 16, 20,
+                  36, 4, 2, 28, 32, 14, 32, 36, 0, 6]
             ni = [
                 0.822673364673336,
                 0.181977213534479,
@@ -5937,7 +5973,8 @@ class Region4:
             eta = 0
             for i in range(0, 19):
                 eta = (
-                    eta + ni[i] * (Sigma - 1.09) ** Ii[i] * (Sigma + 0.0000366) ** Ji[i]
+                    eta + ni[i] * (Sigma - 1.09) ** Ii[i] *
+                    (Sigma + 0.0000366) ** Ji[i]
                 )
             h4_s = eta * 1700
         elif (s > 4.41202148223476) and (s <= 5.85):
@@ -5967,7 +6004,8 @@ class Region4:
             Sigma = s / 5.9
             eta = 0
             for i in range(0, 16):
-                eta = eta + ni[i] * (Sigma - 1.02) ** Ii[i] * (Sigma - 0.726) ** Ji[i]
+                eta = eta + ni[i] * (Sigma - 1.02) ** Ii[i] * \
+                    (Sigma - 0.726) ** Ji[i]
             h4_s = eta**4 * 2800
         elif (s > 5.85) and (s < 9.155759395):
             # Section 4.4 Equations () 2ab " h s and ( ) 2c3b "h s for the Saturated Vapor Line
@@ -6074,7 +6112,8 @@ class Region4:
             for i in range(0, 30):
                 eta = (
                     eta
-                    + ni[i] * (1 / Sigma1 - 0.513) ** Ii[i] * (Sigma2 - 0.524) ** Ji[i]
+                    + ni[i] * (1 / Sigma1 - 0.513) ** Ii[i] *
+                    (Sigma2 - 0.524) ** Ji[i]
                 )
             h4_s = math.exp(eta) * 2800
         else:
@@ -6082,7 +6121,7 @@ class Region4:
         return h4_s
 
     @staticmethod
-    def p4_s(s):
+    def p4_s(s: float) -> float:
         """function p4_s = p4_s(s)
 
         Uses h4_s and p_hs for the different regions to determine p4_s
@@ -6099,7 +6138,7 @@ class Region4:
         return p4_s
 
     @staticmethod
-    def h4L_p(p):
+    def h4L_p(p: float) -> float:
         """function h4L_p = h4L_p(p)"""
         logger = logging.getLogger("pyXSteam")
         if (p > 0.000611657) and (p < 22.06395):
@@ -6136,7 +6175,7 @@ class Region4:
         return h4L_p
 
     @staticmethod
-    def h4V_p(p):
+    def h4V_p(p: float) -> float:
         """function h4V_p = h4V_p(p)"""
         logger = logging.getLogger("pyXSteam")
         if (p > 0.000611657) and (p < 22.06395):
@@ -6173,7 +6212,7 @@ class Region4:
         return h4V_p
 
     @staticmethod
-    def x4_ph(p, h):
+    def x4_ph(p: float, h: float) -> float:
         """function x4_ph = x4_ph(p, h)
 
         Calculate vapour fraction from hL and hV for given p
@@ -6189,7 +6228,7 @@ class Region4:
         return x4_ph
 
     @staticmethod
-    def x4_ps(p, s):
+    def x4_ps(p: float, s: float) -> float:
         """function x4_ps = x4_ps(p, s)"""
         if p < 16.529:
             ssv = Region2.s2_pT(p, Region4.T4_p(p))
@@ -6210,7 +6249,7 @@ class Region4:
         return x4_ps
 
     @staticmethod
-    def T4_hs(h, s):
+    def T4_hs(h: float, s: float) -> float:
         """function T4_hs = T4_hs(h, s)
 
         Supplementary Release on Backward Equations ( ) , p h s for Region 3,
@@ -6338,7 +6377,8 @@ class Region4:
             eta = h / 2800
             teta = 0
             for i in range(0, 36):
-                teta = teta + ni[i] * (eta - 0.119) ** Ii[i] * (Sigma - 1.07) ** Ji[i]
+                teta = teta + ni[i] * (eta - 0.119) ** Ii[i] * \
+                    (Sigma - 1.07) ** Ji[i]
             T4_hs = teta * 550
         else:
             # function psat_h
@@ -6393,7 +6433,7 @@ class Region5:
     """
 
     @staticmethod
-    def h5_pT(p, T):
+    def h5_pT(p: float, T: float) -> float:
         """function h5_pT = h5_pT(p, T)
 
         Basic Equation for Region 5
@@ -6432,7 +6472,7 @@ class Region5:
         return R * T * tau * (gamma0_tau + gammar_tau)
 
     @staticmethod
-    def v5_pT(p, T):
+    def v5_pT(p: float, T: float) -> float:
         """function v5_pT = v5_pT(p, T)
 
         Basic Equation for Region 5
@@ -6454,11 +6494,12 @@ class Region5:
         gamma0_pi = 1 / Pi  #
         gammar_pi = 0  #
         for i in range(0, 5):
-            gammar_pi = gammar_pi + nir[i] * Iir[i] * Pi ** (Iir[i] - 1) * tau ** Jir[i]
+            gammar_pi = gammar_pi + nir[i] * Iir[i] * \
+                Pi ** (Iir[i] - 1) * tau ** Jir[i]
         return R * T / p * Pi * (gamma0_pi + gammar_pi) / 1000
 
     @staticmethod
-    def u5_pT(p, T):
+    def u5_pT(p: float, T: float) -> float:
         """function u5_pT = u5_pT(p, T)
 
         Basic Equation for Region 5
@@ -6493,14 +6534,15 @@ class Region5:
         gammar_pi = 0
         gammar_tau = 0
         for i in range(0, 5):
-            gammar_pi = gammar_pi + nir[i] * Iir[i] * Pi ** (Iir[i] - 1) * tau ** Jir[i]
+            gammar_pi = gammar_pi + nir[i] * Iir[i] * \
+                Pi ** (Iir[i] - 1) * tau ** Jir[i]
             gammar_tau = gammar_tau + nir[i] * Pi ** Iir[i] * Jir[i] * tau ** (
                 Jir[i] - 1
             )
         return R * T * (tau * (gamma0_tau + gammar_tau) - Pi * (gamma0_pi + gammar_pi))
 
     @staticmethod
-    def Cp5_pT(p, T):
+    def Cp5_pT(p: float, T: float) -> float:
         """function Cp5_pT = Cp5_pT(p, T)
 
         Basic Equation for Region 5
@@ -6541,7 +6583,7 @@ class Region5:
         return -R * tau**2 * (gamma0_tautau + gammar_tautau)
 
     @staticmethod
-    def s5_pT(p, T):
+    def s5_pT(p: float, T: float) -> float:
         """function s5_pT = s5_pT(p, T)
 
         Basic Equation for Region 5
@@ -6584,7 +6626,7 @@ class Region5:
         return R * (tau * (gamma0_tau + gammar_tau) - (gamma0 + gammar))
 
     @staticmethod
-    def Cv5_pT(p, T):
+    def Cv5_pT(p: float, T: float) -> float:
         """function Cv5_pT = Cv5_pT(p, T)
 
         Basic Equation for Region 5
@@ -6622,13 +6664,15 @@ class Region5:
         gammar_pipi = 0
         gammar_tautau = 0
         for i in range(0, 5):
-            gammar_pi = gammar_pi + nir[i] * Iir[i] * Pi ** (Iir[i] - 1) * tau ** Jir[i]
+            gammar_pi = gammar_pi + nir[i] * Iir[i] * \
+                Pi ** (Iir[i] - 1) * tau ** Jir[i]
             gammar_pitau = gammar_pitau + nir[i] * Iir[i] * Pi ** (Iir[i] - 1) * Jir[
                 i
             ] * tau ** (Jir[i] - 1)
             gammar_pipi = (
                 gammar_pipi
-                + nir[i] * Iir[i] * (Iir[i] - 1) * Pi ** (Iir[i] - 2) * tau ** Jir[i]
+                + nir[i] * Iir[i] * (Iir[i] - 1) *
+                Pi ** (Iir[i] - 2) * tau ** Jir[i]
             )
             gammar_tautau = gammar_tautau + nir[i] * Pi ** Iir[i] * Jir[i] * (
                 Jir[i] - 1
@@ -6640,7 +6684,7 @@ class Region5:
         )
 
     @staticmethod
-    def w5_pT(p, T):
+    def w5_pT(p: float, T: float) -> float:
         """function w5_pT = w5_pT(p, T)
 
         Basic Equation for Region 5
@@ -6678,13 +6722,15 @@ class Region5:
         gammar_pipi = 0
         gammar_tautau = 0
         for i in range(0, 5):
-            gammar_pi = gammar_pi + nir[i] * Iir[i] * Pi ** (Iir[i] - 1) * tau ** Jir[i]
+            gammar_pi = gammar_pi + nir[i] * Iir[i] * \
+                Pi ** (Iir[i] - 1) * tau ** Jir[i]
             gammar_pitau = gammar_pitau + nir[i] * Iir[i] * Pi ** (Iir[i] - 1) * Jir[
                 i
             ] * tau ** (Jir[i] - 1)
             gammar_pipi = (
                 gammar_pipi
-                + nir[i] * Iir[i] * (Iir[i] - 1) * Pi ** (Iir[i] - 2) * tau ** Jir[i]
+                + nir[i] * Iir[i] * (Iir[i] - 1) *
+                Pi ** (Iir[i] - 2) * tau ** Jir[i]
             )
             gammar_tautau = gammar_tautau + nir[i] * Pi ** Iir[i] * Jir[i] * (
                 Jir[i] - 1
@@ -6702,7 +6748,7 @@ class Region5:
         ) ** 0.5
 
     @staticmethod
-    def T5_ph(p, h):
+    def T5_ph(p: float, h: float) -> float:
         """function T5_ph = T5_ph(p, h)
 
         Solve with half interval method
@@ -6733,7 +6779,7 @@ class Region5:
         return Ts
 
     @staticmethod
-    def T5_ps(p, s):
+    def T5_ps(p: float, s: float) -> float:
         """function T5_ps = T5_ps(p, s)
 
         Solve with half interval method
@@ -6764,7 +6810,7 @@ class Region5:
         return Ts
 
     @staticmethod
-    def T5_prho(p, rho):
+    def T5_prho(p: float, rho: float) -> float:
         """function T5_prho = T5_prho(p, rho)
 
         Solve by iteration. Observe that for low temperatures this equation has 2 solutions. Solve with half interval method

@@ -13,13 +13,13 @@ logger = logging.getLogger(__name__)
 """Section 3.1 Regions as a function of pT"""
 
 
-def region_pT(p, T):
+def region_pT(p: float, T: float) -> float:
     """function region_pT = region_pT(p, T)"""
     if (T > 1073.15) and (p < 50.0) and (T < 2273.15) and (p > 0.000611):
         region_pT_number = 5
     elif (T <= 1073.15) and (T > 273.15) and (p <= 100) and (p > 0.000611):
         if T > 623.15:
-            if p > RegionBorders.B23p_T(T):
+            if p > RegionBorders.B23p_T(T: float) -> float:
                 region_pT_number = 3
                 if T < 647.096:
                     ps = Region4.p4_T(T)
@@ -42,7 +42,7 @@ def region_pT(p, T):
     return region_pT_number
 
 
-def region_ph(p, h):
+def region_ph(p: float, h: float) -> float:
     """unction region_ph = region_ph(p, h)
 
     Section 3.2 Regions as a function of ph
@@ -52,7 +52,8 @@ def region_ph(p, h):
         logger.warning("Preasure outside valid area")
         return 0
     # Check if outside low h.
-    if h < (0.963 * p + 2.2):  # Linear adaption to h1_pt()+2 to speed up calcualations.
+    # Linear adaption to h1_pt()+2 to speed up calcualations.
+    if h < (0.963 * p + 2.2):
         if h < Region1.h1_pT(p, 273.15):
             logger.warning("Enthalpy outside valid area")
             return 0
@@ -100,7 +101,7 @@ def region_ph(p, h):
         # Check if in region 3 or 4 (Below Reg 2)
         if h < Region2.h2_pT(p, RegionBorders.B23T_p(p)):
             # Region 3 or 4
-            if p > RegionBorders.p3sat_h(h):
+            if p > RegionBorders.p3sat_h(h: float) -> float:
                 return 3
             else:
                 return 4
@@ -111,7 +112,7 @@ def region_ph(p, h):
     return 0
 
 
-def region_ps(p, s):
+def region_ps(p: float, s: float) -> float:
     """function region_ps = region_ps(p, s)
 
     Section 3.3 Regions as a function of ps
@@ -138,7 +139,7 @@ def region_ps(p, s):
     # Check region 3
     ss = Region1.s1_pT(p, 623.15)
     if (p > 16.529) and (s > ss):
-        if p > RegionBorders.p3sat_s(s):
+        if p > RegionBorders.p3sat_s(s: float) -> float:
             return 3
         else:
             return 4
@@ -151,7 +152,7 @@ def region_ps(p, s):
     return 1
 
 
-def region_hs(h, s):
+def region_hs(h: float, s: float) -> float:
     """function region_hs = region_hs(h, s)
 
     Section 3.4 Regions as a function of hs
@@ -166,7 +167,7 @@ def region_hs(h, s):
         return 0
     # Kolla 1 eller 4. (+liten bit ???ver B13)
     if (s >= -0.0001545495919) and (s <= 3.77828134):
-        if h < Region4.h4_s(s):
+        if h < Region4.h4_s(s: float) -> float:
             return 4
         elif s < 3.397782955:  # 100MPa line is limiting
             TMax = Region1.T1_ps(100, s)
@@ -284,7 +285,7 @@ def region_hs(h, s):
     return 0
 
 
-def region_prho(p, rho):
+def region_prho(p: float, rho: float) -> float:
     """function region_prho = region_prho(p, rho)
 
     Section 3.5 Regions as a function of p and rho

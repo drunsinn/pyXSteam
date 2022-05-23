@@ -12,7 +12,7 @@ from . import Constants
 logger = logging.getLogger(__name__)
 
 
-def my_AllRegions_pT(p, T):
+def my_AllRegions_pT(p: float, T: float) -> float:
     """function my_AllRegions_pT = my_AllRegions_pT(p, T)
 
     Section 5.1 Viscosity (IAPWS formulation 1985, Revised 2003)
@@ -34,7 +34,8 @@ def my_AllRegions_pT(p, T):
         hs = Region3.h3_pT(p, T)
         rho = 1 / Region3.v3_ph(p, hs)
     elif RegionSelection.region_pT(p, T) == 4:
-        logger.warning("function my_AllRegions_pT is not available in region 4")
+        logger.warning(
+            "function my_AllRegions_pT is not available in region 4")
         return float("NaN")
     elif RegionSelection.region_pT(p, T) == 5:
         rho = 1 / Region5.v5_pT(p, T)
@@ -56,7 +57,8 @@ def my_AllRegions_pT(p, T):
         logger.warning("Temperature and/or Preasure out of range of validity")
         return float("NaN")
 
-    my0 = Ts**0.5 / (1 + 0.978197 / Ts + 0.579829 / (Ts**2) - 0.202354 / (Ts**3))
+    my0 = Ts**0.5 / (1 + 0.978197 / Ts + 0.579829 /
+                     (Ts**2) - 0.202354 / (Ts**3))
     temp_sum = 0
     for i in range(0, 6):
         temp_sum = (
@@ -74,7 +76,7 @@ def my_AllRegions_pT(p, T):
     return mys * 0.000055071
 
 
-def my_AllRegions_ph(p, h):
+def my_AllRegions_ph(p: float, h: float) -> float:
     """function my_AllRegions_ph = my_AllRegions_ph(p, h)
 
     Section 5.1 Viscosity (IAPWS formulation 1985, Revised 2003)
@@ -130,7 +132,8 @@ def my_AllRegions_ph(p, h):
         logger.warning("Temperature and/or Preasure out of range of validity")
         return float("NaN")
 
-    my0 = Ts**0.5 / (1 + 0.978197 / Ts + 0.579829 / (Ts**2) - 0.202354 / (Ts**3))
+    my0 = Ts**0.5 / (1 + 0.978197 / Ts + 0.579829 /
+                     (Ts**2) - 0.202354 / (Ts**3))
 
     temp_sum = 0
     for i in range(0, 6):
@@ -150,7 +153,7 @@ def my_AllRegions_ph(p, h):
     return mys * 0.000055071
 
 
-def tc_ptrho(p, T, rho):
+def tc_ptrho(p: float, T: float, rho: float) -> float:
     """function tc_ptrho = tc_ptrho(p, T, rho)
 
     Section 5.2 Thermal Conductivity (IAPWS formulation 1985)
@@ -202,13 +205,14 @@ def tc_ptrho(p, T, rho):
         (0.0701309 / (T**10) + 0.0118520)
         * (rho ** (9 / 5))
         * math.exp(0.642857 * (1 - rho ** (14 / 5)))
-        + 0.00169937 * s * (rho**Q) * math.exp((Q / (1 + Q)) * (1 - rho ** (1 + Q)))
+        + 0.00169937 * s * (rho**Q) * math.exp((Q / (1 + Q))
+                                               * (1 - rho ** (1 + Q)))
         - 1.02 * math.exp(-4.11717 * (T ** (3 / 2)) - 6.17937 / (rho**5))
     )  # Page 9, Eq 11
     return tc0 + tc1 + tc2  # Page 9, Eq 8
 
 
-def Surface_Tension_T(T):
+def Surface_Tension_T(T: float) -> float:
     """function Surface_Tension_T = Surface_Tension_T(T)
 
     Section 5.3 Surface Tension

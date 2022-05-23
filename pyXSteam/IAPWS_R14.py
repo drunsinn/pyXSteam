@@ -17,7 +17,7 @@ __TYPE_ICE_VI__ = 6
 __TYPE_ICE_VII__ = 7
 
 
-def pmelt_T_iceIh(T):
+def pmelt_T_iceIh(T: float) -> float:
     """
     EQ 1 / Melting pressure of ice Ih
     """
@@ -33,7 +33,7 @@ def pmelt_T_iceIh(T):
     return pi_melt * p_star
 
 
-def pmelt_T_iceIII(T):
+def pmelt_T_iceIII(T: float) -> float:
     """
     EQ 2 / Melting pressure of ice III
     """
@@ -44,7 +44,7 @@ def pmelt_T_iceIII(T):
     return pi_melt * p_star
 
 
-def pmelt_T_iceV(T):
+def pmelt_T_iceV(T: float) -> float:
     """
     EQ 3 / Melting pressure of ice V
     """
@@ -55,7 +55,7 @@ def pmelt_T_iceV(T):
     return pi_melt * p_star
 
 
-def pmelt_T_iceVI(T):
+def pmelt_T_iceVI(T: float) -> float:
     """
     EQ 4 / Melting pressure of ice VI
     """
@@ -66,7 +66,7 @@ def pmelt_T_iceVI(T):
     return pi_melt * p_star
 
 
-def pmelt_T_iceVII(T):
+def pmelt_T_iceVII(T: float) -> float:
     """
     EQ 5 / Melting pressure of ice VII
     """
@@ -80,7 +80,7 @@ def pmelt_T_iceVII(T):
     return pi_melt * p_star
 
 
-def psubl_T(T):
+def psubl_T(T: float) -> float:
     """
     EQ 6 / Sublimation Pressure
     """

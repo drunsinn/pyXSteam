@@ -68,7 +68,7 @@ class XSteam(object):
 
     # ***********************************************************************************************************
     # Section 1.2 temperature
-    def tsat_p(self, p):
+    def tsat_p(self, p: float) -> float:
         """Saturation-temperature as a function of pressure
 
         Args:
@@ -84,7 +84,7 @@ class XSteam(object):
             self.logger.warning("pressure %f out of range", p)
             return float("NaN")
 
-    def tsat_s(self, s):
+    def tsat_s(self, s: float) -> float:
         """Saturation-temperature as a function of entropy
 
         Args:
@@ -101,7 +101,7 @@ class XSteam(object):
             self.logger.warning("entropy value %f is out of range", s)
             return float("NaN")
 
-    def t_ph(self, p, h):
+    def t_ph(self, p: float, h: float) -> float:
         """temperature as a function of pressure and enthalpy
 
         Args:
@@ -133,7 +133,7 @@ class XSteam(object):
             )
             return float("NaN")
 
-    def t_ps(self, p, s):
+    def t_ps(self, p: float, s: float) -> float:
         """temperature as a function of pressure and entropy
 
         Args:
@@ -166,7 +166,7 @@ class XSteam(object):
             )
             return float("NaN")
 
-    def t_hs(self, h, s):
+    def t_hs(self, h: float, s: float) -> float:
         """temperature as a function of enthalpy and entropy
 
         Args:
@@ -208,7 +208,7 @@ class XSteam(object):
 
     # ***********************************************************************************************************
     # Section 1.3 Pressure (p)
-    def psat_s(self, s):
+    def psat_s(self, s: float) -> float:
         """Saturation-Pressure as a function of entropy
 
         Args:
@@ -224,7 +224,7 @@ class XSteam(object):
             self.logger.warning("entropy value %f out of range", s)
             return float("NaN")
 
-    def psat_t(self, t):
+    def psat_t(self, t: float) -> float:
         """Saturation-Pressure as a function of temperature
 
         Args:
@@ -240,7 +240,7 @@ class XSteam(object):
             self.logger.warning("temperature %f out of range", T)
             return float("NaN")
 
-    def p_hs(self, h, s):
+    def p_hs(self, h: float, s: float) -> float:
         """Pressure  as a function of enthalpy and entropy
 
         Args:
@@ -278,7 +278,7 @@ class XSteam(object):
             )
             return float("NaN")
 
-    def p_hrho(self, h, rho):
+    def p_hrho(self, h: float, rho: float) -> float:
         """Pressure as a function of h and rho.
 
         Very unaccurate for solid water region since it's almost incompressible!
@@ -293,7 +293,8 @@ class XSteam(object):
             p (float): pressure or NaN if arguments are out of range
         """
         if rho <= 0.0:
-            self.logger.error("negative values for density rho not allowed %f", rho)
+            self.logger.error(
+                "negative values for density rho not allowed %f", rho)
             raise ValueError("rho out of range")
         h = self._unit_converter.toSIunit_h(h)
         High_Bound = self._unit_converter.fromSIunit_p(100)
@@ -325,7 +326,7 @@ class XSteam(object):
 
     # ***********************************************************************************************************
     # Section 1.4 Enthalpy (h)
-    def hV_p(self, p):
+    def hV_p(self, p: float) -> float:
         """Saturated vapour enthalpy as a function of pressure
 
         Args:
@@ -341,7 +342,7 @@ class XSteam(object):
             self.logger.warning("pressure %f out of range", p)
             return float("NaN")
 
-    def hL_p(self, p):
+    def hL_p(self, p: float) -> float:
         """Saturated liquid enthalpy as a function of pressure
 
         Args:
@@ -357,7 +358,7 @@ class XSteam(object):
             self.logger.warning("pressure %f out of range", p)
             return float("NaN")
 
-    def hV_t(self, t):
+    def hV_t(self, t: float) -> float:
         """Saturated vapour enthalpy as a function of temperature
 
         Args:
@@ -374,7 +375,7 @@ class XSteam(object):
             self.logger.warning("temperature %f out of range", T)
             return float("NaN")
 
-    def hL_t(self, t):
+    def hL_t(self, t: float) -> float:
         """Saturated liquid enthalpy as a function of temperature
 
         Args:
@@ -391,7 +392,7 @@ class XSteam(object):
             self.logger.warning("temperature %f out of range", T)
             return float("NaN")
 
-    def h_pt(self, p, t):
+    def h_pt(self, p: float, t: float) -> float:
         """Entalpy as a function of pressure and temperature
 
         Args:
@@ -428,7 +429,7 @@ class XSteam(object):
             )
             return float("NaN")
 
-    def h_ps(self, p, s):
+    def h_ps(self, p: float, s: float) -> float:
         """Entalpy as a function of pressure and entropy
 
         Args:
@@ -471,7 +472,7 @@ class XSteam(object):
             )
             return float("NaN")
 
-    def h_px(self, p, x):
+    def h_px(self, p: float, x: float) -> float:
         """Entalpy as a function of pressure and vapour fraction
 
         Args:
@@ -492,7 +493,7 @@ class XSteam(object):
         hV = Region4.h4V_p(p)
         return hL + x * (hV - hL)
 
-    def h_prho(self, p, rho):
+    def h_prho(self, p: float, rho: float) -> float:
         """Entalpy as a function of pressure and density. Observe for low temperatures (liquid) this equation has 2 solutions
 
         Args:
@@ -541,7 +542,7 @@ class XSteam(object):
             )
             return float("NaN")
 
-    def h_tx(self, t, x):
+    def h_tx(self, p: float, x: float) -> float:
         """Entalpy as a function of temperature and vapour fraction
 
         Args:
@@ -565,7 +566,7 @@ class XSteam(object):
 
     # ***********************************************************************************************************
     # Section 1.5 Specific Volume (v)
-    def vV_p(self, p):
+    def vV_p(self, p: float) -> float:
         """Saturated vapour volume as a function of pressure
 
         Args:
@@ -589,7 +590,7 @@ class XSteam(object):
             self.logger.warning("pressure %f out of range", p)
             return float("NaN")
 
-    def vL_p(self, p):
+    def vL_p(self, p: float) -> float:
         """Saturated liquid volume as a function of pressure
 
         Args:
@@ -612,7 +613,7 @@ class XSteam(object):
             self.logger.warning("pressure %f out of range", p)
             return float("NaN")
 
-    def vV_t(self, t):
+    def vV_t(self, t: float) -> float:
         """Saturated vapour volume as a function of temperature
 
         Args:
@@ -629,13 +630,14 @@ class XSteam(object):
                 )
             else:
                 return self._unit_converter.fromSIunit_v(
-                    Region3.v3_ph(Region4.p4_T(T), Region4.h4V_p(Region4.p4_T(T)))
+                    Region3.v3_ph(Region4.p4_T(
+                        T), Region4.h4V_p(Region4.p4_T(T)))
                 )
         else:
             self.logger.warning("temperature %f out of range", T)
             return float("NaN")
 
-    def vL_t(self, t):
+    def vL_t(self, t: float) -> float:
         """Saturated liquid volume as a function of temperature
 
         Args:
@@ -652,13 +654,14 @@ class XSteam(object):
                 )
             else:
                 return self._unit_converter.fromSIunit_v(
-                    Region3.v3_ph(Region4.p4_T(T), Region4.h4L_p(Region4.p4_T(T)))
+                    Region3.v3_ph(Region4.p4_T(
+                        T), Region4.h4L_p(Region4.p4_T(T)))
                 )
         else:
             self.logger.warning("temperature %f out of range", T)
             return float("NaN")
 
-    def v_pt(self, p, t):
+    def v_pt(self, p: float, t: float) -> float:
         """Specific volume as a function of pressure and temperature
 
         Args:
@@ -697,7 +700,7 @@ class XSteam(object):
             )
             return float("NaN")
 
-    def v_ph(self, p, h):
+    def v_ph(self, p: float, h: float) -> float:
         """Specific volume as a function of pressure and enthalpy
 
         Args:
@@ -741,7 +744,7 @@ class XSteam(object):
             )
             return float("NaN")
 
-    def v_ps(self, p, s):
+    def v_ps(self, p: float, s: float) -> float:
         """Specific volume as a function of pressure and entropy
 
         Args:
@@ -788,7 +791,7 @@ class XSteam(object):
     # ***********************************************************************************************************
     # Section 1.6 Density (rho)
     # Density is calculated as 1/v. See section 1.5 Volume
-    def rhoV_p(self, p):
+    def rhoV_p(self, p: float) -> float:
         """Saturated vapour density as a function of pressure
 
         Args:
@@ -799,7 +802,7 @@ class XSteam(object):
         """
         return 1 / self.vV_p(p)
 
-    def rhoL_p(self, p):
+    def rhoL_p(self, p: float) -> float:
         """Saturated liquid density as a function of pressure
 
         Args:
@@ -810,7 +813,7 @@ class XSteam(object):
         """
         return 1 / self.vL_p(p)
 
-    def rhoV_t(self, t):
+    def rhoV_t(self, t: float) -> float:
         """Saturated vapour density as a function of temperature
 
         Args:
@@ -821,7 +824,7 @@ class XSteam(object):
         """
         return 1 / self.vV_t(t)
 
-    def rhoL_t(self, t):
+    def rhoL_t(self, t: float) -> float:
         """Saturated liquid density as a function of temperature
 
         Args:
@@ -832,7 +835,7 @@ class XSteam(object):
         """
         return 1 / self.vL_t(t)
 
-    def rho_pt(self, p, t):
+    def rho_pt(self, p: float, t: float) -> float:
         """Density as a function of pressure and temperature
 
         Args:
@@ -844,7 +847,7 @@ class XSteam(object):
         """
         return 1 / self.v_pt(p, t)
 
-    def rho_ph(self, p, h):
+    def rho_ph(self, p: float, h: float) -> float:
         """Density as a function of pressure and enthalpy
 
         Args:
@@ -856,7 +859,7 @@ class XSteam(object):
         """
         return 1 / self.v_ph(p, h)
 
-    def rho_ps(self, p, s):
+    def rho_ps(self, p: float, s: float) -> float:
         """Density as a function of pressure and entropy
 
         Args:
@@ -870,7 +873,7 @@ class XSteam(object):
 
     # ***********************************************************************************************************
     # Section 1.7 Specific entropy (s)
-    def sV_p(self, p):
+    def sV_p(self, p: float) -> float:
         """Saturated vapour entropy as a function of pressure
 
         Args:
@@ -895,7 +898,7 @@ class XSteam(object):
             self.logger.warning("pressure %f out of range", p)
             return float("NaN")
 
-    def sL_p(self, p):
+    def sL_p(self, p: float) -> float:
         """Saturated liquid entropy as a function of pressure
 
         Args:
@@ -920,7 +923,7 @@ class XSteam(object):
             self.logger.warning("pressure %f out of range", p)
             return float("NaN")
 
-    def sV_t(self, t):
+    def sV_t(self, t: float) -> float:
         """Saturated vapour entropy as a function of temperature
 
         Args:
@@ -951,7 +954,7 @@ class XSteam(object):
             self.logger.warning("temperature %f out of range", T)
             return float("NaN")
 
-    def sL_t(self, t):
+    def sL_t(self, t: float) -> float:
         """Saturated liquid entropy as a function of temperature
 
         Args:
@@ -982,7 +985,7 @@ class XSteam(object):
             self.logger.warning("temperature %f out of range", T)
             return float("NaN")
 
-    def s_pt(self, p, t):
+    def s_pt(self, p: float, t: float) -> float:
         """Specific entropy as a function of pressure and temperature (Returns saturated vapour entalpy if mixture)
 
         Args:
@@ -1019,7 +1022,7 @@ class XSteam(object):
             )
             return float("NaN")
 
-    def s_ph(self, p, h):
+    def s_ph(self, p: float, h: float) -> float:
         """Specific entropy as a function of pressure and enthalpy
 
         Args:
@@ -1068,7 +1071,7 @@ class XSteam(object):
 
     # ***********************************************************************************************************
     # Section 1.8 Specific internal energy (u)
-    def uV_p(self, p):
+    def uV_p(self, p: float) -> float:
         """Saturated vapour internal energy as a function of pressure
 
         Args:
@@ -1092,7 +1095,7 @@ class XSteam(object):
         else:
             return float("NaN")
 
-    def uL_p(self, p):
+    def uL_p(self, p: float) -> float:
         """Saturated liquid internal energy as a function of pressure
 
         Args:
@@ -1117,7 +1120,7 @@ class XSteam(object):
             self.logger.warning("pressure %f out of range", p)
             return float("NaN")
 
-    def uV_t(self, t):
+    def uV_t(self, t: float) -> float:
         """Saturated vapour internal energy as a function of temperature
 
         Args:
@@ -1148,7 +1151,7 @@ class XSteam(object):
             self.logger.warning("temperature %f out of range", T)
             return float("NaN")
 
-    def uL_t(self, t):
+    def uL_t(self, t: float) -> float:
         """Saturated liquid internal energy as a function of temperature
 
         Args:
@@ -1179,7 +1182,7 @@ class XSteam(object):
             self.logger.warning("temperature %f out of range", T)
             return float("NaN")
 
-    def u_pt(self, p, t):
+    def u_pt(self, p: float, t: float) -> float:
         """Specific internal energy as a function of pressure and temperature
 
         Args:
@@ -1218,7 +1221,7 @@ class XSteam(object):
             )
             return float("NaN")
 
-    def u_ph(self, p, h):
+    def u_ph(self, p: float, h: float) -> float:
         """Specific internal energy as a function of pressure and enthalpy
 
         Args:
@@ -1265,7 +1268,7 @@ class XSteam(object):
             )
             return float("NaN")
 
-    def u_ps(self, p, s):
+    def u_ps(self, p: float, s: float) -> float:
         """Specific internal energy as a function of pressure and entropy
 
         Args:
@@ -1315,7 +1318,7 @@ class XSteam(object):
 
     # ***********************************************************************************************************
     # Section 1.9 Specific isobaric heat capacity (Cp)
-    def CpV_p(self, p):
+    def CpV_p(self, p: float) -> float:
         """Saturated vapour heat capacity as a function of pressure
 
         Args:
@@ -1340,7 +1343,7 @@ class XSteam(object):
             self.logger.warning("preassure %f out of range", p)
             return float("NaN")
 
-    def CpL_p(self, p):
+    def CpL_p(self, p: float) -> float:
         """Saturated liquid heat capacity as a function of pressure
 
         Args:
@@ -1365,7 +1368,7 @@ class XSteam(object):
             self.logger.warning("preassure %f out of range", p)
             return float("NaN")
 
-    def CpV_t(self, t):
+    def CpV_t(self, t: float) -> float:
         """Saturated vapour heat capacity as a function of temperature
 
         Args:
@@ -1396,7 +1399,7 @@ class XSteam(object):
             self.logger.warning("temperature %f out of range", T)
             return float("NaN")
 
-    def CpL_t(self, t):
+    def CpL_t(self, t: float) -> float:
         """Saturated liquid heat capacity as a function of temperature
 
         Args:
@@ -1427,7 +1430,7 @@ class XSteam(object):
             self.logger.warning("temperature %f out of range", T)
             return float("NaN")
 
-    def Cp_pt(self, p, t):
+    def Cp_pt(self, p: float, t: float) -> float:
         """Specific isobaric heat capacity as a function of pressure and temperature
 
         Args:
@@ -1466,7 +1469,7 @@ class XSteam(object):
             )
             return float("NaN")
 
-    def Cp_ph(self, p, h):
+    def Cp_ph(self, p: float, h: float) -> float:
         """Specific isobaric heat capacity as a function of pressure and enthalpy
 
         Args:
@@ -1508,7 +1511,7 @@ class XSteam(object):
             )
             return float("NaN")
 
-    def Cp_ps(self, p, s):
+    def Cp_ps(self, p: float, s: float) -> float:
         """Specific isobaric heat capacity as a function of pressure and entropy
 
         Args:
@@ -1552,7 +1555,7 @@ class XSteam(object):
 
     # ***********************************************************************************************************
     # Section 1.10 Specific isochoric heat capacity (Cv)
-    def CvV_p(self, p):
+    def CvV_p(self, p: float) -> float:
         """Saturated vapour isochoric heat capacity as a function of pressure
 
         Args:
@@ -1577,7 +1580,7 @@ class XSteam(object):
             self.logger.warning("pressure %f out of range", p)
             return float("NaN")
 
-    def CvL_p(self, p):
+    def CvL_p(self, p: float) -> float:
         """Saturated liquid isochoric heat capacity as a function of pressure
 
         Args:
@@ -1602,7 +1605,7 @@ class XSteam(object):
             self.logger.warning("pressure %f out of range", p)
             return float("NaN")
 
-    def CvV_t(self, t):
+    def CvV_t(self, t: float) -> float:
         """Saturated vapour isochoric heat capacity as a function of temperature
 
         Args:
@@ -1633,7 +1636,7 @@ class XSteam(object):
             self.logger.warning("temperature %f out of range", T)
             return float("NaN")
 
-    def CvL_t(self, t):
+    def CvL_t(self, t: float) -> float:
         """Saturated liquid isochoric heat capacity as a function of temperature
 
         Args:
@@ -1664,7 +1667,7 @@ class XSteam(object):
             self.logger.warning("temperature %f out of range", T)
             return float("NaN")
 
-    def Cv_pt(self, p, t):
+    def Cv_pt(self, p: float, t: float) -> float:
         """Specific isochoric heat capacity as a function of pressure and temperature
 
         Args:
@@ -1703,7 +1706,7 @@ class XSteam(object):
             )
             return float("NaN")
 
-    def Cv_ph(self, p, h):
+    def Cv_ph(self, p: float, h: float) -> float:
         """Specific isochoric heat capacity as a function of pressure and enthalpy
 
         Args:
@@ -1745,7 +1748,7 @@ class XSteam(object):
             )
             return float("NaN")
 
-    def Cv_ps(self, p, s):
+    def Cv_ps(self, p: float, s: float) -> float:
         """Specific isochoric heat capacity as a function of pressure and entropy
 
         Args:
@@ -1774,7 +1777,8 @@ class XSteam(object):
                 p,
                 s,
             )
-            return float("NaN")  # (xs * CvVp + (1 - xs) * CvLp) / Cv_scale - Cv_offset
+            # (xs * CvVp + (1 - xs) * CvLp) / Cv_scale - Cv_offset
+            return float("NaN")
         elif region == 5:
             Ts = Region5.T5_ps(p, s)
             return self._unit_converter.fromSIunit_Cv(Region5.Cv5_pT(p, Ts))
@@ -1789,7 +1793,7 @@ class XSteam(object):
 
     # ***********************************************************************************************************
     # Section 1.11 Speed of sound
-    def wV_p(self, p):
+    def wV_p(self, p: float) -> float:
         """Saturated vapour speed of sound as a function of pressure
 
         Args:
@@ -1814,7 +1818,7 @@ class XSteam(object):
             self.logger.warning("pressure %f out of range", p)
             return float("NaN")
 
-    def wL_p(self, p):
+    def wL_p(self, p: float) -> float:
         """Saturated liquid speed of sound as a function of pressure
 
         Args:
@@ -1839,7 +1843,7 @@ class XSteam(object):
             self.logger.warning("pressure %f out of range", p)
             return float("NaN")
 
-    def wV_t(self, t):
+    def wV_t(self, t: float) -> float:
         """Saturated vapour speed of sound as a function of temperature
 
         Args:
@@ -1870,7 +1874,7 @@ class XSteam(object):
             self.logger.warning("temperature %f out of range", T)
             return float("NaN")
 
-    def wL_t(self, t):
+    def wL_t(self, t: float) -> float:
         """Saturated liquid speed of sound as a function of temperature
 
         Args:
@@ -1901,7 +1905,7 @@ class XSteam(object):
             self.logger.warning("temperature %f out of range", T)
             return float("NaN")
 
-    def w_pt(self, p, t):
+    def w_pt(self, p: float, t: float) -> float:
         """Speed of sound as a function of pressure and temperature
 
         Args:
@@ -1940,7 +1944,7 @@ class XSteam(object):
             )
             return float("NaN")
 
-    def w_ph(self, p, h):
+    def w_ph(self, p: float, h: float) -> float:
         """Speed of sound as a function of pressure and enthalpy
 
         Args:
@@ -1980,7 +1984,7 @@ class XSteam(object):
             )
             return float("NaN")
 
-    def w_ps(self, p, s):
+    def w_ps(self, p: float, s: float) -> float:
         """Speed of sound as a function of pressure and entropy
 
         Args:
@@ -2009,7 +2013,8 @@ class XSteam(object):
                 p,
                 s,
             )
-            return float("NaN")  # (xs * wVp + (1 - xs) * wLp) / w_scale - w_offset
+            # (xs * wVp + (1 - xs) * wLp) / w_scale - w_offset
+            return float("NaN")
         elif region == 5:
             Ts = Region5.T5_ps(p, s)
             return self._unit_converter.fromSIunit_w(Region5.w5_pT(p, Ts))
@@ -2027,7 +2032,7 @@ class XSteam(object):
     # Viscosity is not part of IAPWS Steam IF97. Equations from
     # "Revised Release on the IAPWS Formulation 1985 for the Viscosity of Ordinary Water Substance", 2003 are used.
     # Viscosity in the mixed region (4) is interpolated according to the density. This is not true since it will be two phases.
-    def my_pt(self, p, t):
+    def my_pt(self, p: float, t: float) -> float:
         """Viscosity as a function of pressure and temperature
 
         Args:
@@ -2060,7 +2065,7 @@ class XSteam(object):
             )
             return float("NaN")
 
-    def my_ph(self, p, h):
+    def my_ph(self, p: float, h: float) -> float:
         """Viscosity as a function of pressure and enthalpy
 
         Args:
@@ -2093,7 +2098,7 @@ class XSteam(object):
             )
             return float("NaN")
 
-    def my_ps(self, p, s):
+    def my_ps(self, p: float, s: float) -> float:
         """Viscosity as a function of pressure and entropy
 
         Args:
@@ -2108,7 +2113,7 @@ class XSteam(object):
 
     # ***********************************************************************************************************
     # Section 1.13 Prandtl
-    def pr_pt(self, p, t):
+    def pr_pt(self, p: float, t: float) -> float:
         """Prandtl number as a function of preasuere and temperature
 
         Args:
@@ -2123,7 +2128,7 @@ class XSteam(object):
         tc = self._unit_converter.toSIunit_tc(self.tc_pt(p, t))
         return Cp * 1000 * my / tc
 
-    def pr_ph(self, p, h):
+    def pr_ph(self, p: float, h: float) -> float:
         """Prandtl number as a function of preasuere and enthalpy
 
         Args:
@@ -2140,7 +2145,7 @@ class XSteam(object):
 
     # ***********************************************************************************************************
     # Section 1.15 Surface tension
-    def st_t(self, t):
+    def st_t(self, t: float) -> float:
         """Surface tension for two phase water/steam as a function of temperature
 
         Args:
@@ -2154,7 +2159,7 @@ class XSteam(object):
             TransportProperties.Surface_Tension_T(T)
         )
 
-    def st_p(self, p):
+    def st_p(self, p: float) -> float:
         """Surface tension for two phase water/steam as a function of preasure
 
         Args:
@@ -2172,7 +2177,7 @@ class XSteam(object):
     # ***********************************************************************************************************
     # Section 1.16 Thermal conductivity
     # Revised release on the IAPS Formulation 1985 for the Thermal Conductivity of ordinary water substance (IAPWS 1998)
-    def tcL_p(self, p):
+    def tcL_p(self, p: float) -> float:
         """Saturated liquid thermal conductivity as a function of pressure
 
         Args:
@@ -2191,7 +2196,7 @@ class XSteam(object):
             TransportProperties.tc_ptrho(p, T, rho)
         )
 
-    def tcV_p(self, p):
+    def tcV_p(self, p: float) -> float:
         """Saturated vapour thermal conductivity as a function of pressure
 
         Args:
@@ -2211,7 +2216,7 @@ class XSteam(object):
             TransportProperties.tc_ptrho(p, T, rho)
         )
 
-    def tcL_t(self, t):
+    def tcL_t(self, t: float) -> float:
         """Saturated vapour thermal conductivity as a function of temperature
 
         Args:
@@ -2231,7 +2236,7 @@ class XSteam(object):
             TransportProperties.tc_ptrho(p, T, rho)
         )
 
-    def tcV_t(self, t):
+    def tcV_t(self, t: float) -> float:
         """Saturated liquid thermal conductivity as a function of temperature
 
         Args:
@@ -2251,7 +2256,7 @@ class XSteam(object):
             TransportProperties.tc_ptrho(p, T, rho)
         )
 
-    def tc_pt(self, p, t):
+    def tc_pt(self, p: float, t: float) -> float:
         """Thermal conductivity as a function of pressure and temperature
 
         Args:
@@ -2274,7 +2279,7 @@ class XSteam(object):
             TransportProperties.tc_ptrho(p, T, rho)
         )
 
-    def tc_ph(self, p, h):
+    def tc_ph(self, p: float, h: float) -> float:
         """Thermal conductivity as a function of pressure and enthalpy
 
         Args:
@@ -2296,7 +2301,7 @@ class XSteam(object):
             TransportProperties.tc_ptrho(p, T, rho)
         )
 
-    def tc_hs(self, h, s):
+    def tc_hs(self, h: float, s: float) -> float:
         """Thermal conductivity as a function of enthalpy and entropy
 
         Args:
@@ -2321,7 +2326,7 @@ class XSteam(object):
 
     # ***********************************************************************************************************
     # Section 1.17 Vapour fraction
-    def x_ph(self, p, h):
+    def x_ph(self, p: float, h: float) -> float:
         """Vapour fraction as a function of pressure and enthalpy
 
         Args:
@@ -2339,7 +2344,7 @@ class XSteam(object):
             self.logger.warning("pressure out of range")
             return float("NaN")
 
-    def x_ps(self, p, s):
+    def x_ps(self, p: float, s: float) -> float:
         """Vapour fraction as a function of pressure and entropy
 
         Args:
@@ -2359,7 +2364,7 @@ class XSteam(object):
 
     # ***********************************************************************************************************
     # Section 1.18 Vapour Volume Fraction
-    def vx_ph(self, p, h):
+    def vx_ph(self, p: float, h: float) -> float:
         """Vapour volume fraction as a function of pressure and enthalpy
 
         Args:
@@ -2386,7 +2391,7 @@ class XSteam(object):
             self.logger.warning("pressure %f out of range", p)
             return float("NaN")
 
-    def vx_ps(self, p, s):
+    def vx_ps(self, p: float, s: float) -> float:
         """Vapour volume fraction as a function of pressure and entropy
 
         Args:
@@ -2417,7 +2422,8 @@ class XSteam(object):
     # Revised Release on the Pressure along the Melting and Sublimation Curves of Ordinary Water Substance
     # Release IAPWS R14-08(2011)
     # http://www.iapws.org/relguide/MeltSub2011.pdf
-    def pmelt_t(self, t, hint=None):
+    def pmelt_t(self, t: float, hint=None) -> float:
+        # ToDo: make hint an enum
         """Pressure along the melting curve as a function of temperature. Based on IAPWS R14-08(2011)
         http://www.iapws.org/relguide/MeltSub2011.pdf
         Because of the shape of the meltin curve it is not possible to automatically select the correct region
@@ -2499,7 +2505,7 @@ class XSteam(object):
             )
             raise ValueError("unknown value for parameter 'hint'")
 
-    def psubl_t(self, t):
+    def psubl_t(self, t: float) -> float:
         """Pressure along the sublimation curve as a function of temperature. Based on IAPWS R14-08(2011)
         http://www.iapws.org/relguide/MeltSub2011.pdf
 
