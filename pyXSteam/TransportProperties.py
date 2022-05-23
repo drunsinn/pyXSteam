@@ -5,7 +5,7 @@ Section 5: Transport properties
 """
 import math
 import logging
-from . import RegionSelection
+from .RegionSelection import select_region_pT, select_region_ph, select_region_ps, select_region_hs, select_region_prho
 from .Regions import Region1, Region2, Region3, Region4, Region5
 from .Constants import __CRITICAL_TEMPERATURE__
 
@@ -26,18 +26,18 @@ def my_AllRegions_pT(p: float, T: float) -> float:
     h6 = [0, 0, 0, -0.003629481, 0, 0]
 
     # Calculate density.
-    if RegionSelection.region_pT(p, T) == 1:
+    if select_region_pT(p, T) == 1:
         rho = 1 / Region1.v1_pT(p, T)
-    elif RegionSelection.region_pT(p, T) == 2:
+    elif select_region_pT(p, T) == 2:
         rho = 1 / Region2.v2_pT(p, T)
-    elif RegionSelection.region_pT(p, T) == 3:
+    elif select_region_pT(p, T) == 3:
         hs = Region3.h3_pT(p, T)
         rho = 1 / Region3.v3_ph(p, hs)
-    elif RegionSelection.region_pT(p, T) == 4:
+    elif select_region_pT(p, T) == 4:
         logger.warning(
             "function my_AllRegions_pT is not available in region 4")
         return float("NaN")
-    elif RegionSelection.region_pT(p, T) == 5:
+    elif select_region_pT(p, T) == 5:
         rho = 1 / Region5.v5_pT(p, T)
     else:
         logger.warning("Region switch returned unknown value")
@@ -90,18 +90,18 @@ def my_AllRegions_ph(p: float, h: float) -> float:
     h6 = [0, 0, 0, -0.003629481, 0, 0]
 
     # Calculate density.
-    if RegionSelection.region_ph(p, h) == 1:
+    if select_region_ph(p, h) == 1:
         Ts = Region1.T1_ph(p, h)
         T = Ts
         rho = 1 / Region1.v1_pT(p, Ts)
-    elif RegionSelection.region_ph(p, h) == 2:
+    elif select_region_ph(p, h) == 2:
         Ts = Region2.T2_ph(p, h)
         T = Ts
         rho = 1 / Region2.v2_pT(p, Ts)
-    elif RegionSelection.region_ph(p, h) == 3:
+    elif select_region_ph(p, h) == 3:
         rho = 1 / Region3.v3_ph(p, h)
         T = Region3.T3_ph(p, h)
-    elif RegionSelection.region_ph(p, h) == 4:
+    elif select_region_ph(p, h) == 4:
         xs = Region4.x4_ph(p, h)
         if p < 16.529:
             v4v = Region2.v2_pT(p, Region4.T4_p(p))
@@ -111,7 +111,7 @@ def my_AllRegions_ph(p: float, h: float) -> float:
             v4L = Region3.v3_ph(p, Region4.h4L_p(p))
         rho = 1 / (xs * v4v + (1 - xs) * v4L)
         T = Region4.T4_p(p)
-    elif RegionSelection.region_ph(p, h) == 5:
+    elif select_region_ph(p, h) == 5:
         Ts = Region5.T5_ph(p, h)
         T = Ts
         rho = 1 / Region5.v5_pT(p, Ts)

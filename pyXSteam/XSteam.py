@@ -3,12 +3,34 @@
 """Main module for pyXSteam"""
 import math
 import logging
-from . import RegionSelection
+from .RegionSelection import (select_region_pT, select_region_ph,
+                              select_region_ps, select_region_hs, select_region_prho)
 from .Regions import Region1, Region2, Region3, Region4, Region5
-from . import TransportProperties
-from .Constants import __SPECIFIC_GAS_CONSTANT__, __CRITICAL_TEMPERATURE__, __CRITICAL_DENSITY__, __CRITICAL_PRESSURE__, __TRIPLE_POINT_TEMPERATURE__, __TRIPLE_POINT_PRESSURE__, UnitSystem
+from .TransportProperties import (
+    my_AllRegions_pT,
+    my_AllRegions_ph,
+    tc_ptrho,
+    Surface_Tension_T,
+)
+from .Constants import (
+    __SPECIFIC_GAS_CONSTANT__,
+    __CRITICAL_TEMPERATURE__,
+    __CRITICAL_DENSITY__,
+    __CRITICAL_PRESSURE__,
+    __TRIPLE_POINT_TEMPERATURE__,
+    __TRIPLE_POINT_PRESSURE__,
+    UnitSystem,
+    DiagramRegion
+)
 from .UnitConverter import UnitConverter
-from . import IAPWS_R14
+from .IAPWS_R14 import (
+    pmelt_T_iceIh,
+    pmelt_T_iceIII,
+    pmelt_T_iceV,
+    pmelt_T_iceVI,
+    pmelt_T_iceVII,
+    psubl_T,
+)
 
 
 class XSteam(object):
@@ -102,16 +124,16 @@ class XSteam(object):
         """
         p = self._unit_converter.toSIunit_p(p)
         h = self._unit_converter.toSIunit_h(h)
-        region = RegionSelection.region_ph(p, h)
-        if region == 1:
+        region = select_region_ph(p, h)
+        if region == DiagramRegion.R1:
             return self._unit_converter.fromSIunit_T(Region1.T1_ph(p, h))
-        elif region == 2:
+        elif region == DiagramRegion.R2:
             return self._unit_converter.fromSIunit_T(Region2.T2_ph(p, h))
-        elif region == 3:
+        elif region == DiagramRegion.R3:
             return self._unit_converter.fromSIunit_T(Region3.T3_ph(p, h))
-        elif region == 4:
+        elif region == DiagramRegion.R4:
             return self._unit_converter.fromSIunit_T(Region4.T4_p(p))
-        elif region == 5:
+        elif region == DiagramRegion.R5:
             return self._unit_converter.fromSIunit_T(Region5.T5_ph(p, h))
         else:
             self.logger.warning(
@@ -135,16 +157,16 @@ class XSteam(object):
         """
         p = self._unit_converter.toSIunit_p(p)
         s = self._unit_converter.toSIunit_s(s)
-        region = RegionSelection.region_ps(p, s)
-        if region == 1:
+        region = select_region_ps(p, s)
+        if region == DiagramRegion.R1:
             return self._unit_converter.fromSIunit_T(Region1.T1_ps(p, s))
-        elif region == 2:
+        elif region == DiagramRegion.R2:
             return self._unit_converter.fromSIunit_T(Region2.T2_ps(p, s))
-        elif region == 3:
+        elif region == DiagramRegion.R3:
             return self._unit_converter.fromSIunit_T(Region3.T3_ps(p, s))
-        elif region == 4:
+        elif region == DiagramRegion.R4:
             return self._unit_converter.fromSIunit_T(Region4.T4_p(p))
-        elif region == 5:
+        elif region == DiagramRegion.R5:
             return self._unit_converter.fromSIunit_T(Region5.T5_ps(p, s))
         else:
             self.logger.warning(
@@ -167,19 +189,19 @@ class XSteam(object):
         """
         h = self._unit_converter.toSIunit_h(h)
         s = self._unit_converter.toSIunit_s(s)
-        region = RegionSelection.region_hs(h, s)
-        if region == 1:
+        region = select_region_hs(h, s)
+        if region == DiagramRegion.R1:
             p1 = Region1.p1_hs(h, s)
             return self._unit_converter.fromSIunit_T(Region1.T1_ph(p1, h))
-        elif region == 2:
+        elif region == DiagramRegion.R2:
             p2 = Region2.p2_hs(h, s)
             return self._unit_converter.fromSIunit_T(Region2.T2_ph(p2, h))
-        elif region == 3:
+        elif region == DiagramRegion.R3:
             p3 = Region3.p3_hs(h, s)
             return self._unit_converter.fromSIunit_T(Region3.T3_ph(p3, h))
-        elif region == 4:
+        elif region == DiagramRegion.R4:
             return self._unit_converter.fromSIunit_T(Region4.T4_hs(h, s))
-        elif region == 5:
+        elif region == DiagramRegion.R5:
             self.logger.error(
                 "functions t_hs is not available in region 5 for input h %f and s %f",
                 h,
@@ -241,17 +263,17 @@ class XSteam(object):
         """
         h = self._unit_converter.toSIunit_h(h)
         s = self._unit_converter.toSIunit_s(s)
-        region = RegionSelection.region_hs(h, s)
-        if region == 1:
+        region = select_region_hs(h, s)
+        if region == DiagramRegion.R1:
             return self._unit_converter.fromSIunit_p(Region1.p1_hs(h, s))
-        elif region == 2:
+        elif region == DiagramRegion.R2:
             return self._unit_converter.fromSIunit_p(Region2.p2_hs(h, s))
-        elif region == 3:
+        elif region == DiagramRegion.R3:
             return self._unit_converter.fromSIunit_p(Region3.p3_hs(h, s))
-        elif region == 4:
+        elif region == DiagramRegion.R4:
             tSat = Region4.T4_hs(h, s)
             return self._unit_converter.fromSIunit_p(Region4.p4_T(tSat))
-        elif region == 5:
+        elif region == DiagramRegion.R5:
             self.logger.warning(
                 "functions p_hs is not available in region 5 for input h %f and s %f",
                 h,
@@ -393,21 +415,21 @@ class XSteam(object):
         """
         p = self._unit_converter.toSIunit_p(p)
         T = self._unit_converter.toSIunit_T(t)
-        region = RegionSelection.region_pT(p, T)
-        if region == 1:
+        region = select_region_pT(p, T)
+        if region == DiagramRegion.R1:
             return self._unit_converter.fromSIunit_h(Region1.h1_pT(p, T))
-        elif region == 2:
+        elif region == DiagramRegion.R2:
             return self._unit_converter.fromSIunit_h(Region2.h2_pT(p, T))
-        elif region == 3:
+        elif region == DiagramRegion.R3:
             return self._unit_converter.fromSIunit_h(Region3.h3_pT(p, T))
-        elif region == 4:
+        elif region == DiagramRegion.R4:
             self.logger.warning(
                 "function h_pt is not available in region 4 for input p %f and T %f",
                 p,
                 T,
             )
             return float("NaN")
-        elif region == 5:
+        elif region == DiagramRegion.R5:
             return self._unit_converter.fromSIunit_h(Region5.h5_pT(p, T))
         else:
             self.logger.warning(
@@ -430,25 +452,25 @@ class XSteam(object):
         """
         p = self._unit_converter.toSIunit_p(p)
         s = self._unit_converter.toSIunit_s(s)
-        region = RegionSelection.region_ps(p, s)
-        if region == 1:
+        region = select_region_ps(p, s)
+        if region == DiagramRegion.R1:
             return self._unit_converter.fromSIunit_h(
                 Region1.h1_pT(p, Region1.T1_ps(p, s))
             )
-        elif region == 2:
+        elif region == DiagramRegion.R2:
             return self._unit_converter.fromSIunit_h(
                 Region2.h2_pT(p, Region2.T2_ps(p, s))
             )
-        elif region == 3:
+        elif region == DiagramRegion.R3:
             return self._unit_converter.fromSIunit_h(
                 Region3.h3_rhoT(1 / Region3.v3_ps(p, s), Region3.T3_ps(p, s))
             )
-        elif region == 4:
+        elif region == DiagramRegion.R4:
             xs = Region4.x4_ps(p, s)
             return self._unit_converter.fromSIunit_h(
                 xs * Region4.h4V_p(p) + (1 - xs) * Region4.h4L_p(p)
             )
-        elif region == 5:
+        elif region == DiagramRegion.R5:
             return self._unit_converter.fromSIunit_h(
                 Region5.h5_pT(p, Region5.T5_ps(p, s))
             )
@@ -494,20 +516,20 @@ class XSteam(object):
         """
         p = self._unit_converter.toSIunit_p(p)
         rho = 1 / self._unit_converter.toSIunit_v(1 / float(rho))
-        region = RegionSelection.region_prho(p, rho)
-        if region == 1:
+        region = select_region_prho(p, rho)
+        if region == DiagramRegion.R1:
             return self._unit_converter.fromSIunit_h(
                 Region1.h1_pT(p, Region1.T1_prho(p, rho))
             )
-        elif region == 2:
+        elif region == DiagramRegion.R2:
             return self._unit_converter.fromSIunit_h(
                 Region2.h2_pT(p, Region2.T2_prho(p, rho))
             )
-        elif region == 3:
+        elif region == DiagramRegion.R3:
             return self._unit_converter.fromSIunit_h(
                 Region3.h3_rhoT(rho, Region3.T3_prho(p, rho))
             )
-        elif region == 4:
+        elif region == DiagramRegion.R4:
             if p < 16.529:
                 vV = Region2.v2_pT(p, Region4.T4_p(p))
                 vL = Region1.v1_pT(p, Region4.T4_p(p))
@@ -518,7 +540,7 @@ class XSteam(object):
             hL = Region4.h4L_p(p)
             x = (1 / rho - vL) / (vV - vL)
             return self._unit_converter.fromSIunit_h((1 - x) * hL + x * hV)
-        elif region == 5:
+        elif region == DiagramRegion.R5:
             return self._unit_converter.fromSIunit_h(
                 Region5.h5_pT(p, Region5.T5_prho(p, rho))
             )
@@ -662,23 +684,23 @@ class XSteam(object):
         """
         p = self._unit_converter.toSIunit_p(p)
         T = self._unit_converter.toSIunit_T(t)
-        region = RegionSelection.region_pT(p, T)
-        if region == 1:
+        region = select_region_pT(p, T)
+        if region == DiagramRegion.R1:
             return self._unit_converter.fromSIunit_v(Region1.v1_pT(p, T))
-        elif region == 2:
+        elif region == DiagramRegion.R2:
             return self._unit_converter.fromSIunit_v(Region2.v2_pT(p, T))
-        elif region == 3:
+        elif region == DiagramRegion.R3:
             return self._unit_converter.fromSIunit_v(
                 Region3.v3_ph(p, Region3.h3_pT(p, T))
             )
-        elif region == 4:
+        elif region == DiagramRegion.R4:
             self.logger.warning(
                 "function v_pt is not available in region 4 for input p %f and T %f",
                 p,
                 T,
             )
             return float("NaN")
-        elif region == 5:
+        elif region == DiagramRegion.R5:
             return self._unit_converter.fromSIunit_v(Region5.v5_pT(p, T))
         else:
             self.logger.warning(
@@ -701,18 +723,18 @@ class XSteam(object):
         """
         p = self._unit_converter.toSIunit_p(p)
         h = self._unit_converter.toSIunit_h(h)
-        region = RegionSelection.region_ph(p, h)
-        if region == 1:
+        region = select_region_ph(p, h)
+        if region == DiagramRegion.R1:
             return self._unit_converter.fromSIunit_v(
                 Region1.v1_pT(p, Region1.T1_ph(p, h))
             )
-        elif region == 2:
+        elif region == DiagramRegion.R2:
             return self._unit_converter.fromSIunit_v(
                 Region2.v2_pT(p, Region2.T2_ph(p, h))
             )
-        elif region == 3:
+        elif region == DiagramRegion.R3:
             return self._unit_converter.fromSIunit_v(Region3.v3_ph(p, h))
-        elif region == 4:
+        elif region == DiagramRegion.R4:
             xs = Region4.x4_ph(p, h)
             if p < 16.529:
                 v4v = Region2.v2_pT(p, Region4.T4_p(p))
@@ -721,7 +743,7 @@ class XSteam(object):
                 v4v = Region3.v3_ph(p, Region4.h4V_p(p))
                 v4L = Region3.v3_ph(p, Region4.h4L_p(p))
             return self._unit_converter.fromSIunit_v((xs * v4v + (1 - xs) * v4L))
-        elif region == 5:
+        elif region == DiagramRegion.R5:
             Ts = Region5.T5_ph(p, h)
             return self._unit_converter.fromSIunit_v(Region5.v5_pT(p, Ts))
         else:
@@ -745,18 +767,18 @@ class XSteam(object):
         """
         p = self._unit_converter.toSIunit_p(p)
         s = self._unit_converter.toSIunit_s(s)
-        region = RegionSelection.region_ps(p, s)
-        if region == 1:
+        region = select_region_ps(p, s)
+        if region == DiagramRegion.R1:
             return self._unit_converter.fromSIunit_v(
                 Region1.v1_pT(p, Region1.T1_ps(p, s))
             )
-        elif region == 2:
+        elif region == DiagramRegion.R2:
             return self._unit_converter.fromSIunit_v(
                 Region2.v2_pT(p, Region2.T2_ps(p, s))
             )
-        elif region == 3:
+        elif region == DiagramRegion.R3:
             return self._unit_converter.fromSIunit_v(Region3.v3_ps(p, s))
-        elif region == 4:
+        elif region == DiagramRegion.R4:
             xs = Region4.x4_ps(p, s)
             if p < 16.529:
                 v4v = Region2.v2_pT(p, Region4.T4_p(p))
@@ -765,7 +787,7 @@ class XSteam(object):
                 v4v = Region3.v3_ph(p, Region4.h4V_p(p))
                 v4L = Region3.v3_ph(p, Region4.h4L_p(p))
             return self._unit_converter.fromSIunit_v((xs * v4v + (1 - xs) * v4L))
-        elif region == 5:
+        elif region == DiagramRegion.R5:
             Ts = Region5.T5_ps(p, s)
             return self._unit_converter.fromSIunit_v(Region5.v5_pT(p, Ts))
         else:
@@ -986,21 +1008,21 @@ class XSteam(object):
         """
         p = self._unit_converter.toSIunit_p(p)
         T = self._unit_converter.toSIunit_T(t)
-        region = RegionSelection.region_pT(p, T)
-        if region == 1:
+        region = select_region_pT(p, T)
+        if region == DiagramRegion.R1:
             return self._unit_converter.fromSIunit_s(Region1.s1_pT(p, T))
-        elif region == 2:
+        elif region == DiagramRegion.R2:
             return self._unit_converter.fromSIunit_s(Region2.s2_pT(p, T))
-        elif region == 3:
+        elif region == DiagramRegion.R3:
             hs = Region3.h3_pT(p, T)
             rhos = 1 / Region3.v3_ph(p, hs)
             return self._unit_converter.fromSIunit_s(Region3.s3_rhoT(rhos, T))
-        elif region == 4:
+        elif region == DiagramRegion.R4:
             self.logger.warning(
                 "function s_pt is not available in region 4 (p %f, T %f)", p, T
             )
             return float("NaN")
-        elif region == 5:
+        elif region == DiagramRegion.R5:
             return self._unit_converter.fromSIunit_s(Region5.s5_pT(p, T))
         else:
             self.logger.warning(
@@ -1023,18 +1045,18 @@ class XSteam(object):
         """
         p = self._unit_converter.toSIunit_p(p)
         h = self._unit_converter.toSIunit_h(h)
-        region = RegionSelection.region_ph(p, h)
-        if region == 1:
+        region = select_region_ph(p, h)
+        if region == DiagramRegion.R1:
             T = Region1.T1_ph(p, h)
             return self._unit_converter.fromSIunit_s(Region1.s1_pT(p, T))
-        elif region == 2:
+        elif region == DiagramRegion.R2:
             T = Region2.T2_ph(p, h)
             return self._unit_converter.fromSIunit_s(Region2.s2_pT(p, T))
-        elif region == 3:
+        elif region == DiagramRegion.R3:
             rhos = 1 / Region3.v3_ph(p, h)
             Ts = Region3.T3_ph(p, h)
             return self._unit_converter.fromSIunit_s(Region3.s3_rhoT(rhos, Ts))
-        elif region == 4:
+        elif region == DiagramRegion.R4:
             Ts = Region4.T4_p(p)
             xs = Region4.x4_ph(p, h)
             if p < 16.529:
@@ -1046,7 +1068,7 @@ class XSteam(object):
                 v4L = Region3.v3_ph(p, Region4.h4L_p(p))
                 s4L = Region3.s3_rhoT(1 / v4L, Ts)
             return self._unit_converter.fromSIunit_s((xs * s4v + (1 - xs) * s4L))
-        elif region == 5:
+        elif region == DiagramRegion.R5:
             T = Region5.T5_ph(p, h)
             return self._unit_converter.fromSIunit_s(Region5.s5_pT(p, T))
         else:
@@ -1183,23 +1205,23 @@ class XSteam(object):
         """
         p = self._unit_converter.toSIunit_p(p)
         T = self._unit_converter.toSIunit_T(t)
-        region = RegionSelection.region_pT(p, T)
-        if region == 1:
+        region = select_region_pT(p, T)
+        if region == DiagramRegion.R1:
             return self._unit_converter.fromSIunit_u(Region1.u1_pT(p, T))
-        elif region == 2:
+        elif region == DiagramRegion.R2:
             return self._unit_converter.fromSIunit_u(Region2.u2_pT(p, T))
-        elif region == 3:
+        elif region == DiagramRegion.R3:
             hs = Region3.h3_pT(p, T)
             rhos = 1 / Region3.v3_ph(p, hs)
             return self._unit_converter.fromSIunit_u(Region3.u3_rhoT(rhos, T))
-        elif region == 4:
+        elif region == DiagramRegion.R4:
             self.logger.warning(
                 "function u_pt is not available in region 4 for input p %f and T %f",
                 p,
                 T,
             )
             return float("NaN")
-        elif region == 5:
+        elif region == DiagramRegion.R5:
             return self._unit_converter.fromSIunit_u(Region5.u5_pT(p, T))
         else:
             self.logger.warning(
@@ -1222,18 +1244,18 @@ class XSteam(object):
         """
         p = self._unit_converter.toSIunit_p(p)
         h = self._unit_converter.toSIunit_h(h)
-        region = RegionSelection.region_ph(p, h)
-        if region == 1:
+        region = select_region_ph(p, h)
+        if region == DiagramRegion.R1:
             Ts = Region1.T1_ph(p, h)
             return self._unit_converter.fromSIunit_u(Region1.u1_pT(p, Ts))
-        elif region == 2:
+        elif region == DiagramRegion.R2:
             Ts = Region2.T2_ph(p, h)
             return self._unit_converter.fromSIunit_u(Region2.u2_pT(p, Ts))
-        elif region == 3:
+        elif region == DiagramRegion.R3:
             rhos = 1 / Region3.v3_ph(p, h)
             Ts = Region3.T3_ph(p, h)
             return self._unit_converter.fromSIunit_u(Region3.u3_rhoT(rhos, Ts))
-        elif region == 4:
+        elif region == DiagramRegion.R4:
             Ts = Region4.T4_p(p)
             xs = Region4.x4_ph(p, h)
             if p < 16.529:
@@ -1245,7 +1267,7 @@ class XSteam(object):
                 v4L = Region3.v3_ph(p, Region4.h4L_p(p))
                 u4L = Region3.u3_rhoT(1 / v4L, Ts)
             return self._unit_converter.fromSIunit_u((xs * u4v + (1 - xs) * u4L))
-        elif region == 5:
+        elif region == DiagramRegion.R5:
             Ts = Region5.T5_ph(p, h)
             return self._unit_converter.fromSIunit_u(Region5.u5_pT(p, Ts))
         else:
@@ -1269,18 +1291,18 @@ class XSteam(object):
         """
         p = self._unit_converter.toSIunit_p(p)
         s = self._unit_converter.toSIunit_s(s)
-        region = RegionSelection.region_ps(p, s)
-        if region == 1:
+        region = select_region_ps(p, s)
+        if region == DiagramRegion.R1:
             Ts = Region1.T1_ps(p, s)
             return self._unit_converter.fromSIunit_u(Region1.u1_pT(p, Ts))
-        elif region == 2:
+        elif region == DiagramRegion.R2:
             Ts = Region2.T2_ps(p, s)
             return self._unit_converter.fromSIunit_u(Region2.u2_pT(p, Ts))
-        elif region == 3:
+        elif region == DiagramRegion.R3:
             rhos = 1 / Region3.v3_ps(p, s)
             Ts = Region3.T3_ps(p, s)
             return self._unit_converter.fromSIunit_u(Region3.u3_rhoT(rhos, Ts))
-        elif region == 4:
+        elif region == DiagramRegion.R4:
             if p < 16.529:
                 uLp = Region1.u1_pT(p, Region4.T4_p(p))
                 uVp = Region2.u2_pT(p, Region4.T4_p(p))
@@ -1293,7 +1315,7 @@ class XSteam(object):
                 )
             xs = Region4.x4_ps(p, s)
             return self._unit_converter.fromSIunit_u((xs * uVp + (1 - xs) * uLp))
-        elif region == 5:
+        elif region == DiagramRegion.R5:
             Ts = Region5.T5_ps(p, s)
             return self._unit_converter.fromSIunit_u(Region5.u5_pT(p, Ts))
         else:
@@ -1431,23 +1453,23 @@ class XSteam(object):
         """
         p = self._unit_converter.toSIunit_p(p)
         T = self._unit_converter.toSIunit_T(t)
-        region = RegionSelection.region_pT(p, T)
-        if region == 1:
+        region = select_region_pT(p, T)
+        if region == DiagramRegion.R1:
             return self._unit_converter.fromSIunit_Cp(Region1.Cp1_pT(p, T))
-        elif region == 2:
+        elif region == DiagramRegion.R2:
             return self._unit_converter.fromSIunit_Cp(Region2.Cp2_pT(p, T))
-        elif region == 3:
+        elif region == DiagramRegion.R3:
             hs = Region3.h3_pT(p, T)
             rhos = 1 / Region3.v3_ph(p, hs)
             return self._unit_converter.fromSIunit_Cp(Region3.Cp3_rhoT(rhos, T))
-        elif region == 4:
+        elif region == DiagramRegion.R4:
             self.logger.warning(
                 "function Cp_pt is not available in region 4 for input p %f and T %f",
                 p,
                 T,
             )
             return float("NaN")
-        elif region == 5:
+        elif region == DiagramRegion.R5:
             return self._unit_converter.fromSIunit_Cp(Region5.Cp5_pT(p, T))
         else:
             self.logger.warning(
@@ -1470,25 +1492,25 @@ class XSteam(object):
         """
         p = self._unit_converter.toSIunit_p(p)
         h = self._unit_converter.toSIunit_h(h)
-        region = RegionSelection.region_ph(p, h)
-        if region == 1:
+        region = select_region_ph(p, h)
+        if region == DiagramRegion.R1:
             Ts = Region1.T1_ph(p, h)
             return self._unit_converter.fromSIunit_Cp(Region1.Cp1_pT(p, Ts))
-        elif region == 2:
+        elif region == DiagramRegion.R2:
             Ts = Region2.T2_ph(p, h)
             return self._unit_converter.fromSIunit_Cp(Region2.Cp2_pT(p, Ts))
-        elif region == 3:
+        elif region == DiagramRegion.R3:
             rhos = 1 / Region3.v3_ph(p, h)
             Ts = Region3.T3_ph(p, h)
             return self._unit_converter.fromSIunit_Cp(Region3.Cp3_rhoT(rhos, Ts))
-        elif region == 4:
+        elif region == DiagramRegion.R4:
             self.logger.warning(
                 "function Cp_ph is not available in region 4  for input p %f and h %f",
                 p,
                 h,
             )
             return float("NaN")
-        elif region == 5:
+        elif region == DiagramRegion.R5:
             Ts = Region5.T5_ph(p, h)
             return self._unit_converter.fromSIunit_Cp(Region5.Cp5_pT(p, Ts))
         else:
@@ -1512,25 +1534,25 @@ class XSteam(object):
         """
         p = self._unit_converter.toSIunit_p(p)
         s = self._unit_converter.toSIunit_s(s)
-        region = RegionSelection.region_ps(p, s)
-        if region == 1:
+        region = select_region_ps(p, s)
+        if region == DiagramRegion.R1:
             Ts = Region1.T1_ps(p, s)
             return self._unit_converter.fromSIunit_Cp(Region1.Cp1_pT(p, Ts))
-        elif region == 2:
+        elif region == DiagramRegion.R2:
             Ts = Region2.T2_ps(p, s)
             return self._unit_converter.fromSIunit_Cp(Region2.Cp2_pT(p, Ts))
-        elif region == 3:
+        elif region == DiagramRegion.R3:
             rhos = 1 / Region3.v3_ps(p, s)
             Ts = Region3.T3_ps(p, s)
             return self._unit_converter.fromSIunit_Cp(Region3.Cp3_rhoT(rhos, Ts))
-        elif region == 4:
+        elif region == DiagramRegion.R4:
             self.logger.warning(
                 "function Cp_ps is not available in region 4 for input p %f and s %f",
                 p,
                 s,
             )
             return float("NaN")
-        elif region == 5:
+        elif region == DiagramRegion.R5:
             Ts = Region5.T5_ps(p, s)
             return self._unit_converter.fromSIunit_Cp(Region5.Cp5_pT(p, Ts))
         else:
@@ -1668,23 +1690,23 @@ class XSteam(object):
         """
         p = self._unit_converter.toSIunit_p(p)
         T = self._unit_converter.toSIunit_T(t)
-        region = RegionSelection.region_pT(p, T)
-        if region == 1:
+        region = select_region_pT(p, T)
+        if region == DiagramRegion.R1:
             return self._unit_converter.fromSIunit_Cv(Region1.Cv1_pT(p, T))
-        elif region == 2:
+        elif region == DiagramRegion.R2:
             return self._unit_converter.fromSIunit_Cv(Region2.Cv2_pT(p, T))
-        elif region == 3:
+        elif region == DiagramRegion.R3:
             hs = Region3.h3_pT(p, T)
             rhos = 1 / Region3.v3_ph(p, hs)
             return self._unit_converter.fromSIunit_Cv(Region3.Cv3_rhoT(rhos, T))
-        elif region == 4:
+        elif region == DiagramRegion.R4:
             self.logger.warning(
                 "function Cv_pt is not available in region 4 for input p %f and T %f",
                 p,
                 T,
             )
             return float("NaN")
-        elif region == 5:
+        elif region == DiagramRegion.R5:
             return self._unit_converter.fromSIunit_Cv(Region5.Cv5_pT(p, T))
         else:
             self.logger.warning(
@@ -1707,25 +1729,25 @@ class XSteam(object):
         """
         p = self._unit_converter.toSIunit_p(p)
         h = self._unit_converter.toSIunit_h(h)
-        region = RegionSelection.region_ph(p, h)
-        if region == 1:
+        region = select_region_ph(p, h)
+        if region == DiagramRegion.R1:
             Ts = Region1.T1_ph(p, h)
             return self._unit_converter.fromSIunit_Cv(Region1.Cv1_pT(p, Ts))
-        elif region == 2:
+        elif region == DiagramRegion.R2:
             Ts = Region2.T2_ph(p, h)
             return self._unit_converter.fromSIunit_Cv(Region2.Cv2_pT(p, Ts))
-        elif region == 3:
+        elif region == DiagramRegion.R3:
             rhos = 1 / Region3.v3_ph(p, h)
             Ts = Region3.T3_ph(p, h)
             return self._unit_converter.fromSIunit_Cv(Region3.Cv3_rhoT(rhos, Ts))
-        elif region == 4:
+        elif region == DiagramRegion.R4:
             self.logger.warning(
                 "function Cv_ph is not available in region 4 for input p %f and h %f",
                 p,
                 h,
             )
             return float("NaN")
-        elif region == 5:
+        elif region == DiagramRegion.R5:
             Ts = Region5.T5_ph(p, h)
             return self._unit_converter.fromSIunit_Cv(Region5.Cv5_pT(p, Ts))
         else:
@@ -1749,18 +1771,18 @@ class XSteam(object):
         """
         p = self._unit_converter.toSIunit_p(p)
         s = self._unit_converter.toSIunit_s(s)
-        region = RegionSelection.region_ps(p, s)
-        if region == 1:
+        region = select_region_ps(p, s)
+        if region == DiagramRegion.R1:
             Ts = Region1.T1_ps(p, s)
             return self._unit_converter.fromSIunit_Cv(Region1.Cv1_pT(p, Ts))
-        elif region == 2:
+        elif region == DiagramRegion.R2:
             Ts = Region2.T2_ps(p, s)
             return self._unit_converter.fromSIunit_Cv(Region2.Cv2_pT(p, Ts))
-        elif region == 3:
+        elif region == DiagramRegion.R3:
             rhos = 1 / Region3.v3_ps(p, s)
             Ts = Region3.T3_ps(p, s)
             return self._unit_converter.fromSIunit_Cv(Region3.Cv3_rhoT(rhos, Ts))
-        elif region == 4:
+        elif region == DiagramRegion.R4:
             self.logger.warning(
                 "function Cv_ps is not available in region 4 for input p %f and s %f",
                 p,
@@ -1768,7 +1790,7 @@ class XSteam(object):
             )
             # (xs * CvVp + (1 - xs) * CvLp) / Cv_scale - Cv_offset
             return float("NaN")
-        elif region == 5:
+        elif region == DiagramRegion.R5:
             Ts = Region5.T5_ps(p, s)
             return self._unit_converter.fromSIunit_Cv(Region5.Cv5_pT(p, Ts))
         else:
@@ -1906,23 +1928,23 @@ class XSteam(object):
         """
         p = self._unit_converter.toSIunit_p(p)
         T = self._unit_converter.toSIunit_T(t)
-        region = RegionSelection.region_pT(p, T)
-        if region == 1:
+        region = select_region_pT(p, T)
+        if region == DiagramRegion.R1:
             return self._unit_converter.fromSIunit_w(Region1.w1_pT(p, T))
-        elif region == 2:
+        elif region == DiagramRegion.R2:
             return self._unit_converter.fromSIunit_w(Region2.w2_pT(p, T))
-        elif region == 3:
+        elif region == DiagramRegion.R3:
             hs = Region3.h3_pT(p, T)
             rhos = 1 / Region3.v3_ph(p, hs)
             return self._unit_converter.fromSIunit_w(Region3.w3_rhoT(rhos, T))
-        elif region == 4:
+        elif region == DiagramRegion.R4:
             self.logger.warning(
                 "function w_pt is not available in region 4 for input p %f and T %f",
                 p,
                 T,
             )
             return float("NaN")
-        elif region == 5:
+        elif region == DiagramRegion.R5:
             return self._unit_converter.fromSIunit_w(Region5.w5_pT(p, T))
         else:
             self.logger.warning(
@@ -1945,23 +1967,23 @@ class XSteam(object):
         """
         p = self._unit_converter.toSIunit_p(p)
         h = self._unit_converter.toSIunit_h(h)
-        region = RegionSelection.region_ph(p, h)
-        if region == 1:
+        region = select_region_ph(p, h)
+        if region == DiagramRegion.R1:
             Ts = Region1.T1_ph(p, h)
             return self._unit_converter.fromSIunit_w(Region1.w1_pT(p, Ts))
-        elif region == 2:
+        elif region == DiagramRegion.R2:
             Ts = Region2.T2_ph(p, h)
             return self._unit_converter.fromSIunit_w(Region2.w2_pT(p, Ts))
-        elif region == 3:
+        elif region == DiagramRegion.R3:
             rhos = 1 / Region3.v3_ph(p, h)
             Ts = Region3.T3_ph(p, h)
             return self._unit_converter.fromSIunit_w(Region3.w3_rhoT(rhos, Ts))
-        elif region == 4:
+        elif region == DiagramRegion.R4:
             self.logger.warning(
                 "function w_ph is not available in region 4 p %f and h %f", p, h
             )
             return float("NaN")
-        elif region == 5:
+        elif region == DiagramRegion.R5:
             Ts = Region5.T5_ph(p, h)
             return self._unit_converter.fromSIunit_w(Region5.w5_pT(p, Ts))
         else:
@@ -1985,18 +2007,18 @@ class XSteam(object):
         """
         p = self._unit_converter.toSIunit_p(p)
         s = self._unit_converter.toSIunit_s(s)
-        region = RegionSelection.region_ps(p, s)
-        if region == 1:
+        region = select_region_ps(p, s)
+        if region == DiagramRegion.R1:
             Ts = Region1.T1_ps(p, s)
             return self._unit_converter.fromSIunit_w(Region1.w1_pT(p, Ts))
-        elif region == 2:
+        elif region == DiagramRegion.R2:
             Ts = Region2.T2_ps(p, s)
             return self._unit_converter.fromSIunit_w(Region2.w2_pT(p, Ts))
-        elif region == 3:
+        elif region == DiagramRegion.R3:
             rhos = 1 / Region3.v3_ps(p, s)
             Ts = Region3.T3_ps(p, s)
             return self._unit_converter.fromSIunit_w(Region3.w3_rhoT(rhos, Ts))
-        elif region == 4:
+        elif region == DiagramRegion.R4:
             self.logger.warning(
                 "function w_ps is not available in region 4 for input p %f and s %f",
                 p,
@@ -2004,7 +2026,7 @@ class XSteam(object):
             )
             # (xs * wVp + (1 - xs) * wLp) / w_scale - w_offset
             return float("NaN")
-        elif region == 5:
+        elif region == DiagramRegion.R5:
             Ts = Region5.T5_ps(p, s)
             return self._unit_converter.fromSIunit_w(Region5.w5_pT(p, Ts))
         else:
@@ -2033,8 +2055,8 @@ class XSteam(object):
         """
         p = self._unit_converter.toSIunit_p(p)
         T = self._unit_converter.toSIunit_T(t)
-        region = RegionSelection.region_pT(p, T)
-        if region == 4:
+        region = select_region_pT(p, T)
+        if region == DiagramRegion.R4:
             self.logger.warning(
                 "function my_pt is not available in region 4 for input p %f and T %f",
                 p,
@@ -2042,9 +2064,7 @@ class XSteam(object):
             )
             return float("NaN")
         elif region in [1, 2, 3, 5]:
-            return self._unit_converter.fromSIunit_my(
-                TransportProperties.my_AllRegions_pT(p, T)
-            )
+            return self._unit_converter.fromSIunit_my(my_AllRegions_pT(p, T))
         else:
             self.logger.warning(
                 "Region switch my_pt returned unknown value %d for input p %f and T %f",
@@ -2066,12 +2086,10 @@ class XSteam(object):
         """
         p = self._unit_converter.toSIunit_p(p)
         h = self._unit_converter.toSIunit_h(h)
-        region = RegionSelection.region_ph(p, h)
+        region = select_region_ph(p, h)
         if region in [1, 2, 3, 5]:
-            return self._unit_converter.fromSIunit_my(
-                TransportProperties.my_AllRegions_ph(p, h)
-            )
-        elif region == 4:
+            return self._unit_converter.fromSIunit_my(my_AllRegions_ph(p, h))
+        elif region == DiagramRegion.R4:
             self.logger.warning(
                 "function my_pt is not available in region 4 for input p %f and h %f",
                 p,
@@ -2144,9 +2162,7 @@ class XSteam(object):
             st (float): surface tension
         """
         T = self._unit_converter.toSIunit_T(t)
-        return self._unit_converter.fromSIunit_st(
-            TransportProperties.Surface_Tension_T(T)
-        )
+        return self._unit_converter.fromSIunit_st(Surface_Tension_T(T))
 
     def st_p(self, p: float) -> float:
         """Surface tension for two phase water/steam as a function of preasure
@@ -2159,9 +2175,7 @@ class XSteam(object):
         """
         T = self.tsat_p(p)
         T = self._unit_converter.toSIunit_T(T)
-        return self._unit_converter.fromSIunit_st(
-            TransportProperties.Surface_Tension_T(T)
-        )
+        return self._unit_converter.fromSIunit_st(Surface_Tension_T(T))
 
     # ***********************************************************************************************************
     # Section 1.16 Thermal conductivity
@@ -2181,9 +2195,7 @@ class XSteam(object):
         T = self._unit_converter.toSIunit_T(t)
         v = self._unit_converter.toSIunit_v(v)
         rho = 1.0 / v
-        return self._unit_converter.fromSIunit_tc(
-            TransportProperties.tc_ptrho(p, T, rho)
-        )
+        return self._unit_converter.fromSIunit_tc(tc_ptrho(p, T, rho))
 
     def tcV_p(self, p: float) -> float:
         """Saturated vapour thermal conductivity as a function of pressure
@@ -2201,9 +2213,7 @@ class XSteam(object):
         T = self._unit_converter.toSIunit_T(T)
         v = self._unit_converter.toSIunit_v(v)
         rho = 1.0 / v
-        return self._unit_converter.fromSIunit_tc(
-            TransportProperties.tc_ptrho(p, T, rho)
-        )
+        return self._unit_converter.fromSIunit_tc(tc_ptrho(p, T, rho))
 
     def tcL_t(self, t: float) -> float:
         """Saturated vapour thermal conductivity as a function of temperature
@@ -2221,9 +2231,7 @@ class XSteam(object):
         T = self._unit_converter.toSIunit_T(Ts)
         v = self._unit_converter.toSIunit_v(v)
         rho = 1 / v
-        return self._unit_converter.fromSIunit_tc(
-            TransportProperties.tc_ptrho(p, T, rho)
-        )
+        return self._unit_converter.fromSIunit_tc(tc_ptrho(p, T, rho))
 
     def tcV_t(self, t: float) -> float:
         """Saturated liquid thermal conductivity as a function of temperature
@@ -2241,9 +2249,7 @@ class XSteam(object):
         T = self._unit_converter.toSIunit_T(Ts)
         v = self._unit_converter.toSIunit_v(v)
         rho = 1 / v
-        return self._unit_converter.fromSIunit_tc(
-            TransportProperties.tc_ptrho(p, T, rho)
-        )
+        return self._unit_converter.fromSIunit_tc(tc_ptrho(p, T, rho))
 
     def tc_pt(self, p: float, t: float) -> float:
         """Thermal conductivity as a function of pressure and temperature
@@ -2264,9 +2270,7 @@ class XSteam(object):
         v = self._unit_converter.toSIunit_v(v)
         rho = 1 / v
 
-        return self._unit_converter.fromSIunit_tc(
-            TransportProperties.tc_ptrho(p, T, rho)
-        )
+        return self._unit_converter.fromSIunit_tc(tc_ptrho(p, T, rho))
 
     def tc_ph(self, p: float, h: float) -> float:
         """Thermal conductivity as a function of pressure and enthalpy
@@ -2286,9 +2290,7 @@ class XSteam(object):
         T = self._unit_converter.toSIunit_T(T)
         v = self._unit_converter.toSIunit_v(v)
         rho = 1 / v
-        return self._unit_converter.fromSIunit_tc(
-            TransportProperties.tc_ptrho(p, T, rho)
-        )
+        return self._unit_converter.fromSIunit_tc(tc_ptrho(p, T, rho))
 
     def tc_hs(self, h: float, s: float) -> float:
         """Thermal conductivity as a function of enthalpy and entropy
@@ -2309,9 +2311,7 @@ class XSteam(object):
         T = self._unit_converter.toSIunit_T(T)
         v = self._unit_converter.toSIunit_v(v)
         rho = 1 / v
-        return self._unit_converter.fromSIunit_tc(
-            TransportProperties.tc_ptrho(p, T, rho)
-        )
+        return self._unit_converter.fromSIunit_tc(tc_ptrho(p, T, rho))
 
     # ***********************************************************************************************************
     # Section 1.17 Vapour fraction
@@ -2442,48 +2442,48 @@ class XSteam(object):
                 return float("NaN")
             elif T >= 256.164 and T < 273.31:
                 self.logger.debug("chose ice type V based on temperature")
-                return self._unit_converter.fromSIunit_p(IAPWS_R14.pmelt_T_iceV(T))
+                return self._unit_converter.fromSIunit_p(pmelt_T_iceV(T))
             elif T >= 273.31 and T < 355:
                 self.logger.debug("chose ice type VI based on temperature")
-                return self._unit_converter.fromSIunit_p(IAPWS_R14.pmelt_T_iceVI(T))
+                return self._unit_converter.fromSIunit_p(pmelt_T_iceVI(T))
             elif T >= 355 and T < 751:
                 self.logger.debug("chose ice type VII based on temperature")
-                return self._unit_converter.fromSIunit_p(IAPWS_R14.pmelt_T_iceVII(T))
+                return self._unit_converter.fromSIunit_p(pmelt_T_iceVII(T))
             else:
                 self.logger.warning("temperature %f out of range", T)
                 return float("NaN")
 
         elif hint is self.TYPE_ICE_Ih:
             if T >= 251.165 and T < 273.16:
-                return self._unit_converter.fromSIunit_p(IAPWS_R14.pmelt_T_iceIh(T))
+                return self._unit_converter.fromSIunit_p(pmelt_T_iceIh(T))
             else:
                 self.logger.warning("temperature %f out of range", T)
                 return float("NaN")
 
         elif hint is self.TYPE_ICE_III:
             if T >= 251.165 and T < 256.164:
-                return self._unit_converter.fromSIunit_p(IAPWS_R14.pmelt_T_iceIII(T))
+                return self._unit_converter.fromSIunit_p(pmelt_T_iceIII(T))
             else:
                 self.logger.warning("temperature %f out of range", T)
                 return float("NaN")
 
         elif hint is self.TYPE_ICE_V:
             if T >= 256.164 and T < 273.31:
-                return self._unit_converter.fromSIunit_p(IAPWS_R14.pmelt_T_iceV(T))
+                return self._unit_converter.fromSIunit_p(pmelt_T_iceV(T))
             else:
                 self.logger.warning("temperature %f out of range", T)
                 return float("NaN")
 
         elif hint is self.TYPE_ICE_VI:
             if T >= 273.31 and T < 355:
-                return self._unit_converter.fromSIunit_p(IAPWS_R14.pmelt_T_iceVI(T))
+                return self._unit_converter.fromSIunit_p(pmelt_T_iceVI(T))
             else:
                 self.logger.warning("temperature %f out of range", T)
                 return float("NaN")
 
         elif hint is self.TYPE_ICE_VII:
             if T >= 355 and T < 751:
-                return self._unit_converter.fromSIunit_p(IAPWS_R14.pmelt_T_iceVII(T))
+                return self._unit_converter.fromSIunit_p(pmelt_T_iceVII(T))
             else:
                 self.logger.warning("temperature %f out of range", T)
                 return float("NaN")
@@ -2506,7 +2506,7 @@ class XSteam(object):
         """
         T = self._unit_converter.toSIunit_T(t)
         if T >= 50 and T < 273.16:
-            return self._unit_converter.fromSIunit_p(IAPWS_R14.psubl_T(T))
+            return self._unit_converter.fromSIunit_p(psubl_T(T))
         else:
             self.logger.warning("temperature %f out of range", T)
             return float("NaN")

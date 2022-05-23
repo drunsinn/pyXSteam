@@ -64,3 +64,12 @@ class IceType(IntEnum):
     @classmethod
     def has_value(cls, value):
         return value in cls._value2member_map_
+
+
+class DiagramRegion(IntEnum):
+    NILL = 0  # Error, Outside valid area
+    R1 = 1
+    R2 = 2
+    R3 = 3
+    R4 = 4
+    R5 = 5

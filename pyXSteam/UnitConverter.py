@@ -78,13 +78,13 @@ class UnitConverter(object):
     def toSIunit_v(self, ins: float) -> float:
         """function toSIunit_v = toSIunit_v( ins )"""
         if self._unit_system is UnitSystem.FLS:
-            return float(ins * 0.0624279606)  # ft^3/lb to m^3/kg
+            return float(ins * 0.0624279606)  # ft³/lb to m³/kg
         return float(ins)
 
     def fromSIunit_v(self, ins: float) -> float:
         """function fromSIunit_v = fromSIunit_v( ins )"""
         if self._unit_system is UnitSystem.FLS:
-            return float(ins / 0.0624279606)  # m^3/kg to ft^3/lb
+            return float(ins / 0.0624279606)  # m³/kg to ft³/lb
         return float(ins)
 
     def toSIunit_s(self, ins: float) -> float:
@@ -189,28 +189,26 @@ class UnitConverter(object):
         """function toSIunit_vx = toSIunit_vx( ins )"""
         if 0.0 <= ins <= 1.0:
             return float(ins)
-        self.logger.error(
-            "value of vapour volume fraction out of range: 0 < x < 1")
+        self.logger.error("value of vapour volume fraction out of range: 0 < x < 1")
         raise ValueError("Vapour volume fraction out of Range")
 
     def fromSIunit_vx(self, ins: float) -> float:
         """function fromSIunit_vx = fromSIunit_vx( ins )"""
         if 0.0 <= ins <= 1.0:
             return float(ins)
-        self.logger.error(
-            "value of vapour volume fraction out of range: 0 < x < 1")
+        self.logger.error("value of vapour volume fraction out of range: 0 < x < 1")
         raise ValueError("Vapour volume fraction out of Range")
 
     def toSIunit_my(self, ins: float) -> float:
         """function toSIunit_my = toSIunit_my( ins )"""
         if self._unit_system is UnitSystem.FLS:
-            return float(ins / 2419.088311)  # lbm/ft/hr to PaS (N*s/m^2)
+            return float(ins / 2419.088311)  # lbm/ft/hr to PaS (N*s/m²)
         return float(ins)
 
     def fromSIunit_my(self, ins: float) -> float:
         """function fromSIunit_my = fromSIunit_my( ins )"""
         if self._unit_system is UnitSystem.FLS:
-            return float(ins * 2419.088311)  # PaS (N*s/m^2) to lbm/ft/hr
+            return float(ins * 2419.088311)  # PaS (N*s/m²) to lbm/ft/hr
         return float(ins)
 
     def __str__(self):
