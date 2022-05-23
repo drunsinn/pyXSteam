@@ -7,7 +7,7 @@ import math
 import logging
 from . import RegionSelection
 from .Regions import Region1, Region2, Region3, Region4, Region5
-from . import Constants
+from .Constants import __CRITICAL_TEMPERATURE__
 
 logger = logging.getLogger(__name__)
 
@@ -223,7 +223,7 @@ def Surface_Tension_T(T: float) -> float:
 
     IAPWS Revised Release on Surface Tension of Ordinary Water Substance, June 2014 R1-76(2014)
     """
-    tc = Constants.__CRITICAL_TEMPERATURE__
+    tc = __CRITICAL_TEMPERATURE__
     B = 0.2358  # N/m
     bb = -0.625  #
     my = 1.256  #

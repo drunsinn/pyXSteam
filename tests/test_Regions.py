@@ -13,7 +13,8 @@ from pyXSteam.Regions import Region1, Region2, Region3, Region4, Region5
 class Region1Tester(unittest.TestCase):
     def setUp(self):
         self.maxError = 1e-8
-        self.maxMatrixError = 2e-8  # The accumulated Error is bigger than the error of each single function
+        # The accumulated Error is bigger than the error of each single function
+        self.maxMatrixError = 2e-8
 
     def tearDown(self):
         pass
@@ -110,7 +111,8 @@ class Region1Tester(unittest.TestCase):
 class Region2Tester(unittest.TestCase):
     def setUp(self):
         self.maxError = 1e-8
-        self.maxMatrixError = 2e-8  # The accumulated Error is bigger than the error of each single function
+        # The accumulated Error is bigger than the error of each single function
+        self.maxMatrixError = 2e-8
 
     def tearDown(self):
         pass
@@ -162,7 +164,8 @@ class Region2Tester(unittest.TestCase):
             600 / 10,
             600 / 10,
         ]
-        h = [3000.0, 3000.0, 4000.0, 3500.0, 4000.0, 3500.0, 2700.0, 2700.0, 3200.0]
+        h = [3000.0, 3000.0, 4000.0, 3500.0,
+             4000.0, 3500.0, 2700.0, 2700.0, 3200.0]
         IF97 = [
             534.433241,
             575.37337,
@@ -216,7 +219,8 @@ class Region2Tester(unittest.TestCase):
         """Tests to verify all functions with the Parameters h and s of Region 2 by comparing the Results to IF-97 Page 6 Table 3"""
         # % Supplementary Release on Backward Equations for Pressure as a Function of Enthalpy and Entropy p(h, s)
         # % Table 3, Page 6
-        h = [2800.0, 2800.0, 4100.0, 2800.0, 3600.0, 3600.0, 2800.0, 2800.0, 3400.0]
+        h = [2800.0, 2800.0, 4100.0, 2800.0,
+             3600.0, 3600.0, 2800.0, 2800.0, 3400.0]
         s = [6.5, 9.5, 9.5, 6, 6, 7, 5.1, 5.8, 5.8]
         IF97 = [
             1.371012767,
@@ -244,7 +248,8 @@ class Region2Tester(unittest.TestCase):
 class Region3Tester(unittest.TestCase):
     def setUp(self):
         self.maxError = 1e-8
-        self.maxMatrixError = 2e-8  # The accumulated Error is bigger than the error of each single function
+        # The accumulated Error is bigger than the error of each single function
+        self.maxMatrixError = 2e-8
 
     def tearDown(self):
         pass
@@ -424,7 +429,8 @@ class Region3Tester(unittest.TestCase):
 class Region4Tester(unittest.TestCase):
     def setUp(self):
         self.maxError = 1e-7
-        self.maxMatrixError = 2e-8  # The accumulated Error is bigger than the error of each single function
+        # The accumulated Error is bigger than the error of each single function
+        self.maxMatrixError = 2e-8
 
     def tearDown(self):
         pass
@@ -492,7 +498,8 @@ class Region4Tester(unittest.TestCase):
 class Region5Tester(unittest.TestCase):
     def setUp(self):
         self.maxError = 1e-8
-        self.maxMatrixError = 2e-8  # The accumulated Error is bigger than the error of each single function
+        # The accumulated Error is bigger than the error of each single function
+        self.maxMatrixError = 2e-8
 
     def tearDown(self):
         pass

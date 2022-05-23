@@ -542,7 +542,7 @@ class XSteam(object):
             )
             return float("NaN")
 
-    def h_tx(self, p: float, x: float) -> float:
+    def h_tx(self, t: float, x: float) -> float:
         """Entalpy as a function of temperature and vapour fraction
 
         Args:

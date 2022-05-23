@@ -6,7 +6,7 @@ Section 2: IAPWS IF 97 Calling functions
 import math
 import logging
 from . import RegionBorders
-from . import Constants
+from .Constants import __SPECIFIC_GAS_CONSTANT__, __CRITICAL_TEMPERATURE__
 
 
 class Region1:
@@ -132,7 +132,7 @@ class Region1:
             1.8228094581404e-24,
             -9.3537087292458e-26,
         ]
-        R = Constants.__SPECIFIC_GAS_CONSTANT__
+        R = __SPECIFIC_GAS_CONSTANT__
         Pi = p / 16.53  # 16.53 MPa
         tau = 1386 / T  # 1386 K
         gamma_der_pi = 0
@@ -261,7 +261,7 @@ class Region1:
             1.8228094581404e-24,
             -9.3537087292458e-26,
         ]
-        R = Constants.__SPECIFIC_GAS_CONSTANT__
+        R = __SPECIFIC_GAS_CONSTANT__
         Pi = p / 16.53
         tau = 1386 / T
         gamma_der_tau = 0
@@ -388,7 +388,7 @@ class Region1:
             1.8228094581404e-24,
             -9.3537087292458e-26,
         ]
-        R = Constants.__SPECIFIC_GAS_CONSTANT__
+        R = __SPECIFIC_GAS_CONSTANT__
         Pi = p / 16.53
         tau = 1386 / T
         gamma_der_tau = 0
@@ -521,7 +521,7 @@ class Region1:
             1.8228094581404e-24,
             -9.3537087292458e-26,
         ]
-        R = Constants.__SPECIFIC_GAS_CONSTANT__
+        R = __SPECIFIC_GAS_CONSTANT__
         Pi = p / 16.53
         tau = 1386 / T
         gamma = 0
@@ -651,7 +651,7 @@ class Region1:
             1.8228094581404e-24,
             -9.3537087292458e-26,
         ]
-        R = Constants.__SPECIFIC_GAS_CONSTANT__
+        R = __SPECIFIC_GAS_CONSTANT__
         Pi = p / 16.53
         tau = 1386 / T
         gamma_der_tautau = 0
@@ -781,7 +781,7 @@ class Region1:
             1.8228094581404e-24,
             -9.3537087292458e-26,
         ]
-        R = Constants.__SPECIFIC_GAS_CONSTANT__
+        R = __SPECIFIC_GAS_CONSTANT__
         Pi = p / 16.53
         tau = 1386 / T
         gamma_der_pi = 0
@@ -928,7 +928,7 @@ class Region1:
             1.8228094581404e-24,
             -9.3537087292458e-26,
         ]
-        R = Constants.__SPECIFIC_GAS_CONSTANT__
+        R = __SPECIFIC_GAS_CONSTANT__
         Pi = p / 16.53
         tau = 1386 / T
         gamma_der_pi = 0
@@ -1267,7 +1267,7 @@ class Region2:
             5.5414715350778e-17,
             -9.436970724121e-07,
         ]
-        R = Constants.__SPECIFIC_GAS_CONSTANT__
+        R = __SPECIFIC_GAS_CONSTANT__
         Pi = p
         tau = 540 / T
         g0_pi = 1 / Pi
@@ -1432,7 +1432,7 @@ class Region2:
             5.5414715350778e-17,
             -9.436970724121e-07,
         ]
-        R = Constants.__SPECIFIC_GAS_CONSTANT__
+        R = __SPECIFIC_GAS_CONSTANT__
         Pi = p
         tau = 540 / T
         g0_tau = 0
@@ -1599,7 +1599,7 @@ class Region2:
             5.5414715350778e-17,
             -9.436970724121e-07,
         ]
-        R = Constants.__SPECIFIC_GAS_CONSTANT__
+        R = __SPECIFIC_GAS_CONSTANT__
         Pi = p
         tau = 540 / T
         g0_pi = 1 / Pi
@@ -1770,7 +1770,7 @@ class Region2:
             5.5414715350778e-17,
             -9.436970724121e-07,
         ]
-        R = Constants.__SPECIFIC_GAS_CONSTANT__
+        R = __SPECIFIC_GAS_CONSTANT__
         Pi = p
         tau = 540 / T
         g0 = math.log(Pi)
@@ -1941,7 +1941,7 @@ class Region2:
             5.5414715350778e-17,
             -9.436970724121e-07,
         ]
-        R = Constants.__SPECIFIC_GAS_CONSTANT__
+        R = __SPECIFIC_GAS_CONSTANT__
         Pi = p
         tau = 540 / T
         g0_tautau = 0
@@ -2110,7 +2110,7 @@ class Region2:
             5.5414715350778e-17,
             -9.436970724121e-07,
         ]
-        R = Constants.__SPECIFIC_GAS_CONSTANT__
+        R = __SPECIFIC_GAS_CONSTANT__
         Pi = p
         tau = 540 / T
         g0_tautau = 0
@@ -2295,7 +2295,7 @@ class Region2:
             5.5414715350778e-17,
             -9.436970724121e-07,
         ]
-        R = Constants.__SPECIFIC_GAS_CONSTANT__
+        R = __SPECIFIC_GAS_CONSTANT__
         Pi = p
         tau = 540 / T
         g0_tautau = 0
@@ -3612,8 +3612,8 @@ class Region3:
             -1.6557679795037e-04,
             -4.4923899061815e-05,
         ]
-        R = Constants.__SPECIFIC_GAS_CONSTANT__
-        tc = Constants.__CRITICAL_TEMPERATURE__
+        R = __SPECIFIC_GAS_CONSTANT__
+        tc = __CRITICAL_TEMPERATURE__
         rhoc = 322.0  # kg/m3
         delta = rho / rhoc
         tau = tc / T
@@ -3759,8 +3759,8 @@ class Region3:
             -1.6557679795037e-04,
             -4.4923899061815e-05,
         ]
-        R = Constants.__SPECIFIC_GAS_CONSTANT__
-        tc = Constants.__CRITICAL_TEMPERATURE__
+        R = __SPECIFIC_GAS_CONSTANT__
+        tc = __CRITICAL_TEMPERATURE__
         rhoc = 322.0  # kg/m3
         delta = rho / rhoc
         tau = tc / T
@@ -3903,8 +3903,8 @@ class Region3:
             -1.6557679795037e-04,
             -4.4923899061815e-05,
         ]
-        R = Constants.__SPECIFIC_GAS_CONSTANT__
-        tc = Constants.__CRITICAL_TEMPERATURE__
+        R = __SPECIFIC_GAS_CONSTANT__
+        tc = __CRITICAL_TEMPERATURE__
         rhoc = 322.0  # kg/m3
         delta = rho / rhoc
         tau = tc / T
@@ -4051,8 +4051,8 @@ class Region3:
             -1.6557679795037e-04,
             -4.4923899061815e-05,
         ]
-        R = Constants.__SPECIFIC_GAS_CONSTANT__
-        tc = Constants.__CRITICAL_TEMPERATURE__
+        R = __SPECIFIC_GAS_CONSTANT__
+        tc = __CRITICAL_TEMPERATURE__
         rhoc = 322.0  # kg/m3
         delta = rho / rhoc
         tau = tc / T
@@ -4198,8 +4198,8 @@ class Region3:
             -1.6557679795037e-04,
             -4.4923899061815e-05,
         ]
-        R = Constants.__SPECIFIC_GAS_CONSTANT__
-        tc = Constants.__CRITICAL_TEMPERATURE__
+        R = __SPECIFIC_GAS_CONSTANT__
+        tc = __CRITICAL_TEMPERATURE__
         rhoc = 322.0  # kg/m3
         delta = rho / rhoc
         tau = tc / T
@@ -4363,8 +4363,8 @@ class Region3:
             -1.6557679795037e-04,
             -4.4923899061815e-05,
         ]
-        R = Constants.__SPECIFIC_GAS_CONSTANT__
-        tc = Constants.__CRITICAL_TEMPERATURE__
+        R = __SPECIFIC_GAS_CONSTANT__
+        tc = __CRITICAL_TEMPERATURE__
         rhoc = 322.0  # kg/m3
         delta = rho / rhoc
         tau = tc / T
@@ -4512,8 +4512,8 @@ class Region3:
             -1.6557679795037e-04,
             -4.4923899061815e-05,
         ]
-        R = Constants.__SPECIFIC_GAS_CONSTANT__
-        tc = Constants.__CRITICAL_TEMPERATURE__
+        R = __SPECIFIC_GAS_CONSTANT__
+        tc = __CRITICAL_TEMPERATURE__
         rhoc = 322.0  # kg/m3
         delta = rho / rhoc
         tau = tc / T
@@ -6458,7 +6458,7 @@ class Region5:
             -3.9724828359569e-06,
             1.2919228289784e-07,
         ]
-        R = Constants.__SPECIFIC_GAS_CONSTANT__
+        R = __SPECIFIC_GAS_CONSTANT__
         tau = 1000 / T
         Pi = p
         gamma0_tau = 0
@@ -6488,7 +6488,7 @@ class Region5:
             -3.9724828359569e-06,
             1.2919228289784e-07,
         ]
-        R = Constants.__SPECIFIC_GAS_CONSTANT__
+        R = __SPECIFIC_GAS_CONSTANT__
         tau = 1000 / T  #
         Pi = p  #
         gamma0_pi = 1 / Pi  #
@@ -6524,7 +6524,7 @@ class Region5:
             -3.9724828359569e-06,
             1.2919228289784e-07,
         ]
-        R = Constants.__SPECIFIC_GAS_CONSTANT__
+        R = __SPECIFIC_GAS_CONSTANT__
         tau = 1000 / T
         Pi = p
         gamma0_pi = 1 / Pi
@@ -6567,7 +6567,7 @@ class Region5:
             -3.9724828359569e-06,
             1.2919228289784e-07,
         ]
-        R = Constants.__SPECIFIC_GAS_CONSTANT__
+        R = __SPECIFIC_GAS_CONSTANT__
         tau = 1000 / T
         Pi = p
         gamma0_tautau = 0
@@ -6608,7 +6608,7 @@ class Region5:
             -3.9724828359569e-06,
             1.2919228289784e-07,
         ]
-        R = Constants.__SPECIFIC_GAS_CONSTANT__
+        R = __SPECIFIC_GAS_CONSTANT__
         tau = 1000 / T
         Pi = p
         gamma0 = math.log(Pi)
@@ -6651,7 +6651,7 @@ class Region5:
             -3.9724828359569e-06,
             1.2919228289784e-07,
         ]
-        R = Constants.__SPECIFIC_GAS_CONSTANT__
+        R = __SPECIFIC_GAS_CONSTANT__
         tau = 1000 / T
         Pi = p
         gamma0_tautau = 0
@@ -6709,7 +6709,7 @@ class Region5:
             -3.9724828359569e-06,
             1.2919228289784e-07,
         ]
-        R = Constants.__SPECIFIC_GAS_CONSTANT__
+        R = __SPECIFIC_GAS_CONSTANT__
         tau = 1000 / T
         Pi = p
         gamma0_tautau = 0

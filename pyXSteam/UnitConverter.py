@@ -5,7 +5,7 @@ Class to convert between the unit system used by pyXSteam and the ones
 a enduser might use.
 """
 import logging
-from . import Constants
+from .Constants import __ABSOLUTE_ZERO_CELSIUS__
 
 
 class UnitConverter(object):
@@ -53,10 +53,10 @@ class UnitConverter(object):
         """function toSIunit_T = toSIunit_T( ins )"""
         if self._unit_system is self.__UNIT_SYSTEM_MKS__:
             # degC to Kelvin
-            return float(ins - Constants.__ABSOLUTE_ZERO_CELSIUS__)
+            return float(ins - __ABSOLUTE_ZERO_CELSIUS__)
         elif self._unit_system is self.__UNIT_SYSTEM_FLS__:
             return float(
-                (5 / 9) * (ins - 32) - Constants.__ABSOLUTE_ZERO_CELSIUS__
+                (5 / 9) * (ins - 32) - __ABSOLUTE_ZERO_CELSIUS__
             )  # degF to Kelvin
         return float(ins)
 
@@ -64,10 +64,10 @@ class UnitConverter(object):
         """function fromSIunit_T = fromSIunit_T( ins )"""
         if self._unit_system is self.__UNIT_SYSTEM_MKS__:
             # Kelvin to degC
-            return float(ins + Constants.__ABSOLUTE_ZERO_CELSIUS__)
+            return float(ins + __ABSOLUTE_ZERO_CELSIUS__)
         elif self._unit_system is self.__UNIT_SYSTEM_FLS__:
             return float(
-                (ins + Constants.__ABSOLUTE_ZERO_CELSIUS__) * (9 / 5) + 32
+                (ins + __ABSOLUTE_ZERO_CELSIUS__) * (9 / 5) + 32
             )  # Kelvin to degF
         return float(ins)
 

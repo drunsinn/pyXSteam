@@ -19,7 +19,7 @@ def region_pT(p: float, T: float) -> float:
         region_pT_number = 5
     elif (T <= 1073.15) and (T > 273.15) and (p <= 100) and (p > 0.000611):
         if T > 623.15:
-            if p > RegionBorders.B23p_T(T: float) -> float:
+            if p > RegionBorders.B23p_T(T):
                 region_pT_number = 3
                 if T < 647.096:
                     ps = Region4.p4_T(T)
@@ -101,7 +101,7 @@ def region_ph(p: float, h: float) -> float:
         # Check if in region 3 or 4 (Below Reg 2)
         if h < Region2.h2_pT(p, RegionBorders.B23T_p(p)):
             # Region 3 or 4
-            if p > RegionBorders.p3sat_h(h: float) -> float:
+            if p > RegionBorders.p3sat_h(h):
                 return 3
             else:
                 return 4
@@ -139,7 +139,7 @@ def region_ps(p: float, s: float) -> float:
     # Check region 3
     ss = Region1.s1_pT(p, 623.15)
     if (p > 16.529) and (s > ss):
-        if p > RegionBorders.p3sat_s(s: float) -> float:
+        if p > RegionBorders.p3sat_s(s):
             return 3
         else:
             return 4
@@ -167,7 +167,7 @@ def region_hs(h: float, s: float) -> float:
         return 0
     # Kolla 1 eller 4. (+liten bit ???ver B13)
     if (s >= -0.0001545495919) and (s <= 3.77828134):
-        if h < Region4.h4_s(s: float) -> float:
+        if h < Region4.h4_s(s):
             return 4
         elif s < 3.397782955:  # 100MPa line is limiting
             TMax = Region1.T1_ps(100, s)
