@@ -96,16 +96,22 @@ def demo_generate_pvT_diagramm():
     """Generate a Diagram showing the v(p,T) as a 3D survace"""
     steam_table = XSteam(XSteam.UNIT_SYSTEM_MKS)
     fig = pyplot.figure()
-    ax = Axes3D(fig)
-    p = np.arange(-10.0, 300.0, 5.0)
-    t = np.arange(-50.0, 400.0, 5.0)
+    ax = pyplot.axes(projection='3d')
+
+    p = np.arange(0.0, 300.0, 5.0)
+    t = np.arange(120, 400.0, 5.0)
     p, t = np.meshgrid(p, t)
     npv_pt = np.frompyfunc(steam_table.v_pt, 2, 1)
     v = npv_pt(p, t)
-    ax.plot_surface(v, p, t, rstride=1, cstride=1, linewidth=0, shade=True)
-    ax.set_xlabel("v")
-    ax.set_ylabel("p")
-    ax.set_zlabel("t")
+
+    colour_map = pyplot.get_cmap('hot')
+    ax.plot_surface(p, t, v, cmap=colour_map, rstride=1,
+                    cstride=1, linewidth=0, shade=True)
+
+    ax.set_xlabel("p")
+    ax.set_ylabel("t")
+    ax.set_zlabel("v")
+
     pyplot.show()
 
 
