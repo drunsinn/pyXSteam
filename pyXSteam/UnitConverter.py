@@ -9,16 +9,28 @@ from .Constants import __ABSOLUTE_ZERO_CELSIUS__, UnitSystem
 
 
 class UnitConverter(object):
-    """Helper class to convert user units to SI-units and back"""
+    """
+    Helper class to convert user units to SI-units and back
+
+    :param unitSystem: unit system used for input and output values. For supported values see the enum UnitSystem.
+    """
 
     def __init__(self, unitSystem: UnitSystem = UnitSystem.BARE):
-        """Initialise the unit converter. Parameter is the unit system used by the application"""
+        """
+        Constructor method
+        """
         self.logger = logging.getLogger("pyXSteam-UnitConverter")
         self.set_unitSystem(unitSystem)
         self.logger.debug("set unit converter to %s", self.__str__())
 
-    def set_unitSystem(self, unitSystem):
-        """change unit system"""
+    def set_unitSystem(self, unitSystem: UnitSystem):
+        """
+        change unit system
+
+        :param unitSystem: new unit system to use for input and output values
+
+        :raises ValueError: unknown value for unit system
+        """
         if UnitSystem.has_value(unitSystem):
             self._unit_system = unitSystem
         else:
@@ -26,7 +38,11 @@ class UnitConverter(object):
             raise ValueError("Unknown Unit System")
 
     def toSIunit_p(self, ins: float) -> float:
-        """function toSIunit_p = toSIunit_p( ins )"""
+        """
+        convert preasure from user selected unit system to SI units
+
+        :param ins: preasure in [bar] or [psi]
+        """
         if self._unit_system is UnitSystem.MKS:
             return float(ins / 10)  # bar to MPa
         elif self._unit_system is UnitSystem.FLS:
@@ -34,7 +50,11 @@ class UnitConverter(object):
         return float(ins)
 
     def fromSIunit_p(self, ins: float) -> float:
-        """function fromSIunit_p = fromSIunit_p( ins )"""
+        """
+        convert preasure from SI units to user selected unit system
+
+        :param ins: preasure in [MPa]
+        """
         if self._unit_system is UnitSystem.MKS:
             return float(ins * 10)  # bar to MPa
         elif self._unit_system is UnitSystem.FLS:
@@ -42,7 +62,11 @@ class UnitConverter(object):
         return float(ins)
 
     def toSIunit_T(self, ins: float) -> float:
-        """function toSIunit_T = toSIunit_T( ins )"""
+        """
+        convert temperature from user selected unit system to SI units
+
+        :param ins: temperature in [°C] or [°F]
+        """
         if self._unit_system is UnitSystem.MKS:
             # degC to Kelvin
             return float(ins - __ABSOLUTE_ZERO_CELSIUS__)
@@ -53,7 +77,11 @@ class UnitConverter(object):
         return float(ins)
 
     def fromSIunit_T(self, ins: float) -> float:
-        """function fromSIunit_T = fromSIunit_T( ins )"""
+        """
+        convert temperature from SI units to user selected unit system
+
+        :param ins: temperature in [K]
+        """
         if self._unit_system is UnitSystem.MKS:
             # Kelvin to degC
             return float(ins + __ABSOLUTE_ZERO_CELSIUS__)
@@ -64,155 +92,267 @@ class UnitConverter(object):
         return float(ins)
 
     def toSIunit_h(self, ins: float) -> float:
-        """function toSIunit_h = toSIunit_h( ins )"""
+        """
+        convert enthalpy from user selected unit system to SI units
+
+        :param ins: enthalpy [kJ / kg] or [btu / lb]
+        """
         if self._unit_system is UnitSystem.FLS:
             return float(2.32600 * ins)  # btu/lb to kJ/kg
         return float(ins)
 
     def fromSIunit_h(self, ins: float) -> float:
-        """function  fromSIunit_h = fromSIunit_h( ins )"""
+        """
+        convert enthalpy from SI units to user selected unit system
+
+        :param ins: enthalpy [kJ / kg]
+        """
         if self._unit_system is UnitSystem.FLS:
             return float(ins / 2.32600)  # kJ/kg to btu/lb
         return float(ins)
 
     def toSIunit_v(self, ins: float) -> float:
-        """function toSIunit_v = toSIunit_v( ins )"""
+        """
+        convert specific volume from user selected unit system to SI units
+
+        :param ins: specific volume in [m³ / kg] or [ft³ / lb]
+        """
         if self._unit_system is UnitSystem.FLS:
             return float(ins * 0.0624279606)  # ft³/lb to m³/kg
         return float(ins)
 
     def fromSIunit_v(self, ins: float) -> float:
-        """function fromSIunit_v = fromSIunit_v( ins )"""
+        """
+        convert specific volume from SI units to user selected unit system
+
+        :param ins: specific volume in [m³ / kg]
+        """
         if self._unit_system is UnitSystem.FLS:
             return float(ins / 0.0624279606)  # m³/kg to ft³/lb
         return float(ins)
 
     def toSIunit_s(self, ins: float) -> float:
-        """function toSIunit_s = toSIunit_s( ins )"""
+        """
+        convert specific entropy from user selected unit system to SI units
+
+        :param ins: specific volume in [kJ / (kg °C)] or [btu / (lb °F)]
+        """
         if self._unit_system is UnitSystem.FLS:
             return float(ins / 0.238845896627)  # btu/(lb degF) to kJ/(kg degC)
         return float(ins)
 
     def fromSIunit_s(self, ins: float) -> float:
-        """function fromSIunit_s = fromSIunit_s( ins )"""
+        """
+        convert specific entropy from SI units to user selected unit system
+
+        :param ins: specific entropy in [kJ / (kg °C)]
+        """
         if self._unit_system is UnitSystem.FLS:
             return float(ins * 0.238845896627)  # kJ/(kg degC) to btu/(lb degF)
         return float(ins)
 
     def toSIunit_u(self, ins: float) -> float:
-        """function toSIunit_u = toSIunit_u( ins )"""
+        """
+        convert specific internal energy from user selected unit system to SI units
+
+        :param ins: specific internal energy in [kJ / kg] or [btu / lb]
+        """
         if self._unit_system is UnitSystem.FLS:
             return float(ins * 2.32600)  # btu/lb to kJ/kg
         return float(ins)
 
     def fromSIunit_u(self, ins: float) -> float:
-        """function fromSIunit_u = fromSIunit_u( ins )"""
+        """
+        convert specific internal energy from SI units to user selected unit system
+
+        :param ins: specific internal energy in [kJ / kg]
+        """
         if self._unit_system is UnitSystem.FLS:
             return float(ins / 2.32600)  # kJ/kg to btu/lb
         return float(ins)
 
     def toSIunit_Cp(self, ins: float) -> float:
-        """function toSIunit_Cp = toSIunit_Cp( ins )"""
+        """
+        convert specific isobaric heat capacity from user selected unit system to SI units
+
+        :param ins: specific isobaric heat capacity in [kJ / (kg °C)] or [btu / (lb °F)]
+        """
         if self._unit_system is UnitSystem.FLS:
             return float(ins / 0.238846)  # btu/(lb degF) to kJ/(kg degC)
         return float(ins)
 
     def fromSIunit_Cp(self, ins: float) -> float:
-        """function fromSIunit_Cp = fromSIunit_Cp( ins )"""
+        """
+        convert specific isobaric heat capacity from SI units to user selected unit system
+
+        :param ins: specific isobaric heat capacity in [kJ / (kg °C)]
+        """
         if self._unit_system is UnitSystem.FLS:
             return float(ins * 0.238846)  # kJ/(kg degC) to btu/(lb degF)
         return float(ins)
 
     def toSIunit_Cv(self, ins: float) -> float:
-        """function toSIunit_Cv = toSIunit_Cv( ins )"""
+        """
+        convert specific isochoric heat capacity from user selected unit system to SI units
+
+        :param ins: specific isochoric heat capacity in [kJ / (kg °C)] or [btu / (lb °F)]
+        """
         if self._unit_system is UnitSystem.FLS:
             return float(ins / 0.238846)  # btu/(lb degF) to kJ/(kg degC)
         return float(ins)
 
     def fromSIunit_Cv(self, ins: float) -> float:
-        """function fromSIunit_Cv = fromSIunit_Cv( ins )"""
+        """
+        convert specific isochoric heat capacity from SI units to user selected unit system
+
+        :param ins: specific isochoric heat capacity in [kJ / (kg °C)]
+        """
         if self._unit_system is UnitSystem.FLS:
             return float(ins * 0.238846)  # kJ/(kg degC) to btu/(lb degF)
         return float(ins)
 
     def toSIunit_w(self, ins: float) -> float:
-        """function toSIunit_w = toSIunit_w( ins )"""
+        """
+        convert speed of sound from user selected unit system to SI units
+
+        :param ins: speed of sound in [m / s] or [ft / s]
+        """
         if self._unit_system is UnitSystem.FLS:
             return float(ins * 0.3048)  # ft/s to m/s
         return float(ins)
 
     def fromSIunit_w(self, ins: float) -> float:
-        """function fromSIunit_w = fromSIunit_w( ins )"""
+        """
+        convert speed of sound from SI units to user selected unit system
+
+        :param ins: speed of sound in [m / s]
+        """
         if self._unit_system is UnitSystem.FLS:
             return float(ins / 0.3048)  # m/s to ft/s
         return float(ins)
 
     def toSIunit_tc(self, ins: float) -> float:
-        """function toSIunit_tc = toSIunit_tc( ins )"""
+        """
+        convert thermal conductivity from user selected unit system to SI units
+
+        :param ins: thermal conductivity in [W / (m °C)] or [btu / (h ft °F)]
+        """
         if self._unit_system is UnitSystem.FLS:
             return float(ins / 0.577789)  # btu/(h*ft*degF) to W/(m*degC)
         return float(ins)
 
     def fromSIunit_tc(self, ins: float) -> float:
-        """function fromSIunit_tc = fromSIunit_tc( ins )"""
+        """
+        convert thermal conductivity from SI units to user selected unit system
+
+        :param ins: thermal conductivity in [W / (m °C)]
+        """
         if self._unit_system is UnitSystem.FLS:
             return float(ins * 0.577789)  # W/(m*degC) to btu/(h*ft*degF)
         return float(ins)
 
     def toSIunit_st(self, ins: float) -> float:
-        """function toSIunit_st = toSIunit_st( ins )"""
+        """
+        convert surface tension from user selected unit system to SI units
+
+        :param ins: surface tension in [N / m] or [lb / ft]
+        """
         if self._unit_system is UnitSystem.FLS:
             return float(ins / 0.068521766)  # lb/ft to N/m
         return float(ins)
 
     def fromSIunit_st(self, ins: float) -> float:
-        """function fromSIunit_st = fromSIunit_st( ins )"""
+        """
+        convert surface tension from SI units to user selected unit system
+
+        :param ins: surface tension in [N / m]
+        """
         if self._unit_system is UnitSystem.FLS:
             return float(ins * 0.068521766)  # N/m to lb/ft
         return float(ins)
 
     def toSIunit_x(self, ins: float) -> float:
-        """function toSIunit_x = toSIunit_x( ins )"""
+        """
+        convert vapor fraction from user selected unit system to SI units
+
+        :param ins: vapor fraction
+
+        :raises ValueError: value of vapour fraction out of range
+        """
+        # TODO: Check if <= should be <
         if 0.0 <= ins <= 1.0:
             return float(ins)
         self.logger.error("value of vapour fraction out of range: 0 < x < 1")
         raise ValueError("Vapour fraction out of Range")
 
     def fromSIunit_x(self, ins: float) -> float:
-        """function fromSIunit_x = fromSIunit_x( ins )"""
+        """
+        convert vapor fraction from SI units to user selected unit system
+
+        :param ins: vapor fraction
+
+        :raises ValueError: value of vapour fraction out of range
+        """
+        # TODO: Check if <= should be <
         if 0.0 <= ins <= 1.0:
             return float(ins)
         self.logger.error("value of vapour fraction out of range: 0 < x < 1")
         raise ValueError("Vapour fraction out of Range")
 
     def toSIunit_vx(self, ins: float) -> float:
-        """function toSIunit_vx = toSIunit_vx( ins )"""
+        """
+        convert vapor volume fraction from user selected unit system to SI units
+
+        :param ins: vapor volume fraction
+
+        :raises ValueError: value of vapour volume fraction out of range
+        """
+        # TODO: Check if <= should be <
         if 0.0 <= ins <= 1.0:
             return float(ins)
-        self.logger.error("value of vapour volume fraction out of range: 0 < x < 1")
+        self.logger.error(
+            "value of vapour volume fraction out of range: 0 < x < 1")
         raise ValueError("Vapour volume fraction out of Range")
 
     def fromSIunit_vx(self, ins: float) -> float:
-        """function fromSIunit_vx = fromSIunit_vx( ins )"""
+        """
+        convert vapor volume fraction from SI units to user selected unit system
+
+        :param ins: vapor volume fraction
+
+        :raises ValueError: value of vapour volume fraction out of range
+        """
+        # TODO: Check if <= should be <
         if 0.0 <= ins <= 1.0:
             return float(ins)
-        self.logger.error("value of vapour volume fraction out of range: 0 < x < 1")
+        self.logger.error(
+            "value of vapour volume fraction out of range: 0 < x < 1")
         raise ValueError("Vapour volume fraction out of Range")
 
     def toSIunit_my(self, ins: float) -> float:
-        """function toSIunit_my = toSIunit_my( ins )"""
+        """
+        convert viscosity from user selected unit system to SI units
+
+        :param ins: viscosity in [Pa s], [N s / m²] or [lbm / ft / hr]
+        """
         if self._unit_system is UnitSystem.FLS:
             return float(ins / 2419.088311)  # lbm/ft/hr to PaS (N*s/m²)
         return float(ins)
 
     def fromSIunit_my(self, ins: float) -> float:
-        """function fromSIunit_my = fromSIunit_my( ins )"""
+        """
+        convert viscosity from SI units to user selected unit system
+
+        :param ins: viscosity in [PaS] or [N*s/m²]
+        """
         if self._unit_system is UnitSystem.FLS:
             return float(ins * 2419.088311)  # PaS (N*s/m²) to lbm/ft/hr
         return float(ins)
 
     def __str__(self):
-        """returns string representation of the selected unit system"""
+        """
+        :return: string representation of the selected unit system
+        """
         result = ""
         if self._unit_system is UnitSystem.FLS:
             result = "FLS (ft/lb/sec/°F/psi/btu)"

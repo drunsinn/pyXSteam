@@ -44,6 +44,9 @@ class XSteam(object):
     """
 
     def __init__(self, unitSystem: UnitSystem = UnitSystem.BARE):
+        """
+        Constructor method
+        """
         self.logger = logging.getLogger(__name__)
         self._unit_converter = UnitConverter(unitSystem)
         self.logger.info(
@@ -98,6 +101,7 @@ class XSteam(object):
         Saturation-temperature as a function of pressure
 
         :param p: preasure
+
         :return: saturation temperature or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
@@ -113,6 +117,7 @@ class XSteam(object):
         Saturation-temperature as a function of entropy
 
         :param s: specific entropy
+
         :return: saturation temperature or NaN if arguments are out of range
         """
         s = self._unit_converter.toSIunit_s(s)
@@ -130,6 +135,7 @@ class XSteam(object):
 
         :param p: preasure
         :param h: enthalpy
+
         :return: temperature or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
@@ -161,6 +167,7 @@ class XSteam(object):
 
         :param p: preasure
         :param s: specific entropy
+
         :return: temperature or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
@@ -192,6 +199,7 @@ class XSteam(object):
 
         :param h: enthalpy
         :param s: specific entropy
+
         :return: temperature or NaN if arguments are out of range
         """
         h = self._unit_converter.toSIunit_h(h)
@@ -230,6 +238,7 @@ class XSteam(object):
         Saturation-Pressure as a function of entropy
 
         :param s: specific entropy
+
         :return: saturation pressure or NaN if arguments are out of range
         """
         s = self._unit_converter.toSIunit_s(s)
@@ -245,6 +254,7 @@ class XSteam(object):
         Saturation-Pressure as a function of temperature
 
         :param t: temperature
+
         :return: saturation pressure or NaN if arguments are out of range
         """
         T = self._unit_converter.toSIunit_T(t)
@@ -261,6 +271,7 @@ class XSteam(object):
 
         :param h: enthalpy
         :param s: specific entropy
+
         :return: pressure or NaN if arguments are out of range
         """
         h = self._unit_converter.toSIunit_h(h)
@@ -302,7 +313,10 @@ class XSteam(object):
 
         :param h: enthalpy
         :param rho: density
-        :param p: preasure pressure or NaN if arguments are out of range
+
+        :raises ValueError: value of density is zero or negative
+
+        :return: pressure or NaN if arguments are out of range
         """
         if rho <= 0.0:
             self.logger.error(
@@ -343,6 +357,7 @@ class XSteam(object):
         Saturated vapour enthalpy as a function of pressure
 
         :param p: preasure
+
         :return: saturated vapour enthalpy or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
@@ -358,6 +373,7 @@ class XSteam(object):
         Saturated liquid enthalpy as a function of pressure
 
         :param p: preasure
+
         :return: saturated liquid enthalpy or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
@@ -2344,6 +2360,7 @@ class XSteam(object):
 
         :param p: preasure
         :param h: enthalpy
+
         :return: vapour volume fraction or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
@@ -2371,7 +2388,6 @@ class XSteam(object):
         :param p: preasure
         :param s: specific entropy
 
-        Returns:
         :return: vapour volume fraction or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
@@ -2411,6 +2427,9 @@ class XSteam(object):
 
         :param t: temperature
         :param hint: hint for the selection logic to decide which part of the melting curve to use. For supported values see IceType
+
+        :raises ValueError: unknown value for hint
+
         :return: preassure or NaN if arguments are out of range
         """
         T = self._unit_converter.toSIunit_T(t)
@@ -2485,6 +2504,7 @@ class XSteam(object):
 
 
         :param t: temperature
+
         :return: preassure or NaN if arguments are out of range
         """
         T = self._unit_converter.toSIunit_T(t)
