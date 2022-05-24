@@ -7,7 +7,7 @@ import math
 import logging
 from .RegionBorders import B23p_T, B23T_p, p3sat_h, p3sat_s, hB13_s, TB23_hs
 from .Regions import Region1, Region2, Region3, Region4, Region5
-from .Constants import DiagramRegion
+from .Constants import CRITICAL_TEMPERATURE, TRIPLE_POINT_PRESSURE, FREEZING_TEMPERATURE_H2O, DiagramRegion
 
 logger = logging.getLogger(__name__)
 
@@ -18,11 +18,11 @@ def select_region_pT(p: float, T: float) -> int:
     """function region_pT = region_pT(p, T)"""
     if (T > 1073.15) and (p < 50.0) and (T < 2273.15) and (p > 0.000611):
         return DiagramRegion.R5
-    elif (T <= 1073.15) and (T > 273.15) and (p <= 100) and (p > 0.000611):
+    elif (T <= 1073.15) and (T > FREEZING_TEMPERATURE_H2O) and (p <= 100) and (p > 0.000611):
         if T > 623.15:
             if p > B23p_T(T):
                 region_pT_number = DiagramRegion.R3
-                if T < 647.096:
+                if T < CRITICAL_TEMPERATURE:
                     ps = Region4.p4_T(T)
                     if math.fabs(p - ps) < 0.00001:
                         region_pT_number = DiagramRegion.R4
@@ -49,13 +49,13 @@ def select_region_ph(p: float, h: float) -> int:
     Section 3.2 Regions as a function of ph
     """
     # Check if outside pressure limits
-    if (p < 0.000611657) or (p > 100):
+    if (p < TRIPLE_POINT_PRESSURE) or (p > 100):
         logger.warning("Preasure outside valid area")
         return DiagramRegion.NILL
     # Check if outside low h.
     # Linear adaption to h1_pt()+2 to speed up calcualations.
     if h < (0.963 * p + 2.2):
-        if h < Region1.h1_pT(p, 273.15):
+        if h < Region1.h1_pT(p, FREEZING_TEMPERATURE_H2O):
             logger.warning("Enthalpy outside valid area")
             return DiagramRegion.NILL
     if p < 16.5292:  # Below region 3, Check region 1, 4, 2, 5
@@ -118,7 +118,7 @@ def select_region_ps(p: float, s: float) -> int:
 
     Section 3.3 Regions as a function of ps
     """
-    if (p < 0.000611657) or (p > 100) or (s < 0) or (s > Region5.s5_pT(p, 2273.15)):
+    if (p < TRIPLE_POINT_PRESSURE) or (p > 100) or (s < 0) or (s > Region5.s5_pT(p, 2273.15)):
         logger.warning("Preasure or Entropy outside valid area")
         return DiagramRegion.NILL
     # Check region 5
@@ -147,7 +147,7 @@ def select_region_ps(p: float, s: float) -> int:
     if (p < 16.529) and (s > Region1.s1_pT(p, Region4.T4_p(p))):
         return DiagramRegion.R4
     # Check region 1
-    if (p > 0.000611657) and (s > Region1.s1_pT(p, 273.15)):
+    if (p > TRIPLE_POINT_PRESSURE) and (s > Region1.s1_pT(p, FREEZING_TEMPERATURE_H2O)):
         return DiagramRegion.R1
     # ToDo: Check if Defaulting to region 1 is correct here
     return DiagramRegion.R1
@@ -292,12 +292,12 @@ def select_region_prho(p: float, rho: float) -> int:
     Section 3.5 Regions as a function of p and rho
     """
     v = 1 / rho
-    if (p < 0.000611657) or (p > 100):
+    if (p < TRIPLE_POINT_PRESSURE) or (p > 100):
         logger.warning("Preasure outside valid area")
         return DiagramRegion.NILL
     if p < 16.5292:  # Below region 3, Check region 1,4,2
         if v < Region1.v1_pT(
-            p, 273.15
+            p, FREEZING_TEMPERATURE_H2O
         ):  # Observe that this is not actually min of v. Not valid Water of 4???C is ligther.
             logger.warning("Specific volume outside valid area")
             return DiagramRegion.NILL
@@ -314,7 +314,7 @@ def select_region_prho(p: float, rho: float) -> int:
             return DiagramRegion.R5
     else:  # Check region 1,3,4,3,2 (Above the lowest point of region 3.)
         if v < Region1.v1_pT(
-            p, 273.15
+            p, FREEZING_TEMPERATURE_H2O
         ):  # Observe that this is not actually min of v. Not valid Water of 4°C is ligther.
             logger.warning("Specific volume outside valid area")
             return DiagramRegion.NILL

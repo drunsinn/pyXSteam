@@ -13,12 +13,13 @@ from .TransportProperties import (
     Surface_Tension_T,
 )
 from .Constants import (
-    __SPECIFIC_GAS_CONSTANT__,
-    __CRITICAL_TEMPERATURE__,
-    __CRITICAL_DENSITY__,
-    __CRITICAL_PRESSURE__,
-    __TRIPLE_POINT_TEMPERATURE__,
-    __TRIPLE_POINT_PRESSURE__,
+    SPECIFIC_GAS_CONSTANT,
+    CRITICAL_TEMPERATURE,
+    CRITICAL_DENSITY,
+    CRITICAL_PRESSURE,
+    TRIPLE_POINT_TEMPERATURE,
+    TRIPLE_POINT_PRESSURE,
+    FREEZING_TEMPERATURE_H2O,
     UnitSystem,
     DiagramRegion
 )
@@ -51,27 +52,27 @@ class XSteam(object):
 
     def specificGasConstant(self):
         """returns the specific Gas Constant R in kJ kg^-1 K^-1"""
-        return __SPECIFIC_GAS_CONSTANT__
+        return SPECIFIC_GAS_CONSTANT
 
     def criticalTemperatur(self):
         """returns the specific temperature with conversion to the selected unit system"""
-        return self._unit_converter.fromSIunit_T(__CRITICAL_TEMPERATURE__)
+        return self._unit_converter.fromSIunit_T(CRITICAL_TEMPERATURE)
 
     def criticalPressure(self):
         """returns the specific pressure with conversion to the selected unit system"""
-        return self._unit_converter.fromSIunit_p(__CRITICAL_PRESSURE__)
+        return self._unit_converter.fromSIunit_p(CRITICAL_PRESSURE)
 
     def criticalDensity(self):
         """returns the specific density with conversion to the selected unit system"""
-        return self._unit_converter.fromSIunit_p(__CRITICAL_DENSITY__)
+        return self._unit_converter.fromSIunit_p(CRITICAL_DENSITY)
 
     def triplePointTemperatur(self):
         """returns the temperature of the triple point with conversion to the selected unit system"""
-        return self._unit_converter.fromSIunit_T(__TRIPLE_POINT_TEMPERATURE__)
+        return self._unit_converter.fromSIunit_T(TRIPLE_POINT_TEMPERATURE)
 
     def triplePointPressure(self):
         """returns the Pressure of the triple poin with conversion to the selected unit systemt"""
-        return self._unit_converter.fromSIunit_p(__TRIPLE_POINT_PRESSURE__)
+        return self._unit_converter.fromSIunit_p(TRIPLE_POINT_PRESSURE)
 
     def zeroPointTemperature(self):
         """returns the absolute zero temperature with conversion to the selected unit system"""
@@ -89,7 +90,7 @@ class XSteam(object):
             tsat (float): saturation temperature or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
-        if (p > 0.000611657) and (p < 22.06395):
+        if (p > TRIPLE_POINT_PRESSURE) and (p < CRITICAL_PRESSURE):
             return self._unit_converter.fromSIunit_T(Region4.T4_p(p))
         else:
             self.logger.warning("pressure %f out of range", p)
@@ -245,7 +246,7 @@ class XSteam(object):
             psat (float): saturation pressure or NaN if arguments are out of range
         """
         T = self._unit_converter.toSIunit_T(t)
-        if (T < 647.096) and (T > 273.1):
+        if (T < CRITICAL_TEMPERATURE) and (T > 273.1):
             return self._unit_converter.fromSIunit_p(Region4.p4_T(T))
         else:
             self.logger.warning("temperature %f out of range", T)
@@ -309,7 +310,8 @@ class XSteam(object):
             raise ValueError("rho out of range")
         h = self._unit_converter.toSIunit_h(h)
         High_Bound = self._unit_converter.fromSIunit_p(100)
-        Low_Bound = self._unit_converter.fromSIunit_p(0.000611657)
+        Low_Bound = self._unit_converter.fromSIunit_p(
+            TRIPLE_POINT_PRESSURE)
         ps = self._unit_converter.fromSIunit_p(10)
         rhos = 1 / self.v_ph(ps, h)
         step_counter = 0
@@ -347,7 +349,7 @@ class XSteam(object):
             hV (float): saturated vapour enthalpy or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
-        if (p > 0.000611657) and (p < 22.06395):
+        if (p > TRIPLE_POINT_PRESSURE) and (p < CRITICAL_PRESSURE):
             return self._unit_converter.fromSIunit_h(Region4.h4V_p(p))
         else:
             self.logger.warning("pressure %f out of range", p)
@@ -363,7 +365,7 @@ class XSteam(object):
             hL (float): saturated liquid enthalpy or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
-        if (p > 0.000611657) and (p < 22.06395):
+        if (p > TRIPLE_POINT_PRESSURE) and (p < CRITICAL_PRESSURE):
             return self._unit_converter.fromSIunit_h(Region4.h4L_p(p))
         else:
             self.logger.warning("pressure %f out of range", p)
@@ -379,7 +381,7 @@ class XSteam(object):
             hV (float): saturated vapour enthalpy or NaN if arguments are out of range
         """
         T = self._unit_converter.toSIunit_T(t)
-        if (T > 273.15) and (T < 647.096):
+        if (T > FREEZING_TEMPERATURE_H2O) and (T < CRITICAL_TEMPERATURE):
             p = Region4.p4_T(T)
             return self._unit_converter.fromSIunit_h(Region4.h4V_p(p))
         else:
@@ -396,7 +398,7 @@ class XSteam(object):
             hL (float): saturated liquid enthalpy or NaN if arguments are out of range
         """
         T = self._unit_converter.toSIunit_T(t)
-        if (T > 273.15) and (T < 647.096):
+        if (T > FREEZING_TEMPERATURE_H2O) and (T < CRITICAL_TEMPERATURE):
             p = Region4.p4_T(T)
             return self._unit_converter.fromSIunit_h(Region4.h4L_p(p))
         else:
@@ -565,7 +567,7 @@ class XSteam(object):
         """
         T = self._unit_converter.toSIunit_T(t)
         x = self._unit_converter.toSIunit_x(x)
-        if (x > 1) or (x < 0) or (T >= 647.096):
+        if (x > 1) or (x < 0) or (T >= CRITICAL_TEMPERATURE):
             self.logger.warning(
                 "Vapor fraction %f and/or temperature %f out of range", x, T
             )
@@ -588,7 +590,7 @@ class XSteam(object):
             vV (float): saturated vapour volume or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
-        if (p > 0.000611657) and (p < 22.06395):
+        if (p > TRIPLE_POINT_PRESSURE) and (p < CRITICAL_PRESSURE):
             if p < 16.529:
                 return self._unit_converter.fromSIunit_v(
                     Region2.v2_pT(p, Region4.T4_p(p))
@@ -611,7 +613,7 @@ class XSteam(object):
             vV (float): saturated liquid volume or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
-        if (p > 0.000611657) and (p < 22.06395):
+        if (p > TRIPLE_POINT_PRESSURE) and (p < CRITICAL_PRESSURE):
             if p < 16.529:
                 return self._unit_converter.fromSIunit_v(
                     Region1.v1_pT(p, Region4.T4_p(p))
@@ -634,7 +636,7 @@ class XSteam(object):
             vV (float): saturated vapour volume or NaN if arguments are out of range
         """
         T = self._unit_converter.toSIunit_T(t)
-        if (T > 273.15) and (T < 647.096):
+        if (T > FREEZING_TEMPERATURE_H2O) and (T < CRITICAL_TEMPERATURE):
             if T <= 623.15:
                 return self._unit_converter.fromSIunit_v(
                     Region2.v2_pT(Region4.p4_T(T), T)
@@ -658,7 +660,7 @@ class XSteam(object):
             vV (float): saturated liquid volume or NaN if arguments are out of range
         """
         T = self._unit_converter.toSIunit_T(t)
-        if (T > 273.15) and (T < 647.096):
+        if (T > FREEZING_TEMPERATURE_H2O) and (T < CRITICAL_TEMPERATURE):
             if T <= 623.15:
                 return self._unit_converter.fromSIunit_v(
                     Region1.v1_pT(Region4.p4_T(T), T)
@@ -894,7 +896,7 @@ class XSteam(object):
             sV (float): Saturated vapour entropy or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
-        if (p > 0.000611657) and (p < 22.06395):
+        if (p > TRIPLE_POINT_PRESSURE) and (p < CRITICAL_PRESSURE):
             if p < 16.529:
                 return self._unit_converter.fromSIunit_s(
                     Region2.s2_pT(p, Region4.T4_p(p))
@@ -919,7 +921,7 @@ class XSteam(object):
             sL (float): Saturated liquid entropy or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
-        if (p > 0.000611657) and (p < 22.06395):
+        if (p > TRIPLE_POINT_PRESSURE) and (p < CRITICAL_PRESSURE):
             if p < 16.529:
                 return self._unit_converter.fromSIunit_s(
                     Region1.s1_pT(p, Region4.T4_p(p))
@@ -944,7 +946,7 @@ class XSteam(object):
             sV (float): Saturated vapour entropy or NaN if arguments are out of range
         """
         T = self._unit_converter.toSIunit_T(t)
-        if (T > 273.15) and (T < 647.096):
+        if (T > FREEZING_TEMPERATURE_H2O) and (T < CRITICAL_TEMPERATURE):
             if T <= 623.15:
                 return self._unit_converter.fromSIunit_s(
                     Region2.s2_pT(Region4.p4_T(T), T)
@@ -975,7 +977,7 @@ class XSteam(object):
             sL (float): Saturated liquid entropy or NaN if arguments are out of range
         """
         T = self._unit_converter.toSIunit_T(t)
-        if (T > 273.15) and (T < 647.096):
+        if (T > FREEZING_TEMPERATURE_H2O) and (T < CRITICAL_TEMPERATURE):
             if T <= 623.15:
                 return self._unit_converter.fromSIunit_s(
                     Region1.s1_pT(Region4.p4_T(T), T)
@@ -1092,7 +1094,7 @@ class XSteam(object):
             uV (float): saturated vapour internal energy or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
-        if (p > 0.000611657) and (p < 22.06395):
+        if (p > TRIPLE_POINT_PRESSURE) and (p < CRITICAL_PRESSURE):
             if p < 16.529:
                 return self._unit_converter.fromSIunit_u(
                     Region2.u2_pT(p, Region4.T4_p(p))
@@ -1116,7 +1118,7 @@ class XSteam(object):
             uL (float): saturated liquid internal energy
         """
         p = self._unit_converter.toSIunit_p(p)
-        if (p > 0.000611657) and (p < 22.06395):
+        if (p > TRIPLE_POINT_PRESSURE) and (p < CRITICAL_PRESSURE):
             if p < 16.529:
                 return self._unit_converter.fromSIunit_u(
                     Region1.u1_pT(p, Region4.T4_p(p))
@@ -1141,7 +1143,7 @@ class XSteam(object):
             uV (float): saturated vapour internal energy or NaN if arguments are out of range
         """
         T = self._unit_converter.toSIunit_T(t)
-        if (T > 273.15) and (T < 647.096):
+        if (T > FREEZING_TEMPERATURE_H2O) and (T < CRITICAL_TEMPERATURE):
             if T <= 623.15:
                 return self._unit_converter.fromSIunit_u(
                     Region2.u2_pT(Region4.p4_T(T), T)
@@ -1172,7 +1174,7 @@ class XSteam(object):
             uL (float): saturated liquid internal energy or NaN if arguments are out of range
         """
         T = self._unit_converter.toSIunit_T(t)
-        if (T > 273.15) and (T < 647.096):
+        if (T > FREEZING_TEMPERATURE_H2O) and (T < CRITICAL_TEMPERATURE):
             if T <= 623.15:
                 return self._unit_converter.fromSIunit_u(
                     Region1.u1_pT(Region4.p4_T(T), T)
@@ -1339,7 +1341,7 @@ class XSteam(object):
             CpV (float): saturated vapour heat capacity or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
-        if (p > 0.000611657) and (p < 22.06395):
+        if (p > TRIPLE_POINT_PRESSURE) and (p < CRITICAL_PRESSURE):
             if p < 16.529:
                 return self._unit_converter.fromSIunit_Cp(
                     Region2.Cp2_pT(p, Region4.T4_p(p))
@@ -1364,7 +1366,7 @@ class XSteam(object):
             CpL (float): saturated liquid heat capacity or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
-        if (p > 0.000611657) and (p < 22.06395):
+        if (p > TRIPLE_POINT_PRESSURE) and (p < CRITICAL_PRESSURE):
             if p < 16.529:
                 return self._unit_converter.fromSIunit_Cp(
                     Region1.Cp1_pT(p, Region4.T4_p(p))
@@ -1389,7 +1391,7 @@ class XSteam(object):
             CpV (float): saturated vapour heat capacity or NaN if arguments are out of range
         """
         T = self._unit_converter.toSIunit_T(t)
-        if (T > 273.15) and (T < 647.096):
+        if (T > FREEZING_TEMPERATURE_H2O) and (T < CRITICAL_TEMPERATURE):
             if T <= 623.15:
                 return self._unit_converter.fromSIunit_Cp(
                     Region2.Cp2_pT(Region4.p4_T(T), T)
@@ -1420,7 +1422,7 @@ class XSteam(object):
             CpL (float): saturated liquid heat capacity or NaN if arguments are out of range
         """
         T = self._unit_converter.toSIunit_T(t)
-        if (T > 273.15) and (T < 647.096):
+        if (T > FREEZING_TEMPERATURE_H2O) and (T < CRITICAL_TEMPERATURE):
             if T <= 623.15:
                 return self._unit_converter.fromSIunit_Cp(
                     Region1.Cp1_pT(Region4.p4_T(T), T)
@@ -1576,7 +1578,7 @@ class XSteam(object):
             CvV (float): saturated vapour isochoric heat capacity or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
-        if (p > 0.000611657) and (p < 22.06395):
+        if (p > TRIPLE_POINT_PRESSURE) and (p < CRITICAL_PRESSURE):
             if p < 16.529:
                 return self._unit_converter.fromSIunit_Cv(
                     Region2.Cv2_pT(p, Region4.T4_p(p))
@@ -1601,7 +1603,7 @@ class XSteam(object):
             CvL (float): saturated liquid isochoric heat capacity or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
-        if (p > 0.000611657) and (p < 22.06395):
+        if (p > TRIPLE_POINT_PRESSURE) and (p < CRITICAL_PRESSURE):
             if p < 16.529:
                 return self._unit_converter.fromSIunit_Cv(
                     Region1.Cv1_pT(p, Region4.T4_p(p))
@@ -1626,7 +1628,7 @@ class XSteam(object):
             CvV (float): saturated vapour isochoric heat capacity or NaN if arguments are out of range
         """
         T = self._unit_converter.toSIunit_T(t)
-        if (T > 273.15) and (T < 647.096):
+        if (T > FREEZING_TEMPERATURE_H2O) and (T < CRITICAL_TEMPERATURE):
             if T <= 623.15:
                 return self._unit_converter.fromSIunit_Cv(
                     Region2.Cv2_pT(Region4.p4_T(T), T)
@@ -1657,7 +1659,7 @@ class XSteam(object):
             CvL (float): saturated liquid isochoric heat capacity or NaN if arguments are out of range
         """
         T = self._unit_converter.toSIunit_T(t)
-        if (T > 273.15) and (T < 647.096):
+        if (T > FREEZING_TEMPERATURE_H2O) and (T < CRITICAL_TEMPERATURE):
             if T <= 623.15:
                 return self._unit_converter.fromSIunit_Cv(
                     Region1.Cv1_pT(Region4.p4_T(T), T)
@@ -1814,7 +1816,7 @@ class XSteam(object):
             wV (float): speed of sound in saturated vapour or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
-        if (p > 0.000611657) and (p < 22.06395):
+        if (p > TRIPLE_POINT_PRESSURE) and (p < CRITICAL_PRESSURE):
             if p < 16.529:
                 return self._unit_converter.fromSIunit_w(
                     Region2.w2_pT(p, Region4.T4_p(p))
@@ -1839,7 +1841,7 @@ class XSteam(object):
             wL (float): speed of sound in saturated liquid or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
-        if (p > 0.000611657) and (p < 22.06395):
+        if (p > TRIPLE_POINT_PRESSURE) and (p < CRITICAL_PRESSURE):
             if p < 16.529:
                 return self._unit_converter.fromSIunit_w(
                     Region1.w1_pT(p, Region4.T4_p(p))
@@ -1864,7 +1866,7 @@ class XSteam(object):
             wV (float): speed of sound in saturated vapour or NaN if arguments are out of range
         """
         T = self._unit_converter.toSIunit_T(t)
-        if (T > 273.15) and (T < 647.096):
+        if (T > FREEZING_TEMPERATURE_H2O) and (T < CRITICAL_TEMPERATURE):
             if T <= 623.15:
                 return self._unit_converter.fromSIunit_w(
                     Region2.w2_pT(Region4.p4_T(T), T)
@@ -1895,7 +1897,7 @@ class XSteam(object):
             wL (float): speed of sound in saturated liquid or NaN if arguments are out of range
         """
         T = self._unit_converter.toSIunit_T(t)
-        if (T > 273.15) and (T < 647.096):
+        if (T > FREEZING_TEMPERATURE_H2O) and (T < CRITICAL_TEMPERATURE):
             if T <= 623.15:
                 return self._unit_converter.fromSIunit_w(
                     Region1.w1_pT(Region4.p4_T(T), T)
@@ -2327,7 +2329,7 @@ class XSteam(object):
         """
         p = self._unit_converter.toSIunit_p(p)
         h = self._unit_converter.toSIunit_h(h)
-        if (p > 0.000611657) and (p < 22.06395):
+        if (p > TRIPLE_POINT_PRESSURE) and (p < CRITICAL_PRESSURE):
             return self._unit_converter.fromSIunit_x(Region4.x4_ph(p, h))
         else:
             self.logger.warning("pressure out of range")
@@ -2345,7 +2347,7 @@ class XSteam(object):
         """
         p = self._unit_converter.toSIunit_p(p)
         s = self._unit_converter.toSIunit_s(s)
-        if (p > 0.000611657) and (p < 22.06395):
+        if (p > TRIPLE_POINT_PRESSURE) and (p < CRITICAL_PRESSURE):
             return self._unit_converter.fromSIunit_x(Region4.x4_ps(p, s))
         else:
             self.logger.warning("pressure %f out of range", p)
@@ -2365,7 +2367,7 @@ class XSteam(object):
         """
         p = self._unit_converter.toSIunit_p(p)
         h = self._unit_converter.toSIunit_h(h)
-        if (p > 0.000611657) and (p < 22.06395):
+        if (p > TRIPLE_POINT_PRESSURE) and (p < CRITICAL_PRESSURE):
             if p < 16.529:
                 vL = Region1.v1_pT(p, Region4.T4_p(p))
                 vV = Region2.v2_pT(p, Region4.T4_p(p))
@@ -2392,7 +2394,7 @@ class XSteam(object):
         """
         p = self._unit_converter.toSIunit_p(p)
         s = self._unit_converter.toSIunit_s(s)
-        if (p > 0.000611657) and (p < 22.06395):
+        if (p > TRIPLE_POINT_PRESSURE) and (p < CRITICAL_PRESSURE):
             if p < 16.529:
                 vL = Region1.v1_pT(p, Region4.T4_p(p))
                 vV = Region2.v2_pT(p, Region4.T4_p(p))

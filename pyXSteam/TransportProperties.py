@@ -7,7 +7,7 @@ import math
 import logging
 from .RegionSelection import select_region_pT, select_region_ph, select_region_ps, select_region_hs, select_region_prho
 from .Regions import Region1, Region2, Region3, Region4, Region5
-from .Constants import __CRITICAL_TEMPERATURE__
+from .Constants import CRITICAL_TEMPERATURE, FREEZING_TEMPERATURE_H2O
 
 logger = logging.getLogger(__name__)
 
@@ -49,9 +49,9 @@ def my_AllRegions_pT(p: float, T: float) -> float:
 
     # Check valid area
     if (
-        (T > (900 + 273.15))
-        or ((T > (600 + 273.15)) and (p > 300))
-        or ((T > (150 + 273.15)) and (p > 350))
+        (T > (900 + FREEZING_TEMPERATURE_H2O))
+        or ((T > (600 + FREEZING_TEMPERATURE_H2O)) and (p > 300))
+        or ((T > (150 + FREEZING_TEMPERATURE_H2O)) and (p > 350))
         or (p > 500)
     ):
         logger.warning("Temperature and/or Preasure out of range of validity")
@@ -124,9 +124,9 @@ def my_AllRegions_ph(p: float, h: float) -> float:
 
     # Check valid area
     if (
-        (T > (900 + 273.15))
-        or (T > (600 + 273.15) and (p > 300))
-        or (T > (150 + 273.15) and (p > 350))
+        (T > (900 + FREEZING_TEMPERATURE_H2O))
+        or (T > (600 + FREEZING_TEMPERATURE_H2O) and (p > 300))
+        or (T > (150 + FREEZING_TEMPERATURE_H2O) and (p > 350))
         or (p > 500)
     ):
         logger.warning("Temperature and/or Preasure out of range of validity")
@@ -164,18 +164,18 @@ def tc_ptrho(p: float, T: float, rho: float) -> float:
     """
 
     # ver2.6 Start corrected bug
-    if T < 273.15:
+    if T < FREEZING_TEMPERATURE_H2O:
         logger.warning("Temperature out of range of validity")
         return float("NaN")
-    elif T < 500 + 273.15:
+    elif T < 500 + FREEZING_TEMPERATURE_H2O:
         if p > 100:
             logger.warning("Preasure out of range of validity")
             return float("NaN")
-    elif T <= 650 + 273.15:
+    elif T <= 650 + FREEZING_TEMPERATURE_H2O:
         if p > 70:
             logger.warning("Preasure out of range of validity")
             return float("NaN")
-    else:  # T <= 800 + 273.15:
+    else:  # T <= 800 + __FREEZING_POINT_H2O__:
         if p > 40:
             logger.warning("Preasure out of range of validity")
             return float("NaN")
@@ -223,7 +223,7 @@ def Surface_Tension_T(T: float) -> float:
 
     IAPWS Revised Release on Surface Tension of Ordinary Water Substance, June 2014 R1-76(2014)
     """
-    tc = __CRITICAL_TEMPERATURE__
+    tc = CRITICAL_TEMPERATURE
     B = 0.2358  # N/m
     bb = -0.625  #
     my = 1.256  #

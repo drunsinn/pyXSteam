@@ -5,8 +5,8 @@ Section 2: IAPWS IF 97 Calling functions
 """
 import math
 import logging
-from .RegionBorders import B23p_T, B23T_p, p3sat_h, p3sat_s, hB13_s, TB23_hs
-from .Constants import __SPECIFIC_GAS_CONSTANT__, __CRITICAL_TEMPERATURE__
+from .RegionBorders import B23T_p, p3sat_h
+from .Constants import SPECIFIC_GAS_CONSTANT, CRITICAL_TEMPERATURE, CRITICAL_PRESSURE, TRIPLE_POINT_PRESSURE, FREEZING_TEMPERATURE_H2O
 
 
 class Region1:
@@ -132,14 +132,15 @@ class Region1:
             1.8228094581404e-24,
             -9.3537087292458e-26,
         ]
-        R = __SPECIFIC_GAS_CONSTANT__
+        R = SPECIFIC_GAS_CONSTANT
         Pi = p / 16.53  # 16.53 MPa
         tau = 1386 / T  # 1386 K
         gamma_der_pi = 0
         for i in range(0, 34):
             gamma_der_pi = (
                 gamma_der_pi
-                - n1[i] * I1[i] * (7.1 - Pi) ** (I1[i] - 1) * (tau - 1.222) ** J1[i]
+                - n1[i] * I1[i] * (7.1 - Pi) ** (I1[i] - 1) *
+                (tau - 1.222) ** J1[i]
             )
         return R * T / p * Pi * gamma_der_pi / 1000
 
@@ -260,13 +261,14 @@ class Region1:
             1.8228094581404e-24,
             -9.3537087292458e-26,
         ]
-        R = __SPECIFIC_GAS_CONSTANT__
+        R = SPECIFIC_GAS_CONSTANT
         Pi = p / 16.53
         tau = 1386 / T
         gamma_der_tau = 0
         for i in range(0, 34):
             gamma_der_tau = gamma_der_tau + (
-                n1[i] * (7.1 - Pi) ** I1[i] * J1[i] * (tau - 1.222) ** (J1[i] - 1)
+                n1[i] * (7.1 - Pi) ** I1[i] * J1[i] *
+                (tau - 1.222) ** (J1[i] - 1)
             )
         return R * T * tau * gamma_der_tau
 
@@ -386,7 +388,7 @@ class Region1:
             1.8228094581404e-24,
             -9.3537087292458e-26,
         ]
-        R = __SPECIFIC_GAS_CONSTANT__
+        R = SPECIFIC_GAS_CONSTANT
         Pi = p / 16.53
         tau = 1386 / T
         gamma_der_tau = 0
@@ -394,10 +396,12 @@ class Region1:
         for i in range(0, 34):
             gamma_der_pi = (
                 gamma_der_pi
-                - n1[i] * I1[i] * (7.1 - Pi) ** (I1[i] - 1) * (tau - 1.222) ** J1[i]
+                - n1[i] * I1[i] * (7.1 - Pi) ** (I1[i] - 1) *
+                (tau - 1.222) ** J1[i]
             )
             gamma_der_tau = gamma_der_tau + (
-                n1[i] * (7.1 - Pi) ** I1[i] * J1[i] * (tau - 1.222) ** (J1[i] - 1)
+                n1[i] * (7.1 - Pi) ** I1[i] * J1[i] *
+                (tau - 1.222) ** (J1[i] - 1)
             )
         return R * T * (tau * gamma_der_tau - Pi * gamma_der_pi)
 
@@ -517,16 +521,18 @@ class Region1:
             1.8228094581404e-24,
             -9.3537087292458e-26,
         ]
-        R = __SPECIFIC_GAS_CONSTANT__
+        R = SPECIFIC_GAS_CONSTANT
         Pi = p / 16.53
         tau = 1386 / T
         gamma = 0
         gamma_der_tau = 0
         for i in range(0, 34):
             gamma_der_tau = gamma_der_tau + (
-                n1[i] * (7.1 - Pi) ** I1[i] * J1[i] * (tau - 1.222) ** (J1[i] - 1)
+                n1[i] * (7.1 - Pi) ** I1[i] * J1[i] *
+                (tau - 1.222) ** (J1[i] - 1)
             )
-            gamma = gamma + n1[i] * (7.1 - Pi) ** I1[i] * (tau - 1.222) ** J1[i]
+            gamma = gamma + n1[i] * (7.1 - Pi) ** I1[i] * \
+                (tau - 1.222) ** J1[i]
         return R * tau * gamma_der_tau - R * gamma
 
     @staticmethod
@@ -645,7 +651,7 @@ class Region1:
             1.8228094581404e-24,
             -9.3537087292458e-26,
         ]
-        R = __SPECIFIC_GAS_CONSTANT__
+        R = SPECIFIC_GAS_CONSTANT
         Pi = p / 16.53
         tau = 1386 / T
         gamma_der_tautau = 0
@@ -775,7 +781,7 @@ class Region1:
             1.8228094581404e-24,
             -9.3537087292458e-26,
         ]
-        R = __SPECIFIC_GAS_CONSTANT__
+        R = SPECIFIC_GAS_CONSTANT
         Pi = p / 16.53
         tau = 1386 / T
         gamma_der_pi = 0
@@ -785,7 +791,8 @@ class Region1:
         for i in range(0, 34):
             gamma_der_pi = (
                 gamma_der_pi
-                - n1[i] * I1[i] * (7.1 - Pi) ** (I1[i] - 1) * (tau - 1.222) ** J1[i]
+                - n1[i] * I1[i] * (7.1 - Pi) ** (I1[i] - 1) *
+                (tau - 1.222) ** J1[i]
             )
             gamma_der_pipi = (
                 gamma_der_pipi
@@ -922,7 +929,7 @@ class Region1:
             1.8228094581404e-24,
             -9.3537087292458e-26,
         ]
-        R = __SPECIFIC_GAS_CONSTANT__
+        R = SPECIFIC_GAS_CONSTANT
         Pi = p / 16.53
         tau = 1386 / T
         gamma_der_pi = 0
@@ -932,7 +939,8 @@ class Region1:
         for i in range(0, 34):
             gamma_der_pi = (
                 gamma_der_pi
-                - n1[i] * I1[i] * (7.1 - Pi) ** (I1[i] - 1) * (tau - 1.222) ** J1[i]
+                - n1[i] * I1[i] * (7.1 - Pi) ** (I1[i] - 1) *
+                (tau - 1.222) ** J1[i]
             )
             gamma_der_pipi = (
                 gamma_der_pipi
@@ -969,7 +977,8 @@ class Region1:
         Equation 11, Table 6, Page 10
         """
         I1 = [0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 2, 2, 3, 3, 4, 5, 6]
-        J1 = [0, 1, 2, 6, 22, 32, 0, 1, 2, 3, 4, 10, 32, 10, 32, 10, 32, 32, 32, 32]
+        J1 = [0, 1, 2, 6, 22, 32, 0, 1, 2, 3, 4,
+              10, 32, 10, 32, 10, 32, 32, 32, 32]
         n1 = [
             -238.72489924521,
             404.21188637945,
@@ -1008,7 +1017,8 @@ class Region1:
         Equation 13, Table 8, Page 11
         """
         I1 = [0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 4]
-        J1 = [0, 1, 2, 3, 11, 31, 0, 1, 2, 3, 12, 31, 0, 1, 2, 9, 31, 10, 32, 32]
+        J1 = [0, 1, 2, 3, 11, 31, 0, 1, 2, 3,
+              12, 31, 0, 1, 2, 9, 31, 10, 32, 32]
         n1 = [
             174.78268058307,
             34.806930892873,
@@ -1085,7 +1095,7 @@ class Region1:
         Solve by iteration. Observe that for low temperatures this equation has 2 solutions. Solve with half interval method
         """
         logger = logging.getLogger("pyXSteam")
-        Low_Bound = 273.15
+        Low_Bound = FREEZING_TEMPERATURE_H2O
         High_Bound = Region4.T4_p(p)
         rhos = -1000
         step_counter = 0
@@ -1258,13 +1268,14 @@ class Region2:
             5.5414715350778e-17,
             -9.436970724121e-07,
         ]
-        R = __SPECIFIC_GAS_CONSTANT__
+        R = SPECIFIC_GAS_CONSTANT
         Pi = p
         tau = 540 / T
         g0_pi = 1 / Pi
         gr_pi = 0
         for i in range(0, 43):
-            gr_pi = gr_pi + nr[i] * Ir[i] * Pi ** (Ir[i] - 1) * (tau - 0.5) ** Jr[i]
+            gr_pi = gr_pi + nr[i] * Ir[i] * \
+                Pi ** (Ir[i] - 1) * (tau - 0.5) ** Jr[i]
         return R * T / p * Pi * (g0_pi + gr_pi) / 1000
 
     @staticmethod
@@ -1422,7 +1433,7 @@ class Region2:
             5.5414715350778e-17,
             -9.436970724121e-07,
         ]
-        R = __SPECIFIC_GAS_CONSTANT__
+        R = SPECIFIC_GAS_CONSTANT
         Pi = p
         tau = 540 / T
         g0_tau = 0
@@ -1430,7 +1441,8 @@ class Region2:
             g0_tau = g0_tau + n0[i] * J0[i] * tau ** (J0[i] - 1)
         gr_tau = 0
         for i in range(0, 43):
-            gr_tau = gr_tau + nr[i] * Pi ** Ir[i] * Jr[i] * (tau - 0.5) ** (Jr[i] - 1)
+            gr_tau = gr_tau + nr[i] * Pi ** Ir[i] * \
+                Jr[i] * (tau - 0.5) ** (Jr[i] - 1)
         return R * T * tau * (g0_tau + gr_tau)
 
     @staticmethod
@@ -1588,7 +1600,7 @@ class Region2:
             5.5414715350778e-17,
             -9.436970724121e-07,
         ]
-        R = __SPECIFIC_GAS_CONSTANT__
+        R = SPECIFIC_GAS_CONSTANT
         Pi = p
         tau = 540 / T
         g0_pi = 1 / Pi
@@ -1598,8 +1610,10 @@ class Region2:
         gr_pi = 0
         gr_tau = 0
         for i in range(0, 43):
-            gr_pi = gr_pi + nr[i] * Ir[i] * Pi ** (Ir[i] - 1) * (tau - 0.5) ** Jr[i]
-            gr_tau = gr_tau + nr[i] * Pi ** Ir[i] * Jr[i] * (tau - 0.5) ** (Jr[i] - 1)
+            gr_pi = gr_pi + nr[i] * Ir[i] * \
+                Pi ** (Ir[i] - 1) * (tau - 0.5) ** Jr[i]
+            gr_tau = gr_tau + nr[i] * Pi ** Ir[i] * \
+                Jr[i] * (tau - 0.5) ** (Jr[i] - 1)
         return R * T * (tau * (g0_tau + gr_tau) - Pi * (g0_pi + gr_pi))
 
     @staticmethod
@@ -1757,7 +1771,7 @@ class Region2:
             5.5414715350778e-17,
             -9.436970724121e-07,
         ]
-        R = __SPECIFIC_GAS_CONSTANT__
+        R = SPECIFIC_GAS_CONSTANT
         Pi = p
         tau = 540 / T
         g0 = math.log(Pi)
@@ -1769,7 +1783,8 @@ class Region2:
         gr_tau = 0
         for i in range(0, 43):
             gr = gr + nr[i] * Pi ** Ir[i] * (tau - 0.5) ** Jr[i]
-            gr_tau = gr_tau + nr[i] * Pi ** Ir[i] * Jr[i] * (tau - 0.5) ** (Jr[i] - 1)
+            gr_tau = gr_tau + nr[i] * Pi ** Ir[i] * \
+                Jr[i] * (tau - 0.5) ** (Jr[i] - 1)
         return R * (tau * (g0_tau + gr_tau) - (g0 + gr))
 
     @staticmethod
@@ -1927,12 +1942,13 @@ class Region2:
             5.5414715350778e-17,
             -9.436970724121e-07,
         ]
-        R = __SPECIFIC_GAS_CONSTANT__
+        R = SPECIFIC_GAS_CONSTANT
         Pi = p
         tau = 540 / T
         g0_tautau = 0
         for i in range(0, 9):
-            g0_tautau = g0_tautau + n0[i] * J0[i] * (J0[i] - 1) * tau ** (J0[i] - 2)
+            g0_tautau = g0_tautau + n0[i] * J0[i] * \
+                (J0[i] - 1) * tau ** (J0[i] - 2)
         gr_tautau = 0
         for i in range(0, 43):
             gr_tautau = gr_tautau + nr[i] * Pi ** Ir[i] * Jr[i] * (Jr[i] - 1) * (
@@ -2095,21 +2111,24 @@ class Region2:
             5.5414715350778e-17,
             -9.436970724121e-07,
         ]
-        R = __SPECIFIC_GAS_CONSTANT__
+        R = SPECIFIC_GAS_CONSTANT
         Pi = p
         tau = 540 / T
         g0_tautau = 0
         for i in range(0, 9):
-            g0_tautau = g0_tautau + n0[i] * J0[i] * (J0[i] - 1) * tau ** (J0[i] - 2)
+            g0_tautau = g0_tautau + n0[i] * J0[i] * \
+                (J0[i] - 1) * tau ** (J0[i] - 2)
         gr_pi = 0
         gr_pitau = 0
         gr_pipi = 0
         gr_tautau = 0
         for i in range(0, 43):
-            gr_pi = gr_pi + nr[i] * Ir[i] * Pi ** (Ir[i] - 1) * (tau - 0.5) ** Jr[i]
+            gr_pi = gr_pi + nr[i] * Ir[i] * \
+                Pi ** (Ir[i] - 1) * (tau - 0.5) ** Jr[i]
             gr_pipi = (
                 gr_pipi
-                + nr[i] * Ir[i] * (Ir[i] - 1) * Pi ** (Ir[i] - 2) * (tau - 0.5) ** Jr[i]
+                + nr[i] * Ir[i] * (Ir[i] - 1) *
+                Pi ** (Ir[i] - 2) * (tau - 0.5) ** Jr[i]
             )
             gr_pitau = gr_pitau + nr[i] * Ir[i] * Pi ** (Ir[i] - 1) * Jr[i] * (
                 tau - 0.5
@@ -2277,21 +2296,24 @@ class Region2:
             5.5414715350778e-17,
             -9.436970724121e-07,
         ]
-        R = __SPECIFIC_GAS_CONSTANT__
+        R = SPECIFIC_GAS_CONSTANT
         Pi = p
         tau = 540 / T
         g0_tautau = 0
         for i in range(0, 9):
-            g0_tautau = g0_tautau + n0[i] * J0[i] * (J0[i] - 1) * tau ** (J0[i] - 2)
+            g0_tautau = g0_tautau + n0[i] * J0[i] * \
+                (J0[i] - 1) * tau ** (J0[i] - 2)
         gr_pi = 0
         gr_pitau = 0
         gr_pipi = 0
         gr_tautau = 0
         for i in range(0, 43):
-            gr_pi = gr_pi + nr[i] * Ir[i] * Pi ** (Ir[i] - 1) * (tau - 0.5) ** Jr[i]
+            gr_pi = gr_pi + nr[i] * Ir[i] * \
+                Pi ** (Ir[i] - 1) * (tau - 0.5) ** Jr[i]
             gr_pipi = (
                 gr_pipi
-                + nr[i] * Ir[i] * (Ir[i] - 1) * Pi ** (Ir[i] - 2) * (tau - 0.5) ** Jr[i]
+                + nr[i] * Ir[i] * (Ir[i] - 1) *
+                Pi ** (Ir[i] - 2) * (tau - 0.5) ** Jr[i]
             )
             gr_pitau = gr_pitau + nr[i] * Ir[i] * Pi ** (Ir[i] - 1) * Jr[i] * (
                 tau - 0.5
@@ -3305,7 +3327,8 @@ class Region2:
             Sigma = s / 7.9
             Pi = 0
             for i in range(0, 33):
-                Pi = Pi + ni[i] * (eta - 0.6) ** Ii[i] * (Sigma - 1.01) ** Ji[i]
+                Pi = Pi + ni[i] * (eta - 0.6) ** Ii[i] * \
+                    (Sigma - 1.01) ** Ji[i]
             p2_hs = Pi**4 * 100
         else:
             # Subregion C
@@ -3590,14 +3613,15 @@ class Region3:
             -1.6557679795037e-04,
             -4.4923899061815e-05,
         ]
-        R = __SPECIFIC_GAS_CONSTANT__
-        tc = __CRITICAL_TEMPERATURE__
+        R = SPECIFIC_GAS_CONSTANT
+        tc = CRITICAL_TEMPERATURE
         rhoc = 322.0  # kg/m3
         delta = rho / rhoc
         tau = tc / T
         fidelta = 0
         for i in range(1, 40):
-            fidelta = fidelta + ni[i] * Ii[i] * delta ** (Ii[i] - 1) * tau ** Ji[i]
+            fidelta = fidelta + ni[i] * Ii[i] * \
+                delta ** (Ii[i] - 1) * tau ** Ji[i]
 
         fidelta = fidelta + (ni[0] / delta)
         return (rho * R * T * delta * fidelta) / 1000.0
@@ -3736,8 +3760,8 @@ class Region3:
             -1.6557679795037e-04,
             -4.4923899061815e-05,
         ]
-        R = __SPECIFIC_GAS_CONSTANT__
-        tc = __CRITICAL_TEMPERATURE__
+        R = SPECIFIC_GAS_CONSTANT
+        tc = CRITICAL_TEMPERATURE
         rhoc = 322.0  # kg/m3
         delta = rho / rhoc
         tau = tc / T
@@ -3880,15 +3904,16 @@ class Region3:
             -1.6557679795037e-04,
             -4.4923899061815e-05,
         ]
-        R = __SPECIFIC_GAS_CONSTANT__
-        tc = __CRITICAL_TEMPERATURE__
+        R = SPECIFIC_GAS_CONSTANT
+        tc = CRITICAL_TEMPERATURE
         rhoc = 322.0  # kg/m3
         delta = rho / rhoc
         tau = tc / T
         fidelta = 0
         fitau = 0
         for i in range(1, 40):
-            fidelta = fidelta + ni[i] * Ii[i] * delta ** (Ii[i] - 1) * tau ** Ji[i]
+            fidelta = fidelta + ni[i] * Ii[i] * \
+                delta ** (Ii[i] - 1) * tau ** Ji[i]
             fitau = fitau + ni[i] * delta ** Ii[i] * Ji[i] * tau ** (Ji[i] - 1)
         fidelta = fidelta + ni[0] / delta
         return R * T * (tau * fitau + delta * fidelta)
@@ -4027,8 +4052,8 @@ class Region3:
             -1.6557679795037e-04,
             -4.4923899061815e-05,
         ]
-        R = __SPECIFIC_GAS_CONSTANT__
-        tc = __CRITICAL_TEMPERATURE__
+        R = SPECIFIC_GAS_CONSTANT
+        tc = CRITICAL_TEMPERATURE
         rhoc = 322.0  # kg/m3
         delta = rho / rhoc
         tau = tc / T
@@ -4174,8 +4199,8 @@ class Region3:
             -1.6557679795037e-04,
             -4.4923899061815e-05,
         ]
-        R = __SPECIFIC_GAS_CONSTANT__
-        tc = __CRITICAL_TEMPERATURE__
+        R = SPECIFIC_GAS_CONSTANT
+        tc = CRITICAL_TEMPERATURE
         rhoc = 322.0  # kg/m3
         delta = rho / rhoc
         tau = tc / T
@@ -4187,13 +4212,15 @@ class Region3:
             fitautau = fitautau + ni[i] * delta ** Ii[i] * Ji[i] * (
                 Ji[i] - 1
             ) * tau ** (Ji[i] - 2)
-            fidelta = fidelta + ni[i] * Ii[i] * delta ** (Ii[i] - 1) * tau ** Ji[i]
+            fidelta = fidelta + ni[i] * Ii[i] * \
+                delta ** (Ii[i] - 1) * tau ** Ji[i]
             fideltatau = fideltatau + ni[i] * Ii[i] * delta ** (Ii[i] - 1) * Ji[
                 i
             ] * tau ** (Ji[i] - 1)
             fideltadelta = (
                 fideltadelta
-                + ni[i] * Ii[i] * (Ii[i] - 1) * delta ** (Ii[i] - 2) * tau ** Ji[i]
+                + ni[i] * Ii[i] * (Ii[i] - 1) *
+                delta ** (Ii[i] - 2) * tau ** Ji[i]
             )
         fidelta = fidelta + ni[0] / delta
         fideltadelta = fideltadelta - ni[0] / (delta**2)
@@ -4337,8 +4364,8 @@ class Region3:
             -1.6557679795037e-04,
             -4.4923899061815e-05,
         ]
-        R = __SPECIFIC_GAS_CONSTANT__
-        tc = __CRITICAL_TEMPERATURE__
+        R = SPECIFIC_GAS_CONSTANT
+        tc = CRITICAL_TEMPERATURE
         rhoc = 322.0  # kg/m3
         delta = rho / rhoc
         tau = tc / T
@@ -4486,8 +4513,8 @@ class Region3:
             -1.6557679795037e-04,
             -4.4923899061815e-05,
         ]
-        R = __SPECIFIC_GAS_CONSTANT__
-        tc = __CRITICAL_TEMPERATURE__
+        R = SPECIFIC_GAS_CONSTANT
+        tc = CRITICAL_TEMPERATURE
         rhoc = 322.0  # kg/m3
         delta = rho / rhoc
         tau = tc / T
@@ -4499,13 +4526,15 @@ class Region3:
             fitautau = fitautau + ni[i] * delta ** Ii[i] * Ji[i] * (
                 Ji[i] - 1
             ) * tau ** (Ji[i] - 2)
-            fidelta = fidelta + ni[i] * Ii[i] * delta ** (Ii[i] - 1) * tau ** Ji[i]
+            fidelta = fidelta + ni[i] * Ii[i] * \
+                delta ** (Ii[i] - 1) * tau ** Ji[i]
             fideltatau = fideltatau + ni[i] * Ii[i] * delta ** (Ii[i] - 1) * Ji[
                 i
             ] * tau ** (Ji[i] - 1)
             fideltadelta = (
                 fideltadelta
-                + ni[i] * Ii[i] * (Ii[i] - 1) * delta ** (Ii[i] - 2) * tau ** Ji[i]
+                + ni[i] * Ii[i] * (Ii[i] - 1) *
+                delta ** (Ii[i] - 2) * tau ** Ji[i]
             )
         fidelta = fidelta + ni[0] / delta
         fideltadelta = fideltadelta - ni[0] / (delta**2)
@@ -5116,7 +5145,8 @@ class Region3:
             Pi = p / 100
             teta = 0
             for i in range(0, 33):
-                teta = teta + ni[i] * (Pi + 0.24) ** Ii[i] * (Sigma - 0.703) ** Ji[i]
+                teta = teta + ni[i] * (Pi + 0.24) ** Ii[i] * \
+                    (Sigma - 0.703) ** Ji[i]
             T3_ps = teta * 760
         else:
             # Subregion 3b
@@ -5215,7 +5245,8 @@ class Region3:
             Pi = p / 100
             teta = 0
             for i in range(0, 28):
-                teta = teta + ni[i] * (Pi + 0.76) ** Ii[i] * (Sigma - 0.818) ** Ji[i]
+                teta = teta + ni[i] * (Pi + 0.76) ** Ii[i] * \
+                    (Sigma - 0.818) ** Ji[i]
             T3_ps = teta * 860
         return T3_ps
 
@@ -5326,7 +5357,8 @@ class Region3:
             Sigma = s / 4.4
             omega = 0
             for i in range(0, 28):
-                omega = omega + ni[i] * (Pi + 0.187) ** Ii[i] * (Sigma - 0.755) ** Ji[i]
+                omega = omega + \
+                    ni[i] * (Pi + 0.187) ** Ii[i] * (Sigma - 0.755) ** Ji[i]
             v3_ps = omega * 0.0028
         else:
             # Subregion 3b
@@ -5434,7 +5466,8 @@ class Region3:
             Sigma = s / 5.3
             omega = 0
             for i in range(0, 31):
-                omega = omega + ni[i] * (Pi + 0.298) ** Ii[i] * (Sigma - 0.816) ** Ji[i]
+                omega = omega + \
+                    ni[i] * (Pi + 0.298) ** Ii[i] * (Sigma - 0.816) ** Ji[i]
             v3_ps = omega * 0.0088
         return v3_ps
 
@@ -5558,7 +5591,8 @@ class Region3:
             eta = h / 2300
             Pi = 0
             for i in range(0, 33):
-                Pi = Pi + ni[i] * (eta - 1.01) ** Ii[i] * (Sigma - 0.75) ** Ji[i]
+                Pi = Pi + ni[i] * (eta - 1.01) ** Ii[i] * \
+                    (Sigma - 0.75) ** Ji[i]
             p3_hs = Pi * 99
         else:
             # Subregion 3b
@@ -5679,7 +5713,8 @@ class Region3:
             Pi = 0
             # for i = 1 : 35
             for i in range(0, 35):
-                Pi = Pi + ni[i] * (eta - 0.681) ** Ii[i] * (Sigma - 0.792) ** Ji[i]
+                Pi = Pi + ni[i] * (eta - 0.681) ** Ii[i] * \
+                    (Sigma - 0.792) ** Ji[i]
             p3_hs = 16.6 / Pi
         return p3_hs
 
@@ -5694,7 +5729,7 @@ class Region3:
         ver2.6 Start corrected bug
         """
         logger = logging.getLogger("pyXSteam")
-        if p < 22.06395:  # Below triple point
+        if p < CRITICAL_PRESSURE:  # Below triple point
             Ts = Region4.T4_p(p)  # Saturation temperature
             if T <= Ts:  # Liquid side
                 High_Bound = Region4.h4L_p(p)  # Max h ???r liauid h.
@@ -5904,14 +5939,16 @@ class Region4:
             eta = 0
             for i in range(0, 27):
                 eta = (
-                    eta + ni[i] * (Sigma - 1.09) ** Ii[i] * (Sigma + 0.0000366) ** Ji[i]
+                    eta + ni[i] * (Sigma - 1.09) ** Ii[i] *
+                    (Sigma + 0.0000366) ** Ji[i]
                 )
             h4_s = eta * 1700
         elif (s > 3.77828134) and (s <= 4.41202148223476):
             # hL3_s
             # Eq 4, Table 10, Page 16
             Ii = [0, 0, 0, 0, 2, 3, 4, 4, 5, 5, 6, 7, 7, 7, 10, 10, 10, 32, 32]
-            Ji = [1, 4, 10, 16, 1, 36, 3, 16, 20, 36, 4, 2, 28, 32, 14, 32, 36, 0, 6]
+            Ji = [1, 4, 10, 16, 1, 36, 3, 16, 20,
+                  36, 4, 2, 28, 32, 14, 32, 36, 0, 6]
             ni = [
                 0.822673364673336,
                 0.181977213534479,
@@ -5937,7 +5974,8 @@ class Region4:
             eta = 0
             for i in range(0, 19):
                 eta = (
-                    eta + ni[i] * (Sigma - 1.09) ** Ii[i] * (Sigma + 0.0000366) ** Ji[i]
+                    eta + ni[i] * (Sigma - 1.09) ** Ii[i] *
+                    (Sigma + 0.0000366) ** Ji[i]
                 )
             h4_s = eta * 1700
         elif (s > 4.41202148223476) and (s <= 5.85):
@@ -5967,7 +6005,8 @@ class Region4:
             Sigma = s / 5.9
             eta = 0
             for i in range(0, 16):
-                eta = eta + ni[i] * (Sigma - 1.02) ** Ii[i] * (Sigma - 0.726) ** Ji[i]
+                eta = eta + ni[i] * (Sigma - 1.02) ** Ii[i] * \
+                    (Sigma - 0.726) ** Ji[i]
             h4_s = eta**4 * 2800
         elif (s > 5.85) and (s < 9.155759395):
             # Section 4.4 Equations () 2ab " h s and ( ) 2c3b "h s for the Saturated Vapor Line
@@ -6074,7 +6113,8 @@ class Region4:
             for i in range(0, 30):
                 eta = (
                     eta
-                    + ni[i] * (1 / Sigma1 - 0.513) ** Ii[i] * (Sigma2 - 0.524) ** Ji[i]
+                    + ni[i] * (1 / Sigma1 - 0.513) ** Ii[i] *
+                    (Sigma2 - 0.524) ** Ji[i]
                 )
             h4_s = math.exp(eta) * 2800
         else:
@@ -6102,7 +6142,7 @@ class Region4:
     def h4L_p(p: float) -> float:
         """function h4L_p = h4L_p(p)"""
         logger = logging.getLogger("pyXSteam")
-        if (p > 0.000611657) and (p < 22.06395):
+        if (p > TRIPLE_POINT_PRESSURE) and (p < CRITICAL_PRESSURE):
             Ts = Region4.T4_p(p)
             if p < 16.529:
                 h4L_p = Region1.h1_pT(p, Ts)
@@ -6139,7 +6179,7 @@ class Region4:
     def h4V_p(p: float) -> float:
         """function h4V_p = h4V_p(p)"""
         logger = logging.getLogger("pyXSteam")
-        if (p > 0.000611657) and (p < 22.06395):
+        if (p > TRIPLE_POINT_PRESSURE) and (p < CRITICAL_PRESSURE):
             Ts = Region4.T4_p(p)
             if p < 16.529:
                 h4V_p = Region2.h2_pT(p, Ts)
@@ -6338,7 +6378,8 @@ class Region4:
             eta = h / 2800
             teta = 0
             for i in range(0, 36):
-                teta = teta + ni[i] * (eta - 0.119) ** Ii[i] * (Sigma - 1.07) ** Ji[i]
+                teta = teta + ni[i] * (eta - 0.119) ** Ii[i] * \
+                    (Sigma - 1.07) ** Ji[i]
             T4_hs = teta * 550
         else:
             # function psat_h
@@ -6418,7 +6459,7 @@ class Region5:
             -3.9724828359569e-06,
             1.2919228289784e-07,
         ]
-        R = __SPECIFIC_GAS_CONSTANT__
+        R = SPECIFIC_GAS_CONSTANT
         tau = 1000 / T
         Pi = p
         gamma0_tau = 0
@@ -6448,13 +6489,14 @@ class Region5:
             -3.9724828359569e-06,
             1.2919228289784e-07,
         ]
-        R = __SPECIFIC_GAS_CONSTANT__
+        R = SPECIFIC_GAS_CONSTANT
         tau = 1000 / T  #
         Pi = p  #
         gamma0_pi = 1 / Pi  #
         gammar_pi = 0  #
         for i in range(0, 5):
-            gammar_pi = gammar_pi + nir[i] * Iir[i] * Pi ** (Iir[i] - 1) * tau ** Jir[i]
+            gammar_pi = gammar_pi + nir[i] * Iir[i] * \
+                Pi ** (Iir[i] - 1) * tau ** Jir[i]
         return R * T / p * Pi * (gamma0_pi + gammar_pi) / 1000
 
     @staticmethod
@@ -6483,7 +6525,7 @@ class Region5:
             -3.9724828359569e-06,
             1.2919228289784e-07,
         ]
-        R = __SPECIFIC_GAS_CONSTANT__
+        R = SPECIFIC_GAS_CONSTANT
         tau = 1000 / T
         Pi = p
         gamma0_pi = 1 / Pi
@@ -6493,7 +6535,8 @@ class Region5:
         gammar_pi = 0
         gammar_tau = 0
         for i in range(0, 5):
-            gammar_pi = gammar_pi + nir[i] * Iir[i] * Pi ** (Iir[i] - 1) * tau ** Jir[i]
+            gammar_pi = gammar_pi + nir[i] * Iir[i] * \
+                Pi ** (Iir[i] - 1) * tau ** Jir[i]
             gammar_tau = gammar_tau + nir[i] * Pi ** Iir[i] * Jir[i] * tau ** (
                 Jir[i] - 1
             )
@@ -6525,7 +6568,7 @@ class Region5:
             -3.9724828359569e-06,
             1.2919228289784e-07,
         ]
-        R = __SPECIFIC_GAS_CONSTANT__
+        R = SPECIFIC_GAS_CONSTANT
         tau = 1000 / T
         Pi = p
         gamma0_tautau = 0
@@ -6566,7 +6609,7 @@ class Region5:
             -3.9724828359569e-06,
             1.2919228289784e-07,
         ]
-        R = __SPECIFIC_GAS_CONSTANT__
+        R = SPECIFIC_GAS_CONSTANT
         tau = 1000 / T
         Pi = p
         gamma0 = math.log(Pi)
@@ -6609,7 +6652,7 @@ class Region5:
             -3.9724828359569e-06,
             1.2919228289784e-07,
         ]
-        R = __SPECIFIC_GAS_CONSTANT__
+        R = SPECIFIC_GAS_CONSTANT
         tau = 1000 / T
         Pi = p
         gamma0_tautau = 0
@@ -6622,13 +6665,15 @@ class Region5:
         gammar_pipi = 0
         gammar_tautau = 0
         for i in range(0, 5):
-            gammar_pi = gammar_pi + nir[i] * Iir[i] * Pi ** (Iir[i] - 1) * tau ** Jir[i]
+            gammar_pi = gammar_pi + nir[i] * Iir[i] * \
+                Pi ** (Iir[i] - 1) * tau ** Jir[i]
             gammar_pitau = gammar_pitau + nir[i] * Iir[i] * Pi ** (Iir[i] - 1) * Jir[
                 i
             ] * tau ** (Jir[i] - 1)
             gammar_pipi = (
                 gammar_pipi
-                + nir[i] * Iir[i] * (Iir[i] - 1) * Pi ** (Iir[i] - 2) * tau ** Jir[i]
+                + nir[i] * Iir[i] * (Iir[i] - 1) *
+                Pi ** (Iir[i] - 2) * tau ** Jir[i]
             )
             gammar_tautau = gammar_tautau + nir[i] * Pi ** Iir[i] * Jir[i] * (
                 Jir[i] - 1
@@ -6665,7 +6710,7 @@ class Region5:
             -3.9724828359569e-06,
             1.2919228289784e-07,
         ]
-        R = __SPECIFIC_GAS_CONSTANT__
+        R = SPECIFIC_GAS_CONSTANT
         tau = 1000 / T
         Pi = p
         gamma0_tautau = 0
@@ -6678,13 +6723,15 @@ class Region5:
         gammar_pipi = 0
         gammar_tautau = 0
         for i in range(0, 5):
-            gammar_pi = gammar_pi + nir[i] * Iir[i] * Pi ** (Iir[i] - 1) * tau ** Jir[i]
+            gammar_pi = gammar_pi + nir[i] * Iir[i] * \
+                Pi ** (Iir[i] - 1) * tau ** Jir[i]
             gammar_pitau = gammar_pitau + nir[i] * Iir[i] * Pi ** (Iir[i] - 1) * Jir[
                 i
             ] * tau ** (Jir[i] - 1)
             gammar_pipi = (
                 gammar_pipi
-                + nir[i] * Iir[i] * (Iir[i] - 1) * Pi ** (Iir[i] - 2) * tau ** Jir[i]
+                + nir[i] * Iir[i] * (Iir[i] - 1) *
+                Pi ** (Iir[i] - 2) * tau ** Jir[i]
             )
             gammar_tautau = gammar_tautau + nir[i] * Pi ** Iir[i] * Jir[i] * (
                 Jir[i] - 1
