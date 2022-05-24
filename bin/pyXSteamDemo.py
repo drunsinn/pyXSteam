@@ -44,32 +44,33 @@ def demo_generate_ph_diagramm(path=None, precision=1.0):
     nphL_p = np.frompyfunc(steam_table.hL_p, 1, 1)
     nphV_p = np.frompyfunc(steam_table.hV_p, 1, 1)
     npp_hrho = np.frompyfunc(steam_table.p_hrho, 2, 1)
-    # Siede und Taulinie
+
+    # boiling and dew lines
     hL = nphL_p(p)
     hV = nphV_p(p)
-    # Dampfgehalt
+
+    # vapor fraction
     for vf in vapor_fraction:
         h_px = nph_px(p2, vf)
-        (line,) = pyplot.plot(h_px, p2)
-        pyplot.setp(line, linewidth=1, color="g")
-    # Temperature
+        pyplot.plot(h_px, p2, linewidth=1, color="g")
+
+    # temperature
     for temp in range(0, 900, 30):
         h_pt = nph_pt(p, temp)
-        (line,) = pyplot.plot(h_pt, p)
-        pyplot.setp(line, linewidth=1, color="r")
-    # Dichte
+        pyplot.plot(h_pt, p, linewidth=1, color="r")
+
+    # density
     for r in rho:
         p_hrho = npp_hrho(h, r)
-        (line,) = pyplot.plot(h, p_hrho)
-        pyplot.setp(line, linewidth=1, color="y")
-    # Kritischer Punkt
+        pyplot.plot(h, p_hrho, linewidth=1, color="y")
+
+    # critical point
     pyplot.plot([h_krit], [p_krit], marker="s", mfc="k", ms=8)
-    (line1,) = pyplot.plot(hL, p)
-    (line2,) = pyplot.plot(hV, p)
+    (line1,) = pyplot.plot(hL, p, linewidth=2, color="b")
+    (line2,) = pyplot.plot(hV, p, linewidth=2, color="r")
+
     pyplot.xlabel("h in [kJ/kg]")
     pyplot.ylabel("p in [bar]")
-    pyplot.setp(line1, linewidth=2, color="b")
-    pyplot.setp(line2, linewidth=2, color="r")
     pyplot.yscale("log")
     pyplot.grid()
     if path is None:
@@ -136,21 +137,24 @@ def demo_ice_diagramm():
     psubl_func = np.frompyfunc(steam_table.psubl_t, 1, 1)
     pmelt_func = np.frompyfunc(steam_table.pmelt_t, 2, 1)
 
-    (line1,) = pyplot.plot(t_subl, psubl_func(t_subl))
-    (line2,) = pyplot.plot(t_melt_Ih, pmelt_func(t_melt_Ih, steam_table.TYPE_ICE_Ih))
-    (line3,) = pyplot.plot(t_melt_III, pmelt_func(t_melt_III, steam_table.TYPE_ICE_III))
-    (line4,) = pyplot.plot(t_melt_V, pmelt_func(t_melt_V, steam_table.TYPE_ICE_V))
-    (line5,) = pyplot.plot(t_melt_VI, pmelt_func(t_melt_VI, steam_table.TYPE_ICE_VI))
-    (line6,) = pyplot.plot(t_melt_VII, pmelt_func(t_melt_VII, steam_table.TYPE_ICE_VII))
+    pyplot.plot(t_subl, psubl_func(t_subl),
+                linewidth=1, color="b", label="t_subl")
+    pyplot.plot(t_melt_Ih, pmelt_func(
+        t_melt_Ih, steam_table.TYPE_ICE_Ih), linewidth=2, color="g", label="t_melt_Ih")
+    pyplot.plot(t_melt_III, pmelt_func(
+        t_melt_III, steam_table.TYPE_ICE_III), linewidth=1, color="r", label="t_melt_III")
+    pyplot.plot(t_melt_V, pmelt_func(
+        t_melt_V, steam_table.TYPE_ICE_V), linewidth=2, color="y", label="t_melt_V")
+    pyplot.plot(t_melt_VI, pmelt_func(
+        t_melt_VI, steam_table.TYPE_ICE_VI), linewidth=1, color="g", label="t_melt_VI")
+    pyplot.plot(t_melt_VII, pmelt_func(
+        t_melt_VII, steam_table.TYPE_ICE_VII), linewidth=2, color="r", label="t_melt_VII")
+
+    pyplot.legend(loc="upper left")
 
     pyplot.xlabel("T in [K]")
     pyplot.ylabel("p in [MPa]")
-    pyplot.setp(line1, linewidth=1, color="b")
-    pyplot.setp(line2, linewidth=1, color="g")
-    pyplot.setp(line3, linewidth=1, color="r")
-    pyplot.setp(line4, linewidth=1, color="y")
-    pyplot.setp(line5, linewidth=1, color="g")
-    pyplot.setp(line6, linewidth=1, color="r")
+
     pyplot.show()
 
 
@@ -163,9 +167,10 @@ def demo_simpel_values_heavy_water():
 
 if __name__ == "__main__":
     logger = logging.getLogger("pyXSteam")
-    logger.setLevel(logging.DEBUG)
+    logger.setLevel(logging.ERROR)
     sh = logging.StreamHandler()
-    sh.setFormatter(logging.Formatter("%(name)s - %(levelname)s - %(message)s"))
+    sh.setFormatter(logging.Formatter(
+        "%(name)s - %(levelname)s - %(message)s"))
     logger.addHandler(sh)
 
     print("Select which demo to run:")
