@@ -3,6 +3,8 @@
 Original Released by Magnus Holmgren for Matlab and Excel:
 <http://xsteam.sourceforge.net> and/or <http://www.x-eng.com>
 
+At [this github repository](https://github.com/stu314159/xsteam) you can find the/a matlab version.
+
 XSteam provides (mostly) accurate steam and water properties from 0 -
 1000 bar and from 0 - 2000 °C according to the [IAPWS release IF-97](http://www.iapws.org/relguide/IF97-Rev.pdf). For
 accuracy of the functions in different regions see IF-97 Page 4
