@@ -45,7 +45,7 @@ def p3sat_h(h: float) -> float:
     See pictures Page 17, Eq 10, Table 17, Page 18
 
     :param h: enthalpy in [kJ / kg]
-    :return: preasure in [MPa]
+    :return: saturation preasure in [MPa]
     """
     Ii = [0, 1, 1, 1, 1, 5, 7, 8, 14, 20, 22, 24, 28, 36]
     Ji = [0, 1, 3, 4, 36, 3, 0, 24, 16, 16, 3, 18, 8, 24]
@@ -78,7 +78,7 @@ def p3sat_s(s: float) -> float:
     Section 4.2 Region 3. pSat_h  & pSat_s
 
     :param s: Specific entropy in [kJ / (kg K)]
-    :return: preasure in [MPa]
+    :return: saturation preasure in [MPa]
     """
     Ii = [0, 1, 1, 4, 12, 12, 16, 24, 28, 32]
     Ji = [0, 1, 32, 7, 4, 14, 36, 10, 0, 18]

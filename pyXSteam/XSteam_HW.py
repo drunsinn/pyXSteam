@@ -16,12 +16,14 @@ class XSteam_HW:
     """Main pyXSteam for Heavy Water object. Abstract of all other functions to allow auto selection of
     the correct region for each set of parameters.
 
-    Args:
-        unitSystem (int): set the unit system used for input and output values.
-            Can be eather 0 (UNIT_SYSTEM_BARE), 1 (UNIT_SYSTEM_MKS) or 2 (UNIT_SYSTEM_FLS).
+    :param unitSystem: unit system used for input and output values. For supported values
+        see the enum UnitSystem.
     """
 
     def __init__(self, unitSystem: UnitSystem = UnitSystem.BARE):
+        """
+        Constructor method
+        """
         self.logger = logging.getLogger(__name__)
         self.unit_converter = UnitConverter(unitSystem)
         self.logger.info(

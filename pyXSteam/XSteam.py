@@ -21,6 +21,7 @@ from .Constants import (
     TRIPLE_POINT_PRESSURE,
     FREEZING_TEMPERATURE_H2O,
     UnitSystem,
+    IceType,
     DiagramRegion
 )
 from .UnitConverter import UnitConverter
@@ -38,9 +39,8 @@ class XSteam(object):
     """Main pyXSteam object. Abstract of all other functions to allow auto selection of
     the correct region for each set of parameters.
 
-    Args:
-        unitSystem (int): set the unit system used for input and output values.
-            Can be eather 0 (UNIT_SYSTEM_BARE), 1 (UNIT_SYSTEM_MKS) or 2 (UNIT_SYSTEM_FLS).
+    :param unitSystem: unit system used for input and output values. For supported values
+        see the enum UnitSystem.
     """
 
     def __init__(self, unitSystem: UnitSystem = UnitSystem.BARE):
@@ -51,43 +51,54 @@ class XSteam(object):
         )
 
     def specificGasConstant(self):
-        """returns the specific Gas Constant R in kJ kg^-1 K^-1"""
+        """
+        :return: specific Gas Constant R in kJ kg^-1 K^-1
+        """
         return SPECIFIC_GAS_CONSTANT
 
     def criticalTemperatur(self):
-        """returns the specific temperature with conversion to the selected unit system"""
+        """
+        :return: specific temperature with conversion to the selected unit system
+        """
         return self._unit_converter.fromSIunit_T(CRITICAL_TEMPERATURE)
 
     def criticalPressure(self):
-        """returns the specific pressure with conversion to the selected unit system"""
+        """
+        :return: specific pressure with conversion to the selected unit system
+        """
         return self._unit_converter.fromSIunit_p(CRITICAL_PRESSURE)
 
     def criticalDensity(self):
-        """returns the specific density with conversion to the selected unit system"""
+        """
+        :return: specific density with conversion to the selected unit system
+        """
         return self._unit_converter.fromSIunit_p(CRITICAL_DENSITY)
 
     def triplePointTemperatur(self):
-        """returns the temperature of the triple point with conversion to the selected unit system"""
+        """
+        :return: temperature of the triple point with conversion to the selected unit system
+        """
         return self._unit_converter.fromSIunit_T(TRIPLE_POINT_TEMPERATURE)
 
     def triplePointPressure(self):
-        """returns the Pressure of the triple poin with conversion to the selected unit systemt"""
+        """
+        :return: Pressure of the triple poin with conversion to the selected unit systemt
+        """
         return self._unit_converter.fromSIunit_p(TRIPLE_POINT_PRESSURE)
 
     def zeroPointTemperature(self):
-        """returns the absolute zero temperature with conversion to the selected unit system"""
+        """
+        :return: absolute zero temperature with conversion to the selected unit system
+        """
         return self._unit_converter.fromSIunit_T(0.0)
 
-    # ***********************************************************************************************************
-    # Section 1.2 temperature
     def tsat_p(self, p: float) -> float:
-        """Saturation-temperature as a function of pressure
+        """
+        Section 1.2 temperature
+        Saturation-temperature as a function of pressure
 
-        Args:
-            p (float): preasure value
-
-        Returns:
-            tsat (float): saturation temperature or NaN if arguments are out of range
+        :param p: preasure
+        :return: saturation temperature or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
         if (p > TRIPLE_POINT_PRESSURE) and (p < CRITICAL_PRESSURE):
@@ -97,13 +108,12 @@ class XSteam(object):
             return float("NaN")
 
     def tsat_s(self, s: float) -> float:
-        """Saturation-temperature as a function of entropy
+        """
+        Section 1.2 temperature
+        Saturation-temperature as a function of entropy
 
-        Args:
-            s (float): entropy value
-
-        Returns:
-            tsat (float): saturation temperature or NaN if arguments are out of range
+        :param s: specific entropy
+        :return: saturation temperature or NaN if arguments are out of range
         """
         s = self._unit_converter.toSIunit_s(s)
         if (s > -0.0001545495919) and (s < 9.155759395):
@@ -114,14 +124,13 @@ class XSteam(object):
             return float("NaN")
 
     def t_ph(self, p: float, h: float) -> float:
-        """temperature as a function of pressure and enthalpy
+        """
+        Section 1.2 temperature
+        temperature as a function of pressure and enthalpy
 
-        Args:
-            p (float): preasure value
-            h (float): enthalpy value
-
-        Returns:
-            t (float): temperature or NaN if arguments are out of range
+        :param p: preasure
+        :param h: enthalpy
+        :return: temperature or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
         h = self._unit_converter.toSIunit_h(h)
@@ -146,15 +155,13 @@ class XSteam(object):
             return float("NaN")
 
     def t_ps(self, p: float, s: float) -> float:
-        """temperature as a function of pressure and entropy
+        """
+        Section 1.2 temperature
+        temperature as a function of pressure and entropy
 
-        Args:
-            p (float): preasure value
-            s (float): entropy value
-            h (float): enthalpy value
-
-        Returns:
-            t (float): temperature or NaN if arguments are out of range
+        :param p: preasure
+        :param s: specific entropy
+        :return: temperature or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
         s = self._unit_converter.toSIunit_s(s)
@@ -179,14 +186,13 @@ class XSteam(object):
             return float("NaN")
 
     def t_hs(self, h: float, s: float) -> float:
-        """temperature as a function of enthalpy and entropy
+        """
+        Section 1.2 temperature
+        temperature as a function of enthalpy and entropy
 
-        Args:
-            h (float): enthalpy value
-            s (float): entropy value
-
-        Returns:
-            t (float): temperature or NaN if arguments are out of range
+        :param h: enthalpy
+        :param s: specific entropy
+        :return: temperature or NaN if arguments are out of range
         """
         h = self._unit_converter.toSIunit_h(h)
         s = self._unit_converter.toSIunit_s(s)
@@ -218,16 +224,13 @@ class XSteam(object):
             )
             return float("NaN")
 
-    # ***********************************************************************************************************
-    # Section 1.3 Pressure (p)
     def psat_s(self, s: float) -> float:
-        """Saturation-Pressure as a function of entropy
+        """
+        Section 1.3 Pressure
+        Saturation-Pressure as a function of entropy
 
-        Args:
-            s (float): entropy value
-
-        Returns:
-            psat (float): saturation pressure or NaN if arguments are out of range
+        :param s: specific entropy
+        :return: saturation pressure or NaN if arguments are out of range
         """
         s = self._unit_converter.toSIunit_s(s)
         if (s > -0.0001545495919) and (s < 9.155759395):
@@ -237,13 +240,12 @@ class XSteam(object):
             return float("NaN")
 
     def psat_t(self, t: float) -> float:
-        """Saturation-Pressure as a function of temperature
+        """
+        Section 1.3 Pressure
+        Saturation-Pressure as a function of temperature
 
-        Args:
-            t (float): temperature value
-
-        Returns:
-            psat (float): saturation pressure or NaN if arguments are out of range
+        :param t: temperature
+        :return: saturation pressure or NaN if arguments are out of range
         """
         T = self._unit_converter.toSIunit_T(t)
         if (T < CRITICAL_TEMPERATURE) and (T > 273.1):
@@ -253,14 +255,13 @@ class XSteam(object):
             return float("NaN")
 
     def p_hs(self, h: float, s: float) -> float:
-        """Pressure  as a function of enthalpy and entropy
+        """
+        Section 1.3 Pressure
+        Pressure  as a function of enthalpy and entropy
 
-        Args:
-            h (float): enthalpy value
-            s (float): entropy value
-
-        Returns:
-            p (float): pressure or NaN if arguments are out of range
+        :param h: enthalpy
+        :param s: specific entropy
+        :return: pressure or NaN if arguments are out of range
         """
         h = self._unit_converter.toSIunit_h(h)
         s = self._unit_converter.toSIunit_s(s)
@@ -291,18 +292,17 @@ class XSteam(object):
             return float("NaN")
 
     def p_hrho(self, h: float, rho: float) -> float:
-        """Pressure as a function of h and rho.
+        """
+        Section 1.3 Pressure
+        Pressure as a function of h and rho.
 
         Very unaccurate for solid water region since it's almost incompressible!
 
         Not valid for water or sumpercritical since water rho does not change very much with p. Uses iteration to find p.
 
-        Args:
-            h (float): enthalpy value
-            rho (float): density value
-
-        Returns:
-            p (float): pressure or NaN if arguments are out of range
+        :param h: enthalpy
+        :param rho: density
+        :param p: preasure pressure or NaN if arguments are out of range
         """
         if rho <= 0.0:
             self.logger.error(
@@ -337,16 +337,13 @@ class XSteam(object):
             ps = (Low_Bound + High_Bound) / 2
         return ps
 
-    # ***********************************************************************************************************
-    # Section 1.4 Enthalpy (h)
     def hV_p(self, p: float) -> float:
-        """Saturated vapour enthalpy as a function of pressure
+        """
+        Section 1.4 enthalpy
+        Saturated vapour enthalpy as a function of pressure
 
-        Args:
-            p (float): preasure value
-
-        Returns:
-            hV (float): saturated vapour enthalpy or NaN if arguments are out of range
+        :param p: preasure
+        :return: saturated vapour enthalpy or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
         if (p > TRIPLE_POINT_PRESSURE) and (p < CRITICAL_PRESSURE):
@@ -356,13 +353,12 @@ class XSteam(object):
             return float("NaN")
 
     def hL_p(self, p: float) -> float:
-        """Saturated liquid enthalpy as a function of pressure
+        """
+        Section 1.4 enthalpy
+        Saturated liquid enthalpy as a function of pressure
 
-        Args:
-            p (float): preasure value
-
-        Returns:
-            hL (float): saturated liquid enthalpy or NaN if arguments are out of range
+        :param p: preasure
+        :return: saturated liquid enthalpy or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
         if (p > TRIPLE_POINT_PRESSURE) and (p < CRITICAL_PRESSURE):
@@ -372,13 +368,13 @@ class XSteam(object):
             return float("NaN")
 
     def hV_t(self, t: float) -> float:
-        """Saturated vapour enthalpy as a function of temperature
+        """
+        Section 1.4 enthalpy
+        Saturated vapour enthalpy as a function of temperature
 
-        Args:
-            t (float): temperature value
+        :param t: temperature
 
-        Returns:
-            hV (float): saturated vapour enthalpy or NaN if arguments are out of range
+        :return: saturated vapour enthalpy or NaN if arguments are out of range
         """
         T = self._unit_converter.toSIunit_T(t)
         if (T > FREEZING_TEMPERATURE_H2O) and (T < CRITICAL_TEMPERATURE):
@@ -389,13 +385,13 @@ class XSteam(object):
             return float("NaN")
 
     def hL_t(self, t: float) -> float:
-        """Saturated liquid enthalpy as a function of temperature
+        """
+        Section 1.4 enthalpy
+        Saturated liquid enthalpy as a function of temperature
 
-        Args:
-            t (float): temperature value
+        :param t: temperature
 
-        Returns:
-            hL (float): saturated liquid enthalpy or NaN if arguments are out of range
+        :return: saturated liquid enthalpy or NaN if arguments are out of range
         """
         T = self._unit_converter.toSIunit_T(t)
         if (T > FREEZING_TEMPERATURE_H2O) and (T < CRITICAL_TEMPERATURE):
@@ -406,14 +402,14 @@ class XSteam(object):
             return float("NaN")
 
     def h_pt(self, p: float, t: float) -> float:
-        """Entalpy as a function of pressure and temperature
+        """
+        Section 1.4 enthalpy
+        Entalpy as a function of pressure and temperature
 
-        Args:
-            p (float): preasure value
-            t (float): temperature value
+        :param p: preasure
+        :param t: temperature
 
-        Returns:
-            h (float): enthalpy or NaN if arguments are out of range
+        :return: enthalpy or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
         T = self._unit_converter.toSIunit_T(t)
@@ -443,14 +439,14 @@ class XSteam(object):
             return float("NaN")
 
     def h_ps(self, p: float, s: float) -> float:
-        """Entalpy as a function of pressure and entropy
+        """
+        Section 1.4 enthalpy
+        Entalpy as a function of pressure and entropy
 
-        Args:
-            p (float): preasure value
-            s (float): entropy value
+        :param p: preasure
+        :param s: specific entropy
 
-        Returns:
-            h (float): enthalpy or NaN if arguments are out of range
+        :return: enthalpy or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
         s = self._unit_converter.toSIunit_s(s)
@@ -486,14 +482,14 @@ class XSteam(object):
             return float("NaN")
 
     def h_px(self, p: float, x: float) -> float:
-        """Entalpy as a function of pressure and vapour fraction
+        """
+        Section 1.4 enthalpy
+        Entalpy as a function of pressure and vapour fraction
 
-        Args:
-            p (float): preasure value
+        :param p: preasure
             x (float): vapour fraction value
 
-        Returns:
-            h (float): enthalpy or NaN if arguments are out of range
+        :return: enthalpy or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
         x = self._unit_converter.toSIunit_x(x)
@@ -507,14 +503,14 @@ class XSteam(object):
         return hL + x * (hV - hL)
 
     def h_prho(self, p: float, rho: float) -> float:
-        """Entalpy as a function of pressure and density. Observe for low temperatures (liquid) this equation has 2 solutions
+        """
+        Section 1.4 enthalpy
+        Entalpy as a function of pressure and density. Observe for low temperatures (liquid) this equation has 2 solutions
 
-        Args:
-            p (float): preasure value
+        :param p: preasure
             rho (float): density value
 
-        Returns:
-            h (float): enthalpy or NaN if arguments are out of range
+        :return: enthalpy or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
         rho = 1 / self._unit_converter.toSIunit_v(1 / float(rho))
@@ -556,14 +552,14 @@ class XSteam(object):
             return float("NaN")
 
     def h_tx(self, t: float, x: float) -> float:
-        """Entalpy as a function of temperature and vapour fraction
+        """
+        Section 1.4 enthalpy
+        Entalpy as a function of temperature and vapour fraction
 
-        Args:
-            t (float): temperature value
+        :param t: temperature
             x (float): vapour fraction value
 
-        Returns:
-            h (float): enthalpy or NaN if arguments are out of range
+        :return: enthalpy or NaN if arguments are out of range
         """
         T = self._unit_converter.toSIunit_T(t)
         x = self._unit_converter.toSIunit_x(x)
@@ -577,17 +573,15 @@ class XSteam(object):
         hV = Region4.h4V_p(p)
         return hL + x * (hV - hL)
 
-    # ***********************************************************************************************************
-    # Section 1.5 Specific Volume (v)
     def vV_p(self, p: float) -> float:
-        """Saturated vapour volume as a function of pressure
+        """
+        Section 1.5 Specific Volume
+        Saturated vapour volume as a function of pressure
 
-        Args:
-            p (float): preasure value
+        :param p: preasure
             x (float): vapour fraction value
 
-        Returns:
-            vV (float): saturated vapour volume or NaN if arguments are out of range
+        :return: saturated vapour volume or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
         if (p > TRIPLE_POINT_PRESSURE) and (p < CRITICAL_PRESSURE):
@@ -604,13 +598,13 @@ class XSteam(object):
             return float("NaN")
 
     def vL_p(self, p: float) -> float:
-        """Saturated liquid volume as a function of pressure
+        """
+        Section 1.5 Specific Volume
+        Saturated liquid volume as a function of pressure
 
-        Args:
-            p (float): preasure value
+        :param p: preasure
 
-        Returns:
-            vV (float): saturated liquid volume or NaN if arguments are out of range
+        :return: saturated liquid volume or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
         if (p > TRIPLE_POINT_PRESSURE) and (p < CRITICAL_PRESSURE):
@@ -627,13 +621,13 @@ class XSteam(object):
             return float("NaN")
 
     def vV_t(self, t: float) -> float:
-        """Saturated vapour volume as a function of temperature
+        """
+        Section 1.5 Specific Volume
+        Saturated vapour volume as a function of temperature
 
-        Args:
-            t (float): temperature value
+        :param t: temperature
 
-        Returns:
-            vV (float): saturated vapour volume or NaN if arguments are out of range
+        :return: saturated vapour volume or NaN if arguments are out of range
         """
         T = self._unit_converter.toSIunit_T(t)
         if (T > FREEZING_TEMPERATURE_H2O) and (T < CRITICAL_TEMPERATURE):
@@ -651,13 +645,13 @@ class XSteam(object):
             return float("NaN")
 
     def vL_t(self, t: float) -> float:
-        """Saturated liquid volume as a function of temperature
+        """
+        Section 1.5 Specific Volume
+        Saturated liquid volume as a function of temperature
 
-        Args:
-            t (float): temperature value
+        :param t: temperature
 
-        Returns:
-            vV (float): saturated liquid volume or NaN if arguments are out of range
+        :return: saturated liquid volume or NaN if arguments are out of range
         """
         T = self._unit_converter.toSIunit_T(t)
         if (T > FREEZING_TEMPERATURE_H2O) and (T < CRITICAL_TEMPERATURE):
@@ -675,14 +669,14 @@ class XSteam(object):
             return float("NaN")
 
     def v_pt(self, p: float, t: float) -> float:
-        """Specific volume as a function of pressure and temperature
+        """
+        Section 1.5 Specific Volume
+        Specific volume as a function of pressure and temperature
 
-        Args:
-            p (float): preasure value
-            t (float): temperature value
+        :param p: preasure
+        :param t: temperature
 
-        Returns:
-            v (float): specific volume or NaN if arguments are out of range
+        :return: specific volume or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
         T = self._unit_converter.toSIunit_T(t)
@@ -714,14 +708,14 @@ class XSteam(object):
             return float("NaN")
 
     def v_ph(self, p: float, h: float) -> float:
-        """Specific volume as a function of pressure and enthalpy
+        """
+        Section 1.5 Specific Volume
+        Specific volume as a function of pressure and enthalpy
 
-        Args:
-            p (float): preasure value
-            h (float): enthalpy value
+        :param p: preasure
+        :param h: enthalpy
 
-        Returns:
-            v (float): specific volume or NaN if arguments are out of range
+        :return: specific volume or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
         h = self._unit_converter.toSIunit_h(h)
@@ -758,14 +752,14 @@ class XSteam(object):
             return float("NaN")
 
     def v_ps(self, p: float, s: float) -> float:
-        """Specific volume as a function of pressure and entropy
+        """
+        Section 1.5 Specific Volume
+        Specific volume as a function of pressure and entropy
 
-        Args:
-            p (float): preasure value
-            s (float): entropy value
+        :param p: preasure
+        :param s: specific entropy
 
-        Returns:
-            v (float): specific volume or NaN if arguments are out of range
+        :return: specific volume or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
         s = self._unit_converter.toSIunit_s(s)
@@ -801,99 +795,101 @@ class XSteam(object):
             )
             return float("NaN")
 
-    # ***********************************************************************************************************
-    # Section 1.6 Density (rho)
-    # Density is calculated as 1/v. See section 1.5 Volume
     def rhoV_p(self, p: float) -> float:
-        """Saturated vapour density as a function of pressure
+        """
+        Section 1.6 Density (rho)
+        Note: Density is calculated as 1/v. See section 1.5 Volume
+        Saturated vapour density as a function of pressure
 
-        Args:
-            p (float): preasure value
+        :param p: preasure
 
-        Returns:
-            rhoV (float): saturated vapour density
+        :return: saturated vapour density
         """
         return 1 / self.vV_p(p)
 
     def rhoL_p(self, p: float) -> float:
-        """Saturated liquid density as a function of pressure
+        """
+        Section 1.6 Density (rho)
+        Note: Density is calculated as 1/v. See section 1.5 Volume
+        Saturated liquid density as a function of pressure
 
-        Args:
-            p (float): preasure value
+        :param p: preasure
 
-        Returns:
-            rhoV (float): saturated liquid density
+        :return: saturated liquid density
         """
         return 1 / self.vL_p(p)
 
     def rhoV_t(self, t: float) -> float:
-        """Saturated vapour density as a function of temperature
+        """
+        Section 1.6 Density (rho)
+        Note: Density is calculated as 1/v. See section 1.5 Volume
+        Saturated vapour density as a function of temperature
 
-        Args:
-            t (float): temperature value
+        :param t: temperature
 
-        Returns:
-            rhoV (float): saturated vapour density
+        :return: saturated vapour density
         """
         return 1 / self.vV_t(t)
 
     def rhoL_t(self, t: float) -> float:
-        """Saturated liquid density as a function of temperature
+        """
+        Section 1.6 Density (rho)
+        Note: Density is calculated as 1/v. See section 1.5 Volume
+        Saturated liquid density as a function of temperature
 
-        Args:
-            t (float): temperature value
+        :param t: temperature
 
-        Returns:
-            rhoV (float): saturated liquid density
+        :return: saturated liquid density
         """
         return 1 / self.vL_t(t)
 
     def rho_pt(self, p: float, t: float) -> float:
-        """Density as a function of pressure and temperature
+        """
+        Section 1.6 Density (rho)
+        Note: Density is calculated as 1/v. See section 1.5 Volume
+        Density as a function of pressure and temperature
 
-        Args:
-            p (float): preasure value
-            t (float): temperature value
+        :param p: preasure
+        :param t: temperature
 
-        Returns:
-            rho (float): density
+        :return: density
         """
         return 1 / self.v_pt(p, t)
 
     def rho_ph(self, p: float, h: float) -> float:
-        """Density as a function of pressure and enthalpy
+        """
+        Section 1.6 Density (rho)
+        Note: Density is calculated as 1/v. See section 1.5 Volume
+        Density as a function of pressure and enthalpy
 
-        Args:
-            p (float): preasure value
-            h (float): enthalpy value
+        :param p: preasure
+        :param h: enthalpy
 
-        Returns:
-            rho (float): density
+        :return: density
         """
         return 1 / self.v_ph(p, h)
 
     def rho_ps(self, p: float, s: float) -> float:
-        """Density as a function of pressure and entropy
+        """
+        Section 1.6 Density (rho)
+        Note: Density is calculated as 1/v. See section 1.5 Volume
+        Density as a function of pressure and entropy
 
-        Args:
-            p (float): preasure value
-            s (float): entropy value
+        :param p: preasure
+        :param s: specific entropy
 
-        Returns:
-            rho (float): density
+        :return: density
         """
         return 1 / self.v_ps(p, s)
 
-    # ***********************************************************************************************************
-    # Section 1.7 Specific entropy (s)
     def sV_p(self, p: float) -> float:
-        """Saturated vapour entropy as a function of pressure
+        """
+        Section 1.7 Specific entropy
+        Saturated vapour entropy as a function of pressure
 
-        Args:
-            p (float): preasure value
+        :param p: preasure
 
-        Returns:
-            sV (float): Saturated vapour entropy or NaN if arguments are out of range
+        :return: Saturated vapour entropy or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
         if (p > TRIPLE_POINT_PRESSURE) and (p < CRITICAL_PRESSURE):
@@ -912,13 +908,13 @@ class XSteam(object):
             return float("NaN")
 
     def sL_p(self, p: float) -> float:
-        """Saturated liquid entropy as a function of pressure
+        """
+        Section 1.7 Specific entropy
+        Saturated liquid entropy as a function of pressure
 
-        Args:
-            p (float): preasure value
+        :param p: preasure
 
-        Returns:
-            sL (float): Saturated liquid entropy or NaN if arguments are out of range
+        :return: Saturated liquid entropy or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
         if (p > TRIPLE_POINT_PRESSURE) and (p < CRITICAL_PRESSURE):
@@ -937,13 +933,13 @@ class XSteam(object):
             return float("NaN")
 
     def sV_t(self, t: float) -> float:
-        """Saturated vapour entropy as a function of temperature
+        """
+        Section 1.7 Specific entropy
+        Saturated vapour entropy as a function of temperature
 
-        Args:
-            t (float): temperature value
+        :param t: temperature
 
-        Returns:
-            sV (float): Saturated vapour entropy or NaN if arguments are out of range
+        :return: Saturated vapour entropy or NaN if arguments are out of range
         """
         T = self._unit_converter.toSIunit_T(t)
         if (T > FREEZING_TEMPERATURE_H2O) and (T < CRITICAL_TEMPERATURE):
@@ -968,13 +964,13 @@ class XSteam(object):
             return float("NaN")
 
     def sL_t(self, t: float) -> float:
-        """Saturated liquid entropy as a function of temperature
+        """
+        Section 1.7 Specific entropy
+        Saturated liquid entropy as a function of temperature
 
-        Args:
-            t (float): temperature value
+        :param t: temperature
 
-        Returns:
-            sL (float): Saturated liquid entropy or NaN if arguments are out of range
+        :return: Saturated liquid entropy or NaN if arguments are out of range
         """
         T = self._unit_converter.toSIunit_T(t)
         if (T > FREEZING_TEMPERATURE_H2O) and (T < CRITICAL_TEMPERATURE):
@@ -999,14 +995,14 @@ class XSteam(object):
             return float("NaN")
 
     def s_pt(self, p: float, t: float) -> float:
-        """Specific entropy as a function of pressure and temperature (Returns saturated vapour entalpy if mixture)
+        """
+        Section 1.7 Specific entropy
+        Specific entropy as a function of pressure and temperature (Returns saturated vapour entalpy if mixture)
 
-        Args:
-            p (float): preasure value
-            t (float): temperature value
+        :param p: preasure
+        :param t: temperature
 
-        Returns:
-            s (float): entropy or NaN if arguments are out of range
+        :return: entropy or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
         T = self._unit_converter.toSIunit_T(t)
@@ -1036,14 +1032,14 @@ class XSteam(object):
             return float("NaN")
 
     def s_ph(self, p: float, h: float) -> float:
-        """Specific entropy as a function of pressure and enthalpy
+        """
+        Section 1.7 Specific entropy
+        Specific entropy as a function of pressure and enthalpy
 
-        Args:
-            p (float): preasure value
-            h (float): enthalpy value
+        :param p: preasure
+        :param h: enthalpy
 
-        Returns:
-            s (float): entropy or NaN if arguments are out of range
+        :return: entropy or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
         h = self._unit_converter.toSIunit_h(h)
@@ -1082,16 +1078,14 @@ class XSteam(object):
             )
             return float("NaN")
 
-    # ***********************************************************************************************************
-    # Section 1.8 Specific internal energy (u)
     def uV_p(self, p: float) -> float:
-        """Saturated vapour internal energy as a function of pressure
+        """
+        Section 1.8 Specific internal energy
+        Saturated vapour internal energy as a function of pressure
 
-        Args:
-            p (float): preasure value
+        :param p: preasure
 
-        Returns:
-            uV (float): saturated vapour internal energy or NaN if arguments are out of range
+        :return: saturated vapour internal energy or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
         if (p > TRIPLE_POINT_PRESSURE) and (p < CRITICAL_PRESSURE):
@@ -1109,13 +1103,13 @@ class XSteam(object):
             return float("NaN")
 
     def uL_p(self, p: float) -> float:
-        """Saturated liquid internal energy as a function of pressure
+        """
+        Section 1.8 Specific internal energy
+        Saturated liquid internal energy as a function of pressure
 
-        Args:
-            p (float): preasure value
+        :param p: preasure
 
-        Returns:
-            uL (float): saturated liquid internal energy
+        :return: saturated liquid internal energy
         """
         p = self._unit_converter.toSIunit_p(p)
         if (p > TRIPLE_POINT_PRESSURE) and (p < CRITICAL_PRESSURE):
@@ -1134,13 +1128,13 @@ class XSteam(object):
             return float("NaN")
 
     def uV_t(self, t: float) -> float:
-        """Saturated vapour internal energy as a function of temperature
+        """
+        Section 1.8 Specific internal energy
+        Saturated vapour internal energy as a function of temperature
 
-        Args:
-            t (float): temperature value
+        :param t: temperature
 
-        Returns:
-            uV (float): saturated vapour internal energy or NaN if arguments are out of range
+        :return: saturated vapour internal energy or NaN if arguments are out of range
         """
         T = self._unit_converter.toSIunit_T(t)
         if (T > FREEZING_TEMPERATURE_H2O) and (T < CRITICAL_TEMPERATURE):
@@ -1165,13 +1159,13 @@ class XSteam(object):
             return float("NaN")
 
     def uL_t(self, t: float) -> float:
-        """Saturated liquid internal energy as a function of temperature
+        """
+        Section 1.8 Specific internal energy
+        Saturated liquid internal energy as a function of temperature
 
-        Args:
-            t (float): temperature value
+        :param t: temperature
 
-        Returns:
-            uL (float): saturated liquid internal energy or NaN if arguments are out of range
+        :return: saturated liquid internal energy or NaN if arguments are out of range
         """
         T = self._unit_converter.toSIunit_T(t)
         if (T > FREEZING_TEMPERATURE_H2O) and (T < CRITICAL_TEMPERATURE):
@@ -1196,14 +1190,14 @@ class XSteam(object):
             return float("NaN")
 
     def u_pt(self, p: float, t: float) -> float:
-        """Specific internal energy as a function of pressure and temperature
+        """
+        Section 1.8 Specific internal energy
+        Specific internal energy as a function of pressure and temperature
 
-        Args:
-            p (float): preasure value
-            t (float): temperature value
+        :param p: preasure
+        :param t: temperature
 
-        Returns:
-            u (float): specific internal energy or NaN if arguments are out of range
+        :return: specific internal energy or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
         T = self._unit_converter.toSIunit_T(t)
@@ -1235,14 +1229,14 @@ class XSteam(object):
             return float("NaN")
 
     def u_ph(self, p: float, h: float) -> float:
-        """Specific internal energy as a function of pressure and enthalpy
+        """
+        Section 1.8 Specific internal energy
+        Specific internal energy as a function of pressure and enthalpy
 
-        Args:
-            p (float): preasure value
-            h (float): enthalpy value
+        :param p: preasure
+        :param h: enthalpy
 
-        Returns:
-            u (float): specific internal energy or NaN if arguments are out of range
+        :return: specific internal energy or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
         h = self._unit_converter.toSIunit_h(h)
@@ -1282,14 +1276,14 @@ class XSteam(object):
             return float("NaN")
 
     def u_ps(self, p: float, s: float) -> float:
-        """Specific internal energy as a function of pressure and entropy
+        """
+        Section 1.8 Specific internal energy
+        Specific internal energy as a function of pressure and entropy
 
-        Args:
-            p (float): preasure value
-            s (float): entropy value
+        :param p: preasure
+        :param s: specific entropy
 
-        Returns:
-            u (float): specific internal energy or NaN if arguments are out of range
+        :return: specific internal energy or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
         s = self._unit_converter.toSIunit_s(s)
@@ -1329,16 +1323,14 @@ class XSteam(object):
             )
             return float("NaN")
 
-    # ***********************************************************************************************************
-    # Section 1.9 Specific isobaric heat capacity (Cp)
     def CpV_p(self, p: float) -> float:
-        """Saturated vapour heat capacity as a function of pressure
+        """
+        Section 1.9 Specific isobaric heat capacity
+        Saturated vapour heat capacity as a function of pressure
 
-        Args:
-            p (float): preasure value
+        :param p: preasure
 
-        Returns:
-            CpV (float): saturated vapour heat capacity or NaN if arguments are out of range
+        :return: saturated vapour heat capacity or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
         if (p > TRIPLE_POINT_PRESSURE) and (p < CRITICAL_PRESSURE):
@@ -1357,13 +1349,13 @@ class XSteam(object):
             return float("NaN")
 
     def CpL_p(self, p: float) -> float:
-        """Saturated liquid heat capacity as a function of pressure
+        """
+        Section 1.9 Specific isobaric heat capacity
+        Saturated liquid heat capacity as a function of pressure
 
-        Args:
-            p (float): preasure value
+        :param p: preasure
 
-        Returns:
-            CpL (float): saturated liquid heat capacity or NaN if arguments are out of range
+        :return: saturated liquid heat capacity or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
         if (p > TRIPLE_POINT_PRESSURE) and (p < CRITICAL_PRESSURE):
@@ -1382,13 +1374,13 @@ class XSteam(object):
             return float("NaN")
 
     def CpV_t(self, t: float) -> float:
-        """Saturated vapour heat capacity as a function of temperature
+        """
+        Section 1.9 Specific isobaric heat capacity
+        Saturated vapour heat capacity as a function of temperature
 
-        Args:
-            t (float): temperature value
+        :param t: temperature
 
-        Returns:
-            CpV (float): saturated vapour heat capacity or NaN if arguments are out of range
+        :return: saturated vapour heat capacity or NaN if arguments are out of range
         """
         T = self._unit_converter.toSIunit_T(t)
         if (T > FREEZING_TEMPERATURE_H2O) and (T < CRITICAL_TEMPERATURE):
@@ -1413,13 +1405,13 @@ class XSteam(object):
             return float("NaN")
 
     def CpL_t(self, t: float) -> float:
-        """Saturated liquid heat capacity as a function of temperature
+        """
+        Section 1.9 Specific isobaric heat capacity
+        Saturated liquid heat capacity as a function of temperature
 
-        Args:
-            t (float): temperature value
+        :param t: temperature
 
-        Returns:
-            CpL (float): saturated liquid heat capacity or NaN if arguments are out of range
+        :return: saturated liquid heat capacity or NaN if arguments are out of range
         """
         T = self._unit_converter.toSIunit_T(t)
         if (T > FREEZING_TEMPERATURE_H2O) and (T < CRITICAL_TEMPERATURE):
@@ -1444,14 +1436,14 @@ class XSteam(object):
             return float("NaN")
 
     def Cp_pt(self, p: float, t: float) -> float:
-        """Specific isobaric heat capacity as a function of pressure and temperature
+        """
+        Section 1.9 Specific isobaric heat capacity
+        Specific isobaric heat capacity as a function of pressure and temperature
 
-        Args:
-            p (float): preasure value
-            t (float): temperature value
+        :param p: preasure
+        :param t: temperature
 
-        Returns:
-            Cp (float): specific isobaric heat capacity or NaN if arguments are out of range
+        :return: specific isobaric heat capacity or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
         T = self._unit_converter.toSIunit_T(t)
@@ -1483,14 +1475,14 @@ class XSteam(object):
             return float("NaN")
 
     def Cp_ph(self, p: float, h: float) -> float:
-        """Specific isobaric heat capacity as a function of pressure and enthalpy
+        """
+        Section 1.9 Specific isobaric heat capacity
+        Specific isobaric heat capacity as a function of pressure and enthalpy
 
-        Args:
-            p (float): preasure value
-            h (float): enthalpy value
+        :param p: preasure
+        :param h: enthalpy
 
-        Returns:
-            Cp (float): specific isobaric heat capacity or NaN if arguments are out of range
+        :return: specific isobaric heat capacity or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
         h = self._unit_converter.toSIunit_h(h)
@@ -1525,14 +1517,14 @@ class XSteam(object):
             return float("NaN")
 
     def Cp_ps(self, p: float, s: float) -> float:
-        """Specific isobaric heat capacity as a function of pressure and entropy
+        """
+        Section 1.9 Specific isobaric heat capacity
+        Specific isobaric heat capacity as a function of pressure and entropy
 
-        Args:
-            p (float): preasure value
-            s (float): entropy value
+        :param p: preasure
+        :param s: specific entropy
 
-        Returns:
-            Cp (float): specific isobaric heat capacity or NaN if arguments are out of range
+        :return: specific isobaric heat capacity or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
         s = self._unit_converter.toSIunit_s(s)
@@ -1566,16 +1558,14 @@ class XSteam(object):
             )
             return float("NaN")
 
-    # ***********************************************************************************************************
-    # Section 1.10 Specific isochoric heat capacity (Cv)
     def CvV_p(self, p: float) -> float:
-        """Saturated vapour isochoric heat capacity as a function of pressure
+        """
+        Section 1.10 Specific isochoric heat capacity
+        Saturated vapour isochoric heat capacity as a function of pressure
 
-        Args:
-            p (float): preasure value
+        :param p: preasure
 
-        Returns:
-            CvV (float): saturated vapour isochoric heat capacity or NaN if arguments are out of range
+        :return: saturated vapour isochoric heat capacity or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
         if (p > TRIPLE_POINT_PRESSURE) and (p < CRITICAL_PRESSURE):
@@ -1594,13 +1584,13 @@ class XSteam(object):
             return float("NaN")
 
     def CvL_p(self, p: float) -> float:
-        """Saturated liquid isochoric heat capacity as a function of pressure
+        """
+        Section 1.10 Specific isochoric heat capacity
+        Saturated liquid isochoric heat capacity as a function of pressure
 
-        Args:
-            p (float): preasure value
+        :param p: preasure
 
-        Returns:
-            CvL (float): saturated liquid isochoric heat capacity or NaN if arguments are out of range
+        :return: saturated liquid isochoric heat capacity or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
         if (p > TRIPLE_POINT_PRESSURE) and (p < CRITICAL_PRESSURE):
@@ -1619,13 +1609,13 @@ class XSteam(object):
             return float("NaN")
 
     def CvV_t(self, t: float) -> float:
-        """Saturated vapour isochoric heat capacity as a function of temperature
+        """
+        Section 1.10 Specific isochoric heat capacity
+        Saturated vapour isochoric heat capacity as a function of temperature
 
-        Args:
-            t (float): temperature value
+        :param t: temperature
 
-        Returns:
-            CvV (float): saturated vapour isochoric heat capacity or NaN if arguments are out of range
+        :return: saturated vapour isochoric heat capacity or NaN if arguments are out of range
         """
         T = self._unit_converter.toSIunit_T(t)
         if (T > FREEZING_TEMPERATURE_H2O) and (T < CRITICAL_TEMPERATURE):
@@ -1650,13 +1640,13 @@ class XSteam(object):
             return float("NaN")
 
     def CvL_t(self, t: float) -> float:
-        """Saturated liquid isochoric heat capacity as a function of temperature
+        """
+        Section 1.10 Specific isochoric heat capacity
+        Saturated liquid isochoric heat capacity as a function of temperature
 
-        Args:
-            t (float): temperature value
+        :param t: temperature
 
-        Returns:
-            CvL (float): saturated liquid isochoric heat capacity or NaN if arguments are out of range
+        :return: saturated liquid isochoric heat capacity or NaN if arguments are out of range
         """
         T = self._unit_converter.toSIunit_T(t)
         if (T > FREEZING_TEMPERATURE_H2O) and (T < CRITICAL_TEMPERATURE):
@@ -1681,14 +1671,14 @@ class XSteam(object):
             return float("NaN")
 
     def Cv_pt(self, p: float, t: float) -> float:
-        """Specific isochoric heat capacity as a function of pressure and temperature
+        """
+        Section 1.10 Specific isochoric heat capacity
+        Specific isochoric heat capacity as a function of pressure and temperature
 
-        Args:
-            p (float): preasure value
-            t (float): temperature value
+        :param p: preasure
+        :param t: temperature
 
-        Returns:
-            Cv (float): specific isochoric heat capacity or NaN if arguments are out of range
+        :return: specific isochoric heat capacity or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
         T = self._unit_converter.toSIunit_T(t)
@@ -1720,14 +1710,14 @@ class XSteam(object):
             return float("NaN")
 
     def Cv_ph(self, p: float, h: float) -> float:
-        """Specific isochoric heat capacity as a function of pressure and enthalpy
+        """
+        Section 1.10 Specific isochoric heat capacity
+        Specific isochoric heat capacity as a function of pressure and enthalpy
 
-        Args:
-            p (float): preasure value
-            h (float): enthalpy value
+        :param p: preasure
+        :param h: enthalpy
 
-        Returns:
-            Cv (float): specific isochoric heat capacity or NaN if arguments are out of range
+        :return: specific isochoric heat capacity or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
         h = self._unit_converter.toSIunit_h(h)
@@ -1762,14 +1752,14 @@ class XSteam(object):
             return float("NaN")
 
     def Cv_ps(self, p: float, s: float) -> float:
-        """Specific isochoric heat capacity as a function of pressure and entropy
+        """
+        Section 1.10 Specific isochoric heat capacity
+        Specific isochoric heat capacity as a function of pressure and entropy
 
-        Args:
-            p (float): preasure value
-            s (float): entropy value
+        :param p: preasure
+        :param s: specific entropy
 
-        Returns:
-            Cv (float): specific isochoric heat capacity or NaN if arguments are out of range
+        :return: specific isochoric heat capacity or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
         s = self._unit_converter.toSIunit_s(s)
@@ -1804,16 +1794,14 @@ class XSteam(object):
             )
             return float("NaN")
 
-    # ***********************************************************************************************************
-    # Section 1.11 Speed of sound
     def wV_p(self, p: float) -> float:
-        """Saturated vapour speed of sound as a function of pressure
+        """
+        Section 1.11 Speed of sound
+        Saturated vapour speed of sound as a function of pressure
 
-        Args:
-            p (float): preasure value
+        :param p: preasure
 
-        Returns:
-            wV (float): speed of sound in saturated vapour or NaN if arguments are out of range
+        :return: speed of sound in saturated vapour or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
         if (p > TRIPLE_POINT_PRESSURE) and (p < CRITICAL_PRESSURE):
@@ -1832,13 +1820,13 @@ class XSteam(object):
             return float("NaN")
 
     def wL_p(self, p: float) -> float:
-        """Saturated liquid speed of sound as a function of pressure
+        """
+        Section 1.11 Speed of sound
+        Saturated liquid speed of sound as a function of pressure
 
-        Args:
-            p (float): preasure value
+        :param p: preasure
 
-        Returns:
-            wL (float): speed of sound in saturated liquid or NaN if arguments are out of range
+        :return: speed of sound in saturated liquid or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
         if (p > TRIPLE_POINT_PRESSURE) and (p < CRITICAL_PRESSURE):
@@ -1857,13 +1845,13 @@ class XSteam(object):
             return float("NaN")
 
     def wV_t(self, t: float) -> float:
-        """Saturated vapour speed of sound as a function of temperature
+        """
+        Section 1.11 Speed of sound
+        Saturated vapour speed of sound as a function of temperature
 
-        Args:
-            t (float): temperature value
+        :param t: temperature
 
-        Returns:
-            wV (float): speed of sound in saturated vapour or NaN if arguments are out of range
+        :return: speed of sound in saturated vapour or NaN if arguments are out of range
         """
         T = self._unit_converter.toSIunit_T(t)
         if (T > FREEZING_TEMPERATURE_H2O) and (T < CRITICAL_TEMPERATURE):
@@ -1888,13 +1876,13 @@ class XSteam(object):
             return float("NaN")
 
     def wL_t(self, t: float) -> float:
-        """Saturated liquid speed of sound as a function of temperature
+        """
+        Section 1.11 Speed of sound
+        Saturated liquid speed of sound as a function of temperature
 
-        Args:
-            t (float): temperature value
+        :param t: temperature
 
-        Returns:
-            wL (float): speed of sound in saturated liquid or NaN if arguments are out of range
+        :return: speed of sound in saturated liquid or NaN if arguments are out of range
         """
         T = self._unit_converter.toSIunit_T(t)
         if (T > FREEZING_TEMPERATURE_H2O) and (T < CRITICAL_TEMPERATURE):
@@ -1919,14 +1907,14 @@ class XSteam(object):
             return float("NaN")
 
     def w_pt(self, p: float, t: float) -> float:
-        """Speed of sound as a function of pressure and temperature
+        """
+        Section 1.11 Speed of sound
+        Speed of sound as a function of pressure and temperature
 
-        Args:
-            p (float): preasure value
-            t (float): temperature value
+        :param p: preasure
+        :param t: temperature
 
-        Returns:
-            w (float): speed of sound or NaN if arguments are out of range
+        :return: speed of sound or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
         T = self._unit_converter.toSIunit_T(t)
@@ -1958,14 +1946,14 @@ class XSteam(object):
             return float("NaN")
 
     def w_ph(self, p: float, h: float) -> float:
-        """Speed of sound as a function of pressure and enthalpy
+        """
+        Section 1.11 Speed of sound
+        Speed of sound as a function of pressure and enthalpy
 
-        Args:
-            p (float): preasure value
-            h (float): enthalpy value
+        :param p: preasure
+        :param h: enthalpy
 
-        Returns:
-            w (float): speed of sound or NaN if arguments are out of range
+        :return: speed of sound or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
         h = self._unit_converter.toSIunit_h(h)
@@ -1998,14 +1986,14 @@ class XSteam(object):
             return float("NaN")
 
     def w_ps(self, p: float, s: float) -> float:
-        """Speed of sound as a function of pressure and entropy
+        """
+        Section 1.11 Speed of sound
+        Speed of sound as a function of pressure and entropy
 
-        Args:
-            p (float): preasure value
-            s (float): entropy value
+        :param p: preasure
+        :param s: specific entropy
 
-        Returns:
-            w (float): speed of sound or NaN if arguments are out of range
+        :return: speed of sound or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
         s = self._unit_converter.toSIunit_s(s)
@@ -2040,20 +2028,16 @@ class XSteam(object):
             )
             return float("NaN")
 
-    # ***********************************************************************************************************
-    # Section  1.12 Viscosity
-    # Viscosity is not part of IAPWS Steam IF97. Equations from
-    # "Revised Release on the IAPWS Formulation 1985 for the Viscosity of Ordinary Water Substance", 2003 are used.
-    # Viscosity in the mixed region (4) is interpolated according to the density. This is not true since it will be two phases.
     def my_pt(self, p: float, t: float) -> float:
-        """Viscosity as a function of pressure and temperature
+        """
+        Section 1.12 Viscosity
+        Note: Viscosity is not part of IAPWS Steam IF97. Equations from "Revised Release on the IAPWS Formulation 1985 for the Viscosity of Ordinary Water Substance", 2003 are used. Viscosity in the mixed region (4) is interpolated according to the density. This is not true since it will be two phases.
+        Viscosity as a function of pressure and temperature
 
-        Args:
-            p (float): preasure value
-            t (float): temperature value
+        :param p: preasure
+        :param t: temperature
 
-        Returns:
-            my (float): viscosity or NaN if arguments are out of range
+        :return: viscosity or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
         T = self._unit_converter.toSIunit_T(t)
@@ -2077,14 +2061,15 @@ class XSteam(object):
             return float("NaN")
 
     def my_ph(self, p: float, h: float) -> float:
-        """Viscosity as a function of pressure and enthalpy
+        """
+        Section 1.12 Viscosity
+        Note: Viscosity is not part of IAPWS Steam IF97. Equations from "Revised Release on the IAPWS Formulation 1985 for the Viscosity of Ordinary Water Substance", 2003 are used. Viscosity in the mixed region (4) is interpolated according to the density. This is not true since it will be two phases.
+        Viscosity as a function of pressure and enthalpy
 
-        Args:
-            p (float): preasure value
-            h (float): enthalpy value
+        :param p: preasure
+        :param h: enthalpy
 
-        Returns:
-            my (float): viscosity or NaN if arguments are out of range
+        :return: viscosity or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
         h = self._unit_converter.toSIunit_h(h)
@@ -2108,29 +2093,28 @@ class XSteam(object):
             return float("NaN")
 
     def my_ps(self, p: float, s: float) -> float:
-        """Viscosity as a function of pressure and entropy
+        """
+        Section 1.12 Viscosity
+        Note: Viscosity is not part of IAPWS Steam IF97. Equations from "Revised Release on the IAPWS Formulation 1985 for the Viscosity of Ordinary Water Substance", 2003 are used. Viscosity in the mixed region (4) is interpolated according to the density. This is not true since it will be two phases.
+        Viscosity as a function of pressure and entropy
 
-        Args:
-            p (float): preasure value
-            s (float): entropy value
+        :param p: preasure
+        :param s: specific entropy
 
-        Returns:
-            my (float): viscosity
+        :return: viscosity
         """
         h = self.h_ps(p, s)
         return self.my_ph(p, h)
 
-    # ***********************************************************************************************************
-    # Section 1.13 Prandtl
     def pr_pt(self, p: float, t: float) -> float:
-        """Prandtl number as a function of preasuere and temperature
+        """
+        Section 1.13 Prandtl
+        Prandtl number as a function of preasuere and temperature
 
-        Args:
-            p (float): preasure value
-            t (float): temperature value
+        :param p: preasure
+        :param t: temperature
 
-        Returns:
-            pr (float): prandtl number
+        :return: prandtl number
         """
         Cp = self._unit_converter.toSIunit_Cp(self.Cp_pt(p, t))
         my = self._unit_converter.toSIunit_my(self.my_pt(p, t))
@@ -2138,58 +2122,54 @@ class XSteam(object):
         return Cp * 1000 * my / tc
 
     def pr_ph(self, p: float, h: float) -> float:
-        """Prandtl number as a function of preasuere and enthalpy
+        """
+        Section 1.13 Prandtl
+        Prandtl number as a function of preasuere and enthalpy
 
-        Args:
-            p (float): preasure value
-            h (float): enthalpy value
+        :param p: preasure
+        :param h: enthalpy
 
-        Returns:
-            pr (float): prandtl number
+        :return: prandtl number
         """
         Cp = self._unit_converter.toSIunit_Cp(self.Cp_ph(p, h))
         my = self._unit_converter.toSIunit_my(self.my_ph(p, h))
         tc = self._unit_converter.toSIunit_tc(self.tc_ph(p, h))
         return Cp * 1000 * my / tc
 
-    # ***********************************************************************************************************
-    # Section 1.15 Surface tension
     def st_t(self, t: float) -> float:
-        """Surface tension for two phase water/steam as a function of temperature
+        """
+        Section 1.15 Surface tension
+        Surface tension for two phase water/steam as a function of temperature
 
-        Args:
-            t (float): temperature value
+        :param t: temperature
 
-        Returns:
-            st (float): surface tension
+        :return: surface tension
         """
         T = self._unit_converter.toSIunit_T(t)
         return self._unit_converter.fromSIunit_st(Surface_Tension_T(T))
 
     def st_p(self, p: float) -> float:
-        """Surface tension for two phase water/steam as a function of preasure
+        """
+        Section 1.15 Surface tension
+        Surface tension for two phase water/steam as a function of preasure
 
-        Args:
-            p (float): preasure value
+        :param p: preasure
 
-        Returns:
-            st (float): surface tension
+        :return: surface tension
         """
         T = self.tsat_p(p)
         T = self._unit_converter.toSIunit_T(T)
         return self._unit_converter.fromSIunit_st(Surface_Tension_T(T))
 
-    # ***********************************************************************************************************
-    # Section 1.16 Thermal conductivity
-    # Revised release on the IAPS Formulation 1985 for the Thermal Conductivity of ordinary water substance (IAPWS 1998)
     def tcL_p(self, p: float) -> float:
-        """Saturated liquid thermal conductivity as a function of pressure
+        """
+        Section 1.16 Thermal conductivity
+        Note: Revised release on the IAPS Formulation 1985 for the Thermal Conductivity of ordinary water substance (IAPWS 1998)
+        Saturated liquid thermal conductivity as a function of pressure
 
-        Args:
-            p (float): preasure value
+        :param p: preasure
 
-        Returns:
-            tcL (float): saturated liquid thermal conductivity
+        :return: saturated liquid thermal conductivity
         """
         t = self.tsat_p(p)
         v = self.vL_p(p)
@@ -2200,13 +2180,14 @@ class XSteam(object):
         return self._unit_converter.fromSIunit_tc(tc_ptrho(p, T, rho))
 
     def tcV_p(self, p: float) -> float:
-        """Saturated vapour thermal conductivity as a function of pressure
+        """
+        Section 1.16 Thermal conductivity
+        Note: Revised release on the IAPS Formulation 1985 for the Thermal Conductivity of ordinary water substance (IAPWS 1998)
+        Saturated vapour thermal conductivity as a function of pressure
 
-        Args:
-            p (float): preasure value
+        :param p: preasure
 
-        Returns:
-            tcV (float): saturated vapour thermal conductivity
+        :return: saturated vapour thermal conductivity
         """
         ps = p
         T = self.tsat_p(p)
@@ -2218,13 +2199,14 @@ class XSteam(object):
         return self._unit_converter.fromSIunit_tc(tc_ptrho(p, T, rho))
 
     def tcL_t(self, t: float) -> float:
-        """Saturated vapour thermal conductivity as a function of temperature
+        """
+        Section 1.16 Thermal conductivity
+        Note: Revised release on the IAPS Formulation 1985 for the Thermal Conductivity of ordinary water substance (IAPWS 1998)
+        Saturated vapour thermal conductivity as a function of temperature
 
-        Args:
-            t (float): temperature value
+        :param t: temperature
 
-        Returns:
-            tcL (float): saturated liquid thermal conductivity
+        :return: saturated liquid thermal conductivity
         """
         Ts = t
         p = self.psat_t(Ts)
@@ -2236,13 +2218,14 @@ class XSteam(object):
         return self._unit_converter.fromSIunit_tc(tc_ptrho(p, T, rho))
 
     def tcV_t(self, t: float) -> float:
-        """Saturated liquid thermal conductivity as a function of temperature
+        """
+        Section 1.16 Thermal conductivity
+        Note: Revised release on the IAPS Formulation 1985 for the Thermal Conductivity of ordinary water substance (IAPWS 1998)
+        Saturated liquid thermal conductivity as a function of temperature
 
-        Args:
-            t (float): temperature value
+        :param t: temperature
 
-        Returns:
-            tcV (float): saturated vapour thermal conductivity
+        :return: saturated vapour thermal conductivity
         """
         Ts = t
         p = self.psat_t(Ts)
@@ -2254,14 +2237,15 @@ class XSteam(object):
         return self._unit_converter.fromSIunit_tc(tc_ptrho(p, T, rho))
 
     def tc_pt(self, p: float, t: float) -> float:
-        """Thermal conductivity as a function of pressure and temperature
+        """
+        Section 1.16 Thermal conductivity
+        Note: Revised release on the IAPS Formulation 1985 for the Thermal Conductivity of ordinary water substance (IAPWS 1998)
+        Thermal conductivity as a function of pressure and temperature
 
-        Args:
-            p (float): preasure value
-            t (float): temperature value
+        :param p: preasure
+        :param t: temperature
 
-        Returns:
-            tc (float): thermal conductivity
+        :return: thermal conductivity
         """
 
         Ts = t
@@ -2275,14 +2259,15 @@ class XSteam(object):
         return self._unit_converter.fromSIunit_tc(tc_ptrho(p, T, rho))
 
     def tc_ph(self, p: float, h: float) -> float:
-        """Thermal conductivity as a function of pressure and enthalpy
+        """
+        Section 1.16 Thermal conductivity
+        Note: Revised release on the IAPS Formulation 1985 for the Thermal Conductivity of ordinary water substance (IAPWS 1998)
+        Thermal conductivity as a function of pressure and enthalpy
 
-        Args:
-            p (float): preasure value
-            h (float): enthalpy value
+        :param p: preasure
+        :param h: enthalpy
 
-        Returns:
-            tc (float): thermal conductivity
+        :return: thermal conductivity
         """
         hs = h
         ps = p
@@ -2295,14 +2280,15 @@ class XSteam(object):
         return self._unit_converter.fromSIunit_tc(tc_ptrho(p, T, rho))
 
     def tc_hs(self, h: float, s: float) -> float:
-        """Thermal conductivity as a function of enthalpy and entropy
+        """
+        Section 1.16 Thermal conductivity
+        Note: Revised release on the IAPS Formulation 1985 for the Thermal Conductivity of ordinary water substance (IAPWS 1998)
+        Thermal conductivity as a function of enthalpy and entropy
 
-        Args:
-            h (float): enthalpy value
-            s (float): entropy value
+        :param h: enthalpy
+        :param s: specific entropy
 
-        Returns:
-            tc (float): thermal conductivity
+        :return: thermal conductivity
         """
         hs = h
         p = self.p_hs(hs, s)
@@ -2315,17 +2301,15 @@ class XSteam(object):
         rho = 1 / v
         return self._unit_converter.fromSIunit_tc(tc_ptrho(p, T, rho))
 
-    # ***********************************************************************************************************
-    # Section 1.17 Vapour fraction
     def x_ph(self, p: float, h: float) -> float:
-        """Vapour fraction as a function of pressure and enthalpy
+        """
+        Section 1.17 Vapour fraction
+        Vapour fraction as a function of pressure and enthalpy
 
-        Args:
-            p (float): preasure value
-            h (float): enthalpy value
+        :param p: preasure
+        :param h: enthalpy
 
-        Returns:
-            x (float): vapour fraction or NaN if arguments are out of range
+        :return: vapour fraction or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
         h = self._unit_converter.toSIunit_h(h)
@@ -2336,14 +2320,14 @@ class XSteam(object):
             return float("NaN")
 
     def x_ps(self, p: float, s: float) -> float:
-        """Vapour fraction as a function of pressure and entropy
+        """
+        Section 1.17 Vapour fraction
+        Vapour fraction as a function of pressure and entropy
 
-        Args:
-            p (float): preasure value
-            s (float): entropy value
+        :param p: preasure
+        :param s: specific entropy
 
-        Returns:
-            x (float): vapour fraction or NaN if arguments are out of range
+        :return: vapour fraction or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
         s = self._unit_converter.toSIunit_s(s)
@@ -2353,17 +2337,14 @@ class XSteam(object):
             self.logger.warning("pressure %f out of range", p)
             return float("NaN")
 
-    # ***********************************************************************************************************
-    # Section 1.18 Vapour Volume Fraction
     def vx_ph(self, p: float, h: float) -> float:
-        """Vapour volume fraction as a function of pressure and enthalpy
+        """
+        Section 1.18 Vapour Volume Fraction
+        Vapour volume fraction as a function of pressure and enthalpy
 
-        Args:
-            p (float): preasure value
-            h (float): enthalpy value
-
-        Returns:
-            vx (float): vapour volume fraction or NaN if arguments are out of range
+        :param p: preasure
+        :param h: enthalpy
+        :return: vapour volume fraction or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
         h = self._unit_converter.toSIunit_h(h)
@@ -2383,14 +2364,15 @@ class XSteam(object):
             return float("NaN")
 
     def vx_ps(self, p: float, s: float) -> float:
-        """Vapour volume fraction as a function of pressure and entropy
+        """
+        Section 1.18 Vapour Volume Fraction
+        Vapour volume fraction as a function of pressure and entropy
 
-        Args:
-            p (float): preasure value
-            s (float): entropy value
+        :param p: preasure
+        :param s: specific entropy
 
         Returns:
-            vx (float): vapour volume fraction or NaN if arguments are out of range
+        :return: vapour volume fraction or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
         s = self._unit_converter.toSIunit_s(s)
@@ -2409,30 +2391,27 @@ class XSteam(object):
             self.logger.warning("pressure %f out of range", p)
             return float("NaN")
 
-    # ***********************************************************************************************************
-    # Revised Release on the Pressure along the Melting and Sublimation Curves of Ordinary Water Substance
-    # Release IAPWS R14-08(2011)
-    # http://www.iapws.org/relguide/MeltSub2011.pdf
-    def pmelt_t(self, t: float, hint=None) -> float:
-        # ToDo: make hint an enum
-        """Pressure along the melting curve as a function of temperature. Based on IAPWS R14-08(2011)
+    def pmelt_t(self, t: float, hint: IceType = None) -> float:
+        """
+        Revised Release on the Pressure along the Melting and Sublimation Curves of Ordinary Water Substance
+        Release IAPWS R14-08(2011)
+        http://www.iapws.org/relguide/MeltSub2011.pdf
+
+        Pressure along the melting curve as a function of temperature. Based on IAPWS R14-08(2011)
         http://www.iapws.org/relguide/MeltSub2011.pdf
         Because of the shape of the meltin curve it is not possible to automatically select the correct region
         automatically. Therefore the optional hint-parameter is used to tell the function which area you are interested in.
         The hint-values are namend after the ice types.
-        XSteam.TYPE_ICE_Ih = 1
-        XSteam.TYPE_ICE_III = 3
-        XSteam.TYPE_ICE_V = 5
-        XSteam.TYPE_ICE_VI = 6
-        XSteam.TYPE_ICE_VII = 7
+        IceType.Ih = 1
+        IceType.III = 3
+        IceType.V = 5
+        IceType.VI = 6
+        IceType.VII = 7
         If the hint is not one of the values above or None(Default), an Exception is raised
 
-        Args:
-            t (float): temperature value
-            hint (int): (optional) hint for the selection logic to decide which part of the melting curve to use
-
-        Returns:
-            p (float): preassure or NaN if arguments are out of range
+        :param t: temperature
+        :param hint: hint for the selection logic to decide which part of the melting curve to use. For supported values see IceType
+        :return: preassure or NaN if arguments are out of range
         """
         T = self._unit_converter.toSIunit_T(t)
 
@@ -2455,35 +2434,35 @@ class XSteam(object):
                 self.logger.warning("temperature %f out of range", T)
                 return float("NaN")
 
-        elif hint is self.TYPE_ICE_Ih:
+        elif hint is IceType.Ih:
             if T >= 251.165 and T < 273.16:
                 return self._unit_converter.fromSIunit_p(pmelt_T_iceIh(T))
             else:
                 self.logger.warning("temperature %f out of range", T)
                 return float("NaN")
 
-        elif hint is self.TYPE_ICE_III:
+        elif hint is IceType.III:
             if T >= 251.165 and T < 256.164:
                 return self._unit_converter.fromSIunit_p(pmelt_T_iceIII(T))
             else:
                 self.logger.warning("temperature %f out of range", T)
                 return float("NaN")
 
-        elif hint is self.TYPE_ICE_V:
+        elif hint is IceType.V:
             if T >= 256.164 and T < 273.31:
                 return self._unit_converter.fromSIunit_p(pmelt_T_iceV(T))
             else:
                 self.logger.warning("temperature %f out of range", T)
                 return float("NaN")
 
-        elif hint is self.TYPE_ICE_VI:
+        elif hint is IceType.VI:
             if T >= 273.31 and T < 355:
                 return self._unit_converter.fromSIunit_p(pmelt_T_iceVI(T))
             else:
                 self.logger.warning("temperature %f out of range", T)
                 return float("NaN")
 
-        elif hint is self.TYPE_ICE_VII:
+        elif hint is IceType.VII:
             if T >= 355 and T < 751:
                 return self._unit_converter.fromSIunit_p(pmelt_T_iceVII(T))
             else:
@@ -2500,11 +2479,13 @@ class XSteam(object):
         """Pressure along the sublimation curve as a function of temperature. Based on IAPWS R14-08(2011)
         http://www.iapws.org/relguide/MeltSub2011.pdf
 
-        Args:
-            t (float): temperature value
+        Revised Release on the Pressure along the Melting and Sublimation Curves of Ordinary Water Substance
+        Release IAPWS R14-08(2011)
+        http://www.iapws.org/relguide/MeltSub2011.pdf
 
-        Returns:
-            p (float): preassure or NaN if arguments are out of range
+
+        :param t: temperature
+        :return: preassure or NaN if arguments are out of range
         """
         T = self._unit_converter.toSIunit_T(t)
         if T >= 50 and T < 273.16:
