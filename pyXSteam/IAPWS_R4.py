@@ -18,6 +18,7 @@ def myHW_rhoT_R4(rho: float, T: float) -> float:
 
     :param rho: density value for heavy water in [kg / m³]
     :param T: temperature value for heavy water in [K]
+
     :return: viscosity µ or NaN if arguments are out of range, in [Pa s]
     """
     logger.debug("myHW_rhoT_R4 input: ρ %f kg/m³, T %f K", rho, T)
@@ -42,8 +43,7 @@ def myHW_rhoT_R4(rho: float, T: float) -> float:
     B.append([0.3509007, 1.315436, 1.297752, 1.353448, 0.0, 0.0])  # j= 1
     B.append([-0.2847572, -1.037026, -1.287846, 0.0, 0.0, -0.02148229])  # j= 2
     B.append([0.07013759, 0.4660127, 0.2292075, -0.4857462, 0.0, 0.0])  # j= 3
-    B.append([0.01641220, -0.02884911, 0.0,
-             0.1607171, 0.0, -0.009603846])  # j= 4
+    B.append([0.01641220, -0.02884911, 0.0, 0.1607171, 0.0, -0.009603846])  # j= 4
     B.append([-0.01163815, -0.008239587, 0.0, 0.0, 0.0, 0.004559914])  # j= 5
     B.append([0.0, 0.0, 0.0, -0.003886659, 0.0, 0.0])  # j= 6
 
@@ -76,6 +76,7 @@ def tcHW_rhoT_R4(rho: float, T: float) -> float:
 
     :param rho: density value for heavy water in [kg / m³]
     :param T: temperature value for heavy water in [K]
+
     :return: thermal conductivity λ or NaN, in [W / (m * K)]
     """
     logger.debug("tcHW_rhoT_R4 input: ρ %f kg/m³, T %f K", rho, T)
@@ -125,8 +126,7 @@ def tcHW_rhoT_R4(rho: float, T: float) -> float:
     delta_tc_c = C_1 * f_1 * f_2 * (1.0 + f_2**2 * (part_C2 + part_f2))
 
     # equation B11
-    delta_tc_L = D_1 * f_1**1.2 * \
-        (1.0 - math.exp(-1.0 * (rho_dash / 2.5) ** 10))
+    delta_tc_L = D_1 * f_1**1.2 * (1.0 - math.exp(-1.0 * (rho_dash / 2.5) ** 10))
 
     # equation B7
     tc_dash = tc_o + delta_tc + delta_tc_c + delta_tc_L

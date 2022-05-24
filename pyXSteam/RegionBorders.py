@@ -15,6 +15,7 @@ def B23p_T(T: float) -> float:
     Eq 5, Page 5
 
     :param T: temperature in [K]
+
     :return: preasure in [MPa]
     """
     return 348.05185628969 - 1.1671859879975 * T + 1.0192970039326e-03 * (T**2)
@@ -30,6 +31,7 @@ def B23T_p(p: float) -> float:
     Eq 6, Page 6
 
     :param p: preasure in [MPa]
+
     :return: temperature in [K]
     """
     return 572.54459862746 + ((p - 13.91883977887) / 1.0192970039326e-03) ** 0.5
@@ -45,6 +47,7 @@ def p3sat_h(h: float) -> float:
     See pictures Page 17, Eq 10, Table 17, Page 18
 
     :param h: enthalpy in [kJ / kg]
+
     :return: saturation preasure in [MPa]
     """
     Ii = [0, 1, 1, 1, 1, 5, 7, 8, 14, 20, 22, 24, 28, 36]
@@ -78,6 +81,7 @@ def p3sat_s(s: float) -> float:
     Section 4.2 Region 3. pSat_h  & pSat_s
 
     :param s: Specific entropy in [kJ / (kg K)]
+
     :return: saturation preasure in [MPa]
     """
     Ii = [0, 1, 1, 4, 12, 12, 16, 24, 28, 32]
@@ -109,6 +113,7 @@ def hB13_s(s: float) -> float:
     Supplementary Release on Backward Equations ( ) , p h s for Region 3, Chapter 4.5 page 23.
 
     :param s: Specific entropy in [kJ / (kg K)]
+
     :return: enthalpy in [kJ / kg]
     """
     Ii = [0, 1, 1, 3, 5, 6]
@@ -137,6 +142,7 @@ def TB23_hs(h: float, s: float) -> float:
 
     :param h: enthalpy in [kJ / kg]
     :param s: Specific entropy in [kJ / (kg K)]
+
     :return: temperature in [K]
     """
     Ii = [

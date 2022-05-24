@@ -7,7 +7,12 @@ import math
 import logging
 from .RegionBorders import B23p_T, B23T_p, p3sat_h, p3sat_s, hB13_s, TB23_hs
 from .Regions import Region1, Region2, Region3, Region4, Region5
-from .Constants import CRITICAL_TEMPERATURE, TRIPLE_POINT_PRESSURE, FREEZING_TEMPERATURE_H2O, DiagramRegion
+from .Constants import (
+    CRITICAL_TEMPERATURE,
+    TRIPLE_POINT_PRESSURE,
+    FREEZING_TEMPERATURE_H2O,
+    DiagramRegion,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -20,11 +25,17 @@ def select_region_pT(p: float, T: float) -> DiagramRegion:
 
     :param p: preasure in [MPa]
     :param T: temperature in [K]
+
     :return: diagram region
     """
     if (T > 1073.15) and (p < 50.0) and (T < 2273.15) and (p > 0.000611):
         return DiagramRegion.R5
-    elif (T <= 1073.15) and (T > FREEZING_TEMPERATURE_H2O) and (p <= 100) and (p > 0.000611):
+    elif (
+        (T <= 1073.15)
+        and (T > FREEZING_TEMPERATURE_H2O)
+        and (p <= 100)
+        and (p > 0.000611)
+    ):
         if T > 623.15:
             if p > B23p_T(T):
                 region_pT_number = DiagramRegion.R3
@@ -57,18 +68,21 @@ def select_region_ph(p: float, h: float) -> DiagramRegion:
 
     :param p: preasure in [MPa]
     :param h: enthalpy in [kJ / kg]
+
     :return: diagram region
     """
     # Check if outside pressure limits
     if (p < TRIPLE_POINT_PRESSURE) or (p > 100):
         logger.warning("Preasure outside valid area")
         return DiagramRegion.NILL
+
     # Check if outside low h.
     # Linear adaption to h1_pt()+2 to speed up calcualations.
     if h < (0.963 * p + 2.2):
         if h < Region1.h1_pT(p, FREEZING_TEMPERATURE_H2O):
             logger.warning("Enthalpy outside valid area")
             return DiagramRegion.NILL
+
     if p < 16.5292:  # Below region 3, Check region 1, 4, 2, 5
         # Check Region 1
         Ts = Region4.T4_p(p)
@@ -132,9 +146,15 @@ def select_region_ps(p: float, s: float) -> DiagramRegion:
 
     :param p: preasure in [MPa]
     :param s: specific entropy in [kJ / (kg K)]
+
     :return: diagram region
     """
-    if (p < TRIPLE_POINT_PRESSURE) or (p > 100) or (s < 0) or (s > Region5.s5_pT(p, 2273.15)):
+    if (
+        (p < TRIPLE_POINT_PRESSURE)
+        or (p > 100)
+        or (s < 0)
+        or (s > Region5.s5_pT(p, 2273.15))
+    ):
         logger.warning("Preasure or Entropy outside valid area")
         return DiagramRegion.NILL
     # Check region 5
@@ -177,6 +197,7 @@ def select_region_hs(h: float, s: float) -> DiagramRegion:
 
     :param h: enthalpy in [kJ / kg]
     :param s: specific entropy in [kJ / (kg K)]
+
     :return: diagram region
     """
     if s < -0.0001545495919:
@@ -315,6 +336,7 @@ def select_region_prho(p: float, rho: float) -> DiagramRegion:
 
     :param p: preasure in [MPa]
     :param rho: density in [kg / m³]
+
     :return: diagram region
     """
     v = 1 / rho

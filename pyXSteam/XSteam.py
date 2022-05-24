@@ -3,8 +3,14 @@
 """Main module for pyXSteam"""
 import math
 import logging
-from .RegionSelection import (select_region_pT, select_region_ph,
-                              select_region_ps, select_region_hs, select_region_prho)
+
+from .RegionSelection import (
+    select_region_pT,
+    select_region_ph,
+    select_region_ps,
+    select_region_hs,
+    select_region_prho,
+)
 from .Regions import Region1, Region2, Region3, Region4, Region5
 from .TransportProperties import (
     my_AllRegions_pT,
@@ -22,7 +28,7 @@ from .Constants import (
     FREEZING_TEMPERATURE_H2O,
     UnitSystem,
     IceType,
-    DiagramRegion
+    DiagramRegion,
 )
 from .UnitConverter import UnitConverter
 from .IAPWS_R14 import (
@@ -324,8 +330,7 @@ class XSteam(object):
             raise ValueError("rho out of range")
         h = self._unit_converter.toSIunit_h(h)
         High_Bound = self._unit_converter.fromSIunit_p(100)
-        Low_Bound = self._unit_converter.fromSIunit_p(
-            TRIPLE_POINT_PRESSURE)
+        Low_Bound = self._unit_converter.fromSIunit_p(TRIPLE_POINT_PRESSURE)
         ps = self._unit_converter.fromSIunit_p(10)
         rhos = 1 / self.v_ph(ps, h)
         step_counter = 0
@@ -2453,35 +2458,35 @@ class XSteam(object):
                 self.logger.warning("temperature %f out of range", T)
                 return float("NaN")
 
-        elif hint is IceType.Ih:
+        elif hint == IceType.Ih:
             if T >= 251.165 and T < 273.16:
                 return self._unit_converter.fromSIunit_p(pmelt_T_iceIh(T))
             else:
                 self.logger.warning("temperature %f out of range", T)
                 return float("NaN")
 
-        elif hint is IceType.III:
+        elif hint == IceType.III:
             if T >= 251.165 and T < 256.164:
                 return self._unit_converter.fromSIunit_p(pmelt_T_iceIII(T))
             else:
                 self.logger.warning("temperature %f out of range", T)
                 return float("NaN")
 
-        elif hint is IceType.V:
+        elif hint == IceType.V:
             if T >= 256.164 and T < 273.31:
                 return self._unit_converter.fromSIunit_p(pmelt_T_iceV(T))
             else:
                 self.logger.warning("temperature %f out of range", T)
                 return float("NaN")
 
-        elif hint is IceType.VI:
+        elif hint == IceType.VI:
             if T >= 273.31 and T < 355:
                 return self._unit_converter.fromSIunit_p(pmelt_T_iceVI(T))
             else:
                 self.logger.warning("temperature %f out of range", T)
                 return float("NaN")
 
-        elif hint is IceType.VII:
+        elif hint == IceType.VII:
             if T >= 355 and T < 751:
                 return self._unit_converter.fromSIunit_p(pmelt_T_iceVII(T))
             else:

@@ -9,7 +9,7 @@ this is the pyXSteam package"""
 from .XSteam import XSteam
 from .XSteam_HW import XSteam_HW
 from .UnitConverter import UnitConverter
-from .Constants import *
+from .Constants import UnitSystem, IceType
 
 name = "pyXSteam"
 __version__ = "0.4.8"
