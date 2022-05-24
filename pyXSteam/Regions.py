@@ -23,6 +23,10 @@ class Region1:
         5 Equations for Region 1, Section. 5.1 Basic Equation
 
         Equation 7, Table 3, Page 6
+
+        :param p: preasure in [MPa]
+        :param T: temperature in [K]
+        :return: specific volume in [m³ / kg]
         """
         I1 = [
             0,
@@ -152,6 +156,10 @@ class Region1:
         5 Equations for Region 1, Section. 5.1 Basic Equation
 
         Equation 7, Table 3, Page 6
+
+        :param p: preasure in [MPa]
+        :param T: temperature in [K]
+        :return: enthalpy in [kJ / kg]
         """
         I1 = [
             0,
@@ -279,6 +287,10 @@ class Region1:
         5 Equations for Region 1, Section. 5.1 Basic Equation
 
         Equation 7, Table 3, Page 6
+
+        :param p: preasure in [MPa]
+        :param T: temperature in [K]
+        :return: specific internal energy in [kJ / kg]
         """
         I1 = [
             0,
@@ -412,6 +424,10 @@ class Region1:
         5 Equations for Region 1, Section. 5.1 Basic Equation
 
         Equation 7, Table 3, Page 6
+
+        :param p: preasure in [MPa]
+        :param T: temperature in [K]
+        :return: specific entropy in [kJ / (kg K)]
         """
         I1 = [
             0,
@@ -542,6 +558,10 @@ class Region1:
         5 Equations for Region 1, Section. 5.1 Basic Equation
 
         Equation 7, Table 3, Page 6
+
+        :param p: preasure in [MPa]
+        :param T: temperature in [K]
+        :return: specific isobaric heat capacity in [kJ / (kg K)]
         """
         I1 = [
             0,
@@ -672,6 +692,10 @@ class Region1:
         5 Equations for Region 1, Section. 5.1 Basic Equation
 
         Equation 7, Table 3, Page 6
+
+        :param p: preasure in [MPa]
+        :param T: temperature in [K]
+        :return: specific isochoric heat capacity in [kJ / (kg K)]
         """
         I1 = [
             0,
@@ -820,6 +844,10 @@ class Region1:
         5 Equations for Region 1, Section. 5.1 Basic Equation
 
         Equation 7, Table 3, Page 6
+
+        :param p: preasure in [MPa]
+        :param T: temperature in [K]
+        :return: speed of sound in [m / s]
         """
         I1 = [
             0,
@@ -975,6 +1003,10 @@ class Region1:
         5 Equations for Region 1, Section. 5.1 Basic Equation, 5.2.1 The Backward Equation T (p, h)
 
         Equation 11, Table 6, Page 10
+
+        :param p: preasure in [MPa]
+        :param h: enthalpy in [kJ / kg]
+        :return: temperature in [K]
         """
         I1 = [0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 2, 2, 3, 3, 4, 5, 6]
         J1 = [0, 1, 2, 6, 22, 32, 0, 1, 2, 3, 4,
@@ -1015,6 +1047,10 @@ class Region1:
         5 Equations for Region 1, Section. 5.1 Basic Equation, 5.2.2 The Backward Equation T (p, s)
 
         Equation 13, Table 8, Page 11
+
+        :param p: preasure in [MPa]
+        :param s: Specific entropy in [kJ / (kg K)]
+        :return: temperature in [K]
         """
         I1 = [0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 4]
         J1 = [0, 1, 2, 3, 11, 31, 0, 1, 2, 3,
@@ -1057,6 +1093,10 @@ class Region1:
         5 Backward Equation p(h, s) for Region 1
 
         Equation 1, Table 2, Page 5
+
+        :param h: enthalpy in [kJ / kg]
+        :param s: Specific entropy in [kJ / (kg K)]
+        :return: preasure in [MPa]
         """
         I1 = [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 3, 4, 4, 5]
         J1 = [0, 1, 2, 4, 5, 6, 8, 14, 0, 1, 4, 6, 0, 1, 10, 4, 1, 4, 0]
@@ -1093,6 +1133,10 @@ class Region1:
         """function T1_prho = T1_prho(p , rho)
 
         Solve by iteration. Observe that for low temperatures this equation has 2 solutions. Solve with half interval method
+
+        :param p: pressure in [MPa]
+        :param rho: density in [kg / m³]
+        :return: temperature in [K]
         """
         logger = logging.getLogger("pyXSteam")
         Low_Bound = FREEZING_TEMPERATURE_H2O
@@ -1132,6 +1176,10 @@ class Region2:
         6 Equations for Region 2, Section. 6.1 Basic Equation
 
         Table 11 and 12, Page 14 and 15
+
+        :param p: preasure in [MPa]
+        :param T: temperature in [K]
+        :return: specific volume in [m³ / kg]
         """
         Ir = [
             1,
@@ -1285,6 +1333,10 @@ class Region2:
         6 Equations for Region 2, Section. 6.1 Basic Equation
 
         Table 11 and 12, Page 14 and 15
+
+        :param p: preasure in [MPa]
+        :param T: temperature in [K]
+        :return: enthalpy in [kJ / kg]
         """
         J0 = [0, 1, -5, -4, -3, -2, -1, 2, 3]
         n0 = [
@@ -1452,6 +1504,10 @@ class Region2:
         6 Equations for Region 2, Section. 6.1 Basic Equation
 
         Table 11 and 12, Page 14 and 15
+
+        :param p: preasure in [MPa]
+        :param T: temperature in [K]
+        :return: specific internal energy in [kJ / kg]
         """
         J0 = [0, 1, -5, -4, -3, -2, -1, 2, 3]
         n0 = [
@@ -1623,6 +1679,10 @@ class Region2:
         6 Equations for Region 2, Section. 6.1 Basic Equation
 
         Table 11 and 12, Page 14 and 15
+
+        :param p: preasure in [MPa]
+        :param T: temperature in [K]
+        :return: specific entropy in [kJ / (kg K)]
         """
         J0 = [0, 1, -5, -4, -3, -2, -1, 2, 3]
         n0 = [
@@ -1794,6 +1854,10 @@ class Region2:
         6 Equations for Region 2, Section. 6.1 Basic Equation
 
         Table 11 and 12, Page 14 and 15
+
+        :param p: preasure in [MPa]
+        :param T: temperature in [K]
+        :return: specific isobaric heat capacity in [kJ / (kg K)]
         """
         J0 = [0, 1, -5, -4, -3, -2, -1, 2, 3]
         n0 = [
@@ -1963,6 +2027,10 @@ class Region2:
         6 Equations for Region 2, Section. 6.1 Basic Equation
 
         Table 11 and 12, Page 14 and 15
+
+        :param p: preasure in [MPa]
+        :param T: temperature in [K]
+        :return: specific isochoric heat capacity in [kJ / (kg K)]
         """
         J0 = [0, 1, -5, -4, -3, -2, -1, 2, 3]
         n0 = [
@@ -2148,6 +2216,10 @@ class Region2:
         6 Equations for Region 2, Section. 6.1 Basic Equation
 
         Table 11 and 12, Page 14 and 15
+
+        :param p: preasure in [MPa]
+        :param T: temperature in [K]
+        :return: speed of sound in [m / s]
         """
         J0 = [0, 1, -5, -4, -3, -2, -1, 2, 3]
         n0 = [
@@ -2338,6 +2410,10 @@ class Region2:
         """function T2_ph = T2_ph(p, h)
 
         6 Equations for Region 2, 6.3.1 The Backward Equations T(p, h) for Subregions 2a, 2b, and 2c
+
+        :param p: preasure in [MPa]
+        :param h: enthalpy in [kJ / kg]
+        :return: temperature in [K]
         """
         if p < 4:
             sub_reg = 1
@@ -2680,6 +2756,10 @@ class Region2:
         6 Equations for Region 2,6.3.2 The Backward Equations T( p, s ) for Subregions 2a, 2b, and 2c
 
         Page 26
+
+        :param p: preasure in [MPa]
+        :param s: Specific entropy in [kJ / (kg K)]
+        :return: temperature in [K]
         """
         if p < 4:
             sub_reg = 1
@@ -3100,6 +3180,10 @@ class Region2:
         Supplementary Release on Backward Equations for Pressure as a function of Enthalpy and Entropy p(h,s) to the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam
 
         Chapter 6: Backward Equations p(h,s) for Region 2
+
+        :param h: enthalpy in [kJ / kg]
+        :param s: Specific entropy in [kJ / (kg K)]
+        :return: preasure in [MPa]
         """
         if h < (
             -3498.98083432139
@@ -3444,6 +3528,10 @@ class Region2:
     def T2_prho(p: float, rho: float) -> float:
         """function T2_prho=T2_prho(p,rho)
         Solve by iteration. Observe that of low temperatures this equation has 2 solutions. Solve with half interval method
+
+        :param p: preasure in [MPa]
+        :param rho: density in [kg / m³]
+        :return: temperature in [K]
         """
         logger = logging.getLogger("pyXSteam")
         if p < 16.5292:
@@ -3486,6 +3574,10 @@ class Region3:
         7 Basic Equation for Region 3, Section. 6.1 Basic Equation
 
         Table 30 and 31, Page 30 and 31
+
+        :param rho: density in [kg / m³]
+        :param T: temperature in [K]
+        :return: preasure in [MPa]
         """
         Ii = [
             0,
@@ -3633,6 +3725,10 @@ class Region3:
         7 Basic Equation for Region 3, Section. 6.1 Basic Equation
 
         Table 30 and 31, Page 30 and 31
+
+        :param rho: density in [kg / m³]
+        :param T: temperature in [K]
+        :return: specific internal energy in [kJ / kg]
         """
         Ii = [
             0,
@@ -3777,6 +3873,10 @@ class Region3:
         7 Basic Equation for Region 3, Section. 6.1 Basic Equation
 
         Table 30 and 31, Page 30 and 31
+
+        :param rho: density in [kg / m³]
+        :param T: temperature in [K]
+        :return: enthalpy in [kJ / kg]
         """
         Ii = [
             0,
@@ -3925,6 +4025,10 @@ class Region3:
         7 Basic Equation for Region 3, Section. 6.1 Basic Equation
 
         Table 30 and 31, Page 30 and 31
+
+        :param rho: density in [kg / m³]
+        :param T: temperature in [K]
+        :return: specific entropy in [kJ / (kg K)]
         """
         Ii = [
             0,
@@ -4072,6 +4176,10 @@ class Region3:
         7 Basic Equation for Region 3, Section. 6.1 Basic Equation
 
         Table 30 and 31, Page 30 and 31
+
+        :param rho: density in [kg / m³]
+        :param T: temperature in [K]
+        :return: specific isobaric heat capacity in [kJ / (kg K)]
         """
         Ii = [
             0,
@@ -4237,6 +4345,10 @@ class Region3:
         7 Basic Equation for Region 3, Section. 6.1 Basic Equation
 
         Table 30 and 31, Page 30 and 31
+
+        :param rho: density in [kg / m³]
+        :param T: temperature in [K]
+        :return: specific isochoric heat capacity in [kJ / (kg K)]
         """
         Ii = [
             0,
@@ -4386,6 +4498,10 @@ class Region3:
         7 Basic Equation for Region 3, Section. 6.1 Basic Equation
 
         Table 30 and 31, Page 30 and 31
+
+        :param rho: density in [kg / m³]
+        :param T: temperature in [K]
+        :return: speed of sound in [m / s]
         """
         Ii = [
             0,
@@ -4559,6 +4675,10 @@ class Region3:
         Section 3.3 Backward Equations T(p,h) and v(p,h) for Subregions 3a and 3b
 
         Boundary equation, Eq 1 Page 5
+
+        :param p: preasure in [MPa]
+        :param h: enthalpy in [kJ / kg]
+        :return: temperature in [K]
         """
         h3ab = (
             2014.64004206875
@@ -4798,6 +4918,10 @@ class Region3:
         Section 3.3 Backward Equations T(p, h) and v(p, h) for Subregions 3a and 3b
 
         Boundary equation, Eq 1 Page 5
+
+        :param p: preasure in [MPa]
+        :param h: enthalpy in [kJ / kg]
+        :return: specific volume in [m³ / kg]
         """
         h3ab = (
             2014.64004206875
@@ -5032,6 +5156,10 @@ class Region3:
         3.4 Backward Equations T(p,s) and v(p,s) for Subregions 3a and 3b
 
         Boundary equation, Eq 6 Page 11
+
+        :param p: preasure in [MPa]
+        :param s: Specific entropy in [kJ / (kg K)]
+        :return: temperature in [K]
         """
         if s <= 4.41202148223476:
             # Subregion 3a
@@ -5259,6 +5387,10 @@ class Region3:
         3.4 Backward Equations T(p, s) and v(p, s) for Subregions 3a and 3b
 
         Boundary equation, Eq 6 Page 11
+
+        :param p: preasure in [MPa]
+        :param s: Specific entropy in [kJ / (kg K)]
+        :return: specific volume in [m³ / kg]
         """
         if s <= 4.41202148223476:
             # Subregion 3a
@@ -5478,6 +5610,10 @@ class Region3:
         Supplementary Release on Backward Equations () , p h s for Region 3, Equations as a function of h and s for the Region Boundaries, and an Equation sat , T hs for Region 4 of the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam 2004
 
         Section 3 Backward functions p(h, s), T(h, s), and v(h, s) for Region 3
+
+        :param h: enthalpy in [kJ / kg]
+        :param s: Specific entropy in [kJ / (kg K)]
+        :return: preasure in [MPa]
         """
         if s < 4.41202148223476:
             # Subregion 3a
@@ -5727,6 +5863,10 @@ class Region3:
         Solve function T3_ph - T = 0 with half interval method.
 
         ver2.6 Start corrected bug
+
+        :param p: preasure in [MPa]
+        :param T: temperature in [K]
+        :return: enthalpy in [kJ / kg]
         """
         logger = logging.getLogger("pyXSteam")
         if p < CRITICAL_PRESSURE:  # Below triple point
@@ -5768,6 +5908,10 @@ class Region3:
         """function T3_prho = T3_prho(p, rho)
 
         Solve by iteration. Observe that of low temperatures this equation has 2 solutions. Solve with half interval method
+
+        :param p: preasure in [MPa]
+        :param rho: density in [kg / m³]
+        :return: temperature in [K]
         """
         logger = logging.getLogger("pyXSteam")
         Low_Bound = 623.15
@@ -5807,6 +5951,9 @@ class Region4:
         Section 8.1 The Saturation-Pressure Equation
 
         Eq 30, Page 33
+
+        :param T: temperature in [K]
+        :return: preasure in [MPa]
         """
         teta = T - 0.23855557567849 / (T - 650.17534844798)
         a = teta**2 + 1167.0521452767 * teta - 724213.16703206
@@ -5821,6 +5968,9 @@ class Region4:
         Section 8.2 The Saturation-Temperature Equation
 
         Eq 31, Page 34
+
+        :param p: preasure in [MPa]
+        :return: temperature in [K]
         """
         beta = p**0.25
         E = beta**2 - 17.073846940092 * beta + 14.91510861353
@@ -5844,6 +5994,9 @@ class Region4:
         Supplementary Release on Backward Equations () , p h s for Region 3, Equations as a function of h and s for the Region Boundaries, and an Equation() sat , T hs for Region 4 of the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam 4 Equations for Region Boundaries Given Enthalpy and Entropy
 
         See picture page 14
+
+        :param s: Specific entropy in [kJ / (kg K)]
+        :return: enthalpy in [kJ / kg]
         """
         if (s > -0.0001545495919) and (s <= 3.77828134):
             # hL1_s
@@ -6126,6 +6279,9 @@ class Region4:
         """function p4_s = p4_s(s)
 
         Uses h4_s and p_hs for the different regions to determine p4_s
+
+        :param s: Specific entropy in [kJ / (kg K)]
+        :return: preasure in [MPa]
         """
         h_sat = Region4.h4_s(s)
         if s > -0.0001545495919 and s <= 3.77828134:
@@ -6140,7 +6296,11 @@ class Region4:
 
     @staticmethod
     def h4L_p(p: float) -> float:
-        """function h4L_p = h4L_p(p)"""
+        """function h4L_p = h4L_p(p)
+
+        :param p: preasure in [MPa]
+        :return: enthalpy in [kJ / kg]
+        """
         logger = logging.getLogger("pyXSteam")
         if (p > TRIPLE_POINT_PRESSURE) and (p < CRITICAL_PRESSURE):
             Ts = Region4.T4_p(p)
@@ -6177,7 +6337,11 @@ class Region4:
 
     @staticmethod
     def h4V_p(p: float) -> float:
-        """function h4V_p = h4V_p(p)"""
+        """function h4V_p = h4V_p(p)
+
+        :param p: preasure in [MPa]
+        :return: enthalpy in [kJ / kg]
+        """
         logger = logging.getLogger("pyXSteam")
         if (p > TRIPLE_POINT_PRESSURE) and (p < CRITICAL_PRESSURE):
             Ts = Region4.T4_p(p)
@@ -6217,6 +6381,10 @@ class Region4:
         """function x4_ph = x4_ph(p, h)
 
         Calculate vapour fraction from hL and hV for given p
+
+        :param p: preasure in [MPa]
+        :param h: enthalpy in [kJ / kg]
+        :return: vapor fraction
         """
         h4v = Region4.h4V_p(p)
         h4L = Region4.h4L_p(p)
@@ -6230,7 +6398,12 @@ class Region4:
 
     @staticmethod
     def x4_ps(p: float, s: float) -> float:
-        """function x4_ps = x4_ps(p, s)"""
+        """function x4_ps = x4_ps(p, s)
+
+        :param p: preasure in [MPa]
+        :param s: Specific entropy in [kJ / (kg K)]
+        :return: vapor fraction
+        """
         if p < 16.529:
             ssv = Region2.s2_pT(p, Region4.T4_p(p))
             ssL = Region1.s1_pT(p, Region4.T4_p(p))
@@ -6258,6 +6431,11 @@ class Region4:
         Chapter 5.3 page 30.
 
         The if 97 function is only valid for part of region4. Use iteration outside.
+
+
+        :param h: enthalpy in [kJ / kg]
+        :param s: Specific entropy in [kJ / (kg K)]
+        :return: temperature in [K]
         """
         Ii = [
             0,
@@ -6440,6 +6618,10 @@ class Region5:
         Basic Equation for Region 5
 
         Eq 32,33, Page 36, Tables 37-41
+
+        :param p: preasure in [MPa]
+        :param T: temperature in [K]
+        :return: enthalpy in [kJ / kg]
         """
         Ji0 = [0, 1, -3, -2, -1, 2]
         ni0 = [
@@ -6479,6 +6661,10 @@ class Region5:
         Basic Equation for Region 5
 
         Eq 32,33, Page 36, Tables 37-41
+
+        :param p: preasure in [MPa]
+        :param T: temperature in [K]
+        :return: specific volume in [m³ / kg]
         """
         Iir = [1, 1, 1, 2, 3]
         Jir = [0, 1, 3, 9, 3]
@@ -6506,6 +6692,10 @@ class Region5:
         Basic Equation for Region 5
 
         Eq 32,33, Page 36, Tables 37-41
+
+        :param p: preasure in [MPa]
+        :param T: temperature in [K]
+        :return: specific internal energy in [kJ / kg]
         """
         Ji0 = [0, 1, -3, -2, -1, 2]
         ni0 = [
@@ -6549,6 +6739,10 @@ class Region5:
         Basic Equation for Region 5
 
         Eq 32,33, Page 36, Tables 37-41
+
+        :param p: preasure in [MPa]
+        :param T: temperature in [K]
+        :return: specific isobaric heat capacity in [kJ / (kg K)]
         """
         Ji0 = [0, 1, -3, -2, -1, 2]
         ni0 = [
@@ -6590,6 +6784,10 @@ class Region5:
         Basic Equation for Region 5
 
         Eq 32, 33, Page 36, Tables 37 - 41
+
+        :param p: preasure in [MPa]
+        :param T: temperature in [K]
+        :return: specific entropy in [kJ / (kg K)]
         """
         Ji0 = [0, 1, -3, -2, -1, 2]
         ni0 = [
@@ -6633,6 +6831,10 @@ class Region5:
         Basic Equation for Region 5
 
         Eq 32, 33, Page 36, Tables 37 - 41
+
+        :param p: preasure in [MPa]
+        :param T: temperature in [K]
+        :return: specific isochoric heat capacity in [kJ / (kg K)]
         """
         Ji0 = [0, 1, -3, -2, -1, 2]
         ni0 = [
@@ -6691,6 +6893,10 @@ class Region5:
         Basic Equation for Region 5
 
         Eq 32, 33, Page 36, Tables 37 - 41
+
+        :param p: preasure in [MPa]
+        :param T: temperature in [K]
+        :return: speed of sound in [m / s]
         """
         Ji0 = [0, 1, -3, -2, -1, 2]
         ni0 = [
@@ -6753,6 +6959,10 @@ class Region5:
         """function T5_ph = T5_ph(p, h)
 
         Solve with half interval method
+
+        :param p: preasure in [MPa]
+        :param h: enthalpy in [kJ / kg]
+        :return: temperature in [K]
         """
         logger = logging.getLogger("pyXSteam")
         Low_Bound = 1073.15
@@ -6784,6 +6994,10 @@ class Region5:
         """function T5_ps = T5_ps(p, s)
 
         Solve with half interval method
+
+        :param p: preasure in [MPa]
+        :param s: Specific entropy in [kJ / (kg K)]
+        :return: temperature in [K]
         """
         logger = logging.getLogger("pyXSteam")
         Low_Bound = 1073.15
@@ -6815,6 +7029,10 @@ class Region5:
         """function T5_prho = T5_prho(p, rho)
 
         Solve by iteration. Observe that for low temperatures this equation has 2 solutions. Solve with half interval method
+
+        :param p: preasure in [MPa]
+        :param rho: density in [kg / m³]
+        :return: temperature in [K]
         """
         logger = logging.getLogger("pyXSteam")
         Low_Bound = 1073.15

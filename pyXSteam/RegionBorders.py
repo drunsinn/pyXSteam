@@ -13,6 +13,9 @@ def B23p_T(T: float) -> float:
     Release on the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam 1997 Section 4 Auxiliary Equation for the Boundary between Regions 2 and 3
 
     Eq 5, Page 5
+
+    :param T: temperature in [K]
+    :return: preasure in [MPa]
     """
     return 348.05185628969 - 1.1671859879975 * T + 1.0192970039326e-03 * (T**2)
 
@@ -25,6 +28,9 @@ def B23T_p(p: float) -> float:
     Release on the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam 1997 Section 4 Auxiliary Equation for the Boundary between Regions 2 and 3
 
     Eq 6, Page 6
+
+    :param p: preasure in [MPa]
+    :return: temperature in [K]
     """
     return 572.54459862746 + ((p - 13.91883977887) / 1.0192970039326e-03) ** 0.5
 
@@ -37,6 +43,9 @@ def p3sat_h(h: float) -> float:
     Revised Supplementary Release on Backward Equations for the functions T(p,h), v(p,h) s& T(p,s), v(p,s) for Region 3 of the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water & Steam 2004 Section 4 Boundary Equations psat(h) & psat(s) for the Saturation Lines of Region 3
 
     See pictures Page 17, Eq 10, Table 17, Page 18
+
+    :param h: enthalpy in [kJ / kg]
+    :return: preasure in [MPa]
     """
     Ii = [0, 1, 1, 1, 1, 5, 7, 8, 14, 20, 22, 24, 28, 36]
     Ji = [0, 1, 3, 4, 36, 3, 0, 24, 16, 16, 3, 18, 8, 24]
@@ -67,6 +76,9 @@ def p3sat_s(s: float) -> float:
     """function p3sat_s = p3sat_s(s)
 
     Section 4.2 Region 3. pSat_h  & pSat_s
+
+    :param s: Specific entropy in [kJ / (kg K)]
+    :return: preasure in [MPa]
     """
     Ii = [0, 1, 1, 4, 12, 12, 16, 24, 28, 32]
     Ji = [0, 1, 32, 7, 4, 14, 36, 10, 0, 18]
@@ -95,6 +107,9 @@ def hB13_s(s: float) -> float:
     Section 4.3 Region boundary 1 to 3  & 3to2 as a functions of s
 
     Supplementary Release on Backward Equations ( ) , p h s for Region 3, Chapter 4.5 page 23.
+
+    :param s: Specific entropy in [kJ / (kg K)]
+    :return: enthalpy in [kJ / kg]
     """
     Ii = [0, 1, 1, 3, 5, 6]
     Ji = [0, -2, 2, -12, -4, -3]
@@ -119,6 +134,10 @@ def TB23_hs(h: float, s: float) -> float:
     Section 4.3 Region boundary 1to3  & 3to2 as a functions of s
 
     Supplementary Release on Backward Equations () , p h s for Region 3, Chapter 4.6 page 25.
+
+    :param h: enthalpy in [kJ / kg]
+    :param s: Specific entropy in [kJ / (kg K)]
+    :return: temperature in [K]
     """
     Ii = [
         -12,
