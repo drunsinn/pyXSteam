@@ -20,6 +20,10 @@ class XSteam_HW:
         see the enum UnitSystem.
     """
 
+    UNIT_SYSTEM_BARE = UnitSystem.BARE
+    UNIT_SYSTEM_MKS = UnitSystem.MKS
+    UNIT_SYSTEM_FLS = UnitSystem.FLS
+
     def __init__(self, unitSystem: UnitSystem = UnitSystem.BARE):
         """
         Constructor method

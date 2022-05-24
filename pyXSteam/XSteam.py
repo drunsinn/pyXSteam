@@ -49,6 +49,16 @@ class XSteam(object):
         see the enum UnitSystem.
     """
 
+    UNIT_SYSTEM_BARE = UnitSystem.BARE
+    UNIT_SYSTEM_MKS = UnitSystem.MKS
+    UNIT_SYSTEM_FLS = UnitSystem.FLS
+
+    TYPE_ICE_Ih = IceType.Ih
+    TYPE_ICE_III = IceType.III
+    TYPE_ICE_V = IceType.V
+    TYPE_ICE_VI = IceType.VI
+    TYPE_ICE_VII = IceType.VII
+
     def __init__(self, unitSystem: UnitSystem = UnitSystem.BARE):
         """
         Constructor method
