@@ -12,4 +12,4 @@ from .UnitConverter import UnitConverter
 from .Constants import UnitSystem, IceType
 
 name = "pyXSteam"
-__version__ = "0.4.8"
+__version__ = "0.4.9"

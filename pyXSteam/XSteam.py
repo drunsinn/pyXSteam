@@ -531,7 +531,7 @@ class XSteam(object):
             return float("NaN")
         hL = Region4.h4L_p(p)
         hV = Region4.h4V_p(p)
-        return hL + x * (hV - hL)
+        return self._unit_converter.fromSIunit_h(hL + x * (hV - hL))
 
     def h_prho(self, p: float, rho: float) -> float:
         """
@@ -602,7 +602,7 @@ class XSteam(object):
         p = Region4.p4_T(T)
         hL = Region4.h4L_p(p)
         hV = Region4.h4V_p(p)
-        return hL + x * (hV - hL)
+        return self._unit_converter.fromSIunit_h(hL + x * (hV - hL))
 
     def vV_p(self, p: float) -> float:
         """

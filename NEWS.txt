@@ -1,4 +1,8 @@
-## vTODO
+## v0.4.9, 05.2022
+* fix issue with missing unit conversion in h_px and h_tx
+* add tests for fixed bugs
+* fix error in demo script
+* add new demos based on the work of @stu314159
 * improve code readability by using additional tools
 ** enforce code styling with black
 ** reduce minimal python version to 3.4 based on report from vermin
