@@ -31,8 +31,8 @@ setup(
     ],
     packages=["pyXSteam"],
     install_requires=[],
-    python_requires=">=3.4",
+    python_requires=">=3.7",
     include_package_data=True,
     zip_safe=True,
-    scripts=["bin/pyXSteamDemo.py"],
+    # scripts=["bin/pyXSteamDemo.py", "bin/pyXSteamRankineDemo.py"],
 )
