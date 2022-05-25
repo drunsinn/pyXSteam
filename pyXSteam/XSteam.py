@@ -293,7 +293,8 @@ class XSteam(object):
             p (float): pressure or NaN if arguments are out of range
         """
         if rho <= 0.0:
-            self.logger.error("negative values for density rho not allowed %f", rho)
+            self.logger.error(
+                "negative values for density rho not allowed %f", rho)
             raise ValueError("rho out of range")
         h = self._unit_converter.toSIunit_h(h)
         High_Bound = self._unit_converter.fromSIunit_p(100)
@@ -490,7 +491,7 @@ class XSteam(object):
             return float("NaN")
         hL = Region4.h4L_p(p)
         hV = Region4.h4V_p(p)
-        return hL + x * (hV - hL)
+        return self._unit_converter.fromSIunit_h(hL + x * (hV - hL))
 
     def h_prho(self, p, rho):
         """Entalpy as a function of pressure and density. Observe for low temperatures (liquid) this equation has 2 solutions
@@ -561,7 +562,7 @@ class XSteam(object):
         p = Region4.p4_T(T)
         hL = Region4.h4L_p(p)
         hV = Region4.h4V_p(p)
-        return hL + x * (hV - hL)
+        return self._unit_converter.fromSIunit_h(hL + x * (hV - hL))
 
     # ***********************************************************************************************************
     # Section 1.5 Specific Volume (v)
@@ -629,7 +630,8 @@ class XSteam(object):
                 )
             else:
                 return self._unit_converter.fromSIunit_v(
-                    Region3.v3_ph(Region4.p4_T(T), Region4.h4V_p(Region4.p4_T(T)))
+                    Region3.v3_ph(Region4.p4_T(
+                        T), Region4.h4V_p(Region4.p4_T(T)))
                 )
         else:
             self.logger.warning("temperature %f out of range", T)
@@ -652,7 +654,8 @@ class XSteam(object):
                 )
             else:
                 return self._unit_converter.fromSIunit_v(
-                    Region3.v3_ph(Region4.p4_T(T), Region4.h4L_p(Region4.p4_T(T)))
+                    Region3.v3_ph(Region4.p4_T(
+                        T), Region4.h4L_p(Region4.p4_T(T)))
                 )
         else:
             self.logger.warning("temperature %f out of range", T)
@@ -1774,7 +1777,8 @@ class XSteam(object):
                 p,
                 s,
             )
-            return float("NaN")  # (xs * CvVp + (1 - xs) * CvLp) / Cv_scale - Cv_offset
+            # (xs * CvVp + (1 - xs) * CvLp) / Cv_scale - Cv_offset
+            return float("NaN")
         elif region == 5:
             Ts = Region5.T5_ps(p, s)
             return self._unit_converter.fromSIunit_Cv(Region5.Cv5_pT(p, Ts))
@@ -2009,7 +2013,8 @@ class XSteam(object):
                 p,
                 s,
             )
-            return float("NaN")  # (xs * wVp + (1 - xs) * wLp) / w_scale - w_offset
+            # (xs * wVp + (1 - xs) * wLp) / w_scale - w_offset
+            return float("NaN")
         elif region == 5:
             Ts = Region5.T5_ps(p, s)
             return self._unit_converter.fromSIunit_w(Region5.w5_pT(p, Ts))
