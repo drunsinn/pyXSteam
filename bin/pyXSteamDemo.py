@@ -3,7 +3,6 @@
 """collection of demos presenting the functionality of pyXSteam"""
 import time
 import logging
-from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as pyplot
 import numpy as np
 from pyXSteam.XSteam import XSteam
