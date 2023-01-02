@@ -25,6 +25,10 @@ and also functions for calculations on heavy water. This includes:
 * IAPWS R4
 * IAPWS R14
 
+Usage Examples
+**************
+Check out the examples given in :doc:`pyXSteamDemo` for a quick overview of how to use pyXSteam in different use cases.
+
 Notes
 *****
 Density (rho)
