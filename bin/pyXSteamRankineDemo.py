@@ -408,8 +408,8 @@ if __name__ == "__main__":
     print("------------------------------")
     print("Select which demo to run:")
     print("1. Simple Rankine Cycle")
-    print("2. Rankine cycle with water seperator and open feed water heater")
-    print("3. Reheat Rankine cycle with water seperator and open feed water heater")
+    print("2. Rankine cycle with water separator and open feed water heater")
+    print("3. Reheat Rankine cycle with water separator and open feed water heater")
 
     selection = str(input("Please enter selection [1-3]: "))
     print("You selected " + selection)

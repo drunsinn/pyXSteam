@@ -52,7 +52,7 @@ def region_ph(p, h):
         logger.warning("Preasure outside valid area")
         return 0
     # Check if outside low h.
-    if h < (0.963 * p + 2.2):  # Linear adaption to h1_pt()+2 to speed up calcualations.
+    if h < (0.963 * p + 2.2):  # Linear adaption to h1_pt()+2 to speed up calculations.
         if h < Region1.h1_pT(p, 273.15):
             logger.warning("Enthalpy outside valid area")
             return 0
