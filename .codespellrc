@@ -1,0 +1,4 @@
+[codespell]
+skip = *.po,*.ts,./docs/build/*,./build/*,./dist/*,./.git
+count =
+quiet-level = 3

@@ -21,7 +21,7 @@ class Region1Tester(unittest.TestCase):
 
     def test_pT_functions(self):
         """Tests to verify all functions with the Parameters p and T of Region 1 by comparing the Results to IF-97 Page 9 Table 5"""
-        # %* 7.1 Verifiy region 1
+        # %* 7.1 Verify region 1
         # %IF-97 Table 5, Page 9
         p = [3.0, 80.0, 3.0]
         T = [300.0, 300.0, 500.0]
@@ -119,7 +119,7 @@ class Region2Tester(unittest.TestCase):
 
     def test_pT_function(self):
         """Tests to verify all functions with the Parameters p and T of Region 2 by comparing the Results to IF-97 Page 17 Table 15"""
-        # %* 7.2 Verifiy region 2
+        # %* 7.2 Verify region 2
         # % IF-97 Table 15, Page 17
         p = [0.0035, 0.0035, 30.0]
         T = [300.0, 700.0, 700.0]
