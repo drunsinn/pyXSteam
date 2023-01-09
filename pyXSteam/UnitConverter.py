@@ -8,11 +8,12 @@ import logging
 from .Constants import ABSOLUTE_ZERO_CELSIUS, UnitSystem
 
 
-class UnitConverter(object):
+class UnitConverter:
     """
     Helper class to convert user units to SI-units and back
 
-    :param unitSystem: unit system used for input and output values. For supported values see the enum UnitSystem.
+    :param unitSystem: unit system used for input and output values. For
+                       supported values see the enum UnitSystem.
     """
 
     def __init__(self, unitSystem: UnitSystem = UnitSystem.BARE):
@@ -45,7 +46,7 @@ class UnitConverter(object):
         """
         if self._unit_system is UnitSystem.MKS:
             return float(ins / 10)  # bar to MPa
-        elif self._unit_system is UnitSystem.FLS:
+        if self._unit_system is UnitSystem.FLS:
             return float(ins * 0.00689475729)  # psi to MPa
         return float(ins)
 
@@ -57,7 +58,7 @@ class UnitConverter(object):
         """
         if self._unit_system is UnitSystem.MKS:
             return float(ins * 10)  # bar to MPa
-        elif self._unit_system is UnitSystem.FLS:
+        if self._unit_system is UnitSystem.FLS:
             return float(ins / 0.00689475729)  # MPa to psi
         return float(ins)
 
@@ -70,10 +71,8 @@ class UnitConverter(object):
         if self._unit_system is UnitSystem.MKS:
             # degC to Kelvin
             return float(ins - ABSOLUTE_ZERO_CELSIUS)
-        elif self._unit_system is UnitSystem.FLS:
-            return float(
-                (5 / 9) * (ins - 32) - ABSOLUTE_ZERO_CELSIUS
-            )  # degF to Kelvin
+        if self._unit_system is UnitSystem.FLS:
+            return float((5 / 9) * (ins - 32) - ABSOLUTE_ZERO_CELSIUS)  # degF to Kelvin
         return float(ins)
 
     def fromSIunit_T(self, ins: float) -> float:
@@ -85,10 +84,8 @@ class UnitConverter(object):
         if self._unit_system is UnitSystem.MKS:
             # Kelvin to degC
             return float(ins + ABSOLUTE_ZERO_CELSIUS)
-        elif self._unit_system is UnitSystem.FLS:
-            return float(
-                (ins + ABSOLUTE_ZERO_CELSIUS) * (9 / 5) + 32
-            )  # Kelvin to degF
+        if self._unit_system is UnitSystem.FLS:
+            return float((ins + ABSOLUTE_ZERO_CELSIUS) * (9 / 5) + 32)  # Kelvin to degF
         return float(ins)
 
     def toSIunit_h(self, ins: float) -> float:
@@ -173,7 +170,8 @@ class UnitConverter(object):
 
     def toSIunit_Cp(self, ins: float) -> float:
         """
-        convert specific isobaric heat capacity from user selected unit system to SI units
+        convert specific isobaric heat capacity from user selected unit
+        system to SI units
 
         :param ins: specific isobaric heat capacity in [kJ / (kg °C)] or [btu / (lb °F)]
         """
@@ -183,7 +181,8 @@ class UnitConverter(object):
 
     def fromSIunit_Cp(self, ins: float) -> float:
         """
-        convert specific isobaric heat capacity from SI units to user selected unit system
+        convert specific isobaric heat capacity from SI units to user
+        selected unit system
 
         :param ins: specific isobaric heat capacity in [kJ / (kg °C)]
         """
@@ -193,9 +192,11 @@ class UnitConverter(object):
 
     def toSIunit_Cv(self, ins: float) -> float:
         """
-        convert specific isochoric heat capacity from user selected unit system to SI units
+        convert specific isochoric heat capacity from user selected unit
+        system to SI units
 
-        :param ins: specific isochoric heat capacity in [kJ / (kg °C)] or [btu / (lb °F)]
+        :param ins: specific isochoric heat capacity in [kJ / (kg °C)]
+                    or [btu / (lb °F)]
         """
         if self._unit_system is UnitSystem.FLS:
             return float(ins / 0.238846)  # btu/(lb degF) to kJ/(kg degC)
@@ -203,7 +204,8 @@ class UnitConverter(object):
 
     def fromSIunit_Cv(self, ins: float) -> float:
         """
-        convert specific isochoric heat capacity from SI units to user selected unit system
+        convert specific isochoric heat capacity from SI units to user
+        selected unit system
 
         :param ins: specific isochoric heat capacity in [kJ / (kg °C)]
         """
@@ -233,7 +235,8 @@ class UnitConverter(object):
 
     def toSIunit_tc(self, ins: float) -> float:
         """
-        convert thermal conductivity from user selected unit system to SI units
+        convert thermal conductivity from user selected unit
+        system to SI units
 
         :param ins: thermal conductivity in [W / (m °C)] or [btu / (h ft °F)]
         """
@@ -279,7 +282,6 @@ class UnitConverter(object):
 
         :raises ValueError: value of vapour fraction out of range
         """
-        # TODO: Check if <= should be <
         if 0.0 <= ins <= 1.0:
             return float(ins)
         self.logger.error("value of vapour fraction out of range: 0 < x < 1")
@@ -293,7 +295,6 @@ class UnitConverter(object):
 
         :raises ValueError: value of vapour fraction out of range
         """
-        # TODO: Check if <= should be <
         if 0.0 <= ins <= 1.0:
             return float(ins)
         self.logger.error("value of vapour fraction out of range: 0 < x < 1")
@@ -307,11 +308,9 @@ class UnitConverter(object):
 
         :raises ValueError: value of vapour volume fraction out of range
         """
-        # TODO: Check if <= should be <
         if 0.0 <= ins <= 1.0:
             return float(ins)
-        self.logger.error(
-            "value of vapour volume fraction out of range: 0 < x < 1")
+        self.logger.error("value of vapour volume fraction out of range: 0 < x < 1")
         raise ValueError("Vapour volume fraction out of Range")
 
     def fromSIunit_vx(self, ins: float) -> float:
@@ -322,11 +321,9 @@ class UnitConverter(object):
 
         :raises ValueError: value of vapour volume fraction out of range
         """
-        # TODO: Check if <= should be <
         if 0.0 <= ins <= 1.0:
             return float(ins)
-        self.logger.error(
-            "value of vapour volume fraction out of range: 0 < x < 1")
+        self.logger.error("value of vapour volume fraction out of range: 0 < x < 1")
         raise ValueError("Vapour volume fraction out of Range")
 
     def toSIunit_my(self, ins: float) -> float:
