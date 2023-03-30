@@ -61,6 +61,7 @@ class IceType(IntEnum):
     V = 5
     VI = 6
     VII = 7
+    NONE = -1
 
     @classmethod
     def has_value(cls, value):

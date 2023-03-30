@@ -2422,7 +2422,7 @@ class XSteam(object):
             self.logger.warning("pressure %f out of range", p)
             return float("NaN")
 
-    def pmelt_t(self, t: float, hint: IceType = None) -> float:
+    def pmelt_t(self, t: float, hint: IceType = IceType.NONE) -> float:
         """
         Revised Release on the Pressure along the Melting and Sublimation Curves of Ordinary Water Substance
         Release IAPWS R14-08(2011)
@@ -2449,7 +2449,7 @@ class XSteam(object):
         """
         T = self._unit_converter.toSIunit_T(t)
 
-        if hint is None:
+        if hint is None or hint == IceType.NONE:
             if T >= 251.165 and T < 256.164:
                 self.logger.error(
                     "can't select ice type based on temperature %f, hint required", T
