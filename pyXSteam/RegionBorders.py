@@ -3,6 +3,9 @@
 """
 Section 4: Region Borders
 """
+import logging
+
+logger = logging.getLogger("pyXSteam:Region Borders")
 
 
 def B23p_T(T: float) -> float:

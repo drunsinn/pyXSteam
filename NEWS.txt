@@ -1,5 +1,5 @@
 ## TODO, xx.yyyy
-* increas minimal python version to 3.7
+* increase minimal python version to 3.7
 * add type hints to all functions
 * improve docstrings to include type hints
 * replace magic numbers for ice type, diagram region and unit system with enumerations

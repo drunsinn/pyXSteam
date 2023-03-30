@@ -16,7 +16,7 @@ from .TransportProperties import (
     my_AllRegions_pT,
     my_AllRegions_ph,
     tc_ptrho,
-    Surface_Tension_T,
+    surface_tension_T,
 )
 from .Constants import (
     SPECIFIC_GAS_CONSTANT,
@@ -63,7 +63,7 @@ class XSteam(object):
         """
         Constructor method
         """
-        self.logger = logging.getLogger(__name__)
+        self.logger = logging.getLogger("pyXSteam")
         self._unit_converter = UnitConverter(unitSystem)
         self.logger.info(
             "initialised pyXSteam with Unit System %s", self._unit_converter
@@ -2177,7 +2177,7 @@ class XSteam(object):
         :return: surface tension
         """
         T = self._unit_converter.toSIunit_T(t)
-        return self._unit_converter.fromSIunit_st(Surface_Tension_T(T))
+        return self._unit_converter.fromSIunit_st(surface_tension_T(T))
 
     def st_p(self, p: float) -> float:
         """
@@ -2190,7 +2190,7 @@ class XSteam(object):
         """
         T = self.tsat_p(p)
         T = self._unit_converter.toSIunit_T(T)
-        return self._unit_converter.fromSIunit_st(Surface_Tension_T(T))
+        return self._unit_converter.fromSIunit_st(surface_tension_T(T))
 
     def tcL_p(self, p: float) -> float:
         """

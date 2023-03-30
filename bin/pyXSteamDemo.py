@@ -173,35 +173,35 @@ def demo_ice_diagramm():
         pmelt_func(t_melt_Ih, steam_table.TYPE_ICE_Ih),
         linewidth=2,
         color="g",
-        label="melting temperatur for ice type Ih",
+        label="melting temperature for ice type Ih",
     )
     pyplot.plot(
         t_melt_III,
         pmelt_func(t_melt_III, steam_table.TYPE_ICE_III),
         linewidth=1,
         color="r",
-        label="melting temperatur for ice type III",
+        label="melting temperature for ice type III",
     )
     pyplot.plot(
         t_melt_V,
         pmelt_func(t_melt_V, steam_table.TYPE_ICE_V),
         linewidth=2,
         color="y",
-        label="melting temperatur for ice type V",
+        label="melting temperature for ice type V",
     )
     pyplot.plot(
         t_melt_VI,
         pmelt_func(t_melt_VI, steam_table.TYPE_ICE_VI),
         linewidth=1,
         color="g",
-        label="melting temperatur for ice type VI",
+        label="melting temperature for ice type VI",
     )
     pyplot.plot(
         t_melt_VII,
         pmelt_func(t_melt_VII, steam_table.TYPE_ICE_VII),
         linewidth=2,
         color="r",
-        label="melting temperatur for ice type VII",
+        label="melting temperature for ice type VII",
     )
 
     pyplot.title("Sublimation and melting preasure of ice")

@@ -28,7 +28,7 @@ class XSteam_HW:
         """
         Constructor method
         """
-        self.logger = logging.getLogger(__name__)
+        self.logger = logging.getLogger("pyXSteam:Heavy Water")
         self.unit_converter = UnitConverter(unitSystem)
         self.logger.info(
             "initialised pyXSteam for Heavy Water with Unit System %s",
