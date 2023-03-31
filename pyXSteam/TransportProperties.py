@@ -215,15 +215,19 @@ def tc_ptrho(p: float, T: float, rho: float) -> float:
 
 
 def surface_tension_T(T: float) -> float:
-    """function Surface_Tension_T = Surface_Tension_T(T)
-
+    """
     Section 5.3 Surface Tension
-
     IAPWS Release on Surface Tension of Ordinary Water Substance, September 1994
 
     also
 
     IAPWS Revised Release on Surface Tension of Ordinary Water Substance, June 2014 R1-76(2014)
+    http://www.iapws.org/relguide/Surf-H2O-2014.pdf
+
+
+    :param T: temperature in Kelvin
+
+    :return: surface tension in mN/m
     """
     tc = CRITICAL_TEMPERATURE
     B = 0.2358  # N/m

@@ -24,7 +24,7 @@ def _my_dash_0(T_dash: float) -> float:
 
 def _my_dash_1(T_dash: float, rho_dash: float) -> float:
     # contribution to viscosity due to finite density, eq 12, page 5
-    # frist index is i, second index is j
+    # first index is i, second index is j
     H = [[0.0 for j in range(0, 7)] for i in range(0, 6)]
     H[0][0] = 5.20094e-1
     H[1][0] = 8.50895e-2
@@ -187,6 +187,6 @@ def eq10(T:float, rho:float, industrial: bool = True) -> float:
 
     logger.debug("calculated values µ_0=%f µ_1=%f µ_2=%f µ_dash=%f" % (my_dash_0, my_dash_1, my_dash_2, my_dash))
 
-    my = my_dash * my_star # eq8, vaule is in µPa*s
+    my = my_dash * my_star # eq8, value is in µPa*s
     #my = my * 10E6 # in Pa*s
     return my
