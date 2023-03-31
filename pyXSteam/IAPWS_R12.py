@@ -12,6 +12,7 @@ from . import Constants
 
 logger = logging.getLogger(__name__)
 
+
 def _my_dash_0(T_dash: float) -> float:
     # viscosity in the dilute-gas limit, eq 11, page 5
     H = [1.67752, 2.20462, 0.6366564, -0.241605]
@@ -49,24 +50,24 @@ def _my_dash_1(T_dash: float, rho_dash: float) -> float:
     H[5][6] = -5.93264e-4
 
     sum_t = 0
-    for i in range(0, 6): # i
+    for i in range(0, 6):  # i
         sum_rho = 0
-        for j in range(0, 7): # j
+        for j in range(0, 7):  # j
             sum_rho += H[i][j] * ((rho_dash - 1) ** j)
         sum_t += (((1 / T_dash) - 1) ** i) * sum_rho
     return math.exp(rho_dash * sum_t)
 
 
-def _l(w:float, q_C:float, xi:float) -> float:
+def _l(w: float, q_C: float, xi: float) -> float:
     # eq 18
     if (q_C * xi) > 1:
         return math.log((1 + w) / (1 - w))
     return 2 * math.atan(abs(w))
 
 
-def _y(xi:float) -> float:
-    inv_q_C = 1.9 # table 3, critical-region constants
-    inv_q_D = 1.1 # table 3, critical-region constants
+def _y(xi: float) -> float:
+    inv_q_C = 1.9  # table 3, critical-region constants
+    inv_q_D = 1.1  # table 3, critical-region constants
     q_C = 1 / inv_q_C
     q_D = 1 / inv_q_D
 
@@ -100,16 +101,18 @@ def _y(xi:float) -> float:
     return y_total
 
 
-def _sigma(rho_dash:float, T_dash:float) -> float:
+def _sigma(rho_dash: float, T_dash: float) -> float:
     # eq 21a
-    # TODO 
+    # TODO
     logger.debug("rho_dash %f T_dash %f", rho_dash, T_dash)
-    raise NotImplementedError("use derivative of density on pressure at constant temperature")
+    raise NotImplementedError(
+        "use derivative of density on pressure at constant temperature"
+    )
     return -1
 
 
-def _delta_chi_dash(rho_dash:float, T_dash:float) -> float:
-    T_dash_R = 1.5 # table 3, critical-region constants
+def _delta_chi_dash(rho_dash: float, T_dash: float) -> float:
+    T_dash_R = 1.5  # table 3, critical-region constants
 
     sigma_0 = _sigma(rho_dash, T_dash)
     sigma_1 = _sigma(rho_dash, T_dash_R)
@@ -124,10 +127,10 @@ def _my_dash_2(T: float, rho: float, T_dash: float, rho_dash: float) -> float:
         # critical region
         x_my = 0.068  # critical exponent for viscosity
 
-        ny = 0.630 # table 3, critical-region constants
-        gamma = 1.239 # table 3, critical-region constants
-        xi_0 = 1.239 # table 3, critical-region constants
-        gamma_0 = 0.06 # table 3, critical-region constants
+        ny = 0.630  # table 3, critical-region constants
+        gamma = 1.239  # table 3, critical-region constants
+        xi_0 = 1.239  # table 3, critical-region constants
+        gamma_0 = 0.06  # table 3, critical-region constants
 
         delta_chi_dash = _delta_chi_dash(rho_dash, T_dash)
 
@@ -136,31 +139,32 @@ def _my_dash_2(T: float, rho: float, T_dash: float, rho_dash: float) -> float:
 
         xi = xi_0 * (delta_chi_dash / gamma_0) ** (ny / gamma)
 
-        my_dash_2 = math.exp(x_my * _y(xi)) # eq 14
+        my_dash_2 = math.exp(x_my * _y(xi))  # eq 14
         logger.debug("value for my_dash_2:%f", my_dash_2)
         return my_dash_2
 
-    logger.debug("values for T and rho are outside of critical region, use my_dash_2=1.0") 
+    logger.debug(
+        "values for T and rho are outside of critical region, use my_dash_2=1.0"
+    )
     return 1.0  # section 2.8, page 8
 
 
-def eq10(T:float, rho:float, industrial: bool = True) -> float:
+def eq10(T: float, rho: float, industrial: bool = True) -> float:
     """ """
     logger.debug("input values T=%fK rho=%fkm/m^3" % (T, rho))
-    #p_t = Constants.__TRIPLE_POINT_PRESSURE__
-    #T_t = Constants.__TRIPLE_POINT_TEMPERATURE__
+    # p_t = Constants.__TRIPLE_POINT_PRESSURE__
+    # T_t = Constants.__TRIPLE_POINT_TEMPERATURE__
 
-    #T_m = -1  # TODO: pressure-dependent melting temperature
+    # T_m = -1  # TODO: pressure-dependent melting temperature
 
     T_star = 647.096
     rho_star = 322.0
-    #p_star = 22.064
+    # p_star = 22.064
     my_star = 1.00e-6
 
     T_dash = T / T_star
     rho_dash = rho / rho_star
     # p_dash = p / p_star
-
 
     # if 0 < p < p_t and T_t <= T <= 1173.15:
     #     pass
@@ -185,8 +189,11 @@ def eq10(T:float, rho:float, industrial: bool = True) -> float:
 
     my_dash = my_dash_0 * my_dash_1 * my_dash_2  # eq 10
 
-    logger.debug("calculated values µ_0=%f µ_1=%f µ_2=%f µ_dash=%f" % (my_dash_0, my_dash_1, my_dash_2, my_dash))
+    logger.debug(
+        "calculated values µ_0=%f µ_1=%f µ_2=%f µ_dash=%f"
+        % (my_dash_0, my_dash_1, my_dash_2, my_dash)
+    )
 
-    my = my_dash * my_star # eq8, value is in µPa*s
-    #my = my * 10E6 # in Pa*s
+    my = my_dash * my_star  # eq8, value is in µPa*s
+    # my = my * 10E6 # in Pa*s
     return my

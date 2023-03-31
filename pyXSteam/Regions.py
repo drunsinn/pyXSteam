@@ -688,7 +688,7 @@ class Region1:
                 * (J1[i] - 1)
                 * (tau - 1.222) ** (J1[i] - 2)
             )
-        return -R * tau**2 * gamma_der_tautau
+        return -R * tau ** 2 * gamma_der_tautau
 
     @staticmethod
     def Cv1_pT(p: float, T: float) -> float:
@@ -838,7 +838,7 @@ class Region1:
                 i
             ] * (J1[i] - 1) * (tau - 1.222) ** (J1[i] - 2)
         return R * (
-            -(tau**2) * gamma_der_tautau
+            -(tau ** 2) * gamma_der_tautau
             + (gamma_der_pi - tau * gamma_der_pitau) ** 2 / gamma_der_pipi
         )
 
@@ -993,10 +993,10 @@ class Region1:
             1000
             * R
             * T
-            * gamma_der_pi**2
+            * gamma_der_pi ** 2
             / (
                 (gamma_der_pi - tau * gamma_der_pitau) ** 2
-                / (tau**2 * gamma_der_tautau)
+                / (tau ** 2 * gamma_der_tautau)
                 - gamma_der_pipi
             )
         ) ** 0.5
@@ -2022,7 +2022,7 @@ class Region2:
             gr_tautau = gr_tautau + nr[i] * Pi ** Ir[i] * Jr[i] * (Jr[i] - 1) * (
                 tau - 0.5
             ) ** (Jr[i] - 2)
-        return -R * tau**2 * (g0_tautau + gr_tautau)
+        return -R * tau ** 2 * (g0_tautau + gr_tautau)
 
     @staticmethod
     def Cv2_pT(p: float, T: float) -> float:
@@ -2207,8 +2207,8 @@ class Region2:
                 tau - 0.5
             ) ** (Jr[i] - 2)
         return R * (
-            -(tau**2) * (g0_tautau + gr_tautau)
-            - (1 + Pi * gr_pi - tau * Pi * gr_pitau) ** 2 / (1 - Pi**2 * gr_pipi)
+            -(tau ** 2) * (g0_tautau + gr_tautau)
+            - (1 + Pi * gr_pi - tau * Pi * gr_pitau) ** 2 / (1 - Pi ** 2 * gr_pipi)
         )
 
     @staticmethod
@@ -2397,11 +2397,11 @@ class Region2:
             1000
             * R
             * T
-            * (1 + 2 * Pi * gr_pi + Pi**2 * gr_pi**2)
+            * (1 + 2 * Pi * gr_pi + Pi ** 2 * gr_pi ** 2)
             / (
-                (1 - Pi**2 * gr_pipi)
+                (1 - Pi ** 2 * gr_pipi)
                 + (1 + Pi * gr_pi - tau * Pi * gr_pitau) ** 2
-                / (tau**2 * (g0_tautau + gr_tautau))
+                / (tau ** 2 * (g0_tautau + gr_tautau))
             )
         ) ** 0.5
 
@@ -2420,7 +2420,7 @@ class Region2:
             sub_reg = 1
         else:
             if p < (
-                905.84278514723 - 0.67955786399241 * h + 1.2809002730136e-04 * h**2
+                905.84278514723 - 0.67955786399241 * h + 1.2809002730136e-04 * h ** 2
             ):
                 sub_reg = 2
             else:
@@ -3191,8 +3191,8 @@ class Region2:
         if h < (
             -3498.98083432139
             + 2575.60716905876 * s
-            - 421.073558227969 * s**2
-            + 27.6349063799944 * s**3
+            - 421.073558227969 * s ** 2
+            + 27.6349063799944 * s ** 3
         ):
             sub_reg = 1
         else:
@@ -3301,7 +3301,7 @@ class Region2:
             Pi = 0
             for i in range(0, 29):
                 Pi = Pi + ni[i] * (eta - 0.5) ** Ii[i] * (Sigma - 1.2) ** Ji[i]
-            p2_hs = Pi**4 * 4
+            p2_hs = Pi ** 4 * 4
         elif sub_reg == 2:
             # Subregion B
             # Table 7, Eq 4, page 9
@@ -3415,7 +3415,7 @@ class Region2:
             Pi = 0
             for i in range(0, 33):
                 Pi = Pi + ni[i] * (eta - 0.6) ** Ii[i] * (Sigma - 1.01) ** Ji[i]
-            p2_hs = Pi**4 * 100
+            p2_hs = Pi ** 4 * 100
         else:
             # Subregion C
             # Table 8, Eq 5, page 10
@@ -3523,7 +3523,7 @@ class Region2:
             Pi = 0
             for i in range(0, 31):
                 Pi = Pi + ni[i] * (eta - 0.7) ** Ii[i] * (Sigma - 1.1) ** Ji[i]
-            p2_hs = Pi**4 * 100
+            p2_hs = Pi ** 4 * 100
         return p2_hs
 
     @staticmethod
@@ -4335,11 +4335,11 @@ class Region3:
                 + ni[i] * Ii[i] * (Ii[i] - 1) * delta ** (Ii[i] - 2) * tau ** Ji[i]
             )
         fidelta = fidelta + ni[0] / delta
-        fideltadelta = fideltadelta - ni[0] / (delta**2)
+        fideltadelta = fideltadelta - ni[0] / (delta ** 2)
         return R * (
-            -(tau**2) * fitautau
+            -(tau ** 2) * fitautau
             + (delta * fidelta - delta * tau * fideltatau) ** 2
-            / (2 * delta * fidelta + delta**2 * fideltadelta)
+            / (2 * delta * fidelta + delta ** 2 * fideltadelta)
         )
 
     @staticmethod
@@ -4657,16 +4657,16 @@ class Region3:
                 + ni[i] * Ii[i] * (Ii[i] - 1) * delta ** (Ii[i] - 2) * tau ** Ji[i]
             )
         fidelta = fidelta + ni[0] / delta
-        fideltadelta = fideltadelta - ni[0] / (delta**2)
+        fideltadelta = fideltadelta - ni[0] / (delta ** 2)
         return (
             1000
             * R
             * T
             * (
                 2 * delta * fidelta
-                + delta**2 * fideltadelta
+                + delta ** 2 * fideltadelta
                 - (delta * fidelta - delta * tau * fideltatau) ** 2
-                / (tau**2 * fitautau)
+                / (tau ** 2 * fitautau)
             )
         ) ** 0.5
 
@@ -4688,8 +4688,8 @@ class Region3:
         h3ab = (
             2014.64004206875
             + 3.74696550136983 * p
-            - 2.19921901054187e-02 * p**2
-            + 8.7513168600995e-05 * p**3
+            - 2.19921901054187e-02 * p ** 2
+            + 8.7513168600995e-05 * p ** 3
         )
         if h < h3ab:
             # Subregion 3a
@@ -4932,8 +4932,8 @@ class Region3:
         h3ab = (
             2014.64004206875
             + 3.74696550136983 * p
-            - 2.19921901054187e-02 * p**2
-            + 8.7513168600995e-05 * p**3
+            - 2.19921901054187e-02 * p ** 2
+            + 8.7513168600995e-05 * p ** 3
         )
         if h < h3ab:
             # Subregion 3a
@@ -5962,10 +5962,10 @@ class Region4:
         :return: preasure in [MPa]
         """
         teta = T - 0.23855557567849 / (T - 650.17534844798)
-        a = teta**2 + 1167.0521452767 * teta - 724213.16703206
-        B = -17.073846940092 * teta**2 + 12020.82470247 * teta - 3232555.0322333
-        C = 14.91510861353 * teta**2 - 4823.2657361591 * teta + 405113.40542057
-        return (2 * C / (-B + (B**2 - 4 * a * C) ** 0.5)) ** 4
+        a = teta ** 2 + 1167.0521452767 * teta - 724213.16703206
+        B = -17.073846940092 * teta ** 2 + 12020.82470247 * teta - 3232555.0322333
+        C = 14.91510861353 * teta ** 2 - 4823.2657361591 * teta + 405113.40542057
+        return (2 * C / (-B + (B ** 2 - 4 * a * C) ** 0.5)) ** 4
 
     @staticmethod
     def T4_p(p: float) -> float:
@@ -5979,11 +5979,11 @@ class Region4:
 
         :return: temperature in [K]
         """
-        beta = p**0.25
-        E = beta**2 - 17.073846940092 * beta + 14.91510861353
-        f = 1167.0521452767 * beta**2 + 12020.82470247 * beta - 4823.2657361591
-        G = -724213.16703206 * beta**2 - 3232555.0322333 * beta + 405113.40542057
-        D = 2 * G / (-f - (f**2 - 4 * E * G) ** 0.5)
+        beta = p ** 0.25
+        E = beta ** 2 - 17.073846940092 * beta + 14.91510861353
+        f = 1167.0521452767 * beta ** 2 + 12020.82470247 * beta - 4823.2657361591
+        G = -724213.16703206 * beta ** 2 - 3232555.0322333 * beta + 405113.40542057
+        D = 2 * G / (-f - (f ** 2 - 4 * E * G) ** 0.5)
         return (
             650.17534844798
             + D
@@ -6164,7 +6164,7 @@ class Region4:
             eta = 0
             for i in range(0, 16):
                 eta = eta + ni[i] * (Sigma - 1.02) ** Ii[i] * (Sigma - 0.726) ** Ji[i]
-            h4_s = eta**4 * 2800
+            h4_s = eta ** 4 * 2800
         elif (s > 5.85) and (s < 9.155759395):
             # Section 4.4 Equations () 2ab " h s and ( ) 2c3b "h s for the Saturated Vapor Line
             # Page 20, Eq 6
@@ -6784,7 +6784,7 @@ class Region5:
             gammar_tautau = gammar_tautau + nir[i] * Pi ** Iir[i] * Jir[i] * (
                 Jir[i] - 1
             ) * tau ** (Jir[i] - 2)
-        return -R * tau**2 * (gamma0_tautau + gammar_tautau)
+        return -R * tau ** 2 * (gamma0_tautau + gammar_tautau)
 
     @staticmethod
     def s5_pT(p: float, T: float) -> float:
@@ -6890,9 +6890,9 @@ class Region5:
                 Jir[i] - 1
             ) * tau ** (Jir[i] - 2)
         return R * (
-            -(tau**2 * (gamma0_tautau + gammar_tautau))
+            -(tau ** 2 * (gamma0_tautau + gammar_tautau))
             - (1 + Pi * gammar_pi - tau * Pi * gammar_pitau) ** 2
-            / (1 - Pi**2 * gammar_pipi)
+            / (1 - Pi ** 2 * gammar_pipi)
         )
 
     @staticmethod
@@ -6954,11 +6954,11 @@ class Region5:
             1000
             * R
             * T
-            * (1 + 2 * Pi * gammar_pi + Pi**2 * gammar_pi**2)
+            * (1 + 2 * Pi * gammar_pi + Pi ** 2 * gammar_pi ** 2)
             / (
-                (1 - Pi**2 * gammar_pipi)
+                (1 - Pi ** 2 * gammar_pipi)
                 + (1 + Pi * gammar_pi - tau * Pi * gammar_pitau) ** 2
-                / (tau**2 * (gamma0_tautau + gammar_tautau))
+                / (tau ** 2 * (gamma0_tautau + gammar_tautau))
             )
         ) ** 0.5
 

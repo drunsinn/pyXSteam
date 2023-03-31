@@ -336,8 +336,7 @@ class XSteam(object):
         :return: pressure or NaN if arguments are out of range
         """
         if rho <= 0.0:
-            self.logger.error(
-                "negative values for density rho not allowed %f", rho)
+            self.logger.error("negative values for density rho not allowed %f", rho)
             raise ValueError("rho out of range")
         h = self._unit_converter.toSIunit_h(h)
         High_Bound = self._unit_converter.fromSIunit_p(100)
@@ -669,8 +668,7 @@ class XSteam(object):
                 )
             else:
                 return self._unit_converter.fromSIunit_v(
-                    Region3.v3_ph(Region4.p4_T(
-                        T), Region4.h4V_p(Region4.p4_T(T)))
+                    Region3.v3_ph(Region4.p4_T(T), Region4.h4V_p(Region4.p4_T(T)))
                 )
         else:
             self.logger.warning("temperature %f out of range", T)
@@ -693,8 +691,7 @@ class XSteam(object):
                 )
             else:
                 return self._unit_converter.fromSIunit_v(
-                    Region3.v3_ph(Region4.p4_T(
-                        T), Region4.h4L_p(Region4.p4_T(T)))
+                    Region3.v3_ph(Region4.p4_T(T), Region4.h4L_p(Region4.p4_T(T)))
                 )
         else:
             self.logger.warning("temperature %f out of range", T)
@@ -2530,8 +2527,9 @@ class XSteam(object):
             self.logger.warning("temperature %f out of range", T)
             return float("NaN")
 
-
-    def R12_my_rhot(self, rho:float, t:float, industrial_application:bool = True) -> float:
+    def R12_my_rhot(
+        self, rho: float, t: float, industrial_application: bool = True
+    ) -> float:
         """shear viscosity of pure water substance over an extensive range of fluid states
 
         Release on the IAPWS Formulation 2008 for the Viscosity of Ordinary Water Substance
@@ -2544,11 +2542,13 @@ class XSteam(object):
 
         :return: shear viscosity
         """
-        self.logger.warning("this function is still experimental, use at your own risk!")
+        self.logger.warning(
+            "this function is still experimental, use at your own risk!"
+        )
 
         T = self._unit_converter.toSIunit_T(t)
 
         my_my = eq10(T, rho, industrial=industrial_application)
-        my = my_my * 10E5
+        my = my_my * 10e5
 
         return self._unit_converter.fromSIunit_my(my)

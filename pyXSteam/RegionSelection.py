@@ -240,9 +240,9 @@ def select_region_hs(h: float, s: float) -> DiagramRegion:
             hMin = Region2.h2_pT(0.000611, Tmin)
             # function adapted to h(1073.15,s)
             hMax = (
-                -0.07554022 * s**4
-                + 3.341571 * s**3
-                - 55.42151 * s**2
+                -0.07554022 * s ** 4
+                + 3.341571 * s ** 3
+                - 55.42151 * s ** 2
                 + 408.515 * s
                 + 3031.338
             )
@@ -260,9 +260,9 @@ def select_region_hs(h: float, s: float) -> DiagramRegion:
         else:
             # function adapted to h(1073.15,s)
             hMax = (
-                -2.988734 * s**4
-                + 121.4015 * s**3
-                - 1805.15 * s**2
+                -2.988734 * s ** 4
+                + 121.4015 * s ** 3
+                - 1805.15 * s ** 2
                 + 11720.16 * s
                 - 23998.33
             )

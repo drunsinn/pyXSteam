@@ -71,8 +71,7 @@ class XSteam_HW:
         :return: viscosity or NaN if arguments are out of range
         """
         if rho <= 0.0:
-            self.logger.error(
-                "negative values for density rho not allowed %f", rho)
+            self.logger.error("negative values for density rho not allowed %f", rho)
             raise ValueError("rho out of range")
 
         rho = self._unit_converter.toSIunit_p(rho)
@@ -101,8 +100,7 @@ class XSteam_HW:
         :return: thermal conductivity or NaN if arguments are out of range
         """
         if rho <= 0.0:
-            self.logger.error(
-                "negative values for density rho not allowed %f", rho)
+            self.logger.error("negative values for density rho not allowed %f", rho)
             raise ValueError("rho out of range")
 
         rho = self._unit_converter.toSIunit_p(rho)

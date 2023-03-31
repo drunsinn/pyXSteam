@@ -71,9 +71,7 @@ class UnitConverter(object):
             # degC to Kelvin
             return float(ins - ABSOLUTE_ZERO_CELSIUS)
         elif self._unit_system is UnitSystem.FLS:
-            return float(
-                (5 / 9) * (ins - 32) - ABSOLUTE_ZERO_CELSIUS
-            )  # degF to Kelvin
+            return float((5 / 9) * (ins - 32) - ABSOLUTE_ZERO_CELSIUS)  # degF to Kelvin
         return float(ins)
 
     def fromSIunit_T(self, ins: float) -> float:
@@ -86,9 +84,7 @@ class UnitConverter(object):
             # Kelvin to degC
             return float(ins + ABSOLUTE_ZERO_CELSIUS)
         elif self._unit_system is UnitSystem.FLS:
-            return float(
-                (ins + ABSOLUTE_ZERO_CELSIUS) * (9 / 5) + 32
-            )  # Kelvin to degF
+            return float((ins + ABSOLUTE_ZERO_CELSIUS) * (9 / 5) + 32)  # Kelvin to degF
         return float(ins)
 
     def toSIunit_h(self, ins: float) -> float:
@@ -310,8 +306,7 @@ class UnitConverter(object):
         # TODO: Check if <= should be <
         if 0.0 <= ins <= 1.0:
             return float(ins)
-        self.logger.error(
-            "value of vapour volume fraction out of range: 0 < x < 1")
+        self.logger.error("value of vapour volume fraction out of range: 0 < x < 1")
         raise ValueError("Vapour volume fraction out of Range")
 
     def fromSIunit_vx(self, ins: float) -> float:
@@ -325,8 +320,7 @@ class UnitConverter(object):
         # TODO: Check if <= should be <
         if 0.0 <= ins <= 1.0:
             return float(ins)
-        self.logger.error(
-            "value of vapour volume fraction out of range: 0 < x < 1")
+        self.logger.error("value of vapour volume fraction out of range: 0 < x < 1")
         raise ValueError("Vapour volume fraction out of Range")
 
     def toSIunit_my(self, ins: float) -> float:

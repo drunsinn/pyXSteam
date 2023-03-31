@@ -21,8 +21,7 @@ def myHW_rhoT_R4(rho: float, T: float) -> float:
 
     :return: viscosity µ or NaN if arguments are out of range, in [Pa s]
     """
-    logger.debug(
-        "calculating 'viscosity of heavy water' for ρ=%f and T=%f", rho, T)
+    logger.debug("calculating 'viscosity of heavy water' for ρ=%f and T=%f", rho, T)
 
     T_star = 643.847  # K
     rho_star = 358  # kg / m³
@@ -34,7 +33,7 @@ def myHW_rhoT_R4(rho: float, T: float) -> float:
     A = [1.0, 0.940695, 0.578377, -0.202044]
     sum_A_T = 0
     for i in range(0, 4):
-        sum_A_T += A[i] / (T_dash**i)
+        sum_A_T += A[i] / (T_dash ** i)
     my_0_dash = math.sqrt(T_dash) / sum_A_T
 
     B = list()
@@ -44,8 +43,7 @@ def myHW_rhoT_R4(rho: float, T: float) -> float:
     B.append([0.3509007, 1.315436, 1.297752, 1.353448, 0.0, 0.0])  # j= 1
     B.append([-0.2847572, -1.037026, -1.287846, 0.0, 0.0, -0.02148229])  # j= 2
     B.append([0.07013759, 0.4660127, 0.2292075, -0.4857462, 0.0, 0.0])  # j= 3
-    B.append([0.01641220, -0.02884911, 0.0,
-             0.1607171, 0.0, -0.009603846])  # j= 4
+    B.append([0.01641220, -0.02884911, 0.0, 0.1607171, 0.0, -0.009603846])  # j= 4
     B.append([-0.01163815, -0.008239587, 0.0, 0.0, 0.0, 0.004559914])  # j= 5
     B.append([0.0, 0.0, 0.0, -0.003886659, 0.0, 0.0])  # j= 6
 
@@ -81,7 +79,8 @@ def tcHW_rhoT_R4(rho: float, T: float) -> float:
     :return: thermal conductivity λ or NaN, in [W / (m * K)]
     """
     logger.debug(
-        "calculating 'thermal conductivity of heavy water' for ρ=%f and T=%f", rho, T)
+        "calculating 'thermal conductivity of heavy water' for ρ=%f and T=%f", rho, T
+    )
 
     T_star = 643.847  # K
     rho_star = 358  # kg / m³
@@ -103,33 +102,32 @@ def tcHW_rhoT_R4(rho: float, T: float) -> float:
     rho_r1 = 0.125698
     D_1 = -741.112
     tau = T_dash / (math.fabs(T_dash - 1.1) + 1.1)  # B15
-    f_1 = math.exp(C_T1 * T_dash + C_T2 * (T_dash**2))  # B12
+    f_1 = math.exp(C_T1 * T_dash + C_T2 * (T_dash ** 2))  # B12
     f_2 = math.exp(C_R1 * (rho_dash - 1.0) ** 2) + C_R2 * math.exp(
         C_R3 * (rho_dash - rho_r1) ** 2
     )  # B13
     f_3 = 1 + math.exp(60.0 * (tau - 1.0) + 20.0)  # B14
     f_4 = 1 + math.exp(100.0 * (tau - 1.0) + 15.0)  # B14
-    part_C2 = (C_2 * f_1**4) / f_3
+    part_C2 = (C_2 * f_1 ** 4) / f_3
     part_f2 = (3.5 * f_2) / f_4
 
     # equation B8
     temp_sum = 0
     for i in range(0, 6):
-        temp_sum += A[i] * (T_dash**i)
+        temp_sum += A[i] * (T_dash ** i)
     tc_o = temp_sum
 
     # equation B9
     temp_sum = 0
     for i in range(1, 5):
-        temp_sum += B[i] * (rho_dash**i)
+        temp_sum += B[i] * (rho_dash ** i)
     delta_tc = B[0] * (1.0 - math.exp(B_e * rho_dash)) + temp_sum
 
     # equation B10
-    delta_tc_c = C_1 * f_1 * f_2 * (1.0 + f_2**2 * (part_C2 + part_f2))
+    delta_tc_c = C_1 * f_1 * f_2 * (1.0 + f_2 ** 2 * (part_C2 + part_f2))
 
     # equation B11
-    delta_tc_L = D_1 * f_1**1.2 * \
-        (1.0 - math.exp(-1.0 * (rho_dash / 2.5) ** 10))
+    delta_tc_L = D_1 * f_1 ** 1.2 * (1.0 - math.exp(-1.0 * (rho_dash / 2.5) ** 10))
 
     # equation B7
     tc_dash = tc_o + delta_tc + delta_tc_c + delta_tc_L

@@ -24,7 +24,9 @@ def demo_simpel_values():
     print(f" tcV_p(1.0) = {steam_table.tcV_p(1.0)}")
     print("saturated vapour thermal conductivity @ 25 °C")
     print(f" tcL_t(25.0) = {steam_table.tcV_t(25.0)}")
-    print("thermal conductivity @ enthalpy 100 kJ / kg and specific entropy 0.34 kJ / (kg °C)")
+    print(
+        "thermal conductivity @ enthalpy 100 kJ / kg and specific entropy 0.34 kJ / (kg °C)"
+    )
     print(f" tc_hs(100.0, 0.34) = {steam_table.tc_hs(100.0, 0.34)}")
     print("thermal conductivity @ 1 bar and enthalpy 100 kJ / kg")
     print(f" tc_ph(1.0, 100.0) = {steam_table.tc_ph(1.0, 100.0)}")
@@ -63,8 +65,7 @@ def demo_generate_ph_diagramm(precision=1.0):
     for i, vf in enumerate(vf_range):
         h_px = nph_px(p2_range, vf)
         if i == 0:
-            pyplot.plot(h_px, p2_range, linewidth=1, color="g",
-                        label="vapour fraction")
+            pyplot.plot(h_px, p2_range, linewidth=1, color="g", label="vapour fraction")
         else:
             pyplot.plot(h_px, p2_range, linewidth=1, color="g")
 
@@ -72,14 +73,12 @@ def demo_generate_ph_diagramm(precision=1.0):
     for i, temp in enumerate(temp_range):
         h_pt = nph_pt(p_range, temp)
         if i == 0:
-            pyplot.plot(h_pt, p_range, linewidth=1,
-                        color="r", label="temperature")
+            pyplot.plot(h_pt, p_range, linewidth=1, color="r", label="temperature")
         else:
             pyplot.plot(h_pt, p_range, linewidth=1, color="r")
 
     # critical point
-    pyplot.plot([h_krit], [p_krit], marker="s",
-                mfc="k", ms=8, label="critical point")
+    pyplot.plot([h_krit], [p_krit], marker="s", mfc="k", ms=8, label="critical point")
     (line1,) = pyplot.plot(hL, p_range, linewidth=2, color="b", label="liquide line")
     (line2,) = pyplot.plot(hV, p_range, linewidth=2, color="r", label="vapour line")
 
@@ -114,7 +113,7 @@ def demo_generate_Tp_diagramm():
 def demo_generate_pvT_diagramm():
     """Generate a Diagram showing the v(p,T) as a 3D survace"""
     steam_table = XSteam(XSteam.UNIT_SYSTEM_MKS)
-    #fig = pyplot.figure()
+    # fig = pyplot.figure()
     ax = pyplot.axes(projection="3d")
 
     p = np.arange(0.0, 300.0, 5.0)
@@ -166,8 +165,13 @@ def demo_ice_diagramm():
     psubl_func = np.frompyfunc(steam_table.psubl_t, 1, 1)
     pmelt_func = np.frompyfunc(steam_table.pmelt_t, 2, 1)
 
-    pyplot.plot(t_subl, psubl_func(t_subl),
-                linewidth=1, color="b", label="sublimation temperature")
+    pyplot.plot(
+        t_subl,
+        psubl_func(t_subl),
+        linewidth=1,
+        color="b",
+        label="sublimation temperature",
+    )
     pyplot.plot(
         t_melt_Ih,
         pmelt_func(t_melt_Ih, steam_table.TYPE_ICE_Ih),
