@@ -8,7 +8,7 @@ http://www.iapws.org/relguide/MeltSub2011.pdf
 import math
 import logging
 
-logger = logging.getLogger("pyXSteam:IAPWS R14")
+logger = logging.getLogger(__name__)
 
 
 def pmelt_T_iceIh(T: float) -> float:

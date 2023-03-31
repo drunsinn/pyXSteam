@@ -223,12 +223,7 @@ def demo_simpel_values_heavy_water():
 
 
 if __name__ == "__main__":
-    logger = logging.getLogger("pyXSteam")
-    logger.setLevel(logging.ERROR)
-    sh = logging.StreamHandler()
-    sh.setFormatter(logging.Formatter(
-        "%(name)s - %(levelname)s - %(message)s"))
-    logger.addHandler(sh)
+    logging.basicConfig(level=logging.ERROR)
 
     print("Collection of simple demos on how to use pyXSteam")
     print("requires matplotlib and numpy")

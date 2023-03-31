@@ -19,7 +19,7 @@ class UnitConverter(object):
         """
         Constructor method
         """
-        self.logger = logging.getLogger("pyXSteam:UnitConverter")
+        self.logger = logging.getLogger(__name__)
         self.set_unitSystem(unitSystem)
         self.logger.debug("set unit converter to %s", self.__str__())
 

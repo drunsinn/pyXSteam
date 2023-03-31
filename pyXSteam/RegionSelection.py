@@ -14,7 +14,7 @@ from .Constants import (
     DiagramRegion,
 )
 
-logger = logging.getLogger("pyXSteam:Region Selection")
+logger = logging.getLogger(__name__)
 
 
 def select_region_pT(p: float, T: float) -> DiagramRegion:

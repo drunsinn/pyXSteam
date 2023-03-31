@@ -15,7 +15,7 @@ from .RegionSelection import (
 from .Regions import Region1, Region2, Region3, Region4, Region5
 from .Constants import CRITICAL_TEMPERATURE, FREEZING_TEMPERATURE_H2O
 
-logger = logging.getLogger("pyXSteam:Transport Properties")
+logger = logging.getLogger(__name__)
 
 
 def my_AllRegions_pT(p: float, T: float) -> float:

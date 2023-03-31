@@ -8,7 +8,7 @@ http://www.iapws.org/relguide/TransD2O-2007.pdf
 import math
 import logging
 
-logger = logging.getLogger("pyXSteam:IAPWS R4")
+logger = logging.getLogger(__name__)
 
 
 def myHW_rhoT_R4(rho: float, T: float) -> float:
