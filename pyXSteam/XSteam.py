@@ -39,6 +39,7 @@ from .IAPWS_R14 import (
     pmelt_T_iceVII,
     psubl_T,
 )
+from .IAPWS_R12 import eq10
 
 
 class XSteam(object):
@@ -2528,3 +2529,26 @@ class XSteam(object):
         else:
             self.logger.warning("temperature %f out of range", T)
             return float("NaN")
+
+
+    def R12_my_rhot(self, rho:float, t:float, industrial_application:bool = True) -> float:
+        """shear viscosity of pure water substance over an extensive range of fluid states
+
+        Release on the IAPWS Formulation 2008 for the Viscosity of Ordinary Water Substance
+        IAPWS R12-08
+        http://www.iapws.org/relguide/visc.pdf
+
+        :param rho: density
+        :param t: temperature
+        :param industrial_application: select if simple or detailes approximation should be used
+
+        :return: shear viscosity
+        """
+        self.logger.warning("this function is still experimental, use at your own risk!")
+
+        T = self._unit_converter.toSIunit_T(t)
+
+        my_my = eq10(T, rho, industrial=industrial_application)
+        my = my_my * 10E5
+
+        return self._unit_converter.fromSIunit_my(my)
