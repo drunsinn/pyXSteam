@@ -1146,6 +1146,7 @@ class Region1:
 
         :return: temperature in [K]
         """
+        Ts = float("NaN")
         Low_Bound = FREEZING_TEMPERATURE_H2O
         High_Bound = Region4.T4_p(p)
         rhos = -1000
@@ -3537,6 +3538,7 @@ class Region2:
 
         :return: temperature in [K]
         """
+        Ts = float("NaN")
         if p < 16.5292:
             Low_Bound = Region4.T4_p(p)
         else:
@@ -5873,6 +5875,7 @@ class Region3:
 
         :return: enthalpy in [kJ / kg]
         """
+        hs = float("NaN")
         if p < CRITICAL_PRESSURE:  # Below triple point
             Ts = Region4.T4_p(p)  # Saturation temperature
             if T <= Ts:  # Liquid side
@@ -5918,6 +5921,7 @@ class Region3:
 
         :return: temperature in [K]
         """
+        Ts = float("NaN")
         Low_Bound = 623.15
         High_Bound = 1073.15
         ps = -1000
@@ -6306,6 +6310,7 @@ class Region4:
 
         :return: enthalpy in [kJ / kg]
         """
+        hs = float("NaN")
         if (p > TRIPLE_POINT_PRESSURE) and (p < CRITICAL_PRESSURE):
             Ts = Region4.T4_p(p)
             if p < 16.529:
@@ -6347,6 +6352,7 @@ class Region4:
 
         :return: enthalpy in [kJ / kg]
         """
+        hs = float("NaN")
         if (p > TRIPLE_POINT_PRESSURE) and (p < CRITICAL_PRESSURE):
             Ts = Region4.T4_p(p)
             if p < 16.529:
@@ -6443,6 +6449,8 @@ class Region4:
         :param s: Specific entropy in [kJ / (kg K)]
         :return: temperature in [K]
         """
+        PL = float("NaN")
+        p = float("NaN")
         Ii = [
             0,
             0,
@@ -6972,6 +6980,7 @@ class Region5:
 
         :return: temperature in [K]
         """
+        Ts = float("NaN")
         Low_Bound = 1073.15
         High_Bound = 2273.15
         hs = h - 1
@@ -7007,6 +7016,7 @@ class Region5:
 
         :return: temperature in [K]
         """
+        Ts = float("NaN")
         Low_Bound = 1073.15
         High_Bound = 2273.15
         ss = s - 1
@@ -7042,6 +7052,7 @@ class Region5:
 
         :return: temperature in [K]
         """
+        Ts = float("NaN")
         Low_Bound = 1073.15
         High_Bound = 2073.15
         rhos = -1000
