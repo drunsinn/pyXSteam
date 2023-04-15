@@ -3,6 +3,9 @@
 """
 Section 4: Region Borders
 """
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 def B23p_T(T: float) -> float:
@@ -18,7 +21,7 @@ def B23p_T(T: float) -> float:
 
     :return: preasure in [MPa]
     """
-    return 348.05185628969 - 1.1671859879975 * T + 1.0192970039326e-03 * (T**2)
+    return 348.05185628969 - 1.1671859879975 * T + 1.0192970039326e-03 * (T ** 2)
 
 
 def B23T_p(p: float) -> float:

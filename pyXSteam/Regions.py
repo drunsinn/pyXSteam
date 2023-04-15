@@ -21,9 +21,10 @@ class Region1:
 
     Release on the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam, September 1997
     """
+    _logger = logging.getLogger(__name__)
 
-    @staticmethod
-    def v1_pT(p: float, T: float) -> float:
+    @classmethod
+    def v1_pT(cls, p: float, T: float) -> float:
         """function v1_pT = v1_pT(p, T)
 
         5 Equations for Region 1, Section. 5.1 Basic Equation
@@ -154,8 +155,8 @@ class Region1:
             )
         return R * T / p * Pi * gamma_der_pi / 1000
 
-    @staticmethod
-    def h1_pT(p: float, T: float) -> float:
+    @classmethod
+    def h1_pT(cls, p: float, T: float) -> float:
         """
         function h1_pT = h1_pT(p, T)
 
@@ -286,8 +287,8 @@ class Region1:
             )
         return R * T * tau * gamma_der_tau
 
-    @staticmethod
-    def u1_pT(p: float, T: float) -> float:
+    @classmethod
+    def u1_pT(cls, p: float, T: float) -> float:
         """function u1_pT = u1_pT(p, T)
 
         5 Equations for Region 1, Section. 5.1 Basic Equation
@@ -422,8 +423,8 @@ class Region1:
             )
         return R * T * (tau * gamma_der_tau - Pi * gamma_der_pi)
 
-    @staticmethod
-    def s1_pT(p: float, T: float) -> float:
+    @classmethod
+    def s1_pT(cls, p: float, T: float) -> float:
         """function s1_pT = s1_pT(p, T)
 
         5 Equations for Region 1, Section. 5.1 Basic Equation
@@ -555,8 +556,8 @@ class Region1:
             gamma = gamma + n1[i] * (7.1 - Pi) ** I1[i] * (tau - 1.222) ** J1[i]
         return R * tau * gamma_der_tau - R * gamma
 
-    @staticmethod
-    def Cp1_pT(p: float, T: float) -> float:
+    @classmethod
+    def Cp1_pT(cls, p: float, T: float) -> float:
         """function Cp1_pT = Cp1_pT(p, T)
 
         5 Equations for Region 1, Section. 5.1 Basic Equation
@@ -690,8 +691,8 @@ class Region1:
             )
         return -R * tau**2 * gamma_der_tautau
 
-    @staticmethod
-    def Cv1_pT(p: float, T: float) -> float:
+    @classmethod
+    def Cv1_pT(cls, p: float, T: float) -> float:
         """function Cv1_pT = Cv1_pT(p, T)
 
         5 Equations for Region 1, Section. 5.1 Basic Equation
@@ -842,8 +843,8 @@ class Region1:
             + (gamma_der_pi - tau * gamma_der_pitau) ** 2 / gamma_der_pipi
         )
 
-    @staticmethod
-    def w1_pT(p: float, T: float) -> float:
+    @classmethod
+    def w1_pT(cls, p: float, T: float) -> float:
         """function w1_pT = w1_pT(p, T)
 
         5 Equations for Region 1, Section. 5.1 Basic Equation
@@ -1001,8 +1002,8 @@ class Region1:
             )
         ) ** 0.5
 
-    @staticmethod
-    def T1_ph(p: float, h: float) -> float:
+    @classmethod
+    def T1_ph(cls, p: float, h: float) -> float:
         """function T1_ph = T1_ph(p, h)
 
         5 Equations for Region 1, Section. 5.1 Basic Equation, 5.2.1 The Backward Equation T (p, h)
@@ -1045,8 +1046,8 @@ class Region1:
             T = T + n1[i] * Pi ** I1[i] * (eta + 1) ** J1[i]
         return T
 
-    @staticmethod
-    def T1_ps(p: float, s: float) -> float:
+    @classmethod
+    def T1_ps(cls, p: float, s: float) -> float:
         """function T1_ps = T1_ps(p, s)
 
         5 Equations for Region 1, Section. 5.1 Basic Equation, 5.2.2 The Backward Equation T (p, s)
@@ -1089,8 +1090,8 @@ class Region1:
             T = T + n1[i] * Pi ** I1[i] * (Sigma + 2) ** J1[i]
         return T
 
-    @staticmethod
-    def p1_hs(h: float, s: float) -> float:
+    @classmethod
+    def p1_hs(cls, h: float, s: float) -> float:
         """function p1_hs = p1_hs(h, s)
 
         Supplementary Release on Backward Equations for Pressure as a Function of Enthalpy and Entropy p(h, s) to the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam
@@ -1134,8 +1135,8 @@ class Region1:
             p = p + n1[i] * (eta + 0.05) ** I1[i] * (Sigma + 0.05) ** J1[i]
         return p * 100
 
-    @staticmethod
-    def T1_prho(p: float, rho: float) -> float:
+    @classmethod
+    def T1_prho(cls, p: float, rho: float) -> float:
         """function T1_prho = T1_prho(p , rho)
 
         Solve by iteration. Observe that for low temperatures this equation has 2 solutions. Solve with half interval method
@@ -1145,7 +1146,7 @@ class Region1:
 
         :return: temperature in [K]
         """
-        logger = logging.getLogger("pyXSteam")
+        Ts = float("NaN")
         Low_Bound = FREEZING_TEMPERATURE_H2O
         High_Bound = Region4.T4_p(p)
         rhos = -1000
@@ -1158,7 +1159,7 @@ class Region1:
             rhos = 1 / Region1.v1_pT(p, Ts)
 
             if last_rhos == rhos:
-                logger.warning(
+                cls._logger.warning(
                     "T1_prho stopped iterating after %d steps because values did not converge",
                     step_counter,
                 )
@@ -1175,9 +1176,10 @@ class Region2:
     """
     Section 2.2: IAPWS IF 97 Calling functions to calculate the properties of water in Region 3
     """
+    _logger = logging.getLogger(__name__)
 
-    @staticmethod
-    def v2_pT(p: float, T: float) -> float:
+    @classmethod
+    def v2_pT(cls, p: float, T: float) -> float:
         """function v2_pT = v2_pT(p, T)
 
         6 Equations for Region 2, Section. 6.1 Basic Equation
@@ -1333,8 +1335,8 @@ class Region2:
             gr_pi = gr_pi + nr[i] * Ir[i] * Pi ** (Ir[i] - 1) * (tau - 0.5) ** Jr[i]
         return R * T / p * Pi * (g0_pi + gr_pi) / 1000
 
-    @staticmethod
-    def h2_pT(p: float, T: float) -> float:
+    @classmethod
+    def h2_pT(cls, p: float, T: float) -> float:
         """function h2_pT = h2_pT(p, T)
 
         6 Equations for Region 2, Section. 6.1 Basic Equation
@@ -1504,8 +1506,8 @@ class Region2:
             gr_tau = gr_tau + nr[i] * Pi ** Ir[i] * Jr[i] * (tau - 0.5) ** (Jr[i] - 1)
         return R * T * tau * (g0_tau + gr_tau)
 
-    @staticmethod
-    def u2_pT(p: float, T: float) -> float:
+    @classmethod
+    def u2_pT(cls, p: float, T: float) -> float:
         """function u2_pT = u2_pT(p, T)
 
         6 Equations for Region 2, Section. 6.1 Basic Equation
@@ -1677,8 +1679,8 @@ class Region2:
             gr_tau = gr_tau + nr[i] * Pi ** Ir[i] * Jr[i] * (tau - 0.5) ** (Jr[i] - 1)
         return R * T * (tau * (g0_tau + gr_tau) - Pi * (g0_pi + gr_pi))
 
-    @staticmethod
-    def s2_pT(p: float, T: float) -> float:
+    @classmethod
+    def s2_pT(cls, p: float, T: float) -> float:
         """function s2_pT = s2_pT(p, T)
 
         6 Equations for Region 2, Section. 6.1 Basic Equation
@@ -1851,8 +1853,8 @@ class Region2:
             gr_tau = gr_tau + nr[i] * Pi ** Ir[i] * Jr[i] * (tau - 0.5) ** (Jr[i] - 1)
         return R * (tau * (g0_tau + gr_tau) - (g0 + gr))
 
-    @staticmethod
-    def Cp2_pT(p: float, T: float) -> float:
+    @classmethod
+    def Cp2_pT(cls, p: float, T: float) -> float:
         """function Cp2_pT = Cp2_pT(p, T)
 
         6 Equations for Region 2, Section. 6.1 Basic Equation
@@ -2024,8 +2026,8 @@ class Region2:
             ) ** (Jr[i] - 2)
         return -R * tau**2 * (g0_tautau + gr_tautau)
 
-    @staticmethod
-    def Cv2_pT(p: float, T: float) -> float:
+    @classmethod
+    def Cv2_pT(cls, p: float, T: float) -> float:
         """function Cv2_pT = Cv2_pT(p, T)
 
         6 Equations for Region 2, Section. 6.1 Basic Equation
@@ -2211,8 +2213,8 @@ class Region2:
             - (1 + Pi * gr_pi - tau * Pi * gr_pitau) ** 2 / (1 - Pi**2 * gr_pipi)
         )
 
-    @staticmethod
-    def w2_pT(p: float, T: float) -> float:
+    @classmethod
+    def w2_pT(cls, p: float, T: float) -> float:
         """function w2_pT = w2_pT(p, T)
 
         6 Equations for Region 2, Section. 6.1 Basic Equation
@@ -2405,8 +2407,8 @@ class Region2:
             )
         ) ** 0.5
 
-    @staticmethod
-    def T2_ph(p: float, h: float) -> float:
+    @classmethod
+    def T2_ph(cls, p: float, h: float) -> float:
         """function T2_ph = T2_ph(p, h)
 
         6 Equations for Region 2, 6.3.1 The Backward Equations T(p, h) for Subregions 2a, 2b, and 2c
@@ -2750,8 +2752,8 @@ class Region2:
                 Ts = Ts + ni[i] * (p + 25) ** (Ii[i]) * (hs - 1.8) ** Ji[i]
         return Ts
 
-    @staticmethod
-    def T2_ps(p: float, s: float) -> float:
+    @classmethod
+    def T2_ps(cls, p: float, s: float) -> float:
         """function T2_ps = T2_ps(p, s)
 
         6 Equations for Region 2,6.3.2 The Backward Equations T( p, s ) for Subregions 2a, 2b, and 2c
@@ -3175,8 +3177,8 @@ class Region2:
                 teta = teta + ni[i] * Pi ** Ii[i] * (2 - Sigma) ** Ji[i]
         return teta
 
-    @staticmethod
-    def p2_hs(h: float, s: float) -> float:
+    @classmethod
+    def p2_hs(cls, h: float, s: float) -> float:
         """function p2_hs = p2_hs(h, s)
 
         Supplementary Release on Backward Equations for Pressure as a function of Enthalpy and Entropy p(h,s) to the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam
@@ -3526,8 +3528,8 @@ class Region2:
             p2_hs = Pi**4 * 100
         return p2_hs
 
-    @staticmethod
-    def T2_prho(p: float, rho: float) -> float:
+    @classmethod
+    def T2_prho(cls, p: float, rho: float) -> float:
         """function T2_prho=T2_prho(p,rho)
         Solve by iteration. Observe that of low temperatures this equation has 2 solutions. Solve with half interval method
 
@@ -3536,7 +3538,7 @@ class Region2:
 
         :return: temperature in [K]
         """
-        logger = logging.getLogger("pyXSteam")
+        Ts = float("NaN")
         if p < 16.5292:
             Low_Bound = Region4.T4_p(p)
         else:
@@ -3552,7 +3554,7 @@ class Region2:
             rhos = 1 / Region2.v2_pT(p, Ts)
 
             if last_rhos == rhos:
-                logger.warning(
+                cls._logger.warning(
                     "T2_prho stopped iterating after %d steps because values did not converge",
                     step_counter,
                 )
@@ -3569,9 +3571,10 @@ class Region3:
     """
     Section 2.3: IAPWS IF 97 Calling functions to calculate the properties of water in Region 3
     """
+    _logger = logging.getLogger(__name__)
 
-    @staticmethod
-    def p3_rhoT(rho: float, T: float) -> float:
+    @classmethod
+    def p3_rhoT(cls, rho: float, T: float) -> float:
         """function p3_rhoT = p3_rhoT(rho, T)
 
         7 Basic Equation for Region 3, Section. 6.1 Basic Equation
@@ -3721,8 +3724,8 @@ class Region3:
         fidelta = fidelta + (ni[0] / delta)
         return (rho * R * T * delta * fidelta) / 1000.0
 
-    @staticmethod
-    def u3_rhoT(rho: float, T: float) -> float:
+    @classmethod
+    def u3_rhoT(cls, rho: float, T: float) -> float:
         """function u3_rhoT = u3_rhoT(rho, T)
 
         7 Basic Equation for Region 3, Section. 6.1 Basic Equation
@@ -3870,8 +3873,8 @@ class Region3:
             fitau = fitau + ni[i] * delta ** Ii[i] * Ji[i] * tau ** (Ji[i] - 1)
         return R * T * (tau * fitau)
 
-    @staticmethod
-    def h3_rhoT(rho: float, T: float) -> float:
+    @classmethod
+    def h3_rhoT(cls, rho: float, T: float) -> float:
         """function h3_rhoT = h3_rhoT(rho, T)
 
         7 Basic Equation for Region 3, Section. 6.1 Basic Equation
@@ -4022,8 +4025,8 @@ class Region3:
         fidelta = fidelta + ni[0] / delta
         return R * T * (tau * fitau + delta * fidelta)
 
-    @staticmethod
-    def s3_rhoT(rho: float, T: float) -> float:
+    @classmethod
+    def s3_rhoT(cls, rho: float, T: float) -> float:
         """function s3_rhoT = s3_rhoT(rho, T)
 
         7 Basic Equation for Region 3, Section. 6.1 Basic Equation
@@ -4174,8 +4177,8 @@ class Region3:
         fi = fi + ni[0] * math.log(delta)
         return R * (tau * fitau - fi)
 
-    @staticmethod
-    def Cp3_rhoT(rho: float, T: float) -> float:
+    @classmethod
+    def Cp3_rhoT(cls, rho: float, T: float) -> float:
         """function Cp3_rhoT = Cp3_rhoT(rho, T)
 
         7 Basic Equation for Region 3, Section. 6.1 Basic Equation
@@ -4342,8 +4345,8 @@ class Region3:
             / (2 * delta * fidelta + delta**2 * fideltadelta)
         )
 
-    @staticmethod
-    def Cv3_rhoT(rho: float, T: float) -> float:
+    @classmethod
+    def Cv3_rhoT(cls, rho: float, T: float) -> float:
         """function Cv3_rhoT = Cv3_rhoT(rho, T)
 
         7 Basic Equation for Region 3, Section. 6.1 Basic Equation
@@ -4496,8 +4499,8 @@ class Region3:
             ) * tau ** (Ji[i] - 2)
         return R * -(tau * tau * fitautau)
 
-    @staticmethod
-    def w3_rhoT(rho: float, T: float) -> float:
+    @classmethod
+    def w3_rhoT(cls, rho: float, T: float) -> float:
         """function w3_rhoT = w3_rhoT(rho, T)
 
         7 Basic Equation for Region 3, Section. 6.1 Basic Equation
@@ -4670,8 +4673,8 @@ class Region3:
             )
         ) ** 0.5
 
-    @staticmethod
-    def T3_ph(p: float, h: float) -> float:
+    @classmethod
+    def T3_ph(cls, p: float, h: float) -> float:
         """function T3_ph = T3_ph(p, h)
 
         Revised Supplementary Release on Backward Equations for the functions T(p,h), v(p,h) and T(p,s), v(p,s) for Region 3 of the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam 2004
@@ -4915,8 +4918,8 @@ class Region3:
             T3_ph = Ts * 860
         return T3_ph
 
-    @staticmethod
-    def v3_ph(p: float, h: float) -> float:
+    @classmethod
+    def v3_ph(cls, p: float, h: float) -> float:
         """function v3_ph = v3_ph(p, h)
         Revised Supplementary Release on Backward Equations for the functions T(p, h), v(p, h) and T(p, s), v(p, s) for Region 3 of the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam 2004
 
@@ -5153,8 +5156,8 @@ class Region3:
             v3_ph = vs * 0.0088
         return v3_ph
 
-    @staticmethod
-    def T3_ps(p: float, s: float) -> float:
+    @classmethod
+    def T3_ps(cls, p: float, s: float) -> float:
         """function T3_ps = T3_ps(p, s)
 
         Revised Supplementary Release on Backward Equations for the functions T(p,h), v(p,h) and T(p,s), v(p,s) for Region 3 of the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam 2004
@@ -5383,8 +5386,8 @@ class Region3:
             T3_ps = teta * 860
         return T3_ps
 
-    @staticmethod
-    def v3_ps(p: float, s: float) -> float:
+    @classmethod
+    def v3_ps(cls, p: float, s: float) -> float:
         """function v3_ps = v3_ps(p, s)
 
         Revised Supplementary Release on Backward Equations for the functions T(p, h), v(p, h) and T(p, s), v(p, s) for Region 3 of the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam 2004
@@ -5607,8 +5610,8 @@ class Region3:
             v3_ps = omega * 0.0088
         return v3_ps
 
-    @staticmethod
-    def p3_hs(h: float, s: float) -> float:
+    @classmethod
+    def p3_hs(cls, h: float, s: float) -> float:
         """function p3_hs = p3_hs(h, s)
 
         Supplementary Release on Backward Equations () , p h s for Region 3, Equations as a function of h and s for the Region Boundaries, and an Equation sat , T hs for Region 4 of the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam 2004
@@ -5857,8 +5860,8 @@ class Region3:
             p3_hs = 16.6 / Pi
         return p3_hs
 
-    @staticmethod
-    def h3_pT(p: float, T: float) -> float:
+    @classmethod
+    def h3_pT(cls, p: float, T: float) -> float:
         """function h3_pT = h3_pT(p, T)
 
         Not available with if 97
@@ -5872,7 +5875,7 @@ class Region3:
 
         :return: enthalpy in [kJ / kg]
         """
-        logger = logging.getLogger("pyXSteam")
+        hs = float("NaN")
         if p < CRITICAL_PRESSURE:  # Below triple point
             Ts = Region4.T4_p(p)  # Saturation temperature
             if T <= Ts:  # Liquid side
@@ -5895,7 +5898,7 @@ class Region3:
             Ts = Region3.T3_ph(p, hs)
 
             if last_Ts == Ts:
-                logger.warning(
+                cls._logger.warning(
                     "h3_pT stopped iterating after %d steps because values did not converge",
                     step_counter,
                 )
@@ -5907,8 +5910,8 @@ class Region3:
                 Low_Bound = hs
         return hs
 
-    @staticmethod
-    def T3_prho(p: float, rho: float) -> float:
+    @classmethod
+    def T3_prho(cls, p: float, rho: float) -> float:
         """function T3_prho = T3_prho(p, rho)
 
         Solve by iteration. Observe that of low temperatures this equation has 2 solutions. Solve with half interval method
@@ -5918,7 +5921,7 @@ class Region3:
 
         :return: temperature in [K]
         """
-        logger = logging.getLogger("pyXSteam")
+        Ts = float("NaN")
         Low_Bound = 623.15
         High_Bound = 1073.15
         ps = -1000
@@ -5931,7 +5934,7 @@ class Region3:
             ps = Region3.p3_rhoT(rho, Ts)
 
             if last_ps == ps:
-                logger.warning(
+                cls._logger.warning(
                     "T3_prho stopped iterating after %d steps because values did not converge",
                     step_counter,
                 )
@@ -5948,9 +5951,10 @@ class Region4:
     """
     Section 2.4: IAPWS IF 97 Calling functions to calculate the properties of water in Region 4
     """
+    _logger = logging.getLogger(__name__)
 
-    @staticmethod
-    def p4_T(T: float) -> float:
+    @classmethod
+    def p4_T(cls, T: float) -> float:
         """function p4_T = p4_T(T)
 
         Section 8.1 The Saturation-Pressure Equation
@@ -5967,8 +5971,8 @@ class Region4:
         C = 14.91510861353 * teta**2 - 4823.2657361591 * teta + 405113.40542057
         return (2 * C / (-B + (B**2 - 4 * a * C) ** 0.5)) ** 4
 
-    @staticmethod
-    def T4_p(p: float) -> float:
+    @classmethod
+    def T4_p(cls, p: float) -> float:
         """function T4_p = T4_p(p)
 
         Section 8.2 The Saturation-Temperature Equation
@@ -5994,8 +5998,8 @@ class Region4:
             ** 0.5
         ) / 2
 
-    @staticmethod
-    def h4_s(s: float) -> float:
+    @classmethod
+    def h4_s(cls, s: float) -> float:
         """function h4_s = h4_s(s)
 
         Supplementary Release on Backward Equations () , p h s for Region 3, Equations as a function of h and s for the Region Boundaries, and an Equation() sat , T hs for Region 4 of the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam 4 Equations for Region Boundaries Given Enthalpy and Entropy
@@ -6277,8 +6281,8 @@ class Region4:
             h4_s = -99999
         return h4_s
 
-    @staticmethod
-    def p4_s(s: float) -> float:
+    @classmethod
+    def p4_s(cls, s: float) -> float:
         """function p4_s = p4_s(s)
 
         Uses h4_s and p_hs for the different regions to determine p4_s
@@ -6298,15 +6302,15 @@ class Region4:
             p4_s = -99999
         return p4_s
 
-    @staticmethod
-    def h4L_p(p: float) -> float:
+    @classmethod
+    def h4L_p(cls, p: float) -> float:
         """function h4L_p = h4L_p(p)
 
         :param p: preasure in [MPa]
 
         :return: enthalpy in [kJ / kg]
         """
-        logger = logging.getLogger("pyXSteam")
+        hs = float("NaN")
         if (p > TRIPLE_POINT_PRESSURE) and (p < CRITICAL_PRESSURE):
             Ts = Region4.T4_p(p)
             if p < 16.529:
@@ -6325,7 +6329,7 @@ class Region4:
                     ps = p3sat_h(hs)
 
                     if last_ps == ps:
-                        logger.warning(
+                        cls._logger.warning(
                             "h4L_p stopped iterating after %d steps because values did not converge",
                             step_counter,
                         )
@@ -6340,15 +6344,15 @@ class Region4:
             h4L_p = -99999
         return h4L_p
 
-    @staticmethod
-    def h4V_p(p: float) -> float:
+    @classmethod
+    def h4V_p(cls, p: float) -> float:
         """function h4V_p = h4V_p(p)
 
         :param p: preasure in [MPa]
 
         :return: enthalpy in [kJ / kg]
         """
-        logger = logging.getLogger("pyXSteam")
+        hs = float("NaN")
         if (p > TRIPLE_POINT_PRESSURE) and (p < CRITICAL_PRESSURE):
             Ts = Region4.T4_p(p)
             if p < 16.529:
@@ -6367,7 +6371,7 @@ class Region4:
                     ps = p3sat_h(hs)
 
                     if last_ps == ps:
-                        logger.warning(
+                        cls._logger.warning(
                             "h4V_p stopped iterating after %d steps because values did not converge",
                             step_counter,
                         )
@@ -6382,8 +6386,8 @@ class Region4:
             h4V_p = -99999
         return h4V_p
 
-    @staticmethod
-    def x4_ph(p: float, h: float) -> float:
+    @classmethod
+    def x4_ph(cls, p: float, h: float) -> float:
         """function x4_ph = x4_ph(p, h)
 
         Calculate vapour fraction from hL and hV for given p
@@ -6403,8 +6407,8 @@ class Region4:
             x4_ph = (h - h4L) / (h4v - h4L)
         return x4_ph
 
-    @staticmethod
-    def x4_ps(p: float, s: float) -> float:
+    @classmethod
+    def x4_ps(cls, p: float, s: float) -> float:
         """function x4_ps = x4_ps(p, s)
 
         :param p: preasure in [MPa]
@@ -6430,8 +6434,8 @@ class Region4:
             x4_ps = (s - ssL) / (ssv - ssL)
         return x4_ps
 
-    @staticmethod
-    def T4_hs(h: float, s: float) -> float:
+    @classmethod
+    def T4_hs(cls, h: float, s: float) -> float:
         """function T4_hs = T4_hs(h, s)
 
         Supplementary Release on Backward Equations ( ) , p h s for Region 3,
@@ -6445,6 +6449,8 @@ class Region4:
         :param s: Specific entropy in [kJ / (kg K)]
         :return: temperature in [K]
         """
+        PL = float("NaN")
+        p = float("NaN")
         Ii = [
             0,
             0,
@@ -6617,9 +6623,10 @@ class Region5:
     """
     Section 2.5: IAPWS IF 97 Calling functions to calculate the properties of water in Region 5
     """
+    _logger = logging.getLogger(__name__)
 
-    @staticmethod
-    def h5_pT(p: float, T: float) -> float:
+    @classmethod
+    def h5_pT(cls, p: float, T: float) -> float:
         """function h5_pT = h5_pT(p, T)
 
         Basic Equation for Region 5
@@ -6662,8 +6669,8 @@ class Region5:
             )
         return R * T * tau * (gamma0_tau + gammar_tau)
 
-    @staticmethod
-    def v5_pT(p: float, T: float) -> float:
+    @classmethod
+    def v5_pT(cls, p: float, T: float) -> float:
         """function v5_pT = v5_pT(p, T)
 
         Basic Equation for Region 5
@@ -6693,8 +6700,8 @@ class Region5:
             gammar_pi = gammar_pi + nir[i] * Iir[i] * Pi ** (Iir[i] - 1) * tau ** Jir[i]
         return R * T / p * Pi * (gamma0_pi + gammar_pi) / 1000
 
-    @staticmethod
-    def u5_pT(p: float, T: float) -> float:
+    @classmethod
+    def u5_pT(cls, p: float, T: float) -> float:
         """function u5_pT = u5_pT(p, T)
 
         Basic Equation for Region 5
@@ -6740,8 +6747,8 @@ class Region5:
             )
         return R * T * (tau * (gamma0_tau + gammar_tau) - Pi * (gamma0_pi + gammar_pi))
 
-    @staticmethod
-    def Cp5_pT(p: float, T: float) -> float:
+    @classmethod
+    def Cp5_pT(cls, p: float, T: float) -> float:
         """function Cp5_pT = Cp5_pT(p, T)
 
         Basic Equation for Region 5
@@ -6786,8 +6793,8 @@ class Region5:
             ) * tau ** (Jir[i] - 2)
         return -R * tau**2 * (gamma0_tautau + gammar_tautau)
 
-    @staticmethod
-    def s5_pT(p: float, T: float) -> float:
+    @classmethod
+    def s5_pT(cls, p: float, T: float) -> float:
         """function s5_pT = s5_pT(p, T)
 
         Basic Equation for Region 5
@@ -6834,8 +6841,8 @@ class Region5:
             )
         return R * (tau * (gamma0_tau + gammar_tau) - (gamma0 + gammar))
 
-    @staticmethod
-    def Cv5_pT(p: float, T: float) -> float:
+    @classmethod
+    def Cv5_pT(cls, p: float, T: float) -> float:
         """function Cv5_pT = Cv5_pT(p, T)
 
         Basic Equation for Region 5
@@ -6895,8 +6902,8 @@ class Region5:
             / (1 - Pi**2 * gammar_pipi)
         )
 
-    @staticmethod
-    def w5_pT(p: float, T: float) -> float:
+    @classmethod
+    def w5_pT(cls, p: float, T: float) -> float:
         """function w5_pT = w5_pT(p, T)
 
         Basic Equation for Region 5
@@ -6962,8 +6969,8 @@ class Region5:
             )
         ) ** 0.5
 
-    @staticmethod
-    def T5_ph(p: float, h: float) -> float:
+    @classmethod
+    def T5_ph(cls, p: float, h: float) -> float:
         """function T5_ph = T5_ph(p, h)
 
         Solve with half interval method
@@ -6973,7 +6980,7 @@ class Region5:
 
         :return: temperature in [K]
         """
-        logger = logging.getLogger("pyXSteam")
+        Ts = float("NaN")
         Low_Bound = 1073.15
         High_Bound = 2273.15
         hs = h - 1
@@ -6986,7 +6993,7 @@ class Region5:
             hs = Region5.h5_pT(p, Ts)
 
             if last_hs == hs:
-                logger.warning(
+                cls._logger.warning(
                     "T5_ph stopped iterating after %d steps because values did not converge",
                     step_counter,
                 )
@@ -6998,8 +7005,8 @@ class Region5:
                 Low_Bound = Ts
         return Ts
 
-    @staticmethod
-    def T5_ps(p: float, s: float) -> float:
+    @classmethod
+    def T5_ps(cls, p: float, s: float) -> float:
         """function T5_ps = T5_ps(p, s)
 
         Solve with half interval method
@@ -7009,7 +7016,7 @@ class Region5:
 
         :return: temperature in [K]
         """
-        logger = logging.getLogger("pyXSteam")
+        Ts = float("NaN")
         Low_Bound = 1073.15
         High_Bound = 2273.15
         ss = s - 1
@@ -7022,7 +7029,7 @@ class Region5:
             ss = Region5.s5_pT(p, Ts)
 
             if last_ss == ss:
-                logger.warning(
+                cls._logger.warning(
                     "T5_ps stopped iterating after %d steps because values did not converge",
                     step_counter,
                 )
@@ -7034,8 +7041,8 @@ class Region5:
                 Low_Bound = Ts
         return Ts
 
-    @staticmethod
-    def T5_prho(p: float, rho: float) -> float:
+    @classmethod
+    def T5_prho(cls, p: float, rho: float) -> float:
         """function T5_prho = T5_prho(p, rho)
 
         Solve by iteration. Observe that for low temperatures this equation has 2 solutions. Solve with half interval method
@@ -7045,7 +7052,7 @@ class Region5:
 
         :return: temperature in [K]
         """
-        logger = logging.getLogger("pyXSteam")
+        Ts = float("NaN")
         Low_Bound = 1073.15
         High_Bound = 2073.15
         rhos = -1000
@@ -7058,7 +7065,7 @@ class Region5:
             rhos = 1 / Region2.v2_pT(p, Ts)
 
             if last_rhos == rhos:
-                logger.warning(
+                cls._logger.warning(
                     "T5_prho stopped iterating after %d steps because values did not converge",
                     step_counter,
                 )

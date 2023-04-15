@@ -49,10 +49,8 @@ def demo_simple_cycle():
     state_point_2 = dict()
     state_point_2["s"] = state_point_1["s"]
     state_point_2["p"] = 71.1  # bar - given
-    state_point_2["h"] = steam_table.t_ps(
-        state_point_2["p"], state_point_2["s"])
-    state_point_2["t"] = steam_table.t_ph(
-        state_point_2["p"], state_point_2["h"])
+    state_point_2["h"] = steam_table.t_ps(state_point_2["p"], state_point_2["s"])
+    state_point_2["t"] = steam_table.t_ph(state_point_2["p"], state_point_2["h"])
     # state_point_2["x"] = float("NaN")
 
     pump_work = state_point_1["h"] - state_point_2["h"]
@@ -76,10 +74,8 @@ def demo_simple_cycle():
     state_point_4["s"] = state_point_3["s"]
     state_point_4["p"] = state_point_1["p"]
     # % for isobaric heat rejection in next step
-    state_point_4["h"] = steam_table.h_ps(
-        state_point_4["p"], state_point_4["s"])
-    state_point_4["x"] = steam_table.x_ph(
-        state_point_4["p"], state_point_4["h"])
+    state_point_4["h"] = steam_table.h_ps(state_point_4["p"], state_point_4["s"])
+    state_point_4["x"] = steam_table.x_ph(state_point_4["p"], state_point_4["h"])
 
     turbine_work = state_point_3["h"] - state_point_4["h"]
 
@@ -136,11 +132,9 @@ def demo_ms_and_ofwh():
     state_point_2 = dict()
     state_point_2["s_s"] = state_point_1["s"]
     state_point_2["p"] = 164.0  # % psia - given
-    state_point_2["h_s"] = steam_table.h_ps(
-        state_point_2["p"], state_point_2["s_s"])
+    state_point_2["h_s"] = steam_table.h_ps(state_point_2["p"], state_point_2["s_s"])
     state_point_2["h"] = (
-        state_point_1["h"] - (state_point_1["h"] -
-                              state_point_2["h_s"]) / eta_mcp
+        state_point_1["h"] - (state_point_1["h"] - state_point_2["h_s"]) / eta_mcp
     )
 
     # %% state point 3 OFWH exit
@@ -155,11 +149,9 @@ def demo_ms_and_ofwh():
     state_point_4 = dict()
     state_point_4["p"] = 820.0  # % psia - given
     state_point_4["s_s"] = state_point_3["s"]
-    state_point_4["h_s"] = steam_table.h_ps(
-        state_point_4["p"], state_point_4["s_s"])
+    state_point_4["h_s"] = steam_table.h_ps(state_point_4["p"], state_point_4["s_s"])
     state_point_4["h"] = (
-        state_point_3["h"] - (state_point_3["h"] -
-                              state_point_4["h_s"]) / eta_mfp
+        state_point_3["h"] - (state_point_3["h"] - state_point_4["h_s"]) / eta_mfp
     )
 
     # %% State point 5 S/G Exit
@@ -174,13 +166,11 @@ def demo_ms_and_ofwh():
     state_point_6 = dict()
     state_point_6["p"] = 164.0  # % psia - given
     state_point_6["s_s"] = state_point_5["s"]
-    state_point_6["h_s"] = steam_table.h_ps(
-        state_point_6["p"], state_point_6["s_s"])
+    state_point_6["h_s"] = steam_table.h_ps(state_point_6["p"], state_point_6["s_s"])
     state_point_6["h"] = state_point_5["h"] - eta_hpt * (
         state_point_5["h"] - state_point_6["h_s"]
     )
-    state_point_6["x"] = steam_table.x_ph(
-        state_point_6["p"], state_point_6["h"])
+    state_point_6["x"] = steam_table.x_ph(state_point_6["p"], state_point_6["h"])
 
     # %% State point 7 Moisture Separator vapor exit
     state_point_7 = dict()
@@ -194,13 +184,11 @@ def demo_ms_and_ofwh():
     state_point_8 = dict()
     state_point_8["p"] = state_point_1["p"]
     state_point_8["s_s"] = state_point_7["s"]
-    state_point_8["h_s"] = steam_table.h_ps(
-        state_point_8["p"], state_point_8["s_s"])
+    state_point_8["h_s"] = steam_table.h_ps(state_point_8["p"], state_point_8["s_s"])
     state_point_8["h"] = state_point_7["h"] - eta_lpt * (
         state_point_7["h"] - state_point_8["h_s"]
     )
-    state_point_8["x"] = steam_table.x_ph(
-        state_point_8["p"], state_point_8["h"])
+    state_point_8["x"] = steam_table.x_ph(state_point_8["p"], state_point_8["h"])
 
     # %% State point 9 Moisture Separator liquid drain to OFWH
     state_point_9 = dict()
@@ -228,13 +216,11 @@ def demo_ms_and_ofwh():
     w_mcp = (state_point_1["h"] - state_point_2["h"]) * f1 * state_point_6["x"]
     w_mfp = state_point_3["h"] - state_point_4["h"]
     w_hpt = state_point_5["h"] - state_point_6["h"]
-    w_lpt = (state_point_7["h"] - state_point_8["h"]) * \
-        (1 - f1) * state_point_6["x"]
+    w_lpt = (state_point_7["h"] - state_point_8["h"]) * (1 - f1) * state_point_6["x"]
 
     w_net = w_mcp + w_mfp + w_hpt + w_lpt
 
-    q_cond = (state_point_1["h"] - state_point_8["h"]
-              ) * (1 - f1) * state_point_6["x"]
+    q_cond = (state_point_1["h"] - state_point_8["h"]) * (1 - f1) * state_point_6["x"]
     q_sg = state_point_5["h"] - state_point_4["h"]
 
     q_net = q_cond + q_sg
@@ -269,11 +255,9 @@ def demo_reheat_ms_ofwh():
     state_point_2 = dict()
     state_point_2["p"] = 164.0  # % psia
     state_point_2["s_s"] = state_point_1["s"]
-    state_point_2["h_s"] = steam_table.h_ps(
-        state_point_2["p"], state_point_2["s_s"])
+    state_point_2["h_s"] = steam_table.h_ps(state_point_2["p"], state_point_2["s_s"])
     state_point_2["h"] = (
-        state_point_1["h"] - (state_point_1["h"] -
-                              state_point_2["h_s"]) / eta_mcp
+        state_point_1["h"] - (state_point_1["h"] - state_point_2["h_s"]) / eta_mcp
     )
 
     # %% State point 3, OFWH exit, saturated liquid
@@ -287,11 +271,9 @@ def demo_reheat_ms_ofwh():
     state_point_4 = dict()
     state_point_4["p"] = 820.0  # % psia
     state_point_4["s_s"] = state_point_3["s"]
-    state_point_4["h_s"] = steam_table.h_ps(
-        state_point_4["p"], state_point_4["s_s"])
+    state_point_4["h_s"] = steam_table.h_ps(state_point_4["p"], state_point_4["s_s"])
     state_point_4["h"] = (
-        state_point_3["h"] - (state_point_3["h"] -
-                              state_point_4["h_s"]) / eta_mfp
+        state_point_3["h"] - (state_point_3["h"] - state_point_4["h_s"]) / eta_mfp
     )
 
     # %% State point 5 - Steam generator exit
@@ -305,13 +287,11 @@ def demo_reheat_ms_ofwh():
     state_point_6 = dict()
     state_point_6["p"] = 164.0  # % psia
     state_point_6["s_s"] = state_point_5["s"]
-    state_point_6["h_s"] = steam_table.h_ps(
-        state_point_6["p"], state_point_6["s_s"])
+    state_point_6["h_s"] = steam_table.h_ps(state_point_6["p"], state_point_6["s_s"])
     state_point_6["h"] = state_point_5["h"] - eta_hpt * (
         state_point_5["h"] - state_point_6["h_s"]
     )
-    state_point_6["x"] = steam_table.x_ph(
-        state_point_6["p"], state_point_6["h"])
+    state_point_6["x"] = steam_table.x_ph(state_point_6["p"], state_point_6["h"])
 
     # %% State point 7 - Moisture Separator Exit
     state_point_7 = dict()
@@ -323,18 +303,15 @@ def demo_reheat_ms_ofwh():
     state_point_8 = dict()
     state_point_8["p"] = state_point_7["p"]
     state_point_8["t"] = 490.0  # % degrees F
-    state_point_8["h"] = steam_table.h_pt(
-        state_point_8["p"], state_point_8["t"])
-    state_point_8["s"] = steam_table.s_pt(
-        state_point_8["p"], state_point_8["t"])
+    state_point_8["h"] = steam_table.h_pt(state_point_8["p"], state_point_8["t"])
+    state_point_8["s"] = steam_table.s_pt(state_point_8["p"], state_point_8["t"])
 
     # %% State point 9 - LP Turbine Exhaust
     state_point_9 = dict()
     state_point_9["p"] = state_point_1["p"]
     eta_lpt = 0.94
     state_point_9["s_s"] = state_point_8["s"]
-    state_point_9["h_s"] = steam_table.h_ps(
-        state_point_9["p"], state_point_9["s_s"])
+    state_point_9["h_s"] = steam_table.h_ps(state_point_9["p"], state_point_9["s_s"])
     state_point_9["h"] = state_point_8["h"] - eta_lpt * (
         state_point_8["h"] - state_point_9["h_s"]
     )
@@ -421,8 +398,7 @@ if __name__ == "__main__":
     logger = logging.getLogger("pyXSteam")
     logger.setLevel(logging.ERROR)
     sh = logging.StreamHandler()
-    sh.setFormatter(logging.Formatter(
-        "%(name)s - %(levelname)s - %(message)s"))
+    sh.setFormatter(logging.Formatter("%(name)s - %(levelname)s - %(message)s"))
     logger.addHandler(sh)
 
     print("Demos on how to use pyXSteam on the example of the rankine cycle")

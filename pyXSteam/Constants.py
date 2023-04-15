@@ -24,14 +24,16 @@ FREEZING_TEMPERATURE_H2O = 273.15  # K
 
 # IAWPS Release on Vaues of Temperature, Pressure and Density of Ordinary and
 # Heavy Water Substances at their Respective Critical Points
-# Released September 1992, Revision of the Release of 1992
+# IAPWS R2-83(1992)
+# Released September 1992, Revision of the Release of 1983
+# http://www.iapws.org/relguide/crits.pdf
 CRITICAL_TEMPERATURE_H20_1992 = 647.096  # +-0.1 K
 CRITICAL_PRESSURE_H20_1992 = 22.067  # +0.27*(+-0.1)+-0.005 MPa
-CRITICAL_DENSITY_H20_1992 = 322  # +-3 kg / m
+CRITICAL_DENSITY_H20_1992 = 322.0  # +-3 kg / m
 
 CRITICAL_TEMPERATURE_D20_1992 = 643.847  # +-0.2 K
 CRITICAL_PRESSURE_D20_1992 = 21.671  # +0.27*(+-0.2)+-0.01 MPa
-CRITICAL_DENSITY_D20_1992 = 356  # +-5 kg / m
+CRITICAL_DENSITY_D20_1992 = 356.0  # +-5 kg / m
 
 
 # Other common constants used in calculations
@@ -61,6 +63,7 @@ class IceType(IntEnum):
     V = 5
     VI = 6
     VII = 7
+    NONE = -1
 
     @classmethod
     def has_value(cls, value):

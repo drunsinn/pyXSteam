@@ -16,7 +16,7 @@ from .TransportProperties import (
     my_AllRegions_pT,
     my_AllRegions_ph,
     tc_ptrho,
-    Surface_Tension_T,
+    surface_tension_T,
 )
 from .Constants import (
     SPECIFIC_GAS_CONSTANT,
@@ -39,6 +39,7 @@ from .IAPWS_R14 import (
     pmelt_T_iceVII,
     psubl_T,
 )
+from .IAPWS_R12 import eq10
 
 
 class XSteam(object):
@@ -63,7 +64,7 @@ class XSteam(object):
         """
         Constructor method
         """
-        self.logger = logging.getLogger(__name__)
+        self.logger = logging.getLogger("pyXSteam")
         self._unit_converter = UnitConverter(unitSystem)
         self.logger.info(
             "initialised pyXSteam with Unit System %s", self._unit_converter
@@ -335,8 +336,7 @@ class XSteam(object):
         :return: pressure or NaN if arguments are out of range
         """
         if rho <= 0.0:
-            self.logger.error(
-                "negative values for density rho not allowed %f", rho)
+            self.logger.error("negative values for density rho not allowed %f", rho)
             raise ValueError("rho out of range")
         h = self._unit_converter.toSIunit_h(h)
         High_Bound = self._unit_converter.fromSIunit_p(100)
@@ -668,8 +668,7 @@ class XSteam(object):
                 )
             else:
                 return self._unit_converter.fromSIunit_v(
-                    Region3.v3_ph(Region4.p4_T(
-                        T), Region4.h4V_p(Region4.p4_T(T)))
+                    Region3.v3_ph(Region4.p4_T(T), Region4.h4V_p(Region4.p4_T(T)))
                 )
         else:
             self.logger.warning("temperature %f out of range", T)
@@ -692,8 +691,7 @@ class XSteam(object):
                 )
             else:
                 return self._unit_converter.fromSIunit_v(
-                    Region3.v3_ph(Region4.p4_T(
-                        T), Region4.h4L_p(Region4.p4_T(T)))
+                    Region3.v3_ph(Region4.p4_T(T), Region4.h4L_p(Region4.p4_T(T)))
                 )
         else:
             self.logger.warning("temperature %f out of range", T)
@@ -2177,7 +2175,7 @@ class XSteam(object):
         :return: surface tension
         """
         T = self._unit_converter.toSIunit_T(t)
-        return self._unit_converter.fromSIunit_st(Surface_Tension_T(T))
+        return self._unit_converter.fromSIunit_st(surface_tension_T(T))
 
     def st_p(self, p: float) -> float:
         """
@@ -2190,7 +2188,7 @@ class XSteam(object):
         """
         T = self.tsat_p(p)
         T = self._unit_converter.toSIunit_T(T)
-        return self._unit_converter.fromSIunit_st(Surface_Tension_T(T))
+        return self._unit_converter.fromSIunit_st(surface_tension_T(T))
 
     def tcL_p(self, p: float) -> float:
         """
@@ -2422,7 +2420,7 @@ class XSteam(object):
             self.logger.warning("pressure %f out of range", p)
             return float("NaN")
 
-    def pmelt_t(self, t: float, hint: IceType = None) -> float:
+    def pmelt_t(self, t: float, hint: IceType = IceType.NONE) -> float:
         """
         Revised Release on the Pressure along the Melting and Sublimation Curves of Ordinary Water Substance
         Release IAPWS R14-08(2011)
@@ -2449,7 +2447,7 @@ class XSteam(object):
         """
         T = self._unit_converter.toSIunit_T(t)
 
-        if hint is None:
+        if hint is None or hint == IceType.NONE:
             if T >= 251.165 and T < 256.164:
                 self.logger.error(
                     "can't select ice type based on temperature %f, hint required", T
@@ -2528,3 +2526,29 @@ class XSteam(object):
         else:
             self.logger.warning("temperature %f out of range", T)
             return float("NaN")
+
+    def R12_my_rhot(
+        self, rho: float, t: float, industrial_application: bool = True
+    ) -> float:
+        """shear viscosity of pure water substance over an extensive range of fluid states
+
+        Release on the IAPWS Formulation 2008 for the Viscosity of Ordinary Water Substance
+        IAPWS R12-08
+        http://www.iapws.org/relguide/visc.pdf
+
+        :param rho: density
+        :param t: temperature
+        :param industrial_application: select if simple or detailes approximation should be used
+
+        :return: shear viscosity
+        """
+        self.logger.warning(
+            "this function is still experimental, use at your own risk!"
+        )
+
+        T = self._unit_converter.toSIunit_T(t)
+
+        my_my = eq10(T, rho, industrial=industrial_application)
+        my = my_my * 10e5
+
+        return self._unit_converter.fromSIunit_my(my)
