@@ -5,7 +5,7 @@ Section 2: IAPWS IF 97 Calling functions
 """
 import math
 import logging
-from .RegionBorders import B23T_p, p3sat_h
+from .RegionBorders import TB23_p
 from .Constants import (
     SPECIFIC_GAS_CONSTANT,
     CRITICAL_TEMPERATURE,
@@ -17,10 +17,13 @@ from .Constants import (
 
 class Region1:
     """
-    Section 2.1: IAPWS IF 97 Calling functions to calculate the properties of water in Region 1
+    Section 2.1: IAPWS IF 97 Calling functions to calculate the properties
+    of water in Region 1
 
-    Release on the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam, September 1997
+    Release on the IAPWS Industrial formulation 1997 for the Thermodynamic
+    Properties of Water and Steam, September 1997
     """
+
     _logger = logging.getLogger(__name__)
 
     @classmethod
@@ -149,16 +152,13 @@ class Region1:
         tau = 1386 / T  # 1386 K
         gamma_der_pi = 0
         for i in range(0, 34):
-            gamma_der_pi = (
-                gamma_der_pi
-                - n1[i] * I1[i] * (7.1 - Pi) ** (I1[i] - 1) * (tau - 1.222) ** J1[i]
-            )
+            gamma_der_pi = gamma_der_pi - n1[i] * I1[i] * (7.1 - Pi) ** (I1[i] - 1) * (tau - 1.222) ** J1[i]
         return R * T / p * Pi * gamma_der_pi / 1000
 
     @classmethod
     def h1_pT(cls, p: float, T: float) -> float:
         """
-        function h1_pT = h1_pT(p, T)
+        calculate enthalpy from preasure and temperature in region 1
 
         5 Equations for Region 1, Section. 5.1 Basic Equation
 
@@ -282,9 +282,7 @@ class Region1:
         tau = 1386 / T
         gamma_der_tau = 0
         for i in range(0, 34):
-            gamma_der_tau = gamma_der_tau + (
-                n1[i] * (7.1 - Pi) ** I1[i] * J1[i] * (tau - 1.222) ** (J1[i] - 1)
-            )
+            gamma_der_tau = gamma_der_tau + (n1[i] * (7.1 - Pi) ** I1[i] * J1[i] * (tau - 1.222) ** (J1[i] - 1))
         return R * T * tau * gamma_der_tau
 
     @classmethod
@@ -414,13 +412,8 @@ class Region1:
         gamma_der_tau = 0
         gamma_der_pi = 0
         for i in range(0, 34):
-            gamma_der_pi = (
-                gamma_der_pi
-                - n1[i] * I1[i] * (7.1 - Pi) ** (I1[i] - 1) * (tau - 1.222) ** J1[i]
-            )
-            gamma_der_tau = gamma_der_tau + (
-                n1[i] * (7.1 - Pi) ** I1[i] * J1[i] * (tau - 1.222) ** (J1[i] - 1)
-            )
+            gamma_der_pi = gamma_der_pi - n1[i] * I1[i] * (7.1 - Pi) ** (I1[i] - 1) * (tau - 1.222) ** J1[i]
+            gamma_der_tau = gamma_der_tau + (n1[i] * (7.1 - Pi) ** I1[i] * J1[i] * (tau - 1.222) ** (J1[i] - 1))
         return R * T * (tau * gamma_der_tau - Pi * gamma_der_pi)
 
     @classmethod
@@ -550,9 +543,7 @@ class Region1:
         gamma = 0
         gamma_der_tau = 0
         for i in range(0, 34):
-            gamma_der_tau = gamma_der_tau + (
-                n1[i] * (7.1 - Pi) ** I1[i] * J1[i] * (tau - 1.222) ** (J1[i] - 1)
-            )
+            gamma_der_tau = gamma_der_tau + (n1[i] * (7.1 - Pi) ** I1[i] * J1[i] * (tau - 1.222) ** (J1[i] - 1))
             gamma = gamma + n1[i] * (7.1 - Pi) ** I1[i] * (tau - 1.222) ** J1[i]
         return R * tau * gamma_der_tau - R * gamma
 
@@ -682,13 +673,7 @@ class Region1:
         tau = 1386 / T
         gamma_der_tautau = 0
         for i in range(0, 34):
-            gamma_der_tautau = gamma_der_tautau + (
-                n1[i]
-                * (7.1 - Pi) ** I1[i]
-                * J1[i]
-                * (J1[i] - 1)
-                * (tau - 1.222) ** (J1[i] - 2)
-            )
+            gamma_der_tautau = gamma_der_tautau + (n1[i] * (7.1 - Pi) ** I1[i] * J1[i] * (J1[i] - 1) * (tau - 1.222) ** (J1[i] - 2))
         return -R * tau**2 * gamma_der_tautau
 
     @classmethod
@@ -820,28 +805,11 @@ class Region1:
         gamma_der_pitau = 0
         gamma_der_tautau = 0
         for i in range(0, 34):
-            gamma_der_pi = (
-                gamma_der_pi
-                - n1[i] * I1[i] * (7.1 - Pi) ** (I1[i] - 1) * (tau - 1.222) ** J1[i]
-            )
-            gamma_der_pipi = (
-                gamma_der_pipi
-                + n1[i]
-                * I1[i]
-                * (I1[i] - 1)
-                * (7.1 - Pi) ** (I1[i] - 2)
-                * (tau - 1.222) ** J1[i]
-            )
-            gamma_der_pitau = gamma_der_pitau - n1[i] * I1[i] * (7.1 - Pi) ** (
-                I1[i] - 1
-            ) * J1[i] * (tau - 1.222) ** (J1[i] - 1)
-            gamma_der_tautau = gamma_der_tautau + n1[i] * (7.1 - Pi) ** I1[i] * J1[
-                i
-            ] * (J1[i] - 1) * (tau - 1.222) ** (J1[i] - 2)
-        return R * (
-            -(tau**2) * gamma_der_tautau
-            + (gamma_der_pi - tau * gamma_der_pitau) ** 2 / gamma_der_pipi
-        )
+            gamma_der_pi = gamma_der_pi - n1[i] * I1[i] * (7.1 - Pi) ** (I1[i] - 1) * (tau - 1.222) ** J1[i]
+            gamma_der_pipi = gamma_der_pipi + n1[i] * I1[i] * (I1[i] - 1) * (7.1 - Pi) ** (I1[i] - 2) * (tau - 1.222) ** J1[i]
+            gamma_der_pitau = gamma_der_pitau - n1[i] * I1[i] * (7.1 - Pi) ** (I1[i] - 1) * J1[i] * (tau - 1.222) ** (J1[i] - 1)
+            gamma_der_tautau = gamma_der_tautau + n1[i] * (7.1 - Pi) ** I1[i] * J1[i] * (J1[i] - 1) * (tau - 1.222) ** (J1[i] - 2)
+        return R * (-(tau**2) * gamma_der_tautau + (gamma_der_pi - tau * gamma_der_pitau) ** 2 / gamma_der_pipi)
 
     @classmethod
     def w1_pT(cls, p: float, T: float) -> float:
@@ -972,41 +940,24 @@ class Region1:
         gamma_der_pitau = 0
         gamma_der_tautau = 0
         for i in range(0, 34):
-            gamma_der_pi = (
-                gamma_der_pi
-                - n1[i] * I1[i] * (7.1 - Pi) ** (I1[i] - 1) * (tau - 1.222) ** J1[i]
-            )
-            gamma_der_pipi = (
-                gamma_der_pipi
-                + n1[i]
-                * I1[i]
-                * (I1[i] - 1)
-                * (7.1 - Pi) ** (I1[i] - 2)
-                * (tau - 1.222) ** J1[i]
-            )
-            gamma_der_pitau = gamma_der_pitau - n1[i] * I1[i] * (7.1 - Pi) ** (
-                I1[i] - 1
-            ) * J1[i] * (tau - 1.222) ** (J1[i] - 1)
-            gamma_der_tautau = gamma_der_tautau + n1[i] * (7.1 - Pi) ** I1[i] * J1[
-                i
-            ] * (J1[i] - 1) * (tau - 1.222) ** (J1[i] - 2)
+            gamma_der_pi = gamma_der_pi - n1[i] * I1[i] * (7.1 - Pi) ** (I1[i] - 1) * (tau - 1.222) ** J1[i]
+            gamma_der_pipi = gamma_der_pipi + n1[i] * I1[i] * (I1[i] - 1) * (7.1 - Pi) ** (I1[i] - 2) * (tau - 1.222) ** J1[i]
+            gamma_der_pitau = gamma_der_pitau - n1[i] * I1[i] * (7.1 - Pi) ** (I1[i] - 1) * J1[i] * (tau - 1.222) ** (J1[i] - 1)
+            gamma_der_tautau = gamma_der_tautau + n1[i] * (7.1 - Pi) ** I1[i] * J1[i] * (J1[i] - 1) * (tau - 1.222) ** (J1[i] - 2)
         return (
             1000
             * R
             * T
             * gamma_der_pi**2
-            / (
-                (gamma_der_pi - tau * gamma_der_pitau) ** 2
-                / (tau**2 * gamma_der_tautau)
-                - gamma_der_pipi
-            )
+            / ((gamma_der_pi - tau * gamma_der_pitau) ** 2 / (tau**2 * gamma_der_tautau) - gamma_der_pipi)
         ) ** 0.5
 
     @classmethod
     def T1_ph(cls, p: float, h: float) -> float:
         """function T1_ph = T1_ph(p, h)
 
-        5 Equations for Region 1, Section. 5.1 Basic Equation, 5.2.1 The Backward Equation T (p, h)
+        5 Equations for Region 1, Section. 5.1 Basic Equation, 5.2.1 The Backward
+        Equation T (p, h)
 
         Equation 11, Table 6, Page 10
 
@@ -1050,12 +1001,13 @@ class Region1:
     def T1_ps(cls, p: float, s: float) -> float:
         """function T1_ps = T1_ps(p, s)
 
-        5 Equations for Region 1, Section. 5.1 Basic Equation, 5.2.2 The Backward Equation T (p, s)
+        5 Equations for Region 1, Section. 5.1 Basic Equation, 5.2.2 The Backward
+        Equation T (p, s)
 
         Equation 13, Table 8, Page 11
 
         :param p: preasure in [MPa]
-        :param s: Specific entropy in [kJ / (kg K)]
+        :param s: specific entropy in [kJ / (kg K)]
 
         :return: temperature in [K]
         """
@@ -1094,14 +1046,16 @@ class Region1:
     def p1_hs(cls, h: float, s: float) -> float:
         """function p1_hs = p1_hs(h, s)
 
-        Supplementary Release on Backward Equations for Pressure as a Function of Enthalpy and Entropy p(h, s) to the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam
+        Supplementary Release on Backward Equations for Pressure as a Function of
+        Enthalpy and Entropy p(h, s) to the IAPWS Industrial formulation 1997 for
+        the Thermodynamic Properties of Water and Steam
 
         5 Backward Equation p(h, s) for Region 1
 
         Equation 1, Table 2, Page 5
 
         :param h: enthalpy in [kJ / kg]
-        :param s: Specific entropy in [kJ / (kg K)]
+        :param s: specific entropy in [kJ / (kg K)]
 
         :return: preasure in [MPa]
         """
@@ -1139,7 +1093,8 @@ class Region1:
     def T1_prho(cls, p: float, rho: float) -> float:
         """function T1_prho = T1_prho(p , rho)
 
-        Solve by iteration. Observe that for low temperatures this equation has 2 solutions. Solve with half interval method
+        Solve by iteration. Observe that for low temperatures this equation
+        has 2 solutions. Solve with half interval method
 
         :param p: pressure in [MPa]
         :param rho: density in [kg / m³]
@@ -1174,8 +1129,10 @@ class Region1:
 
 class Region2:
     """
-    Section 2.2: IAPWS IF 97 Calling functions to calculate the properties of water in Region 3
+    Section 2.2: IAPWS IF 97 Calling functions to calculate the properties
+    of water in Region 2
     """
+
     _logger = logging.getLogger(__name__)
 
     @classmethod
@@ -1689,6 +1646,7 @@ class Region2:
 
         :param p: preasure in [MPa]
         :param T: temperature in [K]
+
         :return: specific entropy in [kJ / (kg K)]
         """
         J0 = [0, 1, -5, -4, -3, -2, -1, 2, 3]
@@ -2021,9 +1979,7 @@ class Region2:
             g0_tautau = g0_tautau + n0[i] * J0[i] * (J0[i] - 1) * tau ** (J0[i] - 2)
         gr_tautau = 0
         for i in range(0, 43):
-            gr_tautau = gr_tautau + nr[i] * Pi ** Ir[i] * Jr[i] * (Jr[i] - 1) * (
-                tau - 0.5
-            ) ** (Jr[i] - 2)
+            gr_tautau = gr_tautau + nr[i] * Pi ** Ir[i] * Jr[i] * (Jr[i] - 1) * (tau - 0.5) ** (Jr[i] - 2)
         return -R * tau**2 * (g0_tautau + gr_tautau)
 
     @classmethod
@@ -2198,20 +2154,10 @@ class Region2:
         gr_tautau = 0
         for i in range(0, 43):
             gr_pi = gr_pi + nr[i] * Ir[i] * Pi ** (Ir[i] - 1) * (tau - 0.5) ** Jr[i]
-            gr_pipi = (
-                gr_pipi
-                + nr[i] * Ir[i] * (Ir[i] - 1) * Pi ** (Ir[i] - 2) * (tau - 0.5) ** Jr[i]
-            )
-            gr_pitau = gr_pitau + nr[i] * Ir[i] * Pi ** (Ir[i] - 1) * Jr[i] * (
-                tau - 0.5
-            ) ** (Jr[i] - 1)
-            gr_tautau = gr_tautau + nr[i] * Pi ** Ir[i] * Jr[i] * (Jr[i] - 1) * (
-                tau - 0.5
-            ) ** (Jr[i] - 2)
-        return R * (
-            -(tau**2) * (g0_tautau + gr_tautau)
-            - (1 + Pi * gr_pi - tau * Pi * gr_pitau) ** 2 / (1 - Pi**2 * gr_pipi)
-        )
+            gr_pipi = gr_pipi + nr[i] * Ir[i] * (Ir[i] - 1) * Pi ** (Ir[i] - 2) * (tau - 0.5) ** Jr[i]
+            gr_pitau = gr_pitau + nr[i] * Ir[i] * Pi ** (Ir[i] - 1) * Jr[i] * (tau - 0.5) ** (Jr[i] - 1)
+            gr_tautau = gr_tautau + nr[i] * Pi ** Ir[i] * Jr[i] * (Jr[i] - 1) * (tau - 0.5) ** (Jr[i] - 2)
+        return R * (-(tau**2) * (g0_tautau + gr_tautau) - (1 + Pi * gr_pi - tau * Pi * gr_pitau) ** 2 / (1 - Pi**2 * gr_pipi))
 
     @classmethod
     def w2_pT(cls, p: float, T: float) -> float:
@@ -2385,33 +2331,23 @@ class Region2:
         gr_tautau = 0
         for i in range(0, 43):
             gr_pi = gr_pi + nr[i] * Ir[i] * Pi ** (Ir[i] - 1) * (tau - 0.5) ** Jr[i]
-            gr_pipi = (
-                gr_pipi
-                + nr[i] * Ir[i] * (Ir[i] - 1) * Pi ** (Ir[i] - 2) * (tau - 0.5) ** Jr[i]
-            )
-            gr_pitau = gr_pitau + nr[i] * Ir[i] * Pi ** (Ir[i] - 1) * Jr[i] * (
-                tau - 0.5
-            ) ** (Jr[i] - 1)
-            gr_tautau = gr_tautau + nr[i] * Pi ** Ir[i] * Jr[i] * (Jr[i] - 1) * (
-                tau - 0.5
-            ) ** (Jr[i] - 2)
+            gr_pipi = gr_pipi + nr[i] * Ir[i] * (Ir[i] - 1) * Pi ** (Ir[i] - 2) * (tau - 0.5) ** Jr[i]
+            gr_pitau = gr_pitau + nr[i] * Ir[i] * Pi ** (Ir[i] - 1) * Jr[i] * (tau - 0.5) ** (Jr[i] - 1)
+            gr_tautau = gr_tautau + nr[i] * Pi ** Ir[i] * Jr[i] * (Jr[i] - 1) * (tau - 0.5) ** (Jr[i] - 2)
         return (
             1000
             * R
             * T
             * (1 + 2 * Pi * gr_pi + Pi**2 * gr_pi**2)
-            / (
-                (1 - Pi**2 * gr_pipi)
-                + (1 + Pi * gr_pi - tau * Pi * gr_pitau) ** 2
-                / (tau**2 * (g0_tautau + gr_tautau))
-            )
+            / ((1 - Pi**2 * gr_pipi) + (1 + Pi * gr_pi - tau * Pi * gr_pitau) ** 2 / (tau**2 * (g0_tautau + gr_tautau)))
         ) ** 0.5
 
     @classmethod
     def T2_ph(cls, p: float, h: float) -> float:
         """function T2_ph = T2_ph(p, h)
 
-        6 Equations for Region 2, 6.3.1 The Backward Equations T(p, h) for Subregions 2a, 2b, and 2c
+        6 Equations for Region 2, 6.3.1 The Backward Equations T(p, h) for
+        Subregions 2a, 2b, and 2c
 
         :param p: preasure in [MPa]
         :param h: enthalpy in [kJ / kg]
@@ -2421,9 +2357,7 @@ class Region2:
         if p < 4:
             sub_reg = 1
         else:
-            if p < (
-                905.84278514723 - 0.67955786399241 * h + 1.2809002730136e-04 * h**2
-            ):
+            if p < (905.84278514723 - 0.67955786399241 * h + 1.2809002730136e-04 * h**2):
                 sub_reg = 2
             else:
                 sub_reg = 3
@@ -2756,12 +2690,13 @@ class Region2:
     def T2_ps(cls, p: float, s: float) -> float:
         """function T2_ps = T2_ps(p, s)
 
-        6 Equations for Region 2,6.3.2 The Backward Equations T( p, s ) for Subregions 2a, 2b, and 2c
+        6 Equations for Region 2,6.3.2 The Backward Equations T( p, s ) for
+        Subregions 2a, 2b, and 2c
 
         Page 26
 
         :param p: preasure in [MPa]
-        :param s: Specific entropy in [kJ / (kg K)]
+        :param s: specific entropy in [kJ / (kg K)]
 
         :return: temperature in [K]
         """
@@ -3181,21 +3116,18 @@ class Region2:
     def p2_hs(cls, h: float, s: float) -> float:
         """function p2_hs = p2_hs(h, s)
 
-        Supplementary Release on Backward Equations for Pressure as a function of Enthalpy and Entropy p(h,s) to the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam
+        Supplementary Release on Backward Equations for Pressure as a function
+        of Enthalpy and Entropy p(h,s) to the IAPWS Industrial formulation 1997
+        for the Thermodynamic Properties of Water and Steam
 
         Chapter 6: Backward Equations p(h,s) for Region 2
 
         :param h: enthalpy in [kJ / kg]
-        :param s: Specific entropy in [kJ / (kg K)]
+        :param s: specific entropy in [kJ / (kg K)]
 
         :return: preasure in [MPa]
         """
-        if h < (
-            -3498.98083432139
-            + 2575.60716905876 * s
-            - 421.073558227969 * s**2
-            + 27.6349063799944 * s**3
-        ):
+        if h < (-3498.98083432139 + 2575.60716905876 * s - 421.073558227969 * s**2 + 27.6349063799944 * s**3):
             sub_reg = 1
         else:
             if s < 5.85:
@@ -3542,7 +3474,7 @@ class Region2:
         if p < 16.5292:
             Low_Bound = Region4.T4_p(p)
         else:
-            Low_Bound = B23T_p(p)
+            Low_Bound = TB23_p(p)
         High_Bound = 1073.15
         rhos = -1000
         step_counter = 0
@@ -3569,8 +3501,10 @@ class Region2:
 
 class Region3:
     """
-    Section 2.3: IAPWS IF 97 Calling functions to calculate the properties of water in Region 3
+    Section 2.3: IAPWS IF 97 Calling functions to calculate the properties
+    of water in Region 3
     """
+
     _logger = logging.getLogger(__name__)
 
     @classmethod
@@ -4326,23 +4260,14 @@ class Region3:
         fideltatau = 0
         fideltadelta = 0
         for i in range(1, 40):
-            fitautau = fitautau + ni[i] * delta ** Ii[i] * Ji[i] * (
-                Ji[i] - 1
-            ) * tau ** (Ji[i] - 2)
+            fitautau = fitautau + ni[i] * delta ** Ii[i] * Ji[i] * (Ji[i] - 1) * tau ** (Ji[i] - 2)
             fidelta = fidelta + ni[i] * Ii[i] * delta ** (Ii[i] - 1) * tau ** Ji[i]
-            fideltatau = fideltatau + ni[i] * Ii[i] * delta ** (Ii[i] - 1) * Ji[
-                i
-            ] * tau ** (Ji[i] - 1)
-            fideltadelta = (
-                fideltadelta
-                + ni[i] * Ii[i] * (Ii[i] - 1) * delta ** (Ii[i] - 2) * tau ** Ji[i]
-            )
+            fideltatau = fideltatau + ni[i] * Ii[i] * delta ** (Ii[i] - 1) * Ji[i] * tau ** (Ji[i] - 1)
+            fideltadelta = fideltadelta + ni[i] * Ii[i] * (Ii[i] - 1) * delta ** (Ii[i] - 2) * tau ** Ji[i]
         fidelta = fidelta + ni[0] / delta
         fideltadelta = fideltadelta - ni[0] / (delta**2)
         return R * (
-            -(tau**2) * fitautau
-            + (delta * fidelta - delta * tau * fideltatau) ** 2
-            / (2 * delta * fidelta + delta**2 * fideltadelta)
+            -(tau**2) * fitautau + (delta * fidelta - delta * tau * fideltatau) ** 2 / (2 * delta * fidelta + delta**2 * fideltadelta)
         )
 
     @classmethod
@@ -4494,9 +4419,7 @@ class Region3:
         # for i = 1 : 40
         # IAWPS says i=2..40
         for i in range(1, 40):
-            fitautau = fitautau + ni[i] * delta ** Ii[i] * Ji[i] * (
-                Ji[i] - 1
-            ) * tau ** (Ji[i] - 2)
+            fitautau = fitautau + ni[i] * delta ** Ii[i] * Ji[i] * (Ji[i] - 1) * tau ** (Ji[i] - 2)
         return R * -(tau * tau * fitautau)
 
     @classmethod
@@ -4648,36 +4571,26 @@ class Region3:
         fideltatau = 0
         fideltadelta = 0
         for i in range(1, 40):
-            fitautau = fitautau + ni[i] * delta ** Ii[i] * Ji[i] * (
-                Ji[i] - 1
-            ) * tau ** (Ji[i] - 2)
+            fitautau = fitautau + ni[i] * delta ** Ii[i] * Ji[i] * (Ji[i] - 1) * tau ** (Ji[i] - 2)
             fidelta = fidelta + ni[i] * Ii[i] * delta ** (Ii[i] - 1) * tau ** Ji[i]
-            fideltatau = fideltatau + ni[i] * Ii[i] * delta ** (Ii[i] - 1) * Ji[
-                i
-            ] * tau ** (Ji[i] - 1)
-            fideltadelta = (
-                fideltadelta
-                + ni[i] * Ii[i] * (Ii[i] - 1) * delta ** (Ii[i] - 2) * tau ** Ji[i]
-            )
+            fideltatau = fideltatau + ni[i] * Ii[i] * delta ** (Ii[i] - 1) * Ji[i] * tau ** (Ji[i] - 1)
+            fideltadelta = fideltadelta + ni[i] * Ii[i] * (Ii[i] - 1) * delta ** (Ii[i] - 2) * tau ** Ji[i]
         fidelta = fidelta + ni[0] / delta
         fideltadelta = fideltadelta - ni[0] / (delta**2)
         return (
             1000
             * R
             * T
-            * (
-                2 * delta * fidelta
-                + delta**2 * fideltadelta
-                - (delta * fidelta - delta * tau * fideltatau) ** 2
-                / (tau**2 * fitautau)
-            )
+            * (2 * delta * fidelta + delta**2 * fideltadelta - (delta * fidelta - delta * tau * fideltatau) ** 2 / (tau**2 * fitautau))
         ) ** 0.5
 
     @classmethod
     def T3_ph(cls, p: float, h: float) -> float:
         """function T3_ph = T3_ph(p, h)
 
-        Revised Supplementary Release on Backward Equations for the functions T(p,h), v(p,h) and T(p,s), v(p,s) for Region 3 of the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam 2004
+        Revised Supplementary Release on Backward Equations for the functions T(p,h),
+        v(p,h) and T(p,s), v(p,s) for Region 3 of the IAPWS Industrial formulation
+        1997 for the Thermodynamic Properties of Water and Steam 2004
 
         Section 3.3 Backward Equations T(p,h) and v(p,h) for Subregions 3a and 3b
 
@@ -4688,12 +4601,7 @@ class Region3:
 
         :return: temperature in [K]
         """
-        h3ab = (
-            2014.64004206875
-            + 3.74696550136983 * p
-            - 2.19921901054187e-02 * p**2
-            + 8.7513168600995e-05 * p**3
-        )
+        h3ab = 2014.64004206875 + 3.74696550136983 * p - 2.19921901054187e-02 * p**2 + 8.7513168600995e-05 * p**3
         if h < h3ab:
             # Subregion 3a
             # Eq 2, Table 3, Page 7
@@ -4932,12 +4840,7 @@ class Region3:
 
         :return: specific volume in [m³ / kg]
         """
-        h3ab = (
-            2014.64004206875
-            + 3.74696550136983 * p
-            - 2.19921901054187e-02 * p**2
-            + 8.7513168600995e-05 * p**3
-        )
+        h3ab = 2014.64004206875 + 3.74696550136983 * p - 2.19921901054187e-02 * p**2 + 8.7513168600995e-05 * p**3
         if h < h3ab:
             # Subregion 3a
             # Eq 4, Table 6, Page 9
@@ -5160,14 +5063,16 @@ class Region3:
     def T3_ps(cls, p: float, s: float) -> float:
         """function T3_ps = T3_ps(p, s)
 
-        Revised Supplementary Release on Backward Equations for the functions T(p,h), v(p,h) and T(p,s), v(p,s) for Region 3 of the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam 2004
+        Revised Supplementary Release on Backward Equations for the functions T(p,h),
+        v(p,h) and T(p,s), v(p,s) for Region 3 of the IAPWS Industrial formulation
+        1997 for the Thermodynamic Properties of Water and Steam 2004
 
         3.4 Backward Equations T(p,s) and v(p,s) for Subregions 3a and 3b
 
         Boundary equation, Eq 6 Page 11
 
         :param p: preasure in [MPa]
-        :param s: Specific entropy in [kJ / (kg K)]
+        :param s: specific entropy in [kJ / (kg K)]
 
         :return: temperature in [K]
         """
@@ -5390,14 +5295,16 @@ class Region3:
     def v3_ps(cls, p: float, s: float) -> float:
         """function v3_ps = v3_ps(p, s)
 
-        Revised Supplementary Release on Backward Equations for the functions T(p, h), v(p, h) and T(p, s), v(p, s) for Region 3 of the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam 2004
+        Revised Supplementary Release on Backward Equations for the functions T(p, h),
+        v(p, h) and T(p, s), v(p, s) for Region 3 of the IAPWS Industrial formulation
+        1997 for the Thermodynamic Properties of Water and Steam 2004
 
         3.4 Backward Equations T(p, s) and v(p, s) for Subregions 3a and 3b
 
         Boundary equation, Eq 6 Page 11
 
         :param p: preasure in [MPa]
-        :param s: Specific entropy in [kJ / (kg K)]
+        :param s: specific entropy in [kJ / (kg K)]
 
         :return: specific volume in [m³ / kg]
         """
@@ -5614,12 +5521,15 @@ class Region3:
     def p3_hs(cls, h: float, s: float) -> float:
         """function p3_hs = p3_hs(h, s)
 
-        Supplementary Release on Backward Equations () , p h s for Region 3, Equations as a function of h and s for the Region Boundaries, and an Equation sat , T hs for Region 4 of the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam 2004
+        Supplementary Release on Backward Equations () , p h s for Region 3,
+        Equations as a function of h and s for the Region Boundaries, and an
+        Equation sat, T hs for Region 4 of the IAPWS Industrial formulation 1997
+        for the Thermodynamic Properties of Water and Steam 2004
 
         Section 3 Backward functions p(h, s), T(h, s), and v(h, s) for Region 3
 
         :param h: enthalpy in [kJ / kg]
-        :param s: Specific entropy in [kJ / (kg K)]
+        :param s: specific entropy in [kJ / (kg K)]
 
         :return: preasure in [MPa]
         """
@@ -5868,8 +5778,6 @@ class Region3:
 
         Solve function T3_ph - T = 0 with half interval method.
 
-        ver2.6 Start corrected bug
-
         :param p: preasure in [MPa]
         :param T: temperature in [K]
 
@@ -5883,10 +5791,10 @@ class Region3:
                 Low_Bound = Region1.h1_pT(p, 623.15)
             else:
                 Low_Bound = Region4.h4V_p(p)  # Min h ???r Vapour h.
-                High_Bound = Region2.h2_pT(p, B23T_p(p))
+                High_Bound = Region2.h2_pT(p, TB23_p(p))
         else:  # Above triple point. R3 from R2 till R3.
             Low_Bound = Region1.h1_pT(p, 623.15)
-            High_Bound = Region2.h2_pT(p, B23T_p(p))
+            High_Bound = Region2.h2_pT(p, TB23_p(p))
 
         Ts = T + 1
         step_counter = 0
@@ -5914,7 +5822,8 @@ class Region3:
     def T3_prho(cls, p: float, rho: float) -> float:
         """function T3_prho = T3_prho(p, rho)
 
-        Solve by iteration. Observe that of low temperatures this equation has 2 solutions. Solve with half interval method
+        Solve by iteration. Observe that of low temperatures this equation has
+        2 solutions. Solve with half interval method
 
         :param p: preasure in [MPa]
         :param rho: density in [kg / m³]
@@ -5946,11 +5855,83 @@ class Region3:
                 Low_Bound = Ts
         return Ts
 
+    @staticmethod
+    def psat3_h(h: float) -> float:
+        """
+        calculate saturation preasure from preasure for region 3
+
+        Section 4.2 Region 3. pSat_h  & pSat_s
+
+        Revised Supplementary Release on Backward Equations for the functions T(p,h), v(p,h) s& T(p,s), v(p,s) for Region 3 of the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water & Steam 2004 Section 4 Boundary Equations psat(h) & psat(s) for the Saturation Lines of Region 3
+
+        See pictures Page 17, Eq 10, Table 17, Page 18
+
+        :param h: enthalpy in [kJ / kg]
+
+        :return: saturation preasure in [MPa]
+        """
+        Ii = [0, 1, 1, 1, 1, 5, 7, 8, 14, 20, 22, 24, 28, 36]
+        Ji = [0, 1, 3, 4, 36, 3, 0, 24, 16, 16, 3, 18, 8, 24]
+        ni = [
+            0.600073641753024,
+            -9.36203654849857,
+            24.6590798594147,
+            -107.014222858224,
+            -91582131580576.8,
+            -8623.32011700662,
+            -23.5837344740032,
+            2.52304969384128e17,
+            -3.89718771997719e18,
+            -3.33775713645296e22,
+            35649946963.6328,
+            -1.48547544720641e26,
+            3.30611514838798e18,
+            8.13641294467829e37,
+        ]
+        hs = h / 2600
+        ps = 0
+        for i in range(0, 14):
+            ps = ps + ni[i] * (hs - 1.02) ** Ii[i] * (hs - 0.608) ** Ji[i]
+        return ps * 22
+
+    @staticmethod
+    def psat3_s(s: float) -> float:
+        """
+        calculate saturation preasure from Specific entropy for region 3
+
+        Section 4.2 Region 3. pSat_h  & pSat_s
+
+        :param s: Specific entropy in [kJ / (kg K)]
+
+        :return: saturation preasure in [MPa]
+        """
+        Ii = [0, 1, 1, 4, 12, 12, 16, 24, 28, 32]
+        Ji = [0, 1, 32, 7, 4, 14, 36, 10, 0, 18]
+        ni = [
+            0.639767553612785,
+            -12.9727445396014,
+            -2.24595125848403e15,
+            1774667.41801846,
+            7170793495.71538,
+            -3.78829107169011e17,
+            -9.55586736431328e34,
+            1.87269814676188e23,
+            119254746466.473,
+            1.10649277244882e36,
+        ]
+        Sigma = s / 5.2
+        Pi = 0
+        for i in range(0, 10):
+            Pi = Pi + ni[i] * (Sigma - 1.03) ** Ii[i] * (Sigma - 0.699) ** Ji[i]
+        return Pi * 22
+
 
 class Region4:
     """
-    Section 2.4: IAPWS IF 97 Calling functions to calculate the properties of water in Region 4
+    Section 2.4: IAPWS IF 97 Calling functions to calculate the properties of
+    water in Region 4
     """
+
     _logger = logging.getLogger(__name__)
 
     @classmethod
@@ -5988,29 +5969,25 @@ class Region4:
         f = 1167.0521452767 * beta**2 + 12020.82470247 * beta - 4823.2657361591
         G = -724213.16703206 * beta**2 - 3232555.0322333 * beta + 405113.40542057
         D = 2 * G / (-f - (f**2 - 4 * E * G) ** 0.5)
-        return (
-            650.17534844798
-            + D
-            - (
-                (650.17534844798 + D) ** 2
-                - 4 * (-0.23855557567849 + 650.17534844798 * D)
-            )
-            ** 0.5
-        ) / 2
+        return (650.17534844798 + D - ((650.17534844798 + D) ** 2 - 4 * (-0.23855557567849 + 650.17534844798 * D)) ** 0.5) / 2
 
     @classmethod
     def h4_s(cls, s: float) -> float:
         """function h4_s = h4_s(s)
 
-        Supplementary Release on Backward Equations () , p h s for Region 3, Equations as a function of h and s for the Region Boundaries, and an Equation() sat , T hs for Region 4 of the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam 4 Equations for Region Boundaries Given Enthalpy and Entropy
+        Supplementary Release on Backward Equations () , p h s for Region 3, Equations
+        as a function of h and s for the Region Boundaries, and an Equation() sat,
+        T hs for Region 4 of the IAPWS Industrial formulation 1997 for the
+        Thermodynamic Properties of Water and Steam 4 Equations for Region Boundaries
+        Given Enthalpy and Entropy
 
         See picture page 14
 
-        :param s: Specific entropy in [kJ / (kg K)]
+        :param s: specific entropy in [kJ / (kg K)]
 
         :return: enthalpy in [kJ / kg]
         """
-        if (s > -0.0001545495919) and (s <= 3.77828134):
+        if -0.0001545495919 < s <= 3.77828134:
             # hL1_s
             # Eq 3, Table 9, Page 16
             Ii = [
@@ -6103,11 +6080,9 @@ class Region4:
             Sigma = s / 3.8
             eta = 0
             for i in range(0, 27):
-                eta = (
-                    eta + ni[i] * (Sigma - 1.09) ** Ii[i] * (Sigma + 0.0000366) ** Ji[i]
-                )
+                eta = eta + ni[i] * (Sigma - 1.09) ** Ii[i] * (Sigma + 0.0000366) ** Ji[i]
             h4_s = eta * 1700
-        elif (s > 3.77828134) and (s <= 4.41202148223476):
+        elif 3.77828134 < s <= 4.41202148223476:
             # hL3_s
             # Eq 4, Table 10, Page 16
             Ii = [0, 0, 0, 0, 2, 3, 4, 4, 5, 5, 6, 7, 7, 7, 10, 10, 10, 32, 32]
@@ -6136,12 +6111,11 @@ class Region4:
             Sigma = s / 3.8
             eta = 0
             for i in range(0, 19):
-                eta = (
-                    eta + ni[i] * (Sigma - 1.09) ** Ii[i] * (Sigma + 0.0000366) ** Ji[i]
-                )
+                eta = eta + ni[i] * (Sigma - 1.09) ** Ii[i] * (Sigma + 0.0000366) ** Ji[i]
             h4_s = eta * 1700
-        elif (s > 4.41202148223476) and (s <= 5.85):
-            # Section 4.4 Equations () 2ab " h s and ( ) 2c3b "h s for the Saturated Vapor Line
+        elif 4.41202148223476 < s <= 5.85:
+            # Section 4.4 Equations () 2ab " h s and ( ) 2c3b "h s for the
+            # Saturated Vapor Line
             # Page 19, Eq 5
             # hV2c3b_s(s)
             Ii = [0, 0, 0, 1, 1, 5, 6, 7, 8, 8, 12, 16, 22, 22, 24, 36]
@@ -6169,8 +6143,9 @@ class Region4:
             for i in range(0, 16):
                 eta = eta + ni[i] * (Sigma - 1.02) ** Ii[i] * (Sigma - 0.726) ** Ji[i]
             h4_s = eta**4 * 2800
-        elif (s > 5.85) and (s < 9.155759395):
-            # Section 4.4 Equations () 2ab " h s and ( ) 2c3b "h s for the Saturated Vapor Line
+        elif 5.85 < s < 9.155759395:
+            # Section 4.4 Equations () 2ab " h s and ( ) 2c3b "h s for the
+            # Saturated Vapor Line
             # Page 20, Eq 6
             Ii = [
                 1,
@@ -6272,10 +6247,7 @@ class Region4:
             Sigma2 = s / 9.2
             eta = 0
             for i in range(0, 30):
-                eta = (
-                    eta
-                    + ni[i] * (1 / Sigma1 - 0.513) ** Ii[i] * (Sigma2 - 0.524) ** Ji[i]
-                )
+                eta = eta + ni[i] * (1 / Sigma1 - 0.513) ** Ii[i] * (Sigma2 - 0.524) ** Ji[i]
             h4_s = math.exp(eta) * 2800
         else:
             h4_s = -99999
@@ -6287,16 +6259,16 @@ class Region4:
 
         Uses h4_s and p_hs for the different regions to determine p4_s
 
-        :param s: Specific entropy in [kJ / (kg K)]
+        :param s: specific entropy in [kJ / (kg K)]
 
         :return: preasure in [MPa]
         """
         h_sat = Region4.h4_s(s)
-        if s > -0.0001545495919 and s <= 3.77828134:
+        if -0.0001545495919 < s <= 3.77828134:
             p4_s = Region1.p1_hs(h_sat, s)
-        elif s > 3.77828134 and s <= 5.210887663:
+        elif 3.77828134 < s <= 5.210887663:
             p4_s = Region3.p3_hs(h_sat, s)
-        elif s > 5.210887663 and s < 9.155759395:
+        elif 5.210887663 < s < 9.155759395:
             p4_s = Region2.p2_hs(h_sat, s)
         else:
             p4_s = -99999
@@ -6326,7 +6298,7 @@ class Region4:
                     last_ps = ps
 
                     hs = (Low_Bound + High_Bound) / 2
-                    ps = p3sat_h(hs)
+                    ps = Region3.psat3_h(hs)
 
                     if last_ps == ps:
                         cls._logger.warning(
@@ -6368,7 +6340,7 @@ class Region4:
                     last_ps = ps
 
                     hs = (Low_Bound + High_Bound) / 2
-                    ps = p3sat_h(hs)
+                    ps = Region3.psat3_h(hs)
 
                     if last_ps == ps:
                         cls._logger.warning(
@@ -6412,7 +6384,7 @@ class Region4:
         """function x4_ps = x4_ps(p, s)
 
         :param p: preasure in [MPa]
-        :param s: Specific entropy in [kJ / (kg K)]
+        :param s: specific entropy in [kJ / (kg K)]
 
         :return: vapor fraction
         """
@@ -6420,12 +6392,8 @@ class Region4:
             ssv = Region2.s2_pT(p, Region4.T4_p(p))
             ssL = Region1.s1_pT(p, Region4.T4_p(p))
         else:
-            ssv = Region3.s3_rhoT(
-                1 / (Region3.v3_ph(p, Region4.h4V_p(p))), Region4.T4_p(p)
-            )
-            ssL = Region3.s3_rhoT(
-                1 / (Region3.v3_ph(p, Region4.h4L_p(p))), Region4.T4_p(p)
-            )
+            ssv = Region3.s3_rhoT(1 / (Region3.v3_ph(p, Region4.h4V_p(p))), Region4.T4_p(p))
+            ssL = Region3.s3_rhoT(1 / (Region3.v3_ph(p, Region4.h4L_p(p))), Region4.T4_p(p))
         if s < ssL:
             x4_ps = 0
         elif s > ssv:
@@ -6442,11 +6410,9 @@ class Region4:
 
         Chapter 5.3 page 30.
 
-        The if 97 function is only valid for part of region4. Use iteration outside.
-
-
         :param h: enthalpy in [kJ / kg]
-        :param s: Specific entropy in [kJ / (kg K)]
+        :param s: specific entropy in [kJ / (kg K)]
+
         :return: temperature in [K]
         """
         PL = float("NaN")
@@ -6565,7 +6531,7 @@ class Region4:
             -12988763.5078195,
             31724744937.1057,
         ]
-        if (s > 5.210887825) and (s < 9.15546555571324):
+        if 5.210887825 < s < 9.15546555571324:
             Sigma = s / 9.2
             eta = h / 2800
             teta = 0
@@ -6574,13 +6540,11 @@ class Region4:
             T4_hs = teta * 550
         else:
             # function psat_h
-            if (s > -0.0001545495919) and (s <= 3.77828134):
+            if -0.0001545495919 < s <= 3.77828134:
                 Low_Bound = 0.000611
                 High_Bound = 165.291642526045
                 hL = -1000
-                while (math.fabs(hL - h) > 0.00001) and (
-                    math.fabs(High_Bound - Low_Bound) > 0.0001
-                ):
+                while (math.fabs(hL - h) > 0.00001) and (math.fabs(High_Bound - Low_Bound) > 0.0001):
                     PL = (Low_Bound + High_Bound) / 2
                     Ts = Region4.T4_p(PL)
                     hL = Region1.h1_pT(PL, Ts)
@@ -6588,16 +6552,14 @@ class Region4:
                         High_Bound = PL
                     else:
                         Low_Bound = PL
-            elif (s > 3.77828134) and (s <= 4.41202148223476):
-                PL = p3sat_h(h)
-            elif (s > 4.41202148223476) and (s <= 5.210887663):
-                PL = p3sat_h(h)
+            elif 3.77828134 < s <= 4.41202148223476:
+                PL = Region3.psat3_h(h)
+            elif 4.41202148223476 < s <= 5.210887663:
+                PL = Region3.psat3_h(h)
             Low_Bound = 0.000611
             High_Bound = PL
             sss = -1000
-            while (math.fabs(s - sss) > 0.000001) and (
-                math.fabs(High_Bound - Low_Bound) > 0.0000001
-            ):
+            while (math.fabs(s - sss) > 0.000001) and (math.fabs(High_Bound - Low_Bound) > 0.0000001):
                 p = (Low_Bound + High_Bound) / 2
                 # Calculate s4_ph
                 Ts = Region4.T4_p(p)
@@ -6621,8 +6583,10 @@ class Region4:
 
 class Region5:
     """
-    Section 2.5: IAPWS IF 97 Calling functions to calculate the properties of water in Region 5
+    Section 2.5: IAPWS IF 97 Calling functions to calculate the properties
+    of water in Region 5
     """
+
     _logger = logging.getLogger(__name__)
 
     @classmethod
@@ -6664,9 +6628,7 @@ class Region5:
             gamma0_tau = gamma0_tau + ni0[i] * Ji0[i] * tau ** (Ji0[i] - 1)
         gammar_tau = 0
         for i in range(0, 5):
-            gammar_tau = gammar_tau + nir[i] * Pi ** Iir[i] * Jir[i] * tau ** (
-                Jir[i] - 1
-            )
+            gammar_tau = gammar_tau + nir[i] * Pi ** Iir[i] * Jir[i] * tau ** (Jir[i] - 1)
         return R * T * tau * (gamma0_tau + gammar_tau)
 
     @classmethod
@@ -6742,9 +6704,7 @@ class Region5:
         gammar_tau = 0
         for i in range(0, 5):
             gammar_pi = gammar_pi + nir[i] * Iir[i] * Pi ** (Iir[i] - 1) * tau ** Jir[i]
-            gammar_tau = gammar_tau + nir[i] * Pi ** Iir[i] * Jir[i] * tau ** (
-                Jir[i] - 1
-            )
+            gammar_tau = gammar_tau + nir[i] * Pi ** Iir[i] * Jir[i] * tau ** (Jir[i] - 1)
         return R * T * (tau * (gamma0_tau + gammar_tau) - Pi * (gamma0_pi + gammar_pi))
 
     @classmethod
@@ -6783,14 +6743,10 @@ class Region5:
         Pi = p
         gamma0_tautau = 0
         for i in range(0, 6):
-            gamma0_tautau = gamma0_tautau + ni0[i] * Ji0[i] * (Ji0[i] - 1) * tau ** (
-                Ji0[i] - 2
-            )
+            gamma0_tautau = gamma0_tautau + ni0[i] * Ji0[i] * (Ji0[i] - 1) * tau ** (Ji0[i] - 2)
         gammar_tautau = 0
         for i in range(0, 5):
-            gammar_tautau = gammar_tautau + nir[i] * Pi ** Iir[i] * Jir[i] * (
-                Jir[i] - 1
-            ) * tau ** (Jir[i] - 2)
+            gammar_tautau = gammar_tautau + nir[i] * Pi ** Iir[i] * Jir[i] * (Jir[i] - 1) * tau ** (Jir[i] - 2)
         return -R * tau**2 * (gamma0_tautau + gammar_tautau)
 
     @classmethod
@@ -6836,9 +6792,7 @@ class Region5:
         gammar_tau = 0
         for i in range(0, 5):
             gammar = gammar + nir[i] * Pi ** Iir[i] * tau ** Jir[i]
-            gammar_tau = gammar_tau + nir[i] * Pi ** Iir[i] * Jir[i] * tau ** (
-                Jir[i] - 1
-            )
+            gammar_tau = gammar_tau + nir[i] * Pi ** Iir[i] * Jir[i] * tau ** (Jir[i] - 1)
         return R * (tau * (gamma0_tau + gammar_tau) - (gamma0 + gammar))
 
     @classmethod
@@ -6877,29 +6831,19 @@ class Region5:
         Pi = p
         gamma0_tautau = 0
         for i in range(0, 6):
-            gamma0_tautau = gamma0_tautau + ni0[i] * (Ji0[i] - 1) * Ji0[i] * tau ** (
-                Ji0[i] - 2
-            )
+            gamma0_tautau = gamma0_tautau + ni0[i] * (Ji0[i] - 1) * Ji0[i] * tau ** (Ji0[i] - 2)
         gammar_pi = 0
         gammar_pitau = 0
         gammar_pipi = 0
         gammar_tautau = 0
         for i in range(0, 5):
             gammar_pi = gammar_pi + nir[i] * Iir[i] * Pi ** (Iir[i] - 1) * tau ** Jir[i]
-            gammar_pitau = gammar_pitau + nir[i] * Iir[i] * Pi ** (Iir[i] - 1) * Jir[
-                i
-            ] * tau ** (Jir[i] - 1)
-            gammar_pipi = (
-                gammar_pipi
-                + nir[i] * Iir[i] * (Iir[i] - 1) * Pi ** (Iir[i] - 2) * tau ** Jir[i]
-            )
-            gammar_tautau = gammar_tautau + nir[i] * Pi ** Iir[i] * Jir[i] * (
-                Jir[i] - 1
-            ) * tau ** (Jir[i] - 2)
+            gammar_pitau = gammar_pitau + nir[i] * Iir[i] * Pi ** (Iir[i] - 1) * Jir[i] * tau ** (Jir[i] - 1)
+            gammar_pipi = gammar_pipi + nir[i] * Iir[i] * (Iir[i] - 1) * Pi ** (Iir[i] - 2) * tau ** Jir[i]
+            gammar_tautau = gammar_tautau + nir[i] * Pi ** Iir[i] * Jir[i] * (Jir[i] - 1) * tau ** (Jir[i] - 2)
         return R * (
             -(tau**2 * (gamma0_tautau + gammar_tautau))
-            - (1 + Pi * gammar_pi - tau * Pi * gammar_pitau) ** 2
-            / (1 - Pi**2 * gammar_pipi)
+            - (1 + Pi * gammar_pi - tau * Pi * gammar_pitau) ** 2 / (1 - Pi**2 * gammar_pipi)
         )
 
     @classmethod
@@ -6938,25 +6882,16 @@ class Region5:
         Pi = p
         gamma0_tautau = 0
         for i in range(0, 6):
-            gamma0_tautau = gamma0_tautau + ni0[i] * (Ji0[i] - 1) * Ji0[i] * tau ** (
-                Ji0[i] - 2
-            )
+            gamma0_tautau = gamma0_tautau + ni0[i] * (Ji0[i] - 1) * Ji0[i] * tau ** (Ji0[i] - 2)
         gammar_pi = 0
         gammar_pitau = 0
         gammar_pipi = 0
         gammar_tautau = 0
         for i in range(0, 5):
             gammar_pi = gammar_pi + nir[i] * Iir[i] * Pi ** (Iir[i] - 1) * tau ** Jir[i]
-            gammar_pitau = gammar_pitau + nir[i] * Iir[i] * Pi ** (Iir[i] - 1) * Jir[
-                i
-            ] * tau ** (Jir[i] - 1)
-            gammar_pipi = (
-                gammar_pipi
-                + nir[i] * Iir[i] * (Iir[i] - 1) * Pi ** (Iir[i] - 2) * tau ** Jir[i]
-            )
-            gammar_tautau = gammar_tautau + nir[i] * Pi ** Iir[i] * Jir[i] * (
-                Jir[i] - 1
-            ) * tau ** (Jir[i] - 2)
+            gammar_pitau = gammar_pitau + nir[i] * Iir[i] * Pi ** (Iir[i] - 1) * Jir[i] * tau ** (Jir[i] - 1)
+            gammar_pipi = gammar_pipi + nir[i] * Iir[i] * (Iir[i] - 1) * Pi ** (Iir[i] - 2) * tau ** Jir[i]
+            gammar_tautau = gammar_tautau + nir[i] * Pi ** Iir[i] * Jir[i] * (Jir[i] - 1) * tau ** (Jir[i] - 2)
         return (
             1000
             * R
@@ -6964,8 +6899,7 @@ class Region5:
             * (1 + 2 * Pi * gammar_pi + Pi**2 * gammar_pi**2)
             / (
                 (1 - Pi**2 * gammar_pipi)
-                + (1 + Pi * gammar_pi - tau * Pi * gammar_pitau) ** 2
-                / (tau**2 * (gamma0_tautau + gammar_tautau))
+                + (1 + Pi * gammar_pi - tau * Pi * gammar_pitau) ** 2 / (tau**2 * (gamma0_tautau + gammar_tautau))
             )
         ) ** 0.5
 
@@ -7012,7 +6946,7 @@ class Region5:
         Solve with half interval method
 
         :param p: preasure in [MPa]
-        :param s: Specific entropy in [kJ / (kg K)]
+        :param s: specific entropy in [kJ / (kg K)]
 
         :return: temperature in [K]
         """
@@ -7045,7 +6979,8 @@ class Region5:
     def T5_prho(cls, p: float, rho: float) -> float:
         """function T5_prho = T5_prho(p, rho)
 
-        Solve by iteration. Observe that for low temperatures this equation has 2 solutions. Solve with half interval method
+        Solve by iteration. Observe that for low temperatures this equation has
+        2 solutions. Solve with half interval method
 
         :param p: preasure in [MPa]
         :param rho: density in [kg / m³]
