@@ -3,7 +3,7 @@
 """collection of demos presenting the functionality of pyXSteam"""
 import time
 import logging
-import matplotlib.pyplot as pyplot
+from matplotlib import pyplot
 import numpy as np
 from pyXSteam.XSteam import XSteam
 from pyXSteam.XSteam_HW import XSteam_HW
@@ -24,9 +24,7 @@ def demo_simpel_values():
     print(f" tcV_p(1.0) = {steam_table.tcV_p(1.0)}")
     print("saturated vapour thermal conductivity @ 25 °C")
     print(f" tcL_t(25.0) = {steam_table.tcV_t(25.0)}")
-    print(
-        "thermal conductivity @ enthalpy 100 kJ / kg and specific entropy 0.34 kJ / (kg °C)"
-    )
+    print("thermal conductivity @ enthalpy 100 kJ / kg and specific entropy 0.34 kJ / (kg °C)")
     print(f" tc_hs(100.0, 0.34) = {steam_table.tc_hs(100.0, 0.34)}")
     print("thermal conductivity @ 1 bar and enthalpy 100 kJ / kg")
     print(f" tc_ph(1.0, 100.0) = {steam_table.tc_ph(1.0, 100.0)}")
@@ -40,16 +38,14 @@ def demo_generate_ph_diagramm(precision=1.0):
     """Generate a p(h) Diagram showing the Saturation Line"""
     steam_table = XSteam(XSteam.UNIT_SYSTEM_MKS)
 
-    p_krit = (
-        steam_table.criticalPressure() - 0.0001
-    )  # minus 0.0001 or else hL_V returns NaN
+    p_krit = steam_table.criticalPressure() - 0.0001  # minus 0.0001 or else hL_V returns NaN
 
     h_krit = steam_table.hL_p(p_krit)
 
     p_range = np.arange(0.0, 1000, precision)
     p2_range = np.arange(0.5, p_krit, precision)
     vf_range = np.arange(0.1, 1.0, 0.1)
-    h_range = np.arange(200.0, 4500.0, 100.0)
+    # h_range = np.arange(200.0, 4500.0, 100.0)
     temp_range = np.arange(0, 900, 30)
 
     nph_px = np.frompyfunc(steam_table.h_px, 2, 1)
@@ -123,9 +119,7 @@ def demo_generate_pvT_diagramm():
     v = npv_pt(p, t)
 
     colour_map = pyplot.get_cmap("hot")
-    ax.plot_surface(
-        p, t, v, cmap=colour_map, rstride=1, cstride=1, linewidth=0, shade=True
-    )
+    ax.plot_surface(p, t, v, cmap=colour_map, rstride=1, cstride=1, linewidth=0, shade=True)
 
     pyplot.title("v(p,t)")
     ax.set_xlabel("p in [bar]")
@@ -226,7 +220,7 @@ def demo_simpel_values_heavy_water():
     print(f" tc_rhoT(1.0, 320.0) = {steam_table_hw.tc_rhoT(1.0, 320.0)}")
 
 
-if __name__ == "__main__":
+def main():
     logging.basicConfig(level=logging.ERROR)
 
     print("Collection of simple demos on how to use pyXSteam")
@@ -284,3 +278,7 @@ if __name__ == "__main__":
         print("Unknown selection")
 
     print("------------------------------")
+
+
+if __name__ == "__main__":
+    main()

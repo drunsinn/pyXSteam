@@ -48,7 +48,7 @@ def pmelt_T_iceIII(T: float) -> float:
     T_star = 251.165
     p_star = 208.566
     theta = T / T_star
-    pi_melt = 1 - 0.299948 * (1.0 - theta ** 60)
+    pi_melt = 1 - 0.299948 * (1.0 - theta**60)
     p_melt = pi_melt * p_star
     logger.debug("result for 'melting preasure of ice type III': %f", p_melt)
     return p_melt
@@ -67,7 +67,7 @@ def pmelt_T_iceV(T: float) -> float:
     T_star = 256.164
     p_star = 350.1
     theta = T / T_star
-    pi_melt = 1 - 1.18721 * (1.0 - theta ** 8)
+    pi_melt = 1 - 1.18721 * (1.0 - theta**8)
     p_melt = pi_melt * p_star
     logger.debug("result for 'melting preasure of ice type V': %f", p_melt)
     return p_melt
@@ -86,7 +86,7 @@ def pmelt_T_iceVI(T: float) -> float:
     T_star = 273.31
     p_star = 632.4
     theta = T / T_star
-    pi_melt = 1 - 1.07476 * (1.0 - theta ** 4.6)
+    pi_melt = 1 - 1.07476 * (1.0 - theta**4.6)
     p_melt = pi_melt * p_star
     logger.debug("result for 'melting preasure of ice type VI': %f", p_melt)
     return p_melt
@@ -105,9 +105,9 @@ def pmelt_T_iceVII(T: float) -> float:
     T_star = 355.0
     p_star = 2216.0
     theta = T / T_star
-    p1 = 0.173683e1 * (1 - (theta ** -1))
-    p2 = 0.544606e-1 * (1 - (theta ** 5))
-    p3 = 0.806106e-7 * (1 - (theta ** 22))
+    p1 = 0.173683e1 * (1 - (theta**-1))
+    p2 = 0.544606e-1 * (1 - (theta**5))
+    p3 = 0.806106e-7 * (1 - (theta**22))
     pi_melt = math.exp(p1 - p2 + p3)
     p_melt = pi_melt * p_star
     logger.debug("result for 'melting preasure of ice type VII': %f", p_melt)
@@ -132,7 +132,7 @@ def psubl_T(T: float) -> float:
     temp_sum = 0
     for i in range(0, 3):
         temp_sum += a[i] * theta ** b[i]
-    pi_subl = math.exp((theta ** -1) * temp_sum)
+    pi_subl = math.exp((theta**-1) * temp_sum)
     p_subl = pi_subl * p_star
     logger.debug("result for 'sublimation preasure of ice': %f", p_subl)
     return p_subl

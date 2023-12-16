@@ -6283,7 +6283,7 @@ class Region4:
         :return: enthalpy in [kJ / kg]
         """
         hs = float("NaN")
-        if (p > TRIPLE_POINT_PRESSURE) and (p < CRITICAL_PRESSURE):
+        if TRIPLE_POINT_PRESSURE < p < CRITICAL_PRESSURE:
             Ts = Region4.T4_p(p)
             if p < 16.529:
                 h4L_p = Region1.h1_pT(p, Ts)
@@ -6325,7 +6325,7 @@ class Region4:
         :return: enthalpy in [kJ / kg]
         """
         hs = float("NaN")
-        if (p > TRIPLE_POINT_PRESSURE) and (p < CRITICAL_PRESSURE):
+        if TRIPLE_POINT_PRESSURE < p < CRITICAL_PRESSURE:
             Ts = Region4.T4_p(p)
             if p < 16.529:
                 h4V_p = Region2.h2_pT(p, Ts)

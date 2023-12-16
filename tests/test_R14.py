@@ -21,8 +21,7 @@ class R14_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError_ice_Ih,
-            "pmelt_T_iceIh not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError_ice_Ih},
+            "pmelt_T_iceIh not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError_ice_Ih},
         )
 
     def test_R14_pmelt_T_function_Ih_2(self):
@@ -30,8 +29,7 @@ class R14_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError_ice_Ih,
-            "pmelt_T_iceIh not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError_ice_Ih},
+            "pmelt_T_iceIh not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError_ice_Ih},
         )
 
     def test_R14_pmelt_T_function_III_1(self):
@@ -39,8 +37,7 @@ class R14_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError_ice_III,
-            "pmelt_T_iceIII not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError_ice_III},
+            "pmelt_T_iceIII not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError_ice_III},
         )
 
     def test_R14_pmelt_T_function_III_2(self):
@@ -48,8 +45,7 @@ class R14_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError_ice_III,
-            "pmelt_T_iceIII not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError_ice_III},
+            "pmelt_T_iceIII not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError_ice_III},
         )
 
     def test_R14_pmelt_T_function_V_1(self):
@@ -57,8 +53,7 @@ class R14_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError_ice_V,
-            "pmelt_t not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError_ice_V},
+            "pmelt_t not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError_ice_V},
         )
 
     def test_R14_pmelt_T_function_V_2(self):
@@ -66,8 +61,7 @@ class R14_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError_ice_V,
-            "pmelt_t not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError_ice_V},
+            "pmelt_t not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError_ice_V},
         )
 
     def test_R14_pmelt_T_function_VI_1(self):
@@ -75,8 +69,7 @@ class R14_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError_ice_VI,
-            "pmelt_t not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError_ice_VI},
+            "pmelt_t not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError_ice_VI},
         )
 
     def test_R14_pmelt_T_function_VI_2(self):
@@ -84,8 +77,7 @@ class R14_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError_ice_VI,
-            "pmelt_t not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError_ice_VI},
+            "pmelt_t not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError_ice_VI},
         )
 
     def test_R14_pmelt_T_function_VII_1(self):
@@ -93,8 +85,7 @@ class R14_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError_ice_VII,
-            "pmelt_t not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError_ice_VII},
+            "pmelt_t not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError_ice_VII},
         )
 
     def test_R14_pmelt_T_function_VII_2(self):
@@ -102,8 +93,7 @@ class R14_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError_ice_VII,
-            "pmelt_t not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError_ice_VII},
+            "pmelt_t not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError_ice_VII},
         )
 
     def test_R14_psubl_T_function(self):
@@ -111,6 +101,5 @@ class R14_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "psubl_t not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "psubl_t not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )

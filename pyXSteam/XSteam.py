@@ -376,9 +376,8 @@ class XSteam(object):
         p = self._unit_converter.toSIunit_p(p)
         if TRIPLE_POINT_PRESSURE < p < CRITICAL_PRESSURE:
             return self._unit_converter.fromSIunit_h(Region4.h4V_p(p))
-        else:
-            self.logger.warning("pressure %f out of range", p)
-            return float("NaN")
+        self.logger.warning("pressure %f out of range", p)
+        return float("NaN")
 
     def hL_p(self, p: float) -> float:
         """
@@ -392,9 +391,8 @@ class XSteam(object):
         p = self._unit_converter.toSIunit_p(p)
         if TRIPLE_POINT_PRESSURE < p < CRITICAL_PRESSURE:
             return self._unit_converter.fromSIunit_h(Region4.h4L_p(p))
-        else:
-            self.logger.warning("pressure %f out of range", p)
-            return float("NaN")
+        self.logger.warning("pressure %f out of range", p)
+        return float("NaN")
 
     def hV_t(self, t: float) -> float:
         """
@@ -409,9 +407,8 @@ class XSteam(object):
         if FREEZING_TEMPERATURE_H2O < T < CRITICAL_TEMPERATURE:
             p = Region4.p4_T(T)
             return self._unit_converter.fromSIunit_h(Region4.h4V_p(p))
-        else:
-            self.logger.warning("temperature %f out of range", T)
-            return float("NaN")
+        self.logger.warning("temperature %f out of range", T)
+        return float("NaN")
 
     def hL_t(self, t: float) -> float:
         """
@@ -426,9 +423,8 @@ class XSteam(object):
         if FREEZING_TEMPERATURE_H2O < T < CRITICAL_TEMPERATURE:
             p = Region4.p4_T(T)
             return self._unit_converter.fromSIunit_h(Region4.h4L_p(p))
-        else:
-            self.logger.warning("temperature %f out of range", T)
-            return float("NaN")
+        self.logger.warning("temperature %f out of range", T)
+        return float("NaN")
 
     def h_pt(self, p: float, t: float) -> float:
         """
@@ -445,27 +441,27 @@ class XSteam(object):
         region = select_region_pT(p, T)
         if region == DiagramRegion.R1:
             return self._unit_converter.fromSIunit_h(Region1.h1_pT(p, T))
-        elif region == DiagramRegion.R2:
+        if region == DiagramRegion.R2:
             return self._unit_converter.fromSIunit_h(Region2.h2_pT(p, T))
-        elif region == DiagramRegion.R3:
+        if region == DiagramRegion.R3:
             return self._unit_converter.fromSIunit_h(Region3.h3_pT(p, T))
-        elif region == DiagramRegion.R4:
+        if region == DiagramRegion.R4:
             self.logger.warning(
                 "function h_pt is not available in region 4 for input p %f and T %f",
                 p,
                 T,
             )
             return float("NaN")
-        elif region == DiagramRegion.R5:
+        if region == DiagramRegion.R5:
             return self._unit_converter.fromSIunit_h(Region5.h5_pT(p, T))
-        else:
-            self.logger.warning(
-                "Region switch h_pt returned unknown value %d for input p %f and T %f",
-                region,
-                p,
-                T,
-            )
-            return float("NaN")
+
+        self.logger.warning(
+            "Region switch h_pt returned unknown value %d for input p %f and T %f",
+            region,
+            p,
+            T,
+        )
+        return float("NaN")
 
     def h_ps(self, p: float, s: float) -> float:
         """
@@ -482,23 +478,23 @@ class XSteam(object):
         region = select_region_ps(p, s)
         if region == DiagramRegion.R1:
             return self._unit_converter.fromSIunit_h(Region1.h1_pT(p, Region1.T1_ps(p, s)))
-        elif region == DiagramRegion.R2:
+        if region == DiagramRegion.R2:
             return self._unit_converter.fromSIunit_h(Region2.h2_pT(p, Region2.T2_ps(p, s)))
-        elif region == DiagramRegion.R3:
+        if region == DiagramRegion.R3:
             return self._unit_converter.fromSIunit_h(Region3.h3_rhoT(1 / Region3.v3_ps(p, s), Region3.T3_ps(p, s)))
-        elif region == DiagramRegion.R4:
+        if region == DiagramRegion.R4:
             xs = Region4.x4_ps(p, s)
             return self._unit_converter.fromSIunit_h(xs * Region4.h4V_p(p) + (1 - xs) * Region4.h4L_p(p))
-        elif region == DiagramRegion.R5:
+        if region == DiagramRegion.R5:
             return self._unit_converter.fromSIunit_h(Region5.h5_pT(p, Region5.T5_ps(p, s)))
-        else:
-            self.logger.warning(
-                "Region switch h_ps returned unknown value %d for input p %f and s %f ",
-                region,
-                p,
-                s,
-            )
-            return float("NaN")
+
+        self.logger.warning(
+            "Region switch h_ps returned unknown value %d for input p %f and s %f ",
+            region,
+            p,
+            s,
+        )
+        return float("NaN")
 
     def h_px(self, p: float, x: float) -> float:
         """
@@ -534,11 +530,11 @@ class XSteam(object):
         region = select_region_prho(p, rho)
         if region == DiagramRegion.R1:
             return self._unit_converter.fromSIunit_h(Region1.h1_pT(p, Region1.T1_prho(p, rho)))
-        elif region == DiagramRegion.R2:
+        if region == DiagramRegion.R2:
             return self._unit_converter.fromSIunit_h(Region2.h2_pT(p, Region2.T2_prho(p, rho)))
-        elif region == DiagramRegion.R3:
+        if region == DiagramRegion.R3:
             return self._unit_converter.fromSIunit_h(Region3.h3_rhoT(rho, Region3.T3_prho(p, rho)))
-        elif region == DiagramRegion.R4:
+        if region == DiagramRegion.R4:
             if p < 16.529:
                 vV = Region2.v2_pT(p, Region4.T4_p(p))
                 vL = Region1.v1_pT(p, Region4.T4_p(p))
@@ -549,16 +545,16 @@ class XSteam(object):
             hL = Region4.h4L_p(p)
             x = (1 / rho - vL) / (vV - vL)
             return self._unit_converter.fromSIunit_h((1 - x) * hL + x * hV)
-        elif region == DiagramRegion.R5:
+        if region == DiagramRegion.R5:
             return self._unit_converter.fromSIunit_h(Region5.h5_pT(p, Region5.T5_prho(p, rho)))
-        else:
-            self.logger.warning(
-                "Region switch h_prho returned unknown value %d for input p %f and rho %f",
-                region,
-                p,
-                rho,
-            )
-            return float("NaN")
+
+        self.logger.warning(
+            "Region switch h_prho returned unknown value %d for input p %f and rho %f",
+            region,
+            p,
+            rho,
+        )
+        return float("NaN")
 
     def h_tx(self, t: float, x: float) -> float:
         """
@@ -594,11 +590,9 @@ class XSteam(object):
         if TRIPLE_POINT_PRESSURE < p < CRITICAL_PRESSURE:
             if p < 16.529:
                 return self._unit_converter.fromSIunit_v(Region2.v2_pT(p, Region4.T4_p(p)))
-            else:
-                return self._unit_converter.fromSIunit_v(Region3.v3_ph(p, Region4.h4V_p(p)))
-        else:
-            self.logger.warning("pressure %f out of range", p)
-            return float("NaN")
+            return self._unit_converter.fromSIunit_v(Region3.v3_ph(p, Region4.h4V_p(p)))
+        self.logger.warning("pressure %f out of range", p)
+        return float("NaN")
 
     def vL_p(self, p: float) -> float:
         """
@@ -613,11 +607,9 @@ class XSteam(object):
         if TRIPLE_POINT_PRESSURE < p < CRITICAL_PRESSURE:
             if p < 16.529:
                 return self._unit_converter.fromSIunit_v(Region1.v1_pT(p, Region4.T4_p(p)))
-            else:
-                return self._unit_converter.fromSIunit_v(Region3.v3_ph(p, Region4.h4L_p(p)))
-        else:
-            self.logger.warning("pressure %f out of range", p)
-            return float("NaN")
+            return self._unit_converter.fromSIunit_v(Region3.v3_ph(p, Region4.h4L_p(p)))
+        self.logger.warning("pressure %f out of range", p)
+        return float("NaN")
 
     def vV_t(self, t: float) -> float:
         """
@@ -632,11 +624,9 @@ class XSteam(object):
         if FREEZING_TEMPERATURE_H2O < T < CRITICAL_TEMPERATURE:
             if T <= 623.15:
                 return self._unit_converter.fromSIunit_v(Region2.v2_pT(Region4.p4_T(T), T))
-            else:
-                return self._unit_converter.fromSIunit_v(Region3.v3_ph(Region4.p4_T(T), Region4.h4V_p(Region4.p4_T(T))))
-        else:
-            self.logger.warning("temperature %f out of range", T)
-            return float("NaN")
+            return self._unit_converter.fromSIunit_v(Region3.v3_ph(Region4.p4_T(T), Region4.h4V_p(Region4.p4_T(T))))
+        self.logger.warning("temperature %f out of range", T)
+        return float("NaN")
 
     def vL_t(self, t: float) -> float:
         """
@@ -651,11 +641,9 @@ class XSteam(object):
         if FREEZING_TEMPERATURE_H2O < T < CRITICAL_TEMPERATURE:
             if T <= 623.15:
                 return self._unit_converter.fromSIunit_v(Region1.v1_pT(Region4.p4_T(T), T))
-            else:
-                return self._unit_converter.fromSIunit_v(Region3.v3_ph(Region4.p4_T(T), Region4.h4L_p(Region4.p4_T(T))))
-        else:
-            self.logger.warning("temperature %f out of range", T)
-            return float("NaN")
+            return self._unit_converter.fromSIunit_v(Region3.v3_ph(Region4.p4_T(T), Region4.h4L_p(Region4.p4_T(T))))
+        self.logger.warning("temperature %f out of range", T)
+        return float("NaN")
 
     def v_pt(self, p: float, t: float) -> float:
         """
@@ -874,11 +862,9 @@ class XSteam(object):
         if TRIPLE_POINT_PRESSURE < p < CRITICAL_PRESSURE:
             if p < 16.529:
                 return self._unit_converter.fromSIunit_s(Region2.s2_pT(p, Region4.T4_p(p)))
-            else:
-                return self._unit_converter.fromSIunit_s(Region3.s3_rhoT(1 / (Region3.v3_ph(p, Region4.h4V_p(p))), Region4.T4_p(p)))
-        else:
-            self.logger.warning("pressure %f out of range", p)
-            return float("NaN")
+            return self._unit_converter.fromSIunit_s(Region3.s3_rhoT(1 / (Region3.v3_ph(p, Region4.h4V_p(p))), Region4.T4_p(p)))
+        self.logger.warning("pressure %f out of range", p)
+        return float("NaN")
 
     def sL_p(self, p: float) -> float:
         """
@@ -893,11 +879,9 @@ class XSteam(object):
         if TRIPLE_POINT_PRESSURE < p < CRITICAL_PRESSURE:
             if p < 16.529:
                 return self._unit_converter.fromSIunit_s(Region1.s1_pT(p, Region4.T4_p(p)))
-            else:
-                return self._unit_converter.fromSIunit_s(Region3.s3_rhoT(1 / (Region3.v3_ph(p, Region4.h4L_p(p))), Region4.T4_p(p)))
-        else:
-            self.logger.warning("pressure %f out of range", p)
-            return float("NaN")
+            return self._unit_converter.fromSIunit_s(Region3.s3_rhoT(1 / (Region3.v3_ph(p, Region4.h4L_p(p))), Region4.T4_p(p)))
+        self.logger.warning("pressure %f out of range", p)
+        return float("NaN")
 
     def sV_t(self, t: float) -> float:
         """
@@ -912,16 +896,14 @@ class XSteam(object):
         if FREEZING_TEMPERATURE_H2O < T < CRITICAL_TEMPERATURE:
             if T <= 623.15:
                 return self._unit_converter.fromSIunit_s(Region2.s2_pT(Region4.p4_T(T), T))
-            else:
-                return self._unit_converter.fromSIunit_s(
-                    Region3.s3_rhoT(
-                        1 / (Region3.v3_ph(Region4.p4_T(T), Region4.h4V_p(Region4.p4_T(T)))),
-                        T,
-                    )
+            return self._unit_converter.fromSIunit_s(
+                Region3.s3_rhoT(
+                    1 / (Region3.v3_ph(Region4.p4_T(T), Region4.h4V_p(Region4.p4_T(T)))),
+                    T,
                 )
-        else:
-            self.logger.warning("temperature %f out of range", T)
-            return float("NaN")
+            )
+        self.logger.warning("temperature %f out of range", T)
+        return float("NaN")
 
     def sL_t(self, t: float) -> float:
         """
@@ -936,16 +918,14 @@ class XSteam(object):
         if FREEZING_TEMPERATURE_H2O < T < CRITICAL_TEMPERATURE:
             if T <= 623.15:
                 return self._unit_converter.fromSIunit_s(Region1.s1_pT(Region4.p4_T(T), T))
-            else:
-                return self._unit_converter.fromSIunit_s(
-                    Region3.s3_rhoT(
-                        1 / (Region3.v3_ph(Region4.p4_T(T), Region4.h4L_p(Region4.p4_T(T)))),
-                        T,
-                    )
+            return self._unit_converter.fromSIunit_s(
+                Region3.s3_rhoT(
+                    1 / (Region3.v3_ph(Region4.p4_T(T), Region4.h4L_p(Region4.p4_T(T)))),
+                    T,
                 )
-        else:
-            self.logger.warning("temperature %f out of range", T)
-            return float("NaN")
+            )
+        self.logger.warning("temperature %f out of range", T)
+        return float("NaN")
 
     def s_pt(self, p: float, t: float) -> float:
         """
@@ -962,25 +942,25 @@ class XSteam(object):
         region = select_region_pT(p, T)
         if region == DiagramRegion.R1:
             return self._unit_converter.fromSIunit_s(Region1.s1_pT(p, T))
-        elif region == DiagramRegion.R2:
+        if region == DiagramRegion.R2:
             return self._unit_converter.fromSIunit_s(Region2.s2_pT(p, T))
-        elif region == DiagramRegion.R3:
+        if region == DiagramRegion.R3:
             hs = Region3.h3_pT(p, T)
             rhos = 1 / Region3.v3_ph(p, hs)
             return self._unit_converter.fromSIunit_s(Region3.s3_rhoT(rhos, T))
-        elif region == DiagramRegion.R4:
+        if region == DiagramRegion.R4:
             self.logger.warning("function s_pt is not available in region 4 (p %f, T %f)", p, T)
             return float("NaN")
-        elif region == DiagramRegion.R5:
+        if region == DiagramRegion.R5:
             return self._unit_converter.fromSIunit_s(Region5.s5_pT(p, T))
-        else:
-            self.logger.warning(
-                "Region switch s_pt returned unknown value %d for input p %f and T %f",
-                region,
-                p,
-                T,
-            )
-            return float("NaN")
+
+        self.logger.warning(
+            "Region switch s_pt returned unknown value %d for input p %f and T %f",
+            region,
+            p,
+            T,
+        )
+        return float("NaN")
 
     def s_ph(self, p: float, h: float) -> float:
         """
@@ -1020,14 +1000,13 @@ class XSteam(object):
         elif region == DiagramRegion.R5:
             T = Region5.T5_ph(p, h)
             return self._unit_converter.fromSIunit_s(Region5.s5_pT(p, T))
-        else:
-            self.logger.warning(
-                "Region switch s_ph returned unknown value %d for input p %f and h %f",
-                region,
-                p,
-                h,
-            )
-            return float("NaN")
+        self.logger.warning(
+            "Region switch s_ph returned unknown value %d for input p %f and h %f",
+            region,
+            p,
+            h,
+        )
+        return float("NaN")
 
     def uV_p(self, p: float) -> float:
         """
@@ -1042,10 +1021,8 @@ class XSteam(object):
         if TRIPLE_POINT_PRESSURE < p < CRITICAL_PRESSURE:
             if p < 16.529:
                 return self._unit_converter.fromSIunit_u(Region2.u2_pT(p, Region4.T4_p(p)))
-            else:
-                return self._unit_converter.fromSIunit_u(Region3.u3_rhoT(1 / (Region3.v3_ph(p, Region4.h4V_p(p))), Region4.T4_p(p)))
-        else:
-            return float("NaN")
+            return self._unit_converter.fromSIunit_u(Region3.u3_rhoT(1 / (Region3.v3_ph(p, Region4.h4V_p(p))), Region4.T4_p(p)))
+        return float("NaN")
 
     def uL_p(self, p: float) -> float:
         """
@@ -1060,11 +1037,9 @@ class XSteam(object):
         if TRIPLE_POINT_PRESSURE < p < CRITICAL_PRESSURE:
             if p < 16.529:
                 return self._unit_converter.fromSIunit_u(Region1.u1_pT(p, Region4.T4_p(p)))
-            else:
-                return self._unit_converter.fromSIunit_u(Region3.u3_rhoT(1 / (Region3.v3_ph(p, Region4.h4L_p(p))), Region4.T4_p(p)))
-        else:
-            self.logger.warning("pressure %f out of range", p)
-            return float("NaN")
+            return self._unit_converter.fromSIunit_u(Region3.u3_rhoT(1 / (Region3.v3_ph(p, Region4.h4L_p(p))), Region4.T4_p(p)))
+        self.logger.warning("pressure %f out of range", p)
+        return float("NaN")
 
     def uV_t(self, t: float) -> float:
         """
@@ -1079,16 +1054,14 @@ class XSteam(object):
         if FREEZING_TEMPERATURE_H2O < T < CRITICAL_TEMPERATURE:
             if T <= 623.15:
                 return self._unit_converter.fromSIunit_u(Region2.u2_pT(Region4.p4_T(T), T))
-            else:
-                return self._unit_converter.fromSIunit_u(
-                    Region3.u3_rhoT(
-                        1 / (Region3.v3_ph(Region4.p4_T(T), Region4.h4V_p(Region4.p4_T(T)))),
-                        T,
-                    )
+            return self._unit_converter.fromSIunit_u(
+                Region3.u3_rhoT(
+                    1 / (Region3.v3_ph(Region4.p4_T(T), Region4.h4V_p(Region4.p4_T(T)))),
+                    T,
                 )
-        else:
-            self.logger.warning("temperature %f out of range", T)
-            return float("NaN")
+            )
+        self.logger.warning("temperature %f out of range", T)
+        return float("NaN")
 
     def uL_t(self, t: float) -> float:
         """
@@ -1271,11 +1244,9 @@ class XSteam(object):
         if TRIPLE_POINT_PRESSURE < p < CRITICAL_PRESSURE:
             if p < 16.529:
                 return self._unit_converter.fromSIunit_Cp(Region2.Cp2_pT(p, Region4.T4_p(p)))
-            else:
-                return self._unit_converter.fromSIunit_Cp(Region3.Cp3_rhoT(1 / (Region3.v3_ph(p, Region4.h4V_p(p))), Region4.T4_p(p)))
-        else:
-            self.logger.warning("preassure %f out of range", p)
-            return float("NaN")
+            return self._unit_converter.fromSIunit_Cp(Region3.Cp3_rhoT(1 / (Region3.v3_ph(p, Region4.h4V_p(p))), Region4.T4_p(p)))
+        self.logger.warning("preassure %f out of range", p)
+        return float("NaN")
 
     def CpL_p(self, p: float) -> float:
         """
@@ -1290,11 +1261,9 @@ class XSteam(object):
         if TRIPLE_POINT_PRESSURE < p < CRITICAL_PRESSURE:
             if p < 16.529:
                 return self._unit_converter.fromSIunit_Cp(Region1.Cp1_pT(p, Region4.T4_p(p)))
-            else:
-                return self._unit_converter.fromSIunit_Cp(Region3.Cp3_rhoT(1 / (Region3.v3_ph(p, Region4.h4L_p(p))), Region4.T4_p(p)))
-        else:
-            self.logger.warning("preassure %f out of range", p)
-            return float("NaN")
+            return self._unit_converter.fromSIunit_Cp(Region3.Cp3_rhoT(1 / (Region3.v3_ph(p, Region4.h4L_p(p))), Region4.T4_p(p)))
+        self.logger.warning("preassure %f out of range", p)
+        return float("NaN")
 
     def CpV_t(self, t: float) -> float:
         """
@@ -1309,16 +1278,14 @@ class XSteam(object):
         if FREEZING_TEMPERATURE_H2O < T < CRITICAL_TEMPERATURE:
             if T <= 623.15:
                 return self._unit_converter.fromSIunit_Cp(Region2.Cp2_pT(Region4.p4_T(T), T))
-            else:
-                return self._unit_converter.fromSIunit_Cp(
-                    Region3.Cp3_rhoT(
-                        1 / (Region3.v3_ph(Region4.p4_T(T), Region4.h4V_p(Region4.p4_T(T)))),
-                        T,
-                    )
+            return self._unit_converter.fromSIunit_Cp(
+                Region3.Cp3_rhoT(
+                    1 / (Region3.v3_ph(Region4.p4_T(T), Region4.h4V_p(Region4.p4_T(T)))),
+                    T,
                 )
-        else:
-            self.logger.warning("temperature %f out of range", T)
-            return float("NaN")
+            )
+        self.logger.warning("temperature %f out of range", T)
+        return float("NaN")
 
     def CpL_t(self, t: float) -> float:
         """
@@ -2415,9 +2382,8 @@ class XSteam(object):
         T = self._unit_converter.toSIunit_T(t)
         if 50 <= T < 273.16:
             return self._unit_converter.fromSIunit_p(psubl_T(T))
-        else:
-            self.logger.warning("temperature %f out of range", T)
-            return float("NaN")
+        self.logger.warning("temperature %f out of range", T)
+        return float("NaN")
 
     def R12_my_rhot(self, rho: float, t: float, industrial_application: bool = True) -> float:
         """shear viscosity of pure water substance over an extensive range of fluid states

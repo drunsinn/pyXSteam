@@ -8,9 +8,6 @@ import logging
 from .RegionSelection import (
     select_region_pT,
     select_region_ph,
-    select_region_ps,
-    select_region_hs,
-    select_region_prho,
 )
 from .Regions import Region1, Region2, Region3, Region4, Region5
 from .Constants import CRITICAL_TEMPERATURE, FREEZING_TEMPERATURE_H2O
@@ -55,14 +52,14 @@ def my_AllRegions_pT(p: float, T: float) -> float:
     # Check valid area
     if (
         (T > (900 + FREEZING_TEMPERATURE_H2O))
-        or ((T > (600 + FREEZING_TEMPERATURE_H2O)) and (p > 300))
-        or ((T > (150 + FREEZING_TEMPERATURE_H2O)) and (p > 350))
+        or (T > (600 + FREEZING_TEMPERATURE_H2O) and (p > 300))
+        or (T > (150 + FREEZING_TEMPERATURE_H2O) and (p > 350))
         or (p > 500)
     ):
         logger.warning("Temperature and/or Preasure out of range of validity")
         return float("NaN")
 
-    my0 = Ts ** 0.5 / (1 + 0.978197 / Ts + 0.579829 / (Ts ** 2) - 0.202354 / (Ts ** 3))
+    my0 = Ts**0.5 / (1 + 0.978197 / Ts + 0.579829 / (Ts**2) - 0.202354 / (Ts**3))
     temp_sum = 0
     for i in range(0, 6):
         temp_sum = (
@@ -136,7 +133,7 @@ def my_AllRegions_ph(p: float, h: float) -> float:
         logger.warning("Temperature and/or Preasure out of range of validity")
         return float("NaN")
 
-    my0 = Ts ** 0.5 / (1 + 0.978197 / Ts + 0.579829 / (Ts ** 2) - 0.202354 / (Ts ** 3))
+    my0 = Ts**0.5 / (1 + 0.978197 / Ts + 0.579829 / (Ts**2) - 0.202354 / (Ts**3))
 
     temp_sum = 0
     for i in range(0, 6):
@@ -170,11 +167,11 @@ def tc_ptrho(p: float, T: float, rho: float) -> float:
     if T < FREEZING_TEMPERATURE_H2O:
         logger.warning("Temperature out of range of validity")
         return float("NaN")
-    elif T < 500 + FREEZING_TEMPERATURE_H2O:
+    if T < 500 + FREEZING_TEMPERATURE_H2O:
         if p > 100:
             logger.warning("Preasure out of range of validity")
             return float("NaN")
-    elif T <= 650 + FREEZING_TEMPERATURE_H2O:
+    if T <= 650 + FREEZING_TEMPERATURE_H2O:
         if p > 70:
             logger.warning("Preasure out of range of validity")
             return float("NaN")
@@ -187,15 +184,9 @@ def tc_ptrho(p: float, T: float, rho: float) -> float:
     T = T / 647.26  # Page 8, Eq 4
     rho = rho / 317.7  # Page 8, Eq 5
 
-    tc0 = T ** 0.5 * (
-        0.0102811 + 0.0299621 * T + 0.0156146 * (T ** 2) - 0.00422464 * (T ** 3)
-    )  # Page 9, Eq 9
+    tc0 = T**0.5 * (0.0102811 + 0.0299621 * T + 0.0156146 * (T**2) - 0.00422464 * (T**3))  # Page 9, Eq 9
 
-    tc1 = (
-        -0.397070
-        + 0.400302 * rho
-        + 1.06 * math.exp(-0.171587 * ((rho + 2.392190) ** 2))
-    )  # Page 9, Eq 10
+    tc1 = -0.397070 + 0.400302 * rho + 1.06 * math.exp(-0.171587 * ((rho + 2.392190) ** 2))  # Page 9, Eq 10
 
     dT = abs(T - 1) + 0.00308976  # Page 9, Eq 12
     Q = 2 + 0.0822994 / (dT ** (3 / 5))  # Page 10, Eq 13
@@ -205,11 +196,9 @@ def tc_ptrho(p: float, T: float, rho: float) -> float:
         s = 10.0932 / (dT ** (3 / 5))
 
     tc2 = (
-        (0.0701309 / (T ** 10) + 0.0118520)
-        * (rho ** (9 / 5))
-        * math.exp(0.642857 * (1 - rho ** (14 / 5)))
-        + 0.00169937 * s * (rho ** Q) * math.exp((Q / (1 + Q)) * (1 - rho ** (1 + Q)))
-        - 1.02 * math.exp(-4.11717 * (T ** (3 / 2)) - 6.17937 / (rho ** 5))
+        (0.0701309 / (T**10) + 0.0118520) * (rho ** (9 / 5)) * math.exp(0.642857 * (1 - rho ** (14 / 5)))
+        + 0.00169937 * s * (rho**Q) * math.exp((Q / (1 + Q)) * (1 - rho ** (1 + Q)))
+        - 1.02 * math.exp(-4.11717 * (T ** (3 / 2)) - 6.17937 / (rho**5))
     )  # Page 9, Eq 11
     return tc0 + tc1 + tc2  # Page 9, Eq 8
 
@@ -238,4 +227,4 @@ def surface_tension_T(T: float) -> float:
         return float("NaN")
 
     tau = 1 - T / tc
-    return B * tau ** my * (1 + bb * tau)
+    return B * tau**my * (1 + bb * tau)

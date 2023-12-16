@@ -5,10 +5,12 @@ Constants for the calculation of water steam properties
 
 Sources:
 
-* IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam, September 1997
+* IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water
+and Steam, September 1997
 
-* IAWPS Release on Vaues of Temperature, Pressure and Density of Ordinary and Heavy Water Substances at their Respective Critical Points Released September 1992, Revision of the Release of 1992
-
+* IAWPS Release on Vaues of Temperature, Pressure and Density of Ordinary and
+Heavy Water Substances at their Respective Critical Points Released
+September 1992, Revision of the Release of 1992
 """
 from enum import IntEnum
 
@@ -48,16 +50,21 @@ __CRITICAL_DENSITY_IAPWS_R15_11__ = 322.0  # kg m^-1
 
 
 class UnitSystem(IntEnum):
+    """enum for supported unit systems"""
+
     BARE = 1  # m/kg/sec/K/MPa/W
     MKS = 1  # m/kg/sec/°C/bar/W
     FLS = 2  # ft/lb/sec/°F/psi/btu
 
     @classmethod
-    def has_value(cls, value):
+    def has_value(cls, value: int):
+        """check if value is member of enum"""
         return value in cls._value2member_map_
 
 
 class IceType(IntEnum):
+    """enum for the types of ice"""
+
     Ih = 1
     III = 3
     V = 5
@@ -66,11 +73,14 @@ class IceType(IntEnum):
     NONE = -1
 
     @classmethod
-    def has_value(cls, value):
+    def has_value(cls, value: int):
+        """check if value is member of enum"""
         return value in cls._value2member_map_
 
 
 class DiagramRegion(IntEnum):
+    """enum for the regions"""
+
     NILL = 0  # Error, Outside valid area
     R1 = 1
     R2 = 2

@@ -330,8 +330,7 @@ class Region3Tester(unittest.TestCase):
         self.assertLess(
             v3_ph_error,
             1e-7,
-            "Test of v(p,h) Function for Region 3 failed. Error was %(error)e allowed:"
-            " %(max)e" % {"error": v3_ph_error, "max": 1e-7},
+            "Test of v(p,h) Function for Region 3 failed. Error was %(error)e allowed:" " %(max)e" % {"error": v3_ph_error, "max": 1e-7},
         )
 
     def test_T_ps_function(self):
@@ -419,8 +418,7 @@ class Region3Tester(unittest.TestCase):
         self.assertLess(
             h3_pT_error,
             1e-6,
-            "Test of h(p,T) Function for Region 3 failed. Error was %(error)e allowed:"
-            " %(max)e" % {"error": h3_pT_error, "max": 1e-6},
+            "Test of h(p,T) Function for Region 3 failed. Error was %(error)e allowed:" " %(max)e" % {"error": h3_pT_error, "max": 1e-6},
         )
 
 
@@ -562,6 +560,5 @@ class Region5Tester(unittest.TestCase):
         self.assertLess(
             T5_ps_error,
             1e-4,
-            "Test of T(p,s) Function for Region 5 failed. Error was %(error)e allowed:"
-            " %(max)e" % {"error": T5_ps_error, "max": 1e-4},
+            "Test of T(p,s) Function for Region 5 failed. Error was %(error)e allowed:" " %(max)e" % {"error": T5_ps_error, "max": 1e-4},
         )

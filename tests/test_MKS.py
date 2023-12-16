@@ -21,8 +21,7 @@ class MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "tsat_p not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "tsat_p not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_t_ph(self):
@@ -30,8 +29,7 @@ class MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "t_ph not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "t_ph not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_t_ps(self):
@@ -39,8 +37,7 @@ class MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "t_ps not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "t_ps not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_t_hs(self):
@@ -48,8 +45,7 @@ class MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "t_hs not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "t_hs not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_psat_t(self):
@@ -57,8 +53,7 @@ class MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "psat_t not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "psat_t not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_p_hs(self):
@@ -66,8 +61,7 @@ class MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "p_hs not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "p_hs not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_hV_p(self):
@@ -75,8 +69,7 @@ class MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "hV_p not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "hV_p not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_hL_p(self):
@@ -84,8 +77,7 @@ class MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "hL_p not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "hL_p not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_hV_t(self):
@@ -93,8 +85,7 @@ class MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "hV_t not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "hV_t not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_hL_t(self):
@@ -102,8 +93,7 @@ class MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "hL_t not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "hL_t not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_h_pt(self):
@@ -111,8 +101,7 @@ class MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "h_pt not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "h_pt not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_h_ps(self):
@@ -120,8 +109,7 @@ class MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "h_ps not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "h_ps not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_h_px(self):
@@ -129,8 +117,7 @@ class MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "h_px not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "h_px not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_h_prho(self):
@@ -138,8 +125,7 @@ class MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "h_prho not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "h_prho not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_h_tx(self):
@@ -147,8 +133,7 @@ class MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "h_tx not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "h_tx not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_vV_p(self):
@@ -156,8 +141,7 @@ class MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "vV_p not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "vV_p not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_vL_p(self):
@@ -165,8 +149,7 @@ class MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "vL_p not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "vL_p not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_vV_t(self):
@@ -174,8 +157,7 @@ class MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "vV_t not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "vV_t not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_vL_t(self):
@@ -183,8 +165,7 @@ class MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "vL_t not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "vL_t not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_v_pt(self):
@@ -192,8 +173,7 @@ class MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "v_pt not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "v_pt not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_v_ph(self):
@@ -201,8 +181,7 @@ class MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "v_ph not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "v_ph not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_v_ps(self):
@@ -210,8 +189,7 @@ class MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "v_ps not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "v_ps not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_rhoV_p(self):
@@ -219,8 +197,7 @@ class MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "rhoV_p not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "rhoV_p not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_rhoL_p(self):
@@ -228,8 +205,7 @@ class MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "rhoL_p not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "rhoL_p not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_rhoV_t(self):
@@ -237,8 +213,7 @@ class MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "rhoV_t not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "rhoV_t not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_rhoL_t(self):
@@ -246,8 +221,7 @@ class MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "rhoL_t not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "rhoL_t not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_rho_pt(self):
@@ -255,8 +229,7 @@ class MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "rho_pt not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "rho_pt not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_rho_ph(self):
@@ -264,8 +237,7 @@ class MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "rho_ph not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "rho_ph not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_rho_ps(self):
@@ -273,8 +245,7 @@ class MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "rho_ps not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "rho_ps not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_sV_p(self):
@@ -282,8 +253,7 @@ class MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "sV_p not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "sV_p not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_sL_p(self):
@@ -291,8 +261,7 @@ class MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "sL_p not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "sL_p not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_sV_t(self):
@@ -300,8 +269,7 @@ class MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "sV_t not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "sV_t not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_sL_t(self):
@@ -309,8 +277,7 @@ class MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "sL_t not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "sL_t not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_s_pt(self):
@@ -318,8 +285,7 @@ class MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "s_pt not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "s_pt not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_s_ph(self):
@@ -327,8 +293,7 @@ class MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "s_ph not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "s_ph not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_uV_p(self):
@@ -336,8 +301,7 @@ class MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "uV_p not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "uV_p not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_uL_p(self):
@@ -345,8 +309,7 @@ class MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "uL_p not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "uL_p not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_uV_t(self):
@@ -354,8 +317,7 @@ class MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "uV_t not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "uV_t not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_uL_t(self):
@@ -363,8 +325,7 @@ class MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "uL_t not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "uL_t not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_u_pt(self):
@@ -372,8 +333,7 @@ class MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "u_pt not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "u_pt not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_u_ph(self):
@@ -381,8 +341,7 @@ class MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "u_ph not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "u_ph not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_u_ps(self):
@@ -390,8 +349,7 @@ class MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "u_ps not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "u_ps not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_CpV_p(self):
@@ -399,8 +357,7 @@ class MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "cpV_p not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "cpV_p not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_CpL_p(self):
@@ -408,8 +365,7 @@ class MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "cpL_p not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "cpL_p not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_CpV_t(self):
@@ -417,8 +373,7 @@ class MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "cpV_t not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "cpV_t not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_CpL_t(self):
@@ -426,8 +381,7 @@ class MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "cpL_t not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "cpL_t not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_Cp_pt(self):
@@ -435,8 +389,7 @@ class MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "cp_pt not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "cp_pt not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_Cp_ph(self):
@@ -444,8 +397,7 @@ class MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "Cp_ph not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "Cp_ph not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_Cp_ps(self):
@@ -453,8 +405,7 @@ class MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "Cp_ps not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "Cp_ps not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_CvV_p(self):
@@ -462,8 +413,7 @@ class MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "CvV_p not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "CvV_p not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_CvL_p(self):
@@ -471,8 +421,7 @@ class MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "CvL_p not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "CvL_p not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_CvV_t(self):
@@ -480,8 +429,7 @@ class MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "CvV_t not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "CvV_t not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_CvL_t(self):
@@ -489,8 +437,7 @@ class MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "CvL_t not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "CvL_t not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_Cv_pt(self):
@@ -498,8 +445,7 @@ class MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "Cv_pt not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "Cv_pt not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_Cv_ph(self):
@@ -507,8 +453,7 @@ class MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "Cv_ph not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "Cv_ph not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_Cv_ps(self):
@@ -516,8 +461,7 @@ class MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "Cv_ps not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "Cv_ps not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_wV_p(self):
@@ -525,8 +469,7 @@ class MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "wV_p not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "wV_p not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_wL_p(self):
@@ -534,8 +477,7 @@ class MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "wL_p not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "wL_p not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_wV_t(self):
@@ -543,8 +485,7 @@ class MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "wV_t not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "wV_t not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_wL_t(self):
@@ -552,8 +493,7 @@ class MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "wL_t not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "wL_t not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_w_pt(self):
@@ -561,8 +501,7 @@ class MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "w_pt not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "w_pt not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_w_ph(self):
@@ -570,8 +509,7 @@ class MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "w_ph not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "w_ph not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_w_ps(self):
@@ -579,8 +517,7 @@ class MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "w_ps not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "w_ps not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_my_pt(self):
@@ -588,8 +525,7 @@ class MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "my_pt not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "my_pt not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_my_ph(self):
@@ -597,8 +533,7 @@ class MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "my_ph not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "my_ph not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_my_ps(self):
@@ -606,8 +541,7 @@ class MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "my_ps not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "my_ps not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_tcL_p(self):
@@ -615,8 +549,7 @@ class MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "tcL_p not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "tcL_p not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_tcV_p(self):
@@ -624,8 +557,7 @@ class MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "tcV_p not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "tcV_p not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_tcL_t(self):
@@ -633,8 +565,7 @@ class MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "tcL_t not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "tcL_t not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_tcV_t(self):
@@ -642,8 +573,7 @@ class MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "tcV_t not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "tcV_t not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_tc_pt(self):
@@ -651,8 +581,7 @@ class MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "tc_pt not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "tc_pt not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_tc_ph(self):
@@ -660,8 +589,7 @@ class MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "tc_ph not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "tc_ph not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_tc_hs(self):
@@ -669,8 +597,7 @@ class MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "tc_hs not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "tc_hs not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_st_t(self):
@@ -678,8 +605,7 @@ class MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "st_t not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "st_t not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_st_p(self):
@@ -687,8 +613,7 @@ class MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "st_p not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "st_p not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_x_ph(self):
@@ -696,8 +621,7 @@ class MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "x_ph not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "x_ph not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_x_ps(self):
@@ -705,8 +629,7 @@ class MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "x_ps not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "x_ps not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_vx_ph(self):
@@ -714,8 +637,7 @@ class MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "vx_ph not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "vx_ph not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_vx_ps(self):
@@ -723,6 +645,5 @@ class MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "vx_ps not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "vx_ps not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )

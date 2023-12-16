@@ -23,8 +23,7 @@ class FixedBugs_Tester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "h_pt not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "h_pt not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_inf_loop_rho_pt(self):
@@ -36,8 +35,7 @@ class FixedBugs_Tester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "rho_pt not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "rho_pt not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_missing_unit_conversion_h_xx(self):
@@ -51,14 +49,12 @@ class FixedBugs_Tester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            " not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            " not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
         error = self.steamTable.h_tx(160, 0.5) - 628.905695
         self.assertLess(
             error,
             self.maxError,
-            " not passed Error %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            " not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )

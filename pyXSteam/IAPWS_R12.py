@@ -19,7 +19,7 @@ def _my_dash_0(T_dash: float) -> float:
     numerator = 100 * math.sqrt(T_dash)
     denominator = 0
     for i in range(0, 4):
-        denominator += H[i] / T_dash ** i
+        denominator += H[i] / T_dash**i
     return numerator / denominator
 
 
@@ -79,15 +79,13 @@ def _y(xi: float) -> float:
         coefficient_1 = 1 - summand_0 + summand_1 - summand_2
         return coefficient_0 * coefficient_1
 
-    psi_D = math.acos((1 + (q_D ** 2) * (xi ** 2)) ** (-1 / 2))  # ep 17
+    psi_D = math.acos((1 + (q_D**2) * (xi**2)) ** (-1 / 2))  # ep 17
 
     summand_0 = 1 / 12 * math.sin(3 * psi_D)  # ep16, part 1
 
     summand_1 = (1 / (4 * q_C * xi)) * math.sin(2 * psi_D)  # ep16, part 2
 
-    summand_2 = (
-        (1 / (q_C * xi) ** 2) * (1 - (5 / 4) * (q_C * xi) ** 2) * math.sin(psi_D)
-    )  # ep16, part 3
+    summand_2 = (1 / (q_C * xi) ** 2) * (1 - (5 / 4) * (q_C * xi) ** 2) * math.sin(psi_D)  # ep16, part 3
 
     w = abs((q_C * xi - 1) / (q_C * xi + 1)) ** (1 / 2) * math.tan(psi_D / 2)  # ep 19
     sum3_sub0 = (1 - (3 / 2 * (q_C * xi) ** 2)) * psi_D
@@ -105,9 +103,7 @@ def _sigma(rho_dash: float, T_dash: float) -> float:
     # eq 21a
     # TODO
     logger.debug("rho_dash %f T_dash %f", rho_dash, T_dash)
-    raise NotImplementedError(
-        "use derivative of density on pressure at constant temperature"
-    )
+    raise NotImplementedError("use derivative of density on pressure at constant temperature")
     return -1
 
 
@@ -121,7 +117,6 @@ def _delta_chi_dash(rho_dash: float, T_dash: float) -> float:
 
 
 def _my_dash_2(T: float, rho: float, T_dash: float, rho_dash: float) -> float:
-
     if 645.91 < T < 650.77 and 245.8 < rho < 405.3:  # eq 13, page 6
         logger.debug("values for T and rho are within critical region")
         # critical region
@@ -143,9 +138,7 @@ def _my_dash_2(T: float, rho: float, T_dash: float, rho_dash: float) -> float:
         logger.debug("value for my_dash_2:%f", my_dash_2)
         return my_dash_2
 
-    logger.debug(
-        "values for T and rho are outside of critical region, use my_dash_2=1.0"
-    )
+    logger.debug("values for T and rho are outside of critical region, use my_dash_2=1.0")
     return 1.0  # section 2.8, page 8
 
 
@@ -189,10 +182,7 @@ def eq10(T: float, rho: float, industrial: bool = True) -> float:
 
     my_dash = my_dash_0 * my_dash_1 * my_dash_2  # eq 10
 
-    logger.debug(
-        "calculated values µ_0=%f µ_1=%f µ_2=%f µ_dash=%f"
-        % (my_dash_0, my_dash_1, my_dash_2, my_dash)
-    )
+    logger.debug("calculated values µ_0=%f µ_1=%f µ_2=%f µ_dash=%f" % (my_dash_0, my_dash_1, my_dash_2, my_dash))
 
     my = my_dash * my_star  # eq8, value is in µPa*s
     # my = my * 10E6 # in Pa*s
