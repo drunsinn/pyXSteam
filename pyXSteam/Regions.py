@@ -4829,7 +4829,8 @@ class Region3:
     @classmethod
     def v3_ph(cls, p: float, h: float) -> float:
         """function v3_ph = v3_ph(p, h)
-        Revised Supplementary Release on Backward Equations for the functions T(p, h), v(p, h) and T(p, s), v(p, s) for Region 3 of the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam 2004
+        Revised Supplementary Release on Backward Equations for the functions T(p, h), v(p, h) and T(p, s), v(p, s) for Region 3
+        of the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam 2004
 
         Section 3.3 Backward Equations T(p, h) and v(p, h) for Subregions 3a and 3b
 
@@ -5862,7 +5863,9 @@ class Region3:
 
         Section 4.2 Region 3. pSat_h  & pSat_s
 
-        Revised Supplementary Release on Backward Equations for the functions T(p,h), v(p,h) s& T(p,s), v(p,s) for Region 3 of the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water & Steam 2004 Section 4 Boundary Equations psat(h) & psat(s) for the Saturation Lines of Region 3
+        Revised Supplementary Release on Backward Equations for the functions T(p,h), v(p,h) s& T(p,s), v(p,s) for Region 3
+        of the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water & Steam 2004 Section 4 Boundary
+        Equations psat(h) & psat(s) for the Saturation Lines of Region 3
 
         See pictures Page 17, Eq 10, Table 17, Page 18
 

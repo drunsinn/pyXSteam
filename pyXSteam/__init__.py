@@ -11,7 +11,7 @@ from .XSteam_HW import XSteam_HW
 from .UnitConverter import UnitConverter
 from .Constants import UnitSystem, IceType
 
-__version__ = "0.5.x"
+__version__ = "0.5.0"
 __author__ = "drunsinn"
 __license__ = "MIT"
 __email__ = "dr.unsinn@googlemail.com"

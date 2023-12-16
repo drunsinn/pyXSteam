@@ -8,7 +8,7 @@ build-backend = "setuptools.build_meta"
 name = "pyXSteam"
 authors = [{ name = "drunsinn", email = "dr.unsinn@googlemail.com" }]
 description = "pyXSteam is a port of the Matlab/Excel Package XSteam by Magnus Holmgren, www.x-eng.com to Python 3"
-requires-python = ">=3.7"
+requires-python = ">=3.8"
 keywords = ["steam", "water", "ice", "XSteam"]
 dynamic = ["version", "readme"]
 dependencies = []
@@ -36,7 +36,7 @@ readme = { file = ["README.md"], content-type = "text/markdown" }
 
 [tool.black]
 line-length = 140
-target-version = ["py36"]
+target-version = ["py38"]
 include = "\\.pyi?$"
 verbose = true
 
@@ -58,7 +58,7 @@ ignore-patterns = ["^\\.#"]
 jobs = 0
 limit-inference-results = 100
 persistent = true
-py-version = "3.6"
+py-version = "3.8"
 suggestion-mode = true
 
 [tool.pylint.basic]

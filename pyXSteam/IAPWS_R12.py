@@ -8,8 +8,6 @@ http://www.iapws.org/relguide/visc.pdf
 import math
 import logging
 
-from . import Constants
-
 logger = logging.getLogger(__name__)
 
 
@@ -104,7 +102,6 @@ def _sigma(rho_dash: float, T_dash: float) -> float:
     # TODO
     logger.debug("rho_dash %f T_dash %f", rho_dash, T_dash)
     raise NotImplementedError("use derivative of density on pressure at constant temperature")
-    return -1
 
 
 def _delta_chi_dash(rho_dash: float, T_dash: float) -> float:
@@ -144,7 +141,7 @@ def _my_dash_2(T: float, rho: float, T_dash: float, rho_dash: float) -> float:
 
 def eq10(T: float, rho: float, industrial: bool = True) -> float:
     """ """
-    logger.debug("input values T=%fK rho=%fkm/m^3" % (T, rho))
+    logger.debug("input values T=%fK rho=%fkm/m^3", T, rho)
     # p_t = Constants.__TRIPLE_POINT_PRESSURE__
     # T_t = Constants.__TRIPLE_POINT_TEMPERATURE__
 
@@ -182,7 +179,7 @@ def eq10(T: float, rho: float, industrial: bool = True) -> float:
 
     my_dash = my_dash_0 * my_dash_1 * my_dash_2  # eq 10
 
-    logger.debug("calculated values µ_0=%f µ_1=%f µ_2=%f µ_dash=%f" % (my_dash_0, my_dash_1, my_dash_2, my_dash))
+    logger.debug("calculated values µ_0=%f µ_1=%f µ_2=%f µ_dash=%f", my_dash_0, my_dash_1, my_dash_2, my_dash)
 
     my = my_dash * my_star  # eq8, value is in µPa*s
     # my = my * 10E6 # in Pa*s
