@@ -4,14 +4,13 @@ Test cases for the unit converter used by pyXSteam
 """
 
 import unittest
-from pyXSteam.XSteam import XSteam
-from pyXSteam.UnitConverter import UnitConverter
+from pyXSteam import UnitSystem, UnitConverter
 
 
 class UnitConverter_MKS_FunctionTester(unittest.TestCase):
     def setUp(self):
         self.maxError = 1e-8
-        self.uc = UnitConverter(XSteam.UNIT_SYSTEM_MKS)
+        self.uc = UnitConverter(UnitSystem.MKS)
 
     def tearDown(self):
         pass
@@ -21,8 +20,7 @@ class UnitConverter_MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "Test of toSIunit_p for MKS failed. Error was %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "Test of toSIunit_p for MKS failed. Error was %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_toSIunit_p_2_MKS(self):
@@ -30,8 +28,7 @@ class UnitConverter_MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "Test of toSIunit_p for MKS failed. Error was %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "Test of toSIunit_p for MKS failed. Error was %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_fromSIunit_p_1_MKS(self):
@@ -39,8 +36,7 @@ class UnitConverter_MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "Test of fromSIunit_p for MKS failed. Error was %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "Test of fromSIunit_p for MKS failed. Error was %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_fromSIunit_p_2_MKS(self):
@@ -48,8 +44,7 @@ class UnitConverter_MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "Test of fromSIunit_p for MKS failed. Error was %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "Test of fromSIunit_p for MKS failed. Error was %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_toSIunit_T_1_MKS(self):
@@ -57,8 +52,7 @@ class UnitConverter_MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "Test of toSIunit_T for MKS failed. Error was %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "Test of toSIunit_T for MKS failed. Error was %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_toSIunit_T_2_MKS(self):
@@ -66,8 +60,7 @@ class UnitConverter_MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "Test of toSIunit_T for MKS failed. Error was %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "Test of toSIunit_T for MKS failed. Error was %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_fromSIunit_T_1_MKS(self):
@@ -75,8 +68,7 @@ class UnitConverter_MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "Test of fromSIunit_T for MKS failed. Error was %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "Test of fromSIunit_T for MKS failed. Error was %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_fromSIunit_T_2_MKS(self):
@@ -84,15 +76,14 @@ class UnitConverter_MKS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "Test of fromSIunit_T for MKS failed. Error was %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "Test of fromSIunit_T for MKS failed. Error was %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
 
 class UnitConverter_FLS_FunctionTester(unittest.TestCase):
     def setUp(self):
         self.maxError = 1e-8
-        self.uc = UnitConverter(XSteam.UNIT_SYSTEM_FLS)
+        self.uc = UnitConverter(UnitSystem.FLS)
 
     def tearDown(self):
         pass
@@ -102,8 +93,7 @@ class UnitConverter_FLS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "Test of toSIunit_p for FLS failed. Error was %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "Test of toSIunit_p for FLS failed. Error was %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_fromSIunit_p_FLS(self):
@@ -111,8 +101,7 @@ class UnitConverter_FLS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "Test of fromSIunit_p for FLS failed. Error was %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "Test of fromSIunit_p for FLS failed. Error was %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_toSIunit_T_FLS(self):
@@ -120,8 +109,7 @@ class UnitConverter_FLS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "Test of toSIunit_T for FLS failed. Error was %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "Test of toSIunit_T for FLS failed. Error was %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_fromSIunit_T_FLS(self):
@@ -129,8 +117,7 @@ class UnitConverter_FLS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "Test of fromSIunit_T for FLS failed. Error was %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "Test of fromSIunit_T for FLS failed. Error was %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_toSIunit_h_FLS(self):
@@ -138,8 +125,7 @@ class UnitConverter_FLS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "Test of toSIunit_h for FLS failed. Error was %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "Test of toSIunit_h for FLS failed. Error was %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_fromSIunit_h_FLS(self):
@@ -147,8 +133,7 @@ class UnitConverter_FLS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "Test of fromSIunit_h for FLS failed. Error was %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "Test of fromSIunit_h for FLS failed. Error was %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_toSIunit_v_FLS(self):
@@ -156,8 +141,7 @@ class UnitConverter_FLS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "Test of toSIunit_v for FLS failed. Error was %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "Test of toSIunit_v for FLS failed. Error was %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_fromSIunit_v_FLS(self):
@@ -165,8 +149,7 @@ class UnitConverter_FLS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "Test of fromSIunit_v for FLS failed. Error was %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "Test of fromSIunit_v for FLS failed. Error was %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_toSIunit_s_FLS(self):
@@ -174,8 +157,7 @@ class UnitConverter_FLS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "Test of toSIunit_s for FLS failed. Error was %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "Test of toSIunit_s for FLS failed. Error was %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_fromSIunit_s_FLS(self):
@@ -183,8 +165,7 @@ class UnitConverter_FLS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "Test of fromSIunit_s for FLS failed. Error was %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "Test of fromSIunit_s for FLS failed. Error was %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_toSIunit_u_FLS(self):
@@ -192,8 +173,7 @@ class UnitConverter_FLS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "Test of toSIunit_u for FLS failed. Error was %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "Test of toSIunit_u for FLS failed. Error was %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_fromSIunit_u_FLS(self):
@@ -201,8 +181,7 @@ class UnitConverter_FLS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "Test of fromSIunit_u for FLS failed. Error was %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "Test of fromSIunit_u for FLS failed. Error was %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_toSIunit_Cp_FLS(self):
@@ -210,8 +189,7 @@ class UnitConverter_FLS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "Test of toSIunit_Cp for FLS failed. Error was %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "Test of toSIunit_Cp for FLS failed. Error was %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_fromSIunit_Cp_FLS(self):
@@ -219,8 +197,7 @@ class UnitConverter_FLS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "Test of fromSIunit_Cp for FLS failed. Error was %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "Test of fromSIunit_Cp for FLS failed. Error was %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_toSIunit_Cv_FLS(self):
@@ -228,8 +205,7 @@ class UnitConverter_FLS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "Test of toSIunit_Cv for FLS failed. Error was %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "Test of toSIunit_Cv for FLS failed. Error was %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_fromSIunit_Cv_FLS(self):
@@ -237,8 +213,7 @@ class UnitConverter_FLS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "Test of fromSIunit_Cv for FLS failed. Error was %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "Test of fromSIunit_Cv for FLS failed. Error was %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_toSIunit_w_FLS(self):
@@ -246,8 +221,7 @@ class UnitConverter_FLS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "Test of toSIunit_w for FLS failed. Error was %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "Test of toSIunit_w for FLS failed. Error was %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_fromSIunit_w_FLS(self):
@@ -255,8 +229,7 @@ class UnitConverter_FLS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "Test of fromSIunit_w for FLS failed. Error was %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "Test of fromSIunit_w for FLS failed. Error was %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_toSIunit_tc_FLS(self):
@@ -264,8 +237,7 @@ class UnitConverter_FLS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "Test of toSIunit_tc for FLS failed. Error was %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "Test of toSIunit_tc for FLS failed. Error was %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_fromSIunit_tc_FLS(self):
@@ -273,8 +245,7 @@ class UnitConverter_FLS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "Test of fromSIunit_tc for FLS failed. Error was %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "Test of fromSIunit_tc for FLS failed. Error was %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_toSIunit_st_FLS(self):
@@ -282,8 +253,7 @@ class UnitConverter_FLS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "Test of toSIunit_st for FLS failed. Error was %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "Test of toSIunit_st for FLS failed. Error was %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_fromSIunit_st_FLS(self):
@@ -291,8 +261,7 @@ class UnitConverter_FLS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "Test of fromSIunit_st for FLS failed. Error was %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "Test of fromSIunit_st for FLS failed. Error was %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_toSIunit_x_FLS(self):
@@ -300,8 +269,7 @@ class UnitConverter_FLS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "Test of toSIunit_x for FLS failed. Error was %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "Test of toSIunit_x for FLS failed. Error was %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_fromSIunit_x_FLS(self):
@@ -309,8 +277,7 @@ class UnitConverter_FLS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "Test of fromSIunit_x for FLS failed. Error was %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "Test of fromSIunit_x for FLS failed. Error was %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_toSIunit_vx_FLS(self):
@@ -318,8 +285,7 @@ class UnitConverter_FLS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "Test of toSIunit_vx for FLS failed. Error was %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "Test of toSIunit_vx for FLS failed. Error was %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_fromSIunit_vx_FLS(self):
@@ -327,8 +293,7 @@ class UnitConverter_FLS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "Test of fromSIunit_vx for FLS failed. Error was %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "Test of fromSIunit_vx for FLS failed. Error was %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_toSIunit_my_FLS(self):
@@ -336,8 +301,7 @@ class UnitConverter_FLS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "Test of toSIunit_my for FLS failed. Error was %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "Test of toSIunit_my for FLS failed. Error was %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )
 
     def test_fromSIunit_my_FLS(self):
@@ -345,6 +309,5 @@ class UnitConverter_FLS_FunctionTester(unittest.TestCase):
         self.assertLess(
             error,
             self.maxError,
-            "Test of fromSIunit_my for FLS failed. Error was %(error)e allowed: %(max)e"
-            % {"error": error, "max": self.maxError},
+            "Test of fromSIunit_my for FLS failed. Error was %(error)e allowed: %(max)e" % {"error": error, "max": self.maxError},
         )

@@ -11,21 +11,20 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-def myHW_rhoT_R4(rho, T):
-    """Viscosity as a function of density and temperature for heavy water
-    substance
-
-    Args:
-        rho (float): density value for heavy water
-        T (float): temperature value for heavy water
-
-    Returns:
-        my (float): viscosity or NaN if arguments are out of range
+def myHW_rhoT_R4(rho: float, T: float) -> float:
     """
-    logger.debug("myHW_rhoT_R4 input: ρ %f kg/m^3, T %f K", rho, T)
+    Viscosity as a function of density and temperature for heavy water substance.
+    Returns NaN if arguments are out of range
+
+    :param rho: density value for heavy water in [kg / m³]
+    :param T: temperature value for heavy water in [K]
+
+    :return: viscosity µ or NaN if arguments are out of range, in [Pa s]
+    """
+    logger.debug("calculating 'viscosity of heavy water' for ρ=%f and T=%f", rho, T)
 
     T_star = 643.847  # K
-    rho_star = 358  # kg / m^3
+    rho_star = 358  # kg / m³
     my_star = 55.2651  # µ Pa s
 
     T_dash = T / T_star
@@ -37,10 +36,8 @@ def myHW_rhoT_R4(rho, T):
         sum_A_T += A[i] / (T_dash**i)
     my_0_dash = math.sqrt(T_dash) / sum_A_T
 
-    B = list()
-    B.append(
-        [0.4864192, -0.2448372, -0.8702035, 0.8716056, -1.051126, 0.3458395]
-    )  # j= 0
+    B = []
+    B.append([0.4864192, -0.2448372, -0.8702035, 0.8716056, -1.051126, 0.3458395])  # j= 0
     B.append([0.3509007, 1.315436, 1.297752, 1.353448, 0.0, 0.0])  # j= 1
     B.append([-0.2847572, -1.037026, -1.287846, 0.0, 0.0, -0.02148229])  # j= 2
     B.append([0.07013759, 0.4660127, 0.2292075, -0.4857462, 0.0, 0.0])  # j= 3
@@ -62,28 +59,29 @@ def myHW_rhoT_R4(rho, T):
     my_dash = my_0_dash * my_1_dash
 
     my = my_dash * my_star
-    logger.debug("myHW_rhoT_R4 result: my %f", my)
-
+    logger.debug("result for 'viscosity of heavy water': %f", my)
     return my
 
 
-def tcHW_rhoT_R4(rho, T):
-    """Thermal conductivity as a function of density and temperature for heavy water
-    substance
-
-    Note: using tc instead of lambda to minimize the confusion with the python function
-
-    Args:
-        rho (float): density value for heavy water
-        T (float): temperature value for heavy water
-
-    Returns:
-        λ (float): thermal conductivity or NaN if arguments are out of range
+def tcHW_rhoT_R4(rho: float, T: float) -> float:
     """
-    logger.debug("tcHW_rhoT_R4 input: ρ %f kg/m^3, T %f K", rho, T)
+    Thermal conductivity as a function of density and temperature for heavy
+    water substance.
+    Returns NaN if arguments are out of range
+
+    Note: function name is using tc instead of lambda to minimize the confusion
+    with the python
+    function of the same name.
+
+    :param rho: density value for heavy water in [kg / m³]
+    :param T: temperature value for heavy water in [K]
+
+    :return: thermal conductivity λ or NaN, in [W / (m * K)]
+    """
+    logger.debug("calculating 'thermal conductivity of heavy water' for ρ=%f and T=%f", rho, T)
 
     T_star = 643.847  # K
-    rho_star = 358  # kg / m^3
+    rho_star = 358  # kg / m³
     tc_star = 0.742128  # mW/(m K)
 
     T_dash = T / T_star
@@ -103,9 +101,7 @@ def tcHW_rhoT_R4(rho, T):
     D_1 = -741.112
     tau = T_dash / (math.fabs(T_dash - 1.1) + 1.1)  # B15
     f_1 = math.exp(C_T1 * T_dash + C_T2 * (T_dash**2))  # B12
-    f_2 = math.exp(C_R1 * (rho_dash - 1.0) ** 2) + C_R2 * math.exp(
-        C_R3 * (rho_dash - rho_r1) ** 2
-    )  # B13
+    f_2 = math.exp(C_R1 * (rho_dash - 1.0) ** 2) + C_R2 * math.exp(C_R3 * (rho_dash - rho_r1) ** 2)  # B13
     f_3 = 1 + math.exp(60.0 * (tau - 1.0) + 20.0)  # B14
     f_4 = 1 + math.exp(100.0 * (tau - 1.0) + 15.0)  # B14
     part_C2 = (C_2 * f_1**4) / f_3
@@ -133,5 +129,6 @@ def tcHW_rhoT_R4(rho, T):
     tc_dash = tc_o + delta_tc + delta_tc_c + delta_tc_L
 
     tc = tc_dash * tc_star
-    logger.debug("tcHW_rhoT_R4 result: λ %f", tc)
+
+    logger.debug("calculating 'thermal conductivity of heavy water': %f", tc)
     return tc

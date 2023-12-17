@@ -13,7 +13,8 @@ from pyXSteam.Regions import Region1, Region2, Region3, Region4, Region5
 class Region1Tester(unittest.TestCase):
     def setUp(self):
         self.maxError = 1e-8
-        self.maxMatrixError = 2e-8  # The accumulated Error is bigger than the error of each single function
+        # The accumulated Error is bigger than the error of each single function
+        self.maxMatrixError = 2e-8
 
     def tearDown(self):
         pass
@@ -110,7 +111,8 @@ class Region1Tester(unittest.TestCase):
 class Region2Tester(unittest.TestCase):
     def setUp(self):
         self.maxError = 1e-8
-        self.maxMatrixError = 2e-8  # The accumulated Error is bigger than the error of each single function
+        # The accumulated Error is bigger than the error of each single function
+        self.maxMatrixError = 2e-8
 
     def tearDown(self):
         pass
@@ -244,7 +246,8 @@ class Region2Tester(unittest.TestCase):
 class Region3Tester(unittest.TestCase):
     def setUp(self):
         self.maxError = 1e-8
-        self.maxMatrixError = 2e-8  # The accumulated Error is bigger than the error of each single function
+        # The accumulated Error is bigger than the error of each single function
+        self.maxMatrixError = 2e-8
 
     def tearDown(self):
         pass
@@ -327,8 +330,7 @@ class Region3Tester(unittest.TestCase):
         self.assertLess(
             v3_ph_error,
             1e-7,
-            "Test of v(p,h) Function for Region 3 failed. Error was %(error)e allowed:"
-            " %(max)e" % {"error": v3_ph_error, "max": 1e-7},
+            "Test of v(p,h) Function for Region 3 failed. Error was %(error)e allowed:" " %(max)e" % {"error": v3_ph_error, "max": 1e-7},
         )
 
     def test_T_ps_function(self):
@@ -416,15 +418,15 @@ class Region3Tester(unittest.TestCase):
         self.assertLess(
             h3_pT_error,
             1e-6,
-            "Test of h(p,T) Function for Region 3 failed. Error was %(error)e allowed:"
-            " %(max)e" % {"error": h3_pT_error, "max": 1e-6},
+            "Test of h(p,T) Function for Region 3 failed. Error was %(error)e allowed:" " %(max)e" % {"error": h3_pT_error, "max": 1e-6},
         )
 
 
 class Region4Tester(unittest.TestCase):
     def setUp(self):
         self.maxError = 1e-7
-        self.maxMatrixError = 2e-8  # The accumulated Error is bigger than the error of each single function
+        # The accumulated Error is bigger than the error of each single function
+        self.maxMatrixError = 2e-8
 
     def tearDown(self):
         pass
@@ -492,7 +494,8 @@ class Region4Tester(unittest.TestCase):
 class Region5Tester(unittest.TestCase):
     def setUp(self):
         self.maxError = 1e-8
-        self.maxMatrixError = 2e-8  # The accumulated Error is bigger than the error of each single function
+        # The accumulated Error is bigger than the error of each single function
+        self.maxMatrixError = 2e-8
 
     def tearDown(self):
         pass
@@ -557,6 +560,5 @@ class Region5Tester(unittest.TestCase):
         self.assertLess(
             T5_ps_error,
             1e-4,
-            "Test of T(p,s) Function for Region 5 failed. Error was %(error)e allowed:"
-            " %(max)e" % {"error": T5_ps_error, "max": 1e-4},
+            "Test of T(p,s) Function for Region 5 failed. Error was %(error)e allowed:" " %(max)e" % {"error": T5_ps_error, "max": 1e-4},
         )

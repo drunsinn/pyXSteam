@@ -2,50 +2,59 @@
 # -*- coding: utf-8 -*-
 """Main module for the heavy water parts of pyXSteam"""
 import logging
-from . import Constants
+from .Constants import (
+    CRITICAL_TEMPERATURE_D20_1992,
+    CRITICAL_PRESSURE_D20_1992,
+    CRITICAL_DENSITY_D20_1992,
+    UnitSystem,
+)
 from .UnitConverter import UnitConverter
-from . import IAPWS_R4
+from .IAPWS_R4 import myHW_rhoT_R4, tcHW_rhoT_R4
+from .IAPWS_R5 import surface_tension_T
 
 
 class XSteam_HW:
     """Main pyXSteam for Heavy Water object. Abstract of all other functions to allow auto selection of
     the correct region for each set of parameters.
 
-    Args:
-        unitSystem (int): set the unit system used for input and output values.
-            Can be eather 0 (UNIT_SYSTEM_BARE), 1 (UNIT_SYSTEM_MKS) or 2 (UNIT_SYSTEM_FLS).
+    :param unitSystem: unit system used for input and output values. For supported values
+        see the enum UnitSystem.
     """
 
-    # Copy constant Values to expose them to the User
-    UNIT_SYSTEM_BARE = UnitConverter.__UNIT_SYSTEM_BARE__
-    UNIT_SYSTEM_MKS = UnitConverter.__UNIT_SYSTEM_MKS__
-    UNIT_SYSTEM_FLS = UnitConverter.__UNIT_SYSTEM_FLS__
+    UNIT_SYSTEM_BARE = UnitSystem.BARE
+    UNIT_SYSTEM_MKS = UnitSystem.MKS
+    UNIT_SYSTEM_FLS = UnitSystem.FLS
 
-    def __init__(self, unitSystem=UnitConverter.__UNIT_SYSTEM_BARE__):
-        self.logger = logging.getLogger(__name__)
-        self.unit_converter = UnitConverter(unitSystem)
+    def __init__(self, unitSystem: UnitSystem = UnitSystem.BARE):
+        """
+        Constructor method
+        """
+        self.logger = logging.getLogger("pyXSteam:Heavy Water")
+        self._unit_converter = UnitConverter(unitSystem)
         self.logger.info(
             "initialised pyXSteam for Heavy Water with Unit System %s",
-            self.unit_converter,
+            self._unit_converter,
         )
 
     def criticalTemperatur(self):
-        """returns the specific temperature with conversion to the selected unit system"""
-        return self.unit_converter.fromSIunit_T(
-            Constants.__CRITICAL_TEMPERATURE_D20_1992__
-        )
+        """
+        :return: specific temperature with conversion to the selected unit system
+        """
+        return self._unit_converter.fromSIunit_T(CRITICAL_TEMPERATURE_D20_1992)
 
     def criticalPressure(self):
-        """returns the specific pressure with conversion to the selected unit system"""
-        return self.unit_converter.fromSIunit_p(
-            Constants.__CRITICAL_PRESSURE_D20_1992__
-        )
+        """
+        :return: specific pressure with conversion to the selected unit system
+        """
+        return self._unit_converter.fromSIunit_p(CRITICAL_PRESSURE_D20_1992)
 
     def criticalDensity(self):
-        """returns the specific density with conversion to the selected unit system"""
-        return self.unit_converter.fromSIunit_p(Constants.__CRITICAL_DENSITY_D20_1992__)
+        """
+        :return: specific density with conversion to the selected unit system
+        """
+        return self._unit_converter.fromSIunit_p(CRITICAL_DENSITY_D20_1992)
 
-    def my_rhoT(self, rho, T):
+    def my_rhoT(self, rho: float, T: float) -> float:
         """Viscosity as a function of density and temperature for heavy water
         substance
 
@@ -54,25 +63,27 @@ class XSteam_HW:
         http://www.iapws.org/relguide/TransD2O-2007.pdf
         Appendix A
 
-        Args:
-            rho (float): density value for heavy water
-            T (float): temperature value for heavy water
+        :param rho: density for heavy water
+        :param T: temperature for heavy water
 
-        Returns:
-            my (float): viscosity or NaN if arguments are out of range
+        :raises ValueError: value of density is zero or negative
+
+        :return: viscosity or NaN if arguments are out of range
         """
-        rho = self.unit_converter.toSIunit_p(rho)
-        T = self.unit_converter.toSIunit_T(T)
+        if rho <= 0.0:
+            self.logger.error("negative values for density rho not allowed %f", rho)
+            raise ValueError("rho out of range")
+
+        rho = self._unit_converter.toSIunit_p(rho)
+        T = self._unit_converter.toSIunit_T(T)
 
         if T < 277.0 or T > 775.0:
             self.logger.error("temperature out of range")
             return float("NaN")
 
-        self.logger.warning("input for desity wasn't checked!")
+        return self._unit_converter.fromSIunit_T(myHW_rhoT_R4(rho, T))
 
-        return self.unit_converter.fromSIunit_T(IAPWS_R4.myHW_rhoT_R4(rho, T))
-
-    def tc_rhoT(self, rho, T):
+    def tc_rhoT(self, rho: float, T: float) -> float:
         """Thermal conductivity as a function of density and temperature for heavy water
         substance
 
@@ -81,20 +92,33 @@ class XSteam_HW:
         http://www.iapws.org/relguide/TransD2O-2007.pdf
         Appendix B
 
-        Args:
-            rho (float): density value for heavy water
-            T (float): temperature value for heavy water
+        :param rho: density for heavy water
+        :param T: temperature for heavy water
 
-        Returns:
-            λ (float): thermal conductivity or NaN if arguments are out of range
+        :raises ValueError: value of density is zero or negative
+
+        :return: thermal conductivity or NaN if arguments are out of range
         """
-        rho = self.unit_converter.toSIunit_p(rho)
-        T = self.unit_converter.toSIunit_T(T)
+        if rho <= 0.0:
+            self.logger.error("negative values for density rho not allowed %f", rho)
+            raise ValueError("rho out of range")
+
+        rho = self._unit_converter.toSIunit_p(rho)
+        T = self._unit_converter.toSIunit_T(T)
 
         if T < 277.0 or T > 825.0:
             self.logger.error("temperature out of range")
             return float("NaN")
 
-        self.logger.warning("input for desity wasn't checked!")
+        return self._unit_converter.fromSIunit_tc(tcHW_rhoT_R4(rho, T))
 
-        return self.unit_converter.fromSIunit_tc(IAPWS_R4.tcHW_rhoT_R4(rho, T))
+    def st_t(self, t: float) -> float:
+        """
+        Surface tension for two phase water/steam as a function of temperature
+
+        :param t: temperature
+
+        :return: surface tension
+        """
+        T = self._unit_converter.toSIunit_T(t)
+        return self._unit_converter.fromSIunit_st(surface_tension_T(T))

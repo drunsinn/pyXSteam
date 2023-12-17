@@ -3,7 +3,7 @@
 """collection of demos presenting the functionality of pyXSteam"""
 import time
 import logging
-import matplotlib.pyplot as pyplot
+from matplotlib import pyplot
 import numpy as np
 from pyXSteam.XSteam import XSteam
 from pyXSteam.XSteam_HW import XSteam_HW
@@ -12,70 +12,83 @@ from pyXSteam.XSteam_HW import XSteam_HW
 def demo_simpel_values():
     """calculate values and print the results"""
     steam_table = XSteam(XSteam.UNIT_SYSTEM_MKS)
-    # get saturated liquid enthalpy for a preasure of 220 bar
-    print("hV_p(220.0) =", steam_table.hL_p(220.0))
-    # get saturated vapour enthalpy for a preasure of 220 bar
-    print("hV_p(220.0) =", steam_table.hV_p(220.0))
-    print("tcL_p(1.0) =", steam_table.tcL_p(1.0))
-    print("tcL_t(25.0) =", steam_table.tcL_t(25.0))
-    print("tcV_p(1.0) =", steam_table.tcV_p(1.0))
-    print("tcL_t(25.0) =", steam_table.tcV_t(25.0))
-    print("tc_hs(100.0, 0.34) =", steam_table.tc_hs(100.0, 0.34))
-    print("tc_ph(1.0, 100.0) =", steam_table.tc_ph(1.0, 100.0))
-    print("tc_pt(1.0, 25.0) =", steam_table.tc_pt(1.0, 25.0))
-    print("w_ps(1.0, 1.0) =", steam_table.w_ps(1.0, 1.0))
+    print("saturated liquid enthalpy @ 220 bar")
+    print(f" hV_p(220.0) = {steam_table.hL_p(220.0)}")
+    print("saturated vapour enthalpy @ 220 bar")
+    print(f" hV_p(220.0) = {steam_table.hV_p(220.0)}")
+    print("saturated liquid thermal conductivity @ 1 bar")
+    print(f" tcL_p(1.0) = {steam_table.tcL_p(1.0)}")
+    print("saturated liquid thermal conductivity @ 25 °C")
+    print(f" tcL_t(25.0) = {steam_table.tcL_t(25.0)}")
+    print("saturated vapour thermal conductivity @ 1 bar")
+    print(f" tcV_p(1.0) = {steam_table.tcV_p(1.0)}")
+    print("saturated vapour thermal conductivity @ 25 °C")
+    print(f" tcL_t(25.0) = {steam_table.tcV_t(25.0)}")
+    print("thermal conductivity @ enthalpy 100 kJ / kg and specific entropy 0.34 kJ / (kg °C)")
+    print(f" tc_hs(100.0, 0.34) = {steam_table.tc_hs(100.0, 0.34)}")
+    print("thermal conductivity @ 1 bar and enthalpy 100 kJ / kg")
+    print(f" tc_ph(1.0, 100.0) = {steam_table.tc_ph(1.0, 100.0)}")
+    print("thermal conductivity @ 1 bar and 25 °C")
+    print(f" tc_pt(1.0, 25.0) = {steam_table.tc_pt(1.0, 25.0)}")
+    print("speef of sound @ 1 bar and specific entropy 1.0 kJ / (kg °C)")
+    print(f" w_ps(1.0, 1.0) = {steam_table.w_ps(1.0, 1.0)}")
 
 
-def demo_generate_ph_diagramm(path=None, precision=1.0):
+def demo_generate_ph_diagramm(precision=1.0):
     """Generate a p(h) Diagram showing the Saturation Line"""
     steam_table = XSteam(XSteam.UNIT_SYSTEM_MKS)
-    p_krit = (
-        steam_table.criticalPressure() - 0.0001
-    )  # minus 0.0001 or else hL_V returns NaN
+
+    p_krit = steam_table.criticalPressure() - 0.0001  # minus 0.0001 or else hL_V returns NaN
+
     h_krit = steam_table.hL_p(p_krit)
-    p = np.arange(0.0, 1000, precision)
-    p2 = np.arange(0.5, p_krit, precision)
-    vapor_fraction = np.arange(0.1, 1.0, 0.1)
-    h = np.arange(200.0, 4500.0, 100.0)
-    rho = np.arange(1, 15.0, precision * 2)
+
+    p_range = np.arange(0.0, 1000, precision)
+    p2_range = np.arange(0.5, p_krit, precision)
+    vf_range = np.arange(0.1, 1.0, 0.1)
+    # h_range = np.arange(200.0, 4500.0, 100.0)
+    temp_range = np.arange(0, 900, 30)
+
     nph_px = np.frompyfunc(steam_table.h_px, 2, 1)
     nph_pt = np.frompyfunc(steam_table.h_pt, 2, 1)
     nphL_p = np.frompyfunc(steam_table.hL_p, 1, 1)
     nphV_p = np.frompyfunc(steam_table.hV_p, 1, 1)
-    npp_hrho = np.frompyfunc(steam_table.p_hrho, 2, 1)
 
     # boiling and dew lines
-    hL = nphL_p(p)
-    hV = nphV_p(p)
+    hL = nphL_p(p_range)
+    hV = nphV_p(p_range)
 
     # vapor fraction
-    for vf in vapor_fraction:
-        h_px = nph_px(p2, vf)
-        pyplot.plot(h_px, p2, linewidth=1, color="g")
+    for i, vf in enumerate(vf_range):
+        h_px = nph_px(p2_range, vf)
+        if i == 0:
+            pyplot.plot(h_px, p2_range, linewidth=1, color="g", label="vapour fraction")
+        else:
+            pyplot.plot(h_px, p2_range, linewidth=1, color="g")
 
     # temperature
-    for temp in range(0, 900, 30):
-        h_pt = nph_pt(p, temp)
-        pyplot.plot(h_pt, p, linewidth=1, color="r")
-
-    # density
-    for r in rho:
-        p_hrho = npp_hrho(h, r)
-        pyplot.plot(h, p_hrho, linewidth=1, color="y")
+    for i, temp in enumerate(temp_range):
+        h_pt = nph_pt(p_range, temp)
+        if i == 0:
+            pyplot.plot(h_pt, p_range, linewidth=1, color="r", label="temperature")
+        else:
+            pyplot.plot(h_pt, p_range, linewidth=1, color="r")
 
     # critical point
-    pyplot.plot([h_krit], [p_krit], marker="s", mfc="k", ms=8)
-    (line1,) = pyplot.plot(hL, p, linewidth=2, color="b")
-    (line2,) = pyplot.plot(hV, p, linewidth=2, color="r")
+    pyplot.plot([h_krit], [p_krit], marker="s", mfc="k", ms=8, label="critical point")
+    (line1,) = pyplot.plot(hL, p_range, linewidth=2, color="b", label="liquide line")
+    (line2,) = pyplot.plot(hV, p_range, linewidth=2, color="r", label="vapour line")
+
+    pyplot.title("saturation Line p(h)")
+
+    pyplot.legend(loc="upper right")
 
     pyplot.xlabel("h in [kJ/kg]")
     pyplot.ylabel("p in [bar]")
+
     pyplot.yscale("log")
     pyplot.grid()
-    if path is None:
-        pyplot.show()
-    else:
-        pyplot.savefig(path, bbox_inches="tight")
+
+    pyplot.show()
 
 
 def demo_generate_Tp_diagramm():
@@ -85,16 +98,18 @@ def demo_generate_Tp_diagramm():
     ntsat_p = np.frompyfunc(steam_table.tsat_p, 1, 1)
     tsat = ntsat_p(p)
     (line1,) = pyplot.plot(tsat, p)
-    pyplot.xlabel("t")
-    pyplot.ylabel("p")
     pyplot.setp(line1, linewidth=1, color="b")
+
+    pyplot.title("Saturtion curve t(p)")
+    pyplot.xlabel("t in [°C]")
+    pyplot.ylabel("p in [bar]")
     pyplot.show()
 
 
 def demo_generate_pvT_diagramm():
     """Generate a Diagram showing the v(p,T) as a 3D survace"""
     steam_table = XSteam(XSteam.UNIT_SYSTEM_MKS)
-    fig = pyplot.figure()
+    # fig = pyplot.figure()
     ax = pyplot.axes(projection="3d")
 
     p = np.arange(0.0, 300.0, 5.0)
@@ -104,34 +119,35 @@ def demo_generate_pvT_diagramm():
     v = npv_pt(p, t)
 
     colour_map = pyplot.get_cmap("hot")
-    ax.plot_surface(
-        p, t, v, cmap=colour_map, rstride=1, cstride=1, linewidth=0, shade=True
-    )
+    ax.plot_surface(p, t, v, cmap=colour_map, rstride=1, cstride=1, linewidth=0, shade=True)
 
-    ax.set_xlabel("p")
-    ax.set_ylabel("t")
-    ax.set_zlabel("v")
-
+    pyplot.title("v(p,t)")
+    ax.set_xlabel("p in [bar]")
+    ax.set_ylabel("t in [°C]")
+    ax.set_zlabel("v in [m³ / kg]")
     pyplot.show()
 
 
 def demo_moillier_diagramm():
     """Generate a moillier diagram"""
     steam_table = XSteam(XSteam.UNIT_SYSTEM_MKS)
-    s = np.arange(2.0, 10.0, 0.01)
+    s = np.arange(2.0, 15.0, 0.01)
     pSteps = [0.006117, 0.01, 0.02, 1.0, 2.0, 3.0, 10, 100, 1000]
     nph_ps = np.frompyfunc(steam_table.h_ps, 2, 1)
     for pstep in pSteps:
         h = nph_ps(pstep, s)
         (hline,) = pyplot.plot(s, h)
-        pyplot.setp(hline, linewidth=1, color="b")
+        pyplot.setp(hline, linewidth=1, label=f"{pstep} bar")
+
+    pyplot.title("Moillier Diagram")
+    pyplot.legend(loc="upper left")
     pyplot.xlabel("s in [kJ/(kg K)]")
     pyplot.ylabel("h in [kJ/kg]")
     pyplot.show()
 
 
 def demo_ice_diagramm():
-    """Generate a diagram showing the sublimation and melting preasure"""
+    """Generate a diagram showing the sublimation and melting preasure of ice"""
     steam_table = XSteam(XSteam.UNIT_SYSTEM_BARE)
     t_subl = np.arange(50.0, 273.16, 2.0)
     t_melt_Ih = np.arange(251.165, 273.16, 2.0)
@@ -143,45 +159,51 @@ def demo_ice_diagramm():
     psubl_func = np.frompyfunc(steam_table.psubl_t, 1, 1)
     pmelt_func = np.frompyfunc(steam_table.pmelt_t, 2, 1)
 
-    pyplot.plot(t_subl, psubl_func(t_subl), linewidth=1, color="b", label="t_subl")
+    pyplot.plot(
+        t_subl,
+        psubl_func(t_subl),
+        linewidth=1,
+        color="b",
+        label="sublimation temperature",
+    )
     pyplot.plot(
         t_melt_Ih,
         pmelt_func(t_melt_Ih, steam_table.TYPE_ICE_Ih),
         linewidth=2,
         color="g",
-        label="t_melt_Ih",
+        label="melting temperature for ice type Ih",
     )
     pyplot.plot(
         t_melt_III,
         pmelt_func(t_melt_III, steam_table.TYPE_ICE_III),
         linewidth=1,
         color="r",
-        label="t_melt_III",
+        label="melting temperature for ice type III",
     )
     pyplot.plot(
         t_melt_V,
         pmelt_func(t_melt_V, steam_table.TYPE_ICE_V),
         linewidth=2,
         color="y",
-        label="t_melt_V",
+        label="melting temperature for ice type V",
     )
     pyplot.plot(
         t_melt_VI,
         pmelt_func(t_melt_VI, steam_table.TYPE_ICE_VI),
         linewidth=1,
         color="g",
-        label="t_melt_VI",
+        label="melting temperature for ice type VI",
     )
     pyplot.plot(
         t_melt_VII,
         pmelt_func(t_melt_VII, steam_table.TYPE_ICE_VII),
         linewidth=2,
         color="r",
-        label="t_melt_VII",
+        label="melting temperature for ice type VII",
     )
 
+    pyplot.title("Sublimation and melting preasure of ice")
     pyplot.legend(loc="upper left")
-
     pyplot.xlabel("T in [K]")
     pyplot.ylabel("p in [MPa]")
 
@@ -191,16 +213,15 @@ def demo_ice_diagramm():
 def demo_simpel_values_heavy_water():
     """calculate values for heavy water and print the results"""
     steam_table_hw = XSteam_HW(XSteam_HW.UNIT_SYSTEM_MKS)
-    print("my_rhoT(1.0, 320.0) =", steam_table_hw.my_rhoT(1.0, 320.0))
-    print("my_rhoT(1.0, 320.0) =", steam_table_hw.tc_rhoT(1.0, 320.0))
+    print("calculate values for heavy water D2O")
+    print("* viscolity @ 320 °C:")
+    print(f" my_rhoT(1.0, 320.0) = {steam_table_hw.my_rhoT(1.0, 320.0)}")
+    print("* thermal conductivity @ 320 °C:")
+    print(f" tc_rhoT(1.0, 320.0) = {steam_table_hw.tc_rhoT(1.0, 320.0)}")
 
 
-if __name__ == "__main__":
-    logger = logging.getLogger("pyXSteam")
-    logger.setLevel(logging.ERROR)
-    sh = logging.StreamHandler()
-    sh.setFormatter(logging.Formatter("%(name)s - %(levelname)s - %(message)s"))
-    logger.addHandler(sh)
+def main():
+    logging.basicConfig(level=logging.ERROR)
 
     print("Collection of simple demos on how to use pyXSteam")
     print("requires matplotlib and numpy")
@@ -222,38 +243,42 @@ if __name__ == "__main__":
         start = time.process_time()
         demo_simpel_values()
         duration = time.process_time() - start
-        print("Demo took %d seconds to complete", duration)
+        print(f"Demo took {duration:.4f} seconds to complete")
     elif selection == "2":
         start = time.process_time()
         demo_generate_ph_diagramm()
         duration = time.process_time() - start
-        print("Demo took %d seconds to complete", duration)
+        print(f"Demo took {duration:.4f} seconds to complete")
     elif selection == "3":
         start = time.process_time()
         demo_generate_Tp_diagramm()
         duration = time.process_time() - start
-        print("Demo took %d seconds to complete", duration)
+        print(f"Demo took {duration:.4f} seconds to complete")
     elif selection == "4":
         start = time.process_time()
         demo_generate_pvT_diagramm()
         duration = time.process_time() - start
-        print("Demo took %d seconds to complete", duration)
+        print(f"Demo took {duration:.4f} seconds to complete")
     elif selection == "5":
         start = time.process_time()
         demo_moillier_diagramm()
         duration = time.process_time() - start
-        print("Demo took %d seconds to complete", duration)
+        print(f"Demo took {duration:.4f} seconds to complete")
     elif selection == "6":
         start = time.process_time()
         demo_ice_diagramm()
         duration = time.process_time() - start
-        print("Demo took %d seconds to complete", duration)
+        print(f"Demo took {duration:.4f} seconds to complete")
     elif selection == "7":
         start = time.process_time()
         demo_simpel_values_heavy_water()
         duration = time.process_time() - start
-        print("Demo took %d seconds to complete", duration)
+        print(f"Demo took {duration:.4f} seconds to complete")
     else:
         print("Unknown selection")
 
     print("------------------------------")
+
+
+if __name__ == "__main__":
+    main()

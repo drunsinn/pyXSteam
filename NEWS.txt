@@ -1,3 +1,12 @@
+## TODO v0.5.0, xx.yyyy
+* increase minimal python version to 3.8
+* add type hints to all functions
+* improve docstrings to include type hints
+* replace magic numbers for ice type, diagram region and unit system with enumerations
+* restructure imports
+* switch to pyproject.toml
+** move file location of demo scripts
+
 ## v0.4.9, 05.2022
 * fix issue with missing unit conversion in h_px and h_tx
 * add tests for fixed bugs
