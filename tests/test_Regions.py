@@ -165,12 +165,12 @@ class Region2Tester(unittest.TestCase):
         R2 = numpy.zeros((6, 3))
 
         for i in range(3):
-            R2[0][i] = Region2.v2_pT(p[i], T[i])
-            R2[1][i] = Region2.h2_pT(p[i], T[i])
-            R2[2][i] = Region2.u2_pT(p[i], T[i])
-            R2[3][i] = Region2.s2_pT(p[i], T[i])
-            R2[4][i] = Region2.Cp2_pT(p[i], T[i])
-            R2[5][i] = Region2.w2_pT(p[i], T[i])
+            R2[0][i] = Region2.v2_pT_meta(p[i], T[i])
+            R2[1][i] = Region2.h2_pT_meta(p[i], T[i])
+            R2[2][i] = Region2.u2_pT_meta(p[i], T[i])
+            R2[3][i] = Region2.s2_pT_meta(p[i], T[i])
+            R2[4][i] = Region2.Cp2_pT_meta(p[i], T[i])
+            R2[5][i] = Region2.w2_pT_meta(p[i], T[i])
 
         Region2_error = numpy.sum(numpy.absolute((R2 - IF97) / IF97))
         self.assertLess(
