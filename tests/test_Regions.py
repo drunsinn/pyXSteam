@@ -148,6 +148,38 @@ class Region2Tester(unittest.TestCase):
             " %(max)e" % {"error": Region2_error, "max": self.maxMatrixError},
         )
 
+    def test_pT_meta_function(self):
+        """Tests to verify all functions with the Parameters p and T of Region 2 along the 10 MPa isobar in the metastable-vapor region by comparing the Results to IF-97 Page 20 Table 18"""
+        # IF-97 Table 18, Page 20
+        T = [450.0, 440.0, 450.0]
+        p = [1.0, 1.0, 1.5]
+
+        IF97 = [
+            [0.192516540, 0.186212297, 0.121685206],  # v
+            [0.276881115e4, 0.274015123e4, 0.272134539e4],  # h
+            [0.257629461e4, 0.255393894e4, 0.253881758e4],  # u
+            [0.656660377e1, 0.650218759e1, 0.629170440e1],  # s
+            [0.276349265e1, 0.298166443e1, 0.362795578e1],  # cp
+            [0.498408101e3, 0.489363295e3, 0.481941819e3],  # w
+        ]
+        R2 = numpy.zeros((6, 3))
+
+        for i in range(3):
+            R2[0][i] = Region2.v2_pT(p[i], T[i])
+            R2[1][i] = Region2.h2_pT(p[i], T[i])
+            R2[2][i] = Region2.u2_pT(p[i], T[i])
+            R2[3][i] = Region2.s2_pT(p[i], T[i])
+            R2[4][i] = Region2.Cp2_pT(p[i], T[i])
+            R2[5][i] = Region2.w2_pT(p[i], T[i])
+
+        Region2_error = numpy.sum(numpy.absolute((R2 - IF97) / IF97))
+        self.assertLess(
+            Region2_error,
+            self.maxMatrixError,
+            "Test of p,T Functions for Region 2 in the metastable-vapor region failed. Error was %(error)e allowed:"
+            " %(max)e" % {"error": Region2_error, "max": self.maxMatrixError},
+        )
+
     def test_ph_function(self):
         """Tests to verify all functions with the Parameters p and h of Region 2 by comparing the Results to IF-97 Page 25 Table 24"""
         # % IF - 97 Table 24, Page 25
