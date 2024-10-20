@@ -1258,14 +1258,236 @@ class Region2:
             5.5414715350778e-17,
             -9.436970724121e-07,
         ]
-        R = Constants.__SPECIFIC_GAS_CONSTANT__
-        Pi = p
-        tau = 540 / T
-        g0_pi = 1 / Pi
+        R = Constants.__SPECIFIC_GAS_CONSTANT__  # Eq 1
+        Pi = p  # Eq 1
+        tau = 540 / T  # Eq 1
+        g0_pi = 1 / Pi  # see table 13
         gr_pi = 0
         for i in range(0, 43):
-            gr_pi = gr_pi + nr[i] * Ir[i] * Pi ** (Ir[i] - 1) * (tau - 0.5) ** Jr[i]
-        return R * T / p * Pi * (g0_pi + gr_pi) / 1000
+            gr_pi = (
+                gr_pi + nr[i] * Ir[i] * Pi ** (Ir[i] - 1) * (tau - 0.5) ** Jr[i]
+            )  # see table 14
+        return R * T / p * Pi * (g0_pi + gr_pi) / 1000  # see table 12
+
+    @staticmethod
+    def _meta(p, T):
+        """
+        6 Equations for Region 2, Section. 6.2 Supplementary Equation for the Metastable-Vapor Region
+
+        Table 16, Page 18
+
+        specific volume
+        """
+
+        # J0 = [0, 1, -5, -4, -3, -2, -1, 2, 3]  # table 10
+        # n0 = [
+        #    -9.6927686500217,
+        #    10.086655968018,
+        #    -0.005608791128302,
+        #    0.071452738081455,
+        #    -0.40710498223928,
+        #    1.4240819171444,
+        #    -4.383951131945,
+        #    -0.28408632460772,
+        #    0.021268463753307,
+        # ]  # table 10
+
+        Ir = [1, 1, 1, 1, 2, 2, 2, 3, 3, 4, 4, 5, 5]  # table 16
+        Jr = [0, 2, 5, 11, 1, 7, 16, 4, 16, 7, 10, 9, 10]  # table 16
+        nr = [
+            -0.73362260186506e-2,
+            -0.88223831943146e-1,
+            -0.72334555213245e-1,
+            -0.40813178534455e-2,
+            0.20097803380207e-2,
+            -0.53045921898642e-1,
+            -0.76190409086970e-2,
+            -0.63498037657313e-2,
+            -0.86043093028588e-1,
+            0.75321581522770e-2,
+            -0.79238375446139e-2,
+            -0.22888160778447e-3,
+            -0.26456501482810e-2,
+        ]  # table 16
+
+        R = Constants.__SPECIFIC_GAS_CONSTANT__  # Eq 1
+        Pi = p  # Eq 1
+        tau = 540 / T  # Eq 1
+
+        # table 13 - dimensionless gibbs free energy - gamma 0
+        # g0 = math.log(Pi)
+        # for i, n in enumerate(n0):
+        #    g0 += n * tau ** J0[i]
+
+        # table 13 - dimensionless gibbs free energy - gamma 0 pi
+        g0_pi = 1 / Pi
+
+        # table 13 - dimensionless gibbs free energy - gamma 0 pi pi
+        # g0_pipi = -1 / (Pi**2)
+
+        # table 13 - dimensionless gibbs free energy - gamma 0 tau
+        # g0_tau = 0
+        # for i, n in enumerate(n0):
+        #    g0_tau += n * J0[i] * tau ** (J0[i] - 1)
+
+        # table 13 - dimensionless gibbs free energy - gamma 0 tau tau
+        # g0_tautau = 0
+        # for i, n in enumerate(n0):
+        #    g0_tautau += n * J0[i] * (J0[i] - 1) * tau ** (J0[i] - 2)
+
+        # table 13 - dimensionless gibbs free energy - gamma 0 pi tau
+        # g0_pitau = 0
+
+        # table 14 - residual dimensionless gibbs free energy - part r
+        # gr = 0
+        # for i, n in enumerate(nr):
+        #    gr += n * Pi ** Ir[i] * (tau - 0.5) ** Jr[i]
+
+        # table 14 - residual dimensionless gibbs free energy - part r pi
+        gr_pi = 0
+        for i, n in enumerate(nr):
+            gr_pi = gr_pi + n * Ir[i] * Pi ** (Ir[i] - 1) * (tau - 0.5) ** Jr[i]
+
+        # table 14 - residual dimensionless gibbs free energy - part r pi pi
+        # gr_pipi = 0
+        # for i, n in enumerate(nr):
+        #    gr_pipi += (
+        #        n * Ir[i] * (Ir[i] - 1) * Pi ** (Ir[i] - 2) ** (tau - 0.5) ** Jr[i]
+        #    )
+
+        # table 14 - residual dimensionless gibbs free energy - part r tau
+        # gr_tau = 0
+        # for i, n in enumerate(nr):
+        #    gr_tau += n * Pi ** Ir[i] * Jr[i] * (tau - 0.5) ** (Jr[i] - 1)
+
+        # table 14 - residual dimensionless gibbs free energy - part r tau tau
+        # gr_tautau = 0
+        # for i, n in enumerate(nr):
+        #    gr_tautau += (
+        #        n * Pi ** Ir[i] * Jr[i] * (Jr[i] - 1) * (tau - 0.5) ** (Jr[i] - 2)
+        #    )
+
+        # table 14 - residual dimensionless gibbs free energy - part r pi tau
+        # gr_pitau = 0
+        # for i, n in enumerate(nr):
+        #    gr_pitau += (
+        #        n * Ir[i] * Pi ** (Ir[i] - 1) * Jr[i] * (tau - 0.5) ** (Jr[i] - 1)
+        #    )
+
+        return R * T / p * Pi * (g0_pi + gr_pi) / 1000  # v2_pT
+        # return R * T * tau * (g0_tau + gr_tau)  # h2_pT
+        # return R * T * (tau * (g0_tau + gr_tau) - Pi * (g0_pi + gr_pi))  # u2_pT
+        # return R * (tau * (g0_tau + gr_tau) - (g0 + gr))  # s2_pT
+        # return -R * tau**2 * (g0_tautau + gr_tautau)  # Cp2_pT
+        # return R * (-(tau**2) * (g0_tautau + gr_tautau) - (1 + Pi * gr_pi - tau * Pi * gr_pitau) ** 2 / (1 - Pi**2 * gr_pipi) )  # Cv2_pT
+        # return ( 1000 * R * T * (1 + 2 * Pi * gr_pi + Pi**2 * gr_pi**2) / ( (1 - Pi**2 * gr_pipi) + (1 + Pi * gr_pi - tau * Pi * gr_pitau) ** 2 / (tau**2 * (g0_tautau + gr_tautau)) ) ) ** 0.5  # w2_pT
+
+    @staticmethod
+    def v2_pT_meta(p, T):
+        """
+        6 Equations for Region 2, Section. 6.2 Supplementary Equation for the Metastable-Vapor Region
+
+        Table 16, Page 18
+
+        specific volume
+        """
+
+        # J0 = [0, 1, -5, -4, -3, -2, -1, 2, 3]  # table 10
+        # n0 = [
+        #     -9.6927686500217,
+        #     10.086655968018,
+        #     -0.005608791128302,
+        #     0.071452738081455,
+        #     -0.40710498223928,
+        #     1.4240819171444,
+        #     -4.383951131945,
+        #     -0.28408632460772,
+        #     0.021268463753307,
+        # ]  # table 10
+
+        Ir = [1, 1, 1, 1, 2, 2, 2, 3, 3, 4, 4, 5, 5]  # table 16
+        Jr = [0, 2, 5, 11, 1, 7, 16, 4, 16, 7, 10, 9, 10]  # table 16
+        nr = [
+            -0.73362260186506e-2,
+            -0.88223831943146e-1,
+            -0.72334555213245e-1,
+            -0.40813178534455e-2,
+            0.20097803380207e-2,
+            -0.53045921898642e-1,
+            -0.76190409086970e-2,
+            -0.63498037657313e-2,
+            -0.86043093028588e-1,
+            0.75321581522770e-2,
+            -0.79238375446139e-2,
+            -0.22888160778447e-3,
+            -0.26456501482810e-2,
+        ]  # table 16
+
+        R = Constants.__SPECIFIC_GAS_CONSTANT__  # Eq 1
+        Pi = p  # Eq 1
+        tau = 540 / T  # Eq 1
+
+        # table 13 - dimensionless gibbs free energy - gamma 0
+        # g0 = math.log(Pi)
+        # for i, n in enumerate(n0):
+        #    g0 += n * tau ** J0[i]
+
+        # table 13 - dimensionless gibbs free energy - gamma 0 pi
+        g0_pi = 1 / Pi
+
+        # table 13 - dimensionless gibbs free energy - gamma 0 pi pi
+        # g0_pipi = -1 / (Pi**2)
+
+        # table 13 - dimensionless gibbs free energy - gamma 0 tau
+        # g0_tau = 0
+        # for i, n in enumerate(n0):
+        #    g0_tau += n * J0[i] * tau ** (J0[i] - 1)
+
+        # table 13 - dimensionless gibbs free energy - gamma 0 tau tau
+        # g0_tautau = 0
+        # for i, n in enumerate(n0):
+        #    g0_tautau += n * J0[i] * (J0[i] - 1) * tau ** (J0[i] - 2)
+
+        # table 13 - dimensionless gibbs free energy - gamma 0 pi tau
+        # g0_pitau = 0
+
+        # table 14 - residual dimensionless gibbs free energy - part r
+        # gr = 0
+        # for i, n in enumerate(nr):
+        #    gr += n * Pi ** Ir[i] * (tau - 0.5) ** Jr[i]
+
+        # table 14 - residual dimensionless gibbs free energy - part r pi
+        gr_pi = 0
+        for i, n in enumerate(nr):
+            gr_pi = gr_pi + n * Ir[i] * Pi ** (Ir[i] - 1) * (tau - 0.5) ** Jr[i]
+
+        # table 14 - residual dimensionless gibbs free energy - part r pi pi
+        # gr_pipi = 0
+        # for i, n in enumerate(nr):
+        #    gr_pipi += (
+        #        n * Ir[i] * (Ir[i] - 1) * Pi ** (Ir[i] - 2) ** (tau - 0.5) ** Jr[i]
+        #    )
+
+        # table 14 - residual dimensionless gibbs free energy - part r tau
+        # gr_tau = 0
+        # for i, n in enumerate(nr):
+        #    gr_tau += n * Pi ** Ir[i] * Jr[i] * (tau - 0.5) ** (Jr[i] - 1)
+
+        # table 14 - residual dimensionless gibbs free energy - part r tau tau
+        # gr_tautau = 0
+        # for i, n in enumerate(nr):
+        #    gr_tautau += (
+        #        n * Pi ** Ir[i] * Jr[i] * (Jr[i] - 1) * (tau - 0.5) ** (Jr[i] - 2)
+        #    )
+
+        # table 14 - residual dimensionless gibbs free energy - part r pi tau
+        # gr_pitau = 0
+        # for i, n in enumerate(nr):
+        #    gr_pitau += (
+        #        n * Ir[i] * Pi ** (Ir[i] - 1) * Jr[i] * (tau - 0.5) ** (Jr[i] - 1)
+        #    )
+
+        return R * T / p * Pi * (g0_pi + gr_pi) / 1000  # see table 12
 
     @staticmethod
     def h2_pT(p, T):
@@ -1432,6 +1654,119 @@ class Region2:
         for i in range(0, 43):
             gr_tau = gr_tau + nr[i] * Pi ** Ir[i] * Jr[i] * (tau - 0.5) ** (Jr[i] - 1)
         return R * T * tau * (g0_tau + gr_tau)
+
+    @staticmethod
+    def h2_pT_meta(p, T):
+        """
+        6 Equations for Region 2, Section. 6.2 Supplementary Equation for the Metastable-Vapor Region
+
+        Table 16, Page 18
+
+        specific volume
+        """
+
+        J0 = [0, 1, -5, -4, -3, -2, -1, 2, 3]  # table 10
+        n0 = [
+            -9.6927686500217,
+            10.086655968018,
+            -0.005608791128302,
+            0.071452738081455,
+            -0.40710498223928,
+            1.4240819171444,
+            -4.383951131945,
+            -0.28408632460772,
+            0.021268463753307,
+        ]  # table 10
+
+        Ir = [1, 1, 1, 1, 2, 2, 2, 3, 3, 4, 4, 5, 5]  # table 16
+        Jr = [0, 2, 5, 11, 1, 7, 16, 4, 16, 7, 10, 9, 10]  # table 16
+        nr = [
+            -0.73362260186506e-2,
+            -0.88223831943146e-1,
+            -0.72334555213245e-1,
+            -0.40813178534455e-2,
+            0.20097803380207e-2,
+            -0.53045921898642e-1,
+            -0.76190409086970e-2,
+            -0.63498037657313e-2,
+            -0.86043093028588e-1,
+            0.75321581522770e-2,
+            -0.79238375446139e-2,
+            -0.22888160778447e-3,
+            -0.26456501482810e-2,
+        ]  # table 16
+
+        R = Constants.__SPECIFIC_GAS_CONSTANT__  # Eq 1
+        Pi = p  # Eq 1
+        tau = 540 / T  # Eq 1
+
+        # table 13 - dimensionless gibbs free energy - gamma 0
+        # g0 = math.log(Pi)
+        # for i, n in enumerate(n0):
+        #    g0 += n * tau ** J0[i]
+
+        # table 13 - dimensionless gibbs free energy - gamma 0 pi
+        # g0_pi = 1 / Pi
+
+        # table 13 - dimensionless gibbs free energy - gamma 0 pi pi
+        # g0_pipi = -1 / (Pi**2)
+
+        # table 13 - dimensionless gibbs free energy - gamma 0 tau
+        g0_tau = 0
+        for i, n in enumerate(n0):
+            g0_tau += n * J0[i] * tau ** (J0[i] - 1)
+
+        # table 13 - dimensionless gibbs free energy - gamma 0 tau tau
+        # g0_tautau = 0
+        # for i, n in enumerate(n0):
+        #    g0_tautau += n * J0[i] * (J0[i] - 1) * tau ** (J0[i] - 2)
+
+        # table 13 - dimensionless gibbs free energy - gamma 0 pi tau
+        # g0_pitau = 0
+
+        # table 14 - residual dimensionless gibbs free energy - part r
+        # gr = 0
+        # for i, n in enumerate(nr):
+        #    gr += n * Pi ** Ir[i] * (tau - 0.5) ** Jr[i]
+
+        # table 14 - residual dimensionless gibbs free energy - part r pi
+        # gr_pi = 0
+        # for i, n in enumerate(nr):
+        #    gr_pi = gr_pi + n * Ir[i] * Pi ** (Ir[i] - 1) * (tau - 0.5) ** Jr[i]
+
+        # table 14 - residual dimensionless gibbs free energy - part r pi pi
+        # gr_pipi = 0
+        # for i, n in enumerate(nr):
+        #    gr_pipi += (
+        #        n * Ir[i] * (Ir[i] - 1) * Pi ** (Ir[i] - 2) ** (tau - 0.5) ** Jr[i]
+        #    )
+
+        # table 14 - residual dimensionless gibbs free energy - part r tau
+        gr_tau = 0
+        for i, n in enumerate(nr):
+            gr_tau += n * Pi ** Ir[i] * Jr[i] * (tau - 0.5) ** (Jr[i] - 1)
+
+        # table 14 - residual dimensionless gibbs free energy - part r tau tau
+        # gr_tautau = 0
+        # for i, n in enumerate(nr):
+        #    gr_tautau += (
+        #        n * Pi ** Ir[i] * Jr[i] * (Jr[i] - 1) * (tau - 0.5) ** (Jr[i] - 2)
+        #    )
+
+        # table 14 - residual dimensionless gibbs free energy - part r pi tau
+        # gr_pitau = 0
+        # for i, n in enumerate(nr):
+        #    gr_pitau += (
+        #        n * Ir[i] * Pi ** (Ir[i] - 1) * Jr[i] * (tau - 0.5) ** (Jr[i] - 1)
+        #    )
+
+        # return R * T / p * Pi * (g0_pi + gr_pi) / 1000  # v2_pT
+        return R * T * tau * (g0_tau + gr_tau)  # h2_pT
+        # return R * T * (tau * (g0_tau + gr_tau) - Pi * (g0_pi + gr_pi))  # u2_pT
+        # return R * (tau * (g0_tau + gr_tau) - (g0 + gr))  # s2_pT
+        # return -R * tau**2 * (g0_tautau + gr_tautau)  # Cp2_pT
+        # return R * (-(tau**2) * (g0_tautau + gr_tautau) - (1 + Pi * gr_pi - tau * Pi * gr_pitau) ** 2 / (1 - Pi**2 * gr_pipi) )  # Cv2_pT
+        # return ( 1000 * R * T * (1 + 2 * Pi * gr_pi + Pi**2 * gr_pi**2) / ( (1 - Pi**2 * gr_pipi) + (1 + Pi * gr_pi - tau * Pi * gr_pitau) ** 2 / (tau**2 * (g0_tautau + gr_tautau)) ) ) ** 0.5  # w2_pT
 
     @staticmethod
     def u2_pT(p, T):
@@ -1601,6 +1936,119 @@ class Region2:
             gr_pi = gr_pi + nr[i] * Ir[i] * Pi ** (Ir[i] - 1) * (tau - 0.5) ** Jr[i]
             gr_tau = gr_tau + nr[i] * Pi ** Ir[i] * Jr[i] * (tau - 0.5) ** (Jr[i] - 1)
         return R * T * (tau * (g0_tau + gr_tau) - Pi * (g0_pi + gr_pi))
+
+    @staticmethod
+    def u2_pT_meta(p, T):
+        """
+        6 Equations for Region 2, Section. 6.2 Supplementary Equation for the Metastable-Vapor Region
+
+        Table 16, Page 18
+
+        specific volume
+        """
+
+        J0 = [0, 1, -5, -4, -3, -2, -1, 2, 3]  # table 10
+        n0 = [
+            -9.6927686500217,
+            10.086655968018,
+            -0.005608791128302,
+            0.071452738081455,
+            -0.40710498223928,
+            1.4240819171444,
+            -4.383951131945,
+            -0.28408632460772,
+            0.021268463753307,
+        ]  # table 10
+
+        Ir = [1, 1, 1, 1, 2, 2, 2, 3, 3, 4, 4, 5, 5]  # table 16
+        Jr = [0, 2, 5, 11, 1, 7, 16, 4, 16, 7, 10, 9, 10]  # table 16
+        nr = [
+            -0.73362260186506e-2,
+            -0.88223831943146e-1,
+            -0.72334555213245e-1,
+            -0.40813178534455e-2,
+            0.20097803380207e-2,
+            -0.53045921898642e-1,
+            -0.76190409086970e-2,
+            -0.63498037657313e-2,
+            -0.86043093028588e-1,
+            0.75321581522770e-2,
+            -0.79238375446139e-2,
+            -0.22888160778447e-3,
+            -0.26456501482810e-2,
+        ]  # table 16
+
+        R = Constants.__SPECIFIC_GAS_CONSTANT__  # Eq 1
+        Pi = p  # Eq 1
+        tau = 540 / T  # Eq 1
+
+        # table 13 - dimensionless gibbs free energy - gamma 0
+        # g0 = math.log(Pi)
+        # for i, n in enumerate(n0):
+        #    g0 += n * tau ** J0[i]
+
+        # table 13 - dimensionless gibbs free energy - gamma 0 pi
+        g0_pi = 1 / Pi
+
+        # table 13 - dimensionless gibbs free energy - gamma 0 pi pi
+        # g0_pipi = -1 / (Pi**2)
+
+        # table 13 - dimensionless gibbs free energy - gamma 0 tau
+        g0_tau = 0
+        for i, n in enumerate(n0):
+            g0_tau += n * J0[i] * tau ** (J0[i] - 1)
+
+        # table 13 - dimensionless gibbs free energy - gamma 0 tau tau
+        # g0_tautau = 0
+        # for i, n in enumerate(n0):
+        #    g0_tautau += n * J0[i] * (J0[i] - 1) * tau ** (J0[i] - 2)
+
+        # table 13 - dimensionless gibbs free energy - gamma 0 pi tau
+        # g0_pitau = 0
+
+        # table 14 - residual dimensionless gibbs free energy - part r
+        # gr = 0
+        # for i, n in enumerate(nr):
+        #    gr += n * Pi ** Ir[i] * (tau - 0.5) ** Jr[i]
+
+        # table 14 - residual dimensionless gibbs free energy - part r pi
+        gr_pi = 0
+        for i, n in enumerate(nr):
+            gr_pi = gr_pi + n * Ir[i] * Pi ** (Ir[i] - 1) * (tau - 0.5) ** Jr[i]
+
+        # table 14 - residual dimensionless gibbs free energy - part r pi pi
+        # gr_pipi = 0
+        # for i, n in enumerate(nr):
+        #    gr_pipi += (
+        #        n * Ir[i] * (Ir[i] - 1) * Pi ** (Ir[i] - 2) ** (tau - 0.5) ** Jr[i]
+        #    )
+
+        # table 14 - residual dimensionless gibbs free energy - part r tau
+        gr_tau = 0
+        for i, n in enumerate(nr):
+            gr_tau += n * Pi ** Ir[i] * Jr[i] * (tau - 0.5) ** (Jr[i] - 1)
+
+        # table 14 - residual dimensionless gibbs free energy - part r tau tau
+        # gr_tautau = 0
+        # for i, n in enumerate(nr):
+        #    gr_tautau += (
+        #        n * Pi ** Ir[i] * Jr[i] * (Jr[i] - 1) * (tau - 0.5) ** (Jr[i] - 2)
+        #    )
+
+        # table 14 - residual dimensionless gibbs free energy - part r pi tau
+        # gr_pitau = 0
+        # for i, n in enumerate(nr):
+        #    gr_pitau += (
+        #        n * Ir[i] * Pi ** (Ir[i] - 1) * Jr[i] * (tau - 0.5) ** (Jr[i] - 1)
+        #    )
+
+        # return R * T / p * Pi * (g0_pi + gr_pi) / 1000  # v2_pT
+        # return R * T * tau * (g0_tau + gr_tau)  # h2_pT
+        return R * T * (tau * (g0_tau + gr_tau) - Pi * (g0_pi + gr_pi))  # u2_pT
+        # return R * (tau * (g0_tau + gr_tau) - (g0 + gr))  # s2_pT
+        # return -R * tau**2 * (g0_tautau + gr_tautau)  # Cp2_pT
+        # return R * (-(tau**2) * (g0_tautau + gr_tautau) - (1 + Pi * gr_pi - tau * Pi * gr_pitau) ** 2 / (1 - Pi**2 * gr_pipi) )  # Cv2_pT
+        # return ( 1000 * R * T * (1 + 2 * Pi * gr_pi + Pi**2 * gr_pi**2) / ( (1 - Pi**2 * gr_pipi) + (1 + Pi * gr_pi - tau * Pi * gr_pitau) ** 2 / (tau**2 * (g0_tautau + gr_tautau)) ) ) ** 0.5  # w2_pT
 
     @staticmethod
     def s2_pT(p, T):
@@ -1773,6 +2221,119 @@ class Region2:
         return R * (tau * (g0_tau + gr_tau) - (g0 + gr))
 
     @staticmethod
+    def s2_pT_meta(p, T):
+        """
+        6 Equations for Region 2, Section. 6.2 Supplementary Equation for the Metastable-Vapor Region
+
+        Table 16, Page 18
+
+        specific volume
+        """
+
+        J0 = [0, 1, -5, -4, -3, -2, -1, 2, 3]  # table 10
+        n0 = [
+            -9.6927686500217,
+            10.086655968018,
+            -0.005608791128302,
+            0.071452738081455,
+            -0.40710498223928,
+            1.4240819171444,
+            -4.383951131945,
+            -0.28408632460772,
+            0.021268463753307,
+        ]  # table 10
+
+        Ir = [1, 1, 1, 1, 2, 2, 2, 3, 3, 4, 4, 5, 5]  # table 16
+        Jr = [0, 2, 5, 11, 1, 7, 16, 4, 16, 7, 10, 9, 10]  # table 16
+        nr = [
+            -0.73362260186506e-2,
+            -0.88223831943146e-1,
+            -0.72334555213245e-1,
+            -0.40813178534455e-2,
+            0.20097803380207e-2,
+            -0.53045921898642e-1,
+            -0.76190409086970e-2,
+            -0.63498037657313e-2,
+            -0.86043093028588e-1,
+            0.75321581522770e-2,
+            -0.79238375446139e-2,
+            -0.22888160778447e-3,
+            -0.26456501482810e-2,
+        ]  # table 16
+
+        R = Constants.__SPECIFIC_GAS_CONSTANT__  # Eq 1
+        Pi = p  # Eq 1
+        tau = 540 / T  # Eq 1
+
+        # table 13 - dimensionless gibbs free energy - gamma 0
+        g0 = math.log(Pi)
+        for i, n in enumerate(n0):
+            g0 += n * tau ** J0[i]
+
+        # table 13 - dimensionless gibbs free energy - gamma 0 pi
+        # g0_pi = 1 / Pi
+
+        # table 13 - dimensionless gibbs free energy - gamma 0 pi pi
+        # g0_pipi = -1 / (Pi**2)
+
+        # table 13 - dimensionless gibbs free energy - gamma 0 tau
+        g0_tau = 0
+        for i, n in enumerate(n0):
+            g0_tau += n * J0[i] * tau ** (J0[i] - 1)
+
+        # table 13 - dimensionless gibbs free energy - gamma 0 tau tau
+        # g0_tautau = 0
+        # for i, n in enumerate(n0):
+        #    g0_tautau += n * J0[i] * (J0[i] - 1) * tau ** (J0[i] - 2)
+
+        # table 13 - dimensionless gibbs free energy - gamma 0 pi tau
+        # g0_pitau = 0
+
+        # table 14 - residual dimensionless gibbs free energy - part r
+        gr = 0
+        for i, n in enumerate(nr):
+            gr += n * Pi ** Ir[i] * (tau - 0.5) ** Jr[i]
+
+        # table 14 - residual dimensionless gibbs free energy - part r pi
+        # gr_pi = 0
+        # for i, n in enumerate(nr):
+        #    gr_pi = gr_pi + n * Ir[i] * Pi ** (Ir[i] - 1) * (tau - 0.5) ** Jr[i]
+
+        # table 14 - residual dimensionless gibbs free energy - part r pi pi
+        # gr_pipi = 0
+        # for i, n in enumerate(nr):
+        #    gr_pipi += (
+        #        n * Ir[i] * (Ir[i] - 1) * Pi ** (Ir[i] - 2) ** (tau - 0.5) ** Jr[i]
+        #    )
+
+        # table 14 - residual dimensionless gibbs free energy - part r tau
+        gr_tau = 0
+        for i, n in enumerate(nr):
+            gr_tau += n * Pi ** Ir[i] * Jr[i] * (tau - 0.5) ** (Jr[i] - 1)
+
+        # table 14 - residual dimensionless gibbs free energy - part r tau tau
+        # gr_tautau = 0
+        # for i, n in enumerate(nr):
+        #    gr_tautau += (
+        #        n * Pi ** Ir[i] * Jr[i] * (Jr[i] - 1) * (tau - 0.5) ** (Jr[i] - 2)
+        #    )
+
+        # table 14 - residual dimensionless gibbs free energy - part r pi tau
+        # gr_pitau = 0
+        # for i, n in enumerate(nr):
+        #    gr_pitau += (
+        #        n * Ir[i] * Pi ** (Ir[i] - 1) * Jr[i] * (tau - 0.5) ** (Jr[i] - 1)
+        #    )
+
+        # return R * T / p * Pi * (g0_pi + gr_pi) / 1000  # v2_pT
+        # return R * T * tau * (g0_tau + gr_tau)  # h2_pT
+        # return R * T * (tau * (g0_tau + gr_tau) - Pi * (g0_pi + gr_pi))  # u2_pT
+        return R * (tau * (g0_tau + gr_tau) - (g0 + gr))  # s2_pT
+        # return -R * tau**2 * (g0_tautau + gr_tautau)  # Cp2_pT
+        # return R * (-(tau**2) * (g0_tautau + gr_tautau) - (1 + Pi * gr_pi - tau * Pi * gr_pitau) ** 2 / (1 - Pi**2 * gr_pipi) )  # Cv2_pT
+        # return ( 1000 * R * T * (1 + 2 * Pi * gr_pi + Pi**2 * gr_pi**2) / ( (1 - Pi**2 * gr_pipi) + (1 + Pi * gr_pi - tau * Pi * gr_pitau) ** 2 / (tau**2 * (g0_tautau + gr_tautau)) ) ) ** 0.5  # w2_pT
+
+    @staticmethod
     def Cp2_pT(p, T):
         """function Cp2_pT = Cp2_pT(p, T)
 
@@ -1939,6 +2500,119 @@ class Region2:
                 tau - 0.5
             ) ** (Jr[i] - 2)
         return -R * tau**2 * (g0_tautau + gr_tautau)
+
+    @staticmethod
+    def Cp2_pT_meta(p, T):
+        """
+        6 Equations for Region 2, Section. 6.2 Supplementary Equation for the Metastable-Vapor Region
+
+        Table 16, Page 18
+
+        specific volume
+        """
+
+        J0 = [0, 1, -5, -4, -3, -2, -1, 2, 3]  # table 10
+        n0 = [
+            -9.6927686500217,
+            10.086655968018,
+            -0.005608791128302,
+            0.071452738081455,
+            -0.40710498223928,
+            1.4240819171444,
+            -4.383951131945,
+            -0.28408632460772,
+            0.021268463753307,
+        ]  # table 10
+
+        Ir = [1, 1, 1, 1, 2, 2, 2, 3, 3, 4, 4, 5, 5]  # table 16
+        Jr = [0, 2, 5, 11, 1, 7, 16, 4, 16, 7, 10, 9, 10]  # table 16
+        nr = [
+            -0.73362260186506e-2,
+            -0.88223831943146e-1,
+            -0.72334555213245e-1,
+            -0.40813178534455e-2,
+            0.20097803380207e-2,
+            -0.53045921898642e-1,
+            -0.76190409086970e-2,
+            -0.63498037657313e-2,
+            -0.86043093028588e-1,
+            0.75321581522770e-2,
+            -0.79238375446139e-2,
+            -0.22888160778447e-3,
+            -0.26456501482810e-2,
+        ]  # table 16
+
+        R = Constants.__SPECIFIC_GAS_CONSTANT__  # Eq 1
+        Pi = p  # Eq 1
+        tau = 540 / T  # Eq 1
+
+        # table 13 - dimensionless gibbs free energy - gamma 0
+        # g0 = math.log(Pi)
+        # for i, n in enumerate(n0):
+        #    g0 += n * tau ** J0[i]
+
+        # table 13 - dimensionless gibbs free energy - gamma 0 pi
+        # g0_pi = 1 / Pi
+
+        # table 13 - dimensionless gibbs free energy - gamma 0 pi pi
+        # g0_pipi = -1 / (Pi**2)
+
+        # table 13 - dimensionless gibbs free energy - gamma 0 tau
+        # g0_tau = 0
+        # for i, n in enumerate(n0):
+        #    g0_tau += n * J0[i] * tau ** (J0[i] - 1)
+
+        # table 13 - dimensionless gibbs free energy - gamma 0 tau tau
+        g0_tautau = 0
+        for i, n in enumerate(n0):
+            g0_tautau += n * J0[i] * (J0[i] - 1) * tau ** (J0[i] - 2)
+
+        # table 13 - dimensionless gibbs free energy - gamma 0 pi tau
+        # g0_pitau = 0
+
+        # table 14 - residual dimensionless gibbs free energy - part r
+        # gr = 0
+        # for i, n in enumerate(nr):
+        #    gr += n * Pi ** Ir[i] * (tau - 0.5) ** Jr[i]
+
+        # table 14 - residual dimensionless gibbs free energy - part r pi
+        # gr_pi = 0
+        # for i, n in enumerate(nr):
+        #    gr_pi = gr_pi + n * Ir[i] * Pi ** (Ir[i] - 1) * (tau - 0.5) ** Jr[i]
+
+        # table 14 - residual dimensionless gibbs free energy - part r pi pi
+        # gr_pipi = 0
+        # for i, n in enumerate(nr):
+        #    gr_pipi += (
+        #        n * Ir[i] * (Ir[i] - 1) * Pi ** (Ir[i] - 2) ** (tau - 0.5) ** Jr[i]
+        #    )
+
+        # table 14 - residual dimensionless gibbs free energy - part r tau
+        # gr_tau = 0
+        # for i, n in enumerate(nr):
+        #    gr_tau += n * Pi ** Ir[i] * Jr[i] * (tau - 0.5) ** (Jr[i] - 1)
+
+        # table 14 - residual dimensionless gibbs free energy - part r tau tau
+        gr_tautau = 0
+        for i, n in enumerate(nr):
+            gr_tautau += (
+                n * Pi ** Ir[i] * Jr[i] * (Jr[i] - 1) * (tau - 0.5) ** (Jr[i] - 2)
+            )
+
+        # table 14 - residual dimensionless gibbs free energy - part r pi tau
+        # gr_pitau = 0
+        # for i, n in enumerate(nr):
+        #    gr_pitau += (
+        #        n * Ir[i] * Pi ** (Ir[i] - 1) * Jr[i] * (tau - 0.5) ** (Jr[i] - 1)
+        #    )
+
+        # return R * T / p * Pi * (g0_pi + gr_pi) / 1000  # v2_pT
+        # return R * T * tau * (g0_tau + gr_tau)  # h2_pT
+        # return R * T * (tau * (g0_tau + gr_tau) - Pi * (g0_pi + gr_pi))  # u2_pT
+        # return R * (tau * (g0_tau + gr_tau) - (g0 + gr))  # s2_pT
+        return -R * tau**2 * (g0_tautau + gr_tautau)  # Cp2_pT
+        # return R * (-(tau**2) * (g0_tautau + gr_tautau) - (1 + Pi * gr_pi - tau * Pi * gr_pitau) ** 2 / (1 - Pi**2 * gr_pipi) )  # Cv2_pT
+        # return ( 1000 * R * T * (1 + 2 * Pi * gr_pi + Pi**2 * gr_pi**2) / ( (1 - Pi**2 * gr_pipi) + (1 + Pi * gr_pi - tau * Pi * gr_pitau) ** 2 / (tau**2 * (g0_tautau + gr_tautau)) ) ) ** 0.5  # w2_pT
 
     @staticmethod
     def Cv2_pT(p, T):
@@ -2310,6 +2984,123 @@ class Region2:
                 / (tau**2 * (g0_tautau + gr_tautau))
             )
         ) ** 0.5
+
+    @staticmethod
+    def w2_pT_meta(p, T):
+        """
+        6 Equations for Region 2, Section. 6.2 Supplementary Equation for the Metastable-Vapor Region
+
+        Table 16, Page 18
+
+        specific volume
+        """
+
+        J0 = [0, 1, -5, -4, -3, -2, -1, 2, 3]  # table 10
+        n0 = [
+            -9.6927686500217,
+            10.086655968018,
+            -0.005608791128302,
+            0.071452738081455,
+            -0.40710498223928,
+            1.4240819171444,
+            -4.383951131945,
+            -0.28408632460772,
+            0.021268463753307,
+        ]  # table 10
+
+        Ir = [1, 1, 1, 1, 2, 2, 2, 3, 3, 4, 4, 5, 5]  # table 16
+        Jr = [0, 2, 5, 11, 1, 7, 16, 4, 16, 7, 10, 9, 10]  # table 16
+        nr = [
+            -0.73362260186506e-2,
+            -0.88223831943146e-1,
+            -0.72334555213245e-1,
+            -0.40813178534455e-2,
+            0.20097803380207e-2,
+            -0.53045921898642e-1,
+            -0.76190409086970e-2,
+            -0.63498037657313e-2,
+            -0.86043093028588e-1,
+            0.75321581522770e-2,
+            -0.79238375446139e-2,
+            -0.22888160778447e-3,
+            -0.26456501482810e-2,
+        ]  # table 16
+
+        R = Constants.__SPECIFIC_GAS_CONSTANT__  # Eq 1
+        Pi = p  # Eq 1
+        tau = 540 / T  # Eq 1
+
+        # table 13 - dimensionless gibbs free energy - gamma 0
+        #g0 = math.log(Pi)
+        #for i, n in enumerate(n0):
+        #    g0 += n * tau ** J0[i]
+
+        # table 13 - dimensionless gibbs free energy - gamma 0 pi
+        # g0_pi = 1 / Pi
+
+        # table 13 - dimensionless gibbs free energy - gamma 0 pi pi
+        # g0_pipi = -1 / (Pi**2)
+
+        # table 13 - dimensionless gibbs free energy - gamma 0 tau
+        #g0_tau = 0
+        #for i, n in enumerate(n0):
+        #    g0_tau += n * J0[i] * tau ** (J0[i] - 1)
+
+        # table 13 - dimensionless gibbs free energy - gamma 0 tau tau
+        g0_tautau = 0
+        for i, n in enumerate(n0):
+            g0_tautau += n * J0[i] * (J0[i] - 1) * tau ** (J0[i] - 2)
+
+        # table 13 - dimensionless gibbs free energy - gamma 0 pi tau
+        # g0_pitau = 0
+
+        # table 14 - residual dimensionless gibbs free energy - part r
+        #gr = 0
+        #for i, n in enumerate(nr):
+        #    gr += n * Pi ** Ir[i] * (tau - 0.5) ** Jr[i]
+
+        # table 14 - residual dimensionless gibbs free energy - part r pi
+        gr_pi = 0
+        for i, n in enumerate(nr):
+            gr_pi = gr_pi + n * Ir[i] * Pi ** (Ir[i] - 1) * (tau - 0.5) ** Jr[i]
+
+        # table 14 - residual dimensionless gibbs free energy - part r pi pi
+        gr_pipi = 0
+        for i, n in enumerate(nr):
+            gr_pipi += (
+                n * Ir[i] * (Ir[i] - 1) * Pi ** (Ir[i] - 2) * (tau - 0.5) ** Jr[i]
+            )
+        if isinstance(gr_pipi, complex):
+            if gr_pipi.imag != 0:
+                raise Exception()
+            gr_pipi = gr_pipi.real
+
+        # table 14 - residual dimensionless gibbs free energy - part r tau
+        #gr_tau = 0
+        #for i, n in enumerate(nr):
+        #    gr_tau += n * Pi ** Ir[i] * Jr[i] * (tau - 0.5) ** (Jr[i] - 1)
+
+        # table 14 - residual dimensionless gibbs free energy - part r tau tau
+        gr_tautau = 0
+        for i, n in enumerate(nr):
+            gr_tautau += (
+                n * Pi ** Ir[i] * Jr[i] * (Jr[i] - 1) * (tau - 0.5) ** (Jr[i] - 2)
+            )
+
+        # table 14 - residual dimensionless gibbs free energy - part r pi tau
+        gr_pitau = 0
+        for i, n in enumerate(nr):
+            gr_pitau += (
+                n * Ir[i] * Pi ** (Ir[i] - 1) * Jr[i] * (tau - 0.5) ** (Jr[i] - 1)
+            )
+
+        part_1 = 1 + 2 * Pi * gr_pi + Pi**2 * gr_pi**2
+        part_2_a = 1 - Pi**2 * gr_pipi
+        part_2_b = (1 + Pi * gr_pi - tau * Pi * gr_pitau) ** 2 # x
+        part_2_c = tau**2 * (g0_tautau + gr_tautau)
+        # return 1.0
+        return math.sqrt(1000 * R * T * part_1 / (part_2_a + part_2_b / part_2_c))
+
 
     @staticmethod
     def T2_ph(p, h):
