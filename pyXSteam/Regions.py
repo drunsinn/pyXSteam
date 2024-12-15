@@ -7,13 +7,17 @@ import math
 import logging
 from .RegionBorders import TB23_p
 from .Constants import (
-    SPECIFIC_GAS_CONSTANT,
-    CRITICAL_TEMPERATURE,
-    CRITICAL_PRESSURE,
-    CRITICAL_DENSITY,
+    # CRITICAL_TEMPERATURE,
+    # CRITICAL_PRESSURE,
+    # CRITICAL_DENSITY,
     TRIPLE_POINT_PRESSURE,
     FREEZING_TEMPERATURE_H2O,
 )
+from .Constants import SPECIFIC_GAS_CONSTANT as _R
+from .Constants import CRITICAL_TEMPERATURE as _tc
+from .Constants import CRITICAL_PRESSURE as _pc
+from .Constants import CRITICAL_DENSITY as _rhoc
+
 from .IF97_Tables import R1, R2, R3, R4, R5
 
 
@@ -41,17 +45,14 @@ class Region1:
 
         :return: specific volume in [m³ / kg]
         """
-        # I1 = R1.Table2_I
-        # J1 = R1.Table2_J
-        # n1 = R1.Table2_n
-        R = SPECIFIC_GAS_CONSTANT
-        Pi = p / 16.53  # 16.53 MPa
-        tau = 1386 / T  # 1386 K
+        Pi = p / 16.53
+        tau = 1386 / T
+
         gamma_der_pi = 0
         for I, J, n in zip(R1.Table2_I, R1.Table2_J, R1.Table2_n):
-            # for i in range(0, 34):
             gamma_der_pi = gamma_der_pi - n * I * (7.1 - Pi) ** (I - 1) * (tau - 1.222) ** J
-        return R * T / p * Pi * gamma_der_pi / 1000
+
+        return _R * T / p * Pi * gamma_der_pi / 1000
 
     @classmethod
     def h1_pT(cls, p: float, T: float) -> float:
@@ -67,17 +68,14 @@ class Region1:
 
         :return: enthalpy in [kJ / kg]
         """
-        # I1 = R1.Table2_I
-        # J1 = R1.Table2_J
-        # n1 = R1.Table2_n
-        R = SPECIFIC_GAS_CONSTANT
         Pi = p / 16.53
         tau = 1386 / T
+
         gamma_der_tau = 0
         for I, J, n in zip(R1.Table2_I, R1.Table2_J, R1.Table2_n):
-            # for i in range(0, 34):
             gamma_der_tau = gamma_der_tau + (n * (7.1 - Pi) ** I * J * (tau - 1.222) ** (J - 1))
-        return R * T * tau * gamma_der_tau
+
+        return _R * T * tau * gamma_der_tau
 
     @classmethod
     def u1_pT(cls, p: float, T: float) -> float:
@@ -92,19 +90,16 @@ class Region1:
 
         :return: specific internal energy in [kJ / kg]
         """
-        # I1 = R1.Table2_I
-        # J1 = R1.Table2_J
-        # n1 = R1.Table2_n
-        R = SPECIFIC_GAS_CONSTANT
         Pi = p / 16.53
         tau = 1386 / T
+
         gamma_der_tau = 0
         gamma_der_pi = 0
         for I, J, n in zip(R1.Table2_I, R1.Table2_J, R1.Table2_n):
-            # for i in range(0, 34):
             gamma_der_pi = gamma_der_pi - n * I * (7.1 - Pi) ** (I - 1) * (tau - 1.222) ** J
             gamma_der_tau = gamma_der_tau + (n * (7.1 - Pi) ** I * J * (tau - 1.222) ** (J - 1))
-        return R * T * (tau * gamma_der_tau - Pi * gamma_der_pi)
+
+        return _R * T * (tau * gamma_der_tau - Pi * gamma_der_pi)
 
     @classmethod
     def s1_pT(cls, p: float, T: float) -> float:
@@ -119,19 +114,16 @@ class Region1:
 
         :return: specific entropy in [kJ / (kg K)]
         """
-        # I1 = R1.Table2_I
-        # J1 = R1.Table2_J
-        # n1 = R1.Table2_n
-        R = SPECIFIC_GAS_CONSTANT
         Pi = p / 16.53
         tau = 1386 / T
+
         gamma = 0
         gamma_der_tau = 0
         for I, J, n in zip(R1.Table2_I, R1.Table2_J, R1.Table2_n):
-            # for i in range(0, 34):
             gamma_der_tau = gamma_der_tau + (n * (7.1 - Pi) ** I * J * (tau - 1.222) ** (J - 1))
             gamma = gamma + n * (7.1 - Pi) ** I * (tau - 1.222) ** J
-        return R * tau * gamma_der_tau - R * gamma
+
+        return _R * tau * gamma_der_tau - _R * gamma
 
     @classmethod
     def Cp1_pT(cls, p: float, T: float) -> float:
@@ -146,17 +138,14 @@ class Region1:
 
         :return: specific isobaric heat capacity in [kJ / (kg K)]
         """
-        # I1 = R1.Table2_I
-        # J1 = R1.Table2_J
-        # n1 = R1.Table2_n
-        R = SPECIFIC_GAS_CONSTANT
         Pi = p / 16.53
         tau = 1386 / T
+
         gamma_der_tautau = 0
         for I, J, n in zip(R1.Table2_I, R1.Table2_J, R1.Table2_n):
-            # for i in range(0, 34):
             gamma_der_tautau = gamma_der_tautau + (n * (7.1 - Pi) ** I * J * (J - 1) * (tau - 1.222) ** (J - 2))
-        return -R * tau**2 * gamma_der_tautau
+
+        return -_R * tau**2 * gamma_der_tautau
 
     @classmethod
     def Cv1_pT(cls, p: float, T: float) -> float:
@@ -171,20 +160,20 @@ class Region1:
 
         :return: specific isochoric heat capacity in [kJ / (kg K)]
         """
-        R = SPECIFIC_GAS_CONSTANT
         Pi = p / 16.53
         tau = 1386 / T
+
         gamma_der_pi = 0
         gamma_der_pipi = 0
         gamma_der_pitau = 0
         gamma_der_tautau = 0
         for I, J, n in zip(R1.Table2_I, R1.Table2_J, R1.Table2_n):
-            # for i in range(0, 34):
             gamma_der_pi = gamma_der_pi - n * I * (7.1 - Pi) ** (I - 1) * (tau - 1.222) ** J
             gamma_der_pipi = gamma_der_pipi + n * I * (I - 1) * (7.1 - Pi) ** (I - 2) * (tau - 1.222) ** J
             gamma_der_pitau = gamma_der_pitau - n * I * (7.1 - Pi) ** (I - 1) * J * (tau - 1.222) ** (J - 1)
             gamma_der_tautau = gamma_der_tautau + n * (7.1 - Pi) ** I * J * (J - 1) * (tau - 1.222) ** (J - 2)
-        return R * (-(tau**2) * gamma_der_tautau + (gamma_der_pi - tau * gamma_der_pitau) ** 2 / gamma_der_pipi)
+
+        return _R * (-(tau**2) * gamma_der_tautau + (gamma_der_pi - tau * gamma_der_pitau) ** 2 / gamma_der_pipi)
 
     @classmethod
     def w1_pT(cls, p: float, T: float) -> float:
@@ -199,21 +188,21 @@ class Region1:
 
         :return: speed of sound in [m / s]
         """
-        R = SPECIFIC_GAS_CONSTANT
         Pi = p / 16.53
         tau = 1386 / T
+
         gamma_der_pi = 0
         gamma_der_pipi = 0
         gamma_der_pitau = 0
         gamma_der_tautau = 0
         for I, J, n in zip(R1.Table2_I, R1.Table2_J, R1.Table2_n):
-            # for i in range(0, 34):
             gamma_der_pi = gamma_der_pi - n * I * (7.1 - Pi) ** (I - 1) * (tau - 1.222) ** J
             gamma_der_pipi = gamma_der_pipi + n * I * (I - 1) * (7.1 - Pi) ** (I - 2) * (tau - 1.222) ** J
             gamma_der_pitau = gamma_der_pitau - n * I * (7.1 - Pi) ** (I - 1) * J * (tau - 1.222) ** (J - 1)
             gamma_der_tautau = gamma_der_tautau + n * (7.1 - Pi) ** I * J * (J - 1) * (tau - 1.222) ** (J - 2)
+
         return (
-            1000 * R * T * gamma_der_pi**2 / ((gamma_der_pi - tau * gamma_der_pitau) ** 2 / (tau**2 * gamma_der_tautau) - gamma_der_pipi)
+            1000 * _R * T * gamma_der_pi**2 / ((gamma_der_pi - tau * gamma_der_pitau) ** 2 / (tau**2 * gamma_der_tautau) - gamma_der_pipi)
         ) ** 0.5
 
     @classmethod
@@ -232,10 +221,11 @@ class Region1:
         """
         Pi = p / 1
         eta = h / 2500
+
         T = 0
         for I, J, n in zip(R1.Table6_I, R1.Table6_J, R1.Table6_n):
-            # for i in range(0, 20):
             T = T + n * Pi**I * (eta + 1) ** J
+
         return T
 
     @classmethod
@@ -254,10 +244,11 @@ class Region1:
         """
         Pi = p / 1
         Sigma = s / 1
+
         T = 0
         for I, J, n in zip(R1.Table8_I, R1.Table8_J, R1.Table8_n):
-            # for i in range(0, 20):
             T = T + n * Pi**I * (Sigma + 2) ** J
+
         return T
 
     @classmethod
@@ -279,10 +270,11 @@ class Region1:
         """
         eta = h / 3400
         Sigma = s / 7.6
+
         p = 0
         for I, J, n in zip(R1.Sub_psh12_Table2_I, R1.Sub_psh12_Table2_J, R1.Sub_psh12_Table2_n):
-            # for i in range(0, 19):
             p = p + n * (eta + 0.05) ** I * (Sigma + 0.05) ** J
+
         return p * 100
 
     @classmethod
@@ -344,15 +336,16 @@ class Region2:
 
         :return: specific volume in [m³ / kg]
         """
-        R = SPECIFIC_GAS_CONSTANT  # Eq 1
         Pi = p  # Eq 1
         tau = 540 / T  # Eq 1
+
         g0_pi = 1 / Pi  # see table 13
+
         gr_pi = 0
         for I, J, n in zip(R2.Table11_I, R2.Table11_J, R2.Table11_n):
-            # for i in range(0, 43):
             gr_pi = gr_pi + n * I * Pi ** (I - 1) * (tau - 0.5) ** J  # see table 14
-        return R * T / p * Pi * (g0_pi + gr_pi) / 1000  # see table 12
+
+        return _R * T / p * Pi * (g0_pi + gr_pi) / 1000  # see table 12
 
     @staticmethod
     def v2_pT_meta(p, T):
@@ -363,7 +356,6 @@ class Region2:
 
         specific volume
         """
-        R = SPECIFIC_GAS_CONSTANT  # Eq 1
         Pi = p  # Eq 1
         tau = 540 / T  # Eq 1
 
@@ -376,7 +368,7 @@ class Region2:
             # for i, n in enumerate(nr):
             gr_pi = gr_pi + n * I * Pi ** (I - 1) * (tau - 0.5) ** J
 
-        return R * T / p * Pi * (g0_pi + gr_pi) / 1000  # see table 12
+        return _R * T / p * Pi * (g0_pi + gr_pi) / 1000  # see table 12
 
     @staticmethod
     def h2_pT(p, T):
@@ -391,18 +383,18 @@ class Region2:
 
         :return: enthalpy in [kJ / kg]
         """
-        R = SPECIFIC_GAS_CONSTANT
         Pi = p
         tau = 540 / T
+
         g0_tau = 0
         for J, n in zip(R2.Table10_J0, R2.Table10_n0):
-            # for i in range(0, 9):
             g0_tau = g0_tau + n * J * tau ** (J - 1)
+
         gr_tau = 0
         for I, J, n in zip(R2.Table11_I, R2.Table11_J, R2.Table11_n):
-            # for i in range(0, 43):
             gr_tau = gr_tau + n * Pi**I * J * (tau - 0.5) ** (J - 1)
-        return R * T * tau * (g0_tau + gr_tau)
+
+        return _R * T * tau * (g0_tau + gr_tau)
 
     @staticmethod
     def h2_pT_meta(p, T):
@@ -413,7 +405,6 @@ class Region2:
 
         specific volume
         """
-        R = SPECIFIC_GAS_CONSTANT  # Eq 1
         Pi = p  # Eq 1
         tau = 540 / T  # Eq 1
 
@@ -427,7 +418,7 @@ class Region2:
         for I, J, n in zip(R2.Table16_I, R2.Table16_J, R2.Table16_n):
             gr_tau += n * Pi**I * J * (tau - 0.5) ** (J - 1)
 
-        return R * T * tau * (g0_tau + gr_tau)  # h2_pT
+        return _R * T * tau * (g0_tau + gr_tau)  # h2_pT
 
     @staticmethod
     def u2_pT(p, T):
@@ -441,23 +432,22 @@ class Region2:
         :param T: temperature in [K]
         :return: specific internal energy in [kJ / kg]
         """
-        R = SPECIFIC_GAS_CONSTANT
         Pi = p
         tau = 540 / T
-        g0_pi = 1 / Pi
-        g0_tau = 0
 
+        g0_pi = 1 / Pi
+
+        g0_tau = 0
         for J, n in zip(R2.Table10_J0, R2.Table10_n0):
             g0_tau = g0_tau + n * J * tau ** (J - 1)
 
         gr_pi = 0
         gr_tau = 0
-
         for I, J, n in zip(R2.Table11_I, R2.Table11_J, R2.Table11_n):
             gr_pi = gr_pi + n * I * Pi ** (I - 1) * (tau - 0.5) ** J
             gr_tau = gr_tau + n * Pi**I * J * (tau - 0.5) ** (J - 1)
 
-        return R * T * (tau * (g0_tau + gr_tau) - Pi * (g0_pi + gr_pi))
+        return _R * T * (tau * (g0_tau + gr_tau) - Pi * (g0_pi + gr_pi))
 
     @staticmethod
     def u2_pT_meta(p, T):
@@ -468,7 +458,6 @@ class Region2:
 
         specific volume
         """
-        R = SPECIFIC_GAS_CONSTANT  # Eq 1
         Pi = p  # Eq 1
         tau = 540 / T  # Eq 1
 
@@ -490,7 +479,7 @@ class Region2:
         for I, J, n in zip(R2.Table16_I, R2.Table16_J, R2.Table16_n):
             gr_tau += n * Pi**I * J * (tau - 0.5) ** (J - 1)
 
-        return R * T * (tau * (g0_tau + gr_tau) - Pi * (g0_pi + gr_pi))  # u2_pT
+        return _R * T * (tau * (g0_tau + gr_tau) - Pi * (g0_pi + gr_pi))  # u2_pT
 
     @staticmethod
     def s2_pT(p, T):
@@ -505,9 +494,9 @@ class Region2:
 
         :return: specific entropy in [kJ / (kg K)]
         """
-        R = SPECIFIC_GAS_CONSTANT
         Pi = p
         tau = 540 / T
+
         g0 = math.log(Pi)
         g0_tau = 0
         for J, n in zip(R2.Table10_J0, R2.Table10_n0):
@@ -519,7 +508,8 @@ class Region2:
         for I, J, n in zip(R2.Table11_I, R2.Table11_J, R2.Table11_n):
             gr = gr + n * Pi**I * (tau - 0.5) ** J
             gr_tau = gr_tau + n * Pi**I * J * (tau - 0.5) ** (J - 1)
-        return R * (tau * (g0_tau + gr_tau) - (g0 + gr))
+
+        return _R * (tau * (g0_tau + gr_tau) - (g0 + gr))
 
     @staticmethod
     def s2_pT_meta(p, T):
@@ -530,7 +520,6 @@ class Region2:
 
         specific volume
         """
-        R = SPECIFIC_GAS_CONSTANT  # Eq 1
         Pi = p  # Eq 1
         tau = 540 / T  # Eq 1
 
@@ -554,7 +543,7 @@ class Region2:
         for I, J, n in zip(R2.Table16_I, R2.Table16_J, R2.Table16_n):
             gr_tau += n * Pi**I * J * (tau - 0.5) ** (J - 1)
 
-        return R * (tau * (g0_tau + gr_tau) - (g0 + gr))  # s2_pT
+        return _R * (tau * (g0_tau + gr_tau) - (g0 + gr))  # s2_pT
 
     @staticmethod
     def Cp2_pT(p, T):
@@ -569,7 +558,6 @@ class Region2:
 
         :return: specific isobaric heat capacity in [kJ / (kg K)]
         """
-        R = SPECIFIC_GAS_CONSTANT
         Pi = p
         tau = 540 / T
 
@@ -580,7 +568,8 @@ class Region2:
         gr_tautau = 0
         for I, J, n in zip(R2.Table11_I, R2.Table11_J, R2.Table11_n):
             gr_tautau = gr_tautau + n * Pi**I * J * (J - 1) * (tau - 0.5) ** (J - 2)
-        return -R * tau**2 * (g0_tautau + gr_tautau)
+
+        return -_R * tau**2 * (g0_tautau + gr_tautau)
 
     @staticmethod
     def Cp2_pT_meta(p, T):
@@ -591,7 +580,6 @@ class Region2:
 
         specific volume
         """
-        R = SPECIFIC_GAS_CONSTANT  # Eq 1
         Pi = p  # Eq 1
         tau = 540 / T  # Eq 1
 
@@ -605,7 +593,7 @@ class Region2:
         for I, J, n in zip(R2.Table16_I, R2.Table16_J, R2.Table16_n):
             gr_tautau += n * Pi**I * J * (J - 1) * (tau - 0.5) ** (J - 2)
 
-        return -R * tau**2 * (g0_tautau + gr_tautau)  # Cp2_pT
+        return -_R * tau**2 * (g0_tautau + gr_tautau)  # Cp2_pT
 
     @staticmethod
     def Cv2_pT(p, T):
@@ -620,7 +608,6 @@ class Region2:
 
         :return: specific isochoric heat capacity in [kJ / (kg K)]
         """
-        R = SPECIFIC_GAS_CONSTANT
         Pi = p
         tau = 540 / T
 
@@ -637,7 +624,8 @@ class Region2:
             gr_pipi = gr_pipi + n * I * (I - 1) * Pi ** (I - 2) * (tau - 0.5) ** J
             gr_pitau = gr_pitau + n * I * Pi ** (I - 1) * J * (tau - 0.5) ** (J - 1)
             gr_tautau = gr_tautau + n * Pi**I * J * (J - 1) * (tau - 0.5) ** (J - 2)
-        return R * (-(tau**2) * (g0_tautau + gr_tautau) - (1 + Pi * gr_pi - tau * Pi * gr_pitau) ** 2 / (1 - Pi**2 * gr_pipi))
+
+        return _R * (-(tau**2) * (g0_tautau + gr_tautau) - (1 + Pi * gr_pi - tau * Pi * gr_pitau) ** 2 / (1 - Pi**2 * gr_pipi))
 
     @classmethod
     def w2_pT(cls, p: float, T: float) -> float:
@@ -652,7 +640,6 @@ class Region2:
 
         :return: speed of sound in [m / s]
         """
-        R = SPECIFIC_GAS_CONSTANT
         Pi = p
         tau = 540 / T
 
@@ -669,9 +656,10 @@ class Region2:
             gr_pipi = gr_pipi + n * I * (I - 1) * Pi ** (I - 2) * (tau - 0.5) ** J
             gr_pitau = gr_pitau + n * I * Pi ** (I - 1) * J * (tau - 0.5) ** (J - 1)
             gr_tautau = gr_tautau + n * Pi**I * J * (J - 1) * (tau - 0.5) ** (J - 2)
+
         return (
             1000
-            * R
+            * _R
             * T
             * (1 + 2 * Pi * gr_pi + Pi**2 * gr_pi**2)
             / ((1 - Pi**2 * gr_pipi) + (1 + Pi * gr_pi - tau * Pi * gr_pitau) ** 2 / (tau**2 * (g0_tautau + gr_tautau)))
@@ -686,7 +674,6 @@ class Region2:
 
         specific volume
         """
-        R = SPECIFIC_GAS_CONSTANT  # Eq 1
         Pi = p  # Eq 1
         tau = 540 / T  # Eq 1
 
@@ -721,9 +708,10 @@ class Region2:
 
         part_1 = 1 + 2 * Pi * gr_pi + Pi**2 * gr_pi**2
         part_2_a = 1 - Pi**2 * gr_pipi
-        part_2_b = (1 + Pi * gr_pi - tau * Pi * gr_pitau) ** 2  # x
+        part_2_b = (1 + Pi * gr_pi - tau * Pi * gr_pitau) ** 2
         part_2_c = tau**2 * (g0_tautau + gr_tautau)
-        return math.sqrt(1000 * R * T * part_1 / (part_2_a + part_2_b / part_2_c))
+
+        return math.sqrt(1000 * _R * T * part_1 / (part_2_a + part_2_b / part_2_c))
 
     @staticmethod
     def T2_ph(p, h):
@@ -748,7 +736,6 @@ class Region2:
             Ts = 0
             hs = h / 2000
             for I, J, n in zip(R2.Table20_I, R2.Table20_J, R2.Table20_n):
-                # for i in range(0, 34):
                 Ts = Ts + n * p**I * (hs - 2.1) ** J
         elif sub_reg == 2:
             # Subregion B
@@ -766,7 +753,6 @@ class Region2:
             Ts = 0
             hs = h / 2000
             for I, J, n in zip(R2.Table22_I, R2.Table22_J, R2.Table22_n):
-                # for i in range(0, 23):
                 Ts = Ts + n * (p + 25) ** I * (hs - 1.8) ** J
         return Ts
 
@@ -844,11 +830,13 @@ class Region2:
                 sub_reg = 3
             else:
                 sub_reg = 2
+
         if sub_reg == 1:
             # Subregion A
             # Table 6, Eq 3, page 8
             eta = h / 4200
             Sigma = s / 12
+
             Pi = 0
             for I, J, n in zip(R2.Sub_psh12_Table6_I, R2.Sub_psh12_Table6_J, R2.Sub_psh12_Table6_n):
                 Pi = Pi + n * (eta - 0.5) ** I * (Sigma - 1.2) ** J
@@ -858,9 +846,9 @@ class Region2:
             # Table 7, Eq 4, page 9
             eta = h / 4100
             Sigma = s / 7.9
+
             Pi = 0
             for I, J, n in zip(R2.Sub_psh12_Table7_I, R2.Sub_psh12_Table7_J, R2.Sub_psh12_Table7_n):
-                # for i in range(0, 33):
                 Pi = Pi + n * (eta - 0.6) ** I * (Sigma - 1.01) ** J
             p2_hs = Pi**4 * 100
         else:
@@ -868,9 +856,9 @@ class Region2:
             # Table 8, Eq 5, page 10
             eta = h / 3500
             Sigma = s / 5.9
+
             Pi = 0
             for I, J, n in zip(R2.Sub_psh12_Table8_I, R2.Sub_psh12_Table8_J, R2.Sub_psh12_Table8_n):
-                # for i in range(0, 31):
                 Pi = Pi + n * (eta - 0.7) ** I * (Sigma - 1.1) ** J
             p2_hs = Pi**4 * 100
         return p2_hs
@@ -935,17 +923,15 @@ class Region3:
 
         :return: preasure in [MPa]
         """
-        R = SPECIFIC_GAS_CONSTANT
-        tc = CRITICAL_TEMPERATURE
-        rhoc = CRITICAL_DENSITY
-        delta = rho / rhoc
-        tau = tc / T
+        delta = rho / _rhoc
+        tau = _tc / T
+
         fidelta = 0
         for I, J, n in zip(R3.Table30_I, R3.Table30_J, R3.Table30_n):
             fidelta = fidelta + n * I * delta ** (I - 1) * tau**J
 
         fidelta = fidelta + (R3.Table30_n[0] / delta)
-        return (rho * R * T * delta * fidelta) / 1000.0
+        return (rho * _R * T * delta * fidelta) / 1000.0
 
     @classmethod
     def u3_rhoT(cls, rho: float, T: float) -> float:
@@ -960,16 +946,15 @@ class Region3:
 
         :return: specific internal energy in [kJ / kg]
         """
-        R = SPECIFIC_GAS_CONSTANT
-        tc = CRITICAL_TEMPERATURE
-        rhoc = CRITICAL_DENSITY
-        delta = rho / rhoc
-        tau = tc / T
-        fitau = 0
+        delta = rho / _rhoc
+        tau = _tc / T
+
         # TODO check table range
+        fitau = 0
         for I, J, n in zip(R3.Table30_I[1:], R3.Table30_J[1:], R3.Table30_n[1:]):
             fitau = fitau + n * delta**I * J * tau ** (J - 1)
-        return R * T * (tau * fitau)
+
+        return _R * T * (tau * fitau)
 
     @classmethod
     def h3_rhoT(cls, rho: float, T: float) -> float:
@@ -984,18 +969,17 @@ class Region3:
 
         :return: enthalpy in [kJ / kg]
         """
-        R = SPECIFIC_GAS_CONSTANT
-        tc = CRITICAL_TEMPERATURE
-        rhoc = CRITICAL_DENSITY
-        delta = rho / rhoc
-        tau = tc / T
+        delta = rho / _rhoc
+        tau = _tc / T
+
         fidelta = 0
         fitau = 0
         for I, J, n in zip(R3.Table30_I[1:], R3.Table30_J[1:], R3.Table30_n[1:]):
             fidelta = fidelta + n * I * delta ** (I - 1) * tau**J
             fitau = fitau + n * delta**I * J * tau ** (J - 1)
+
         fidelta = fidelta + R3.Table30_n[0] / delta
-        return R * T * (tau * fitau + delta * fidelta)
+        return _R * T * (tau * fitau + delta * fidelta)
 
     @classmethod
     def s3_rhoT(cls, rho: float, T: float) -> float:
@@ -1010,18 +994,17 @@ class Region3:
 
         :return: specific entropy in [kJ / (kg K)]
         """
-        R = SPECIFIC_GAS_CONSTANT
-        tc = CRITICAL_TEMPERATURE
-        rhoc = CRITICAL_DENSITY
-        delta = rho / rhoc
-        tau = tc / T
+        delta = rho / _rhoc
+        tau = _tc / T
+
         fi = 0
         fitau = 0
         for I, J, n in zip(R3.Table30_I[1:], R3.Table30_J[1:], R3.Table30_n[1:]):
             fi = fi + n * delta**I * tau**J
             fitau = fitau + n * delta**I * J * tau ** (J - 1)
+
         fi = fi + R3.Table30_n[0] * math.log(delta)
-        return R * (tau * fitau - fi)
+        return _R * (tau * fitau - fi)
 
     @classmethod
     def Cp3_rhoT(cls, rho: float, T: float) -> float:
@@ -1036,11 +1019,9 @@ class Region3:
 
         :return: specific isobaric heat capacity in [kJ / (kg K)]
         """
-        R = SPECIFIC_GAS_CONSTANT
-        tc = CRITICAL_TEMPERATURE
-        rhoc = CRITICAL_DENSITY
-        delta = rho / rhoc
-        tau = tc / T
+        delta = rho / _rhoc
+        tau = _tc / T
+
         fitautau = 0
         fidelta = 0
         fideltatau = 0
@@ -1050,9 +1031,10 @@ class Region3:
             fidelta = fidelta + n * I * delta ** (I - 1) * tau**J
             fideltatau = fideltatau + n * I * delta ** (I - 1) * J * tau ** (J - 1)
             fideltadelta = fideltadelta + n * I * (I - 1) * delta ** (I - 2) * tau**J
+
         fidelta = fidelta + R3.Table30_n[0] / delta
         fideltadelta = fideltadelta - R3.Table30_n[0] / (delta**2)
-        return R * (
+        return _R * (
             -(tau**2) * fitautau + (delta * fidelta - delta * tau * fideltatau) ** 2 / (2 * delta * fidelta + delta**2 * fideltadelta)
         )
 
@@ -1069,11 +1051,9 @@ class Region3:
 
         :return: specific isochoric heat capacity in [kJ / (kg K)]
         """
-        R = SPECIFIC_GAS_CONSTANT
-        tc = CRITICAL_TEMPERATURE
-        rhoc = CRITICAL_DENSITY
-        delta = rho / rhoc
-        tau = tc / T
+        delta = rho / _rhoc
+        tau = _tc / T
+
         fitautau = 0
         # TODO:vvvv Check for mistake vvvvv
         # for i = 1 : 40
@@ -1081,7 +1061,8 @@ class Region3:
         for I, J, n in zip(R3.Table30_I[1:], R3.Table30_J[1:], R3.Table30_n[1:]):
             # for i in range(1, 40):
             fitautau = fitautau + n * delta**I * J * (J - 1) * tau ** (J - 2)
-        return R * -(tau * tau * fitautau)
+
+        return _R * -(tau * tau * fitautau)
 
     @classmethod
     def w3_rhoT(cls, rho: float, T: float) -> float:
@@ -1096,11 +1077,9 @@ class Region3:
 
         :return: speed of sound in [m / s]
         """
-        R = SPECIFIC_GAS_CONSTANT
-        tc = CRITICAL_TEMPERATURE
-        rhoc = CRITICAL_DENSITY
-        delta = rho / rhoc
-        tau = tc / T
+        delta = rho / _rhoc
+        tau = _tc / T
+
         fitautau = 0
         fidelta = 0
         fideltatau = 0
@@ -1110,11 +1089,12 @@ class Region3:
             fidelta = fidelta + n * I * delta ** (I - 1) * tau**J
             fideltatau = fideltatau + n * I * delta ** (I - 1) * J * tau ** (J - 1)
             fideltadelta = fideltadelta + n * I * (I - 1) * delta ** (I - 2) * tau**J
+
         fidelta = fidelta + R3.Table30_n[0] / delta
         fideltadelta = fideltadelta - R3.Table30_n[0] / (delta**2)
         return (
             1000
-            * R
+            * _R
             * T
             * (2 * delta * fidelta + delta**2 * fideltadelta - (delta * fidelta - delta * tau * fideltatau) ** 2 / (tau**2 * fitautau))
         ) ** 0.5
@@ -2109,7 +2089,7 @@ class Region3:
         :return: enthalpy in [kJ / kg]
         """
         hs = float("NaN")
-        if p < CRITICAL_PRESSURE:  # Below triple point
+        if p < _pc:  # Below triple point
             Ts = Region4.T4_p(p)  # Saturation temperature
             if T <= Ts:  # Liquid side
                 High_Bound = Region4.h4L_p(p)  # Max h ???r liauid h.
@@ -2384,7 +2364,7 @@ class Region4:
         :return: enthalpy in [kJ / kg]
         """
         hs = float("NaN")
-        if TRIPLE_POINT_PRESSURE < p < CRITICAL_PRESSURE:
+        if TRIPLE_POINT_PRESSURE < p < _pc:
             Ts = Region4.T4_p(p)
             if p < 16.529:
                 h4L_p = Region1.h1_pT(p, Ts)
@@ -2426,7 +2406,7 @@ class Region4:
         :return: enthalpy in [kJ / kg]
         """
         hs = float("NaN")
-        if TRIPLE_POINT_PRESSURE < p < CRITICAL_PRESSURE:
+        if TRIPLE_POINT_PRESSURE < p < _pc:
             Ts = Region4.T4_p(p)
             if p < 16.529:
                 h4V_p = Region2.h2_pT(p, Ts)
@@ -2606,7 +2586,6 @@ class Region5:
         Iir = Region5.Iir
         Jir = Region5.Jir
         nir = Region5.nir
-        R = SPECIFIC_GAS_CONSTANT
         tau = 1000 / T
         Pi = p
 
@@ -2617,7 +2596,7 @@ class Region5:
         gammar_tau = 0
         for i in range(0, 5):
             gammar_tau = gammar_tau + nir[i] * Pi ** Iir[i] * Jir[i] * tau ** (Jir[i] - 1)
-        return R * T * tau * (gamma0_tau + gammar_tau)
+        return _R * T * tau * (gamma0_tau + gammar_tau)
 
     @classmethod
     def v5_pT(cls, p: float, T: float) -> float:
@@ -2635,14 +2614,13 @@ class Region5:
         Iir = Region5.Iir
         Jir = Region5.Jir
         nir = Region5.nir
-        R = SPECIFIC_GAS_CONSTANT
         tau = 1000 / T  #
         Pi = p  #
         gamma0_pi = 1 / Pi  #
         gammar_pi = 0  #
         for i in range(0, 5):
             gammar_pi = gammar_pi + nir[i] * Iir[i] * Pi ** (Iir[i] - 1) * tau ** Jir[i]
-        return R * T / p * Pi * (gamma0_pi + gammar_pi) / 1000
+        return _R * T / p * Pi * (gamma0_pi + gammar_pi) / 1000
 
     @classmethod
     def u5_pT(cls, p: float, T: float) -> float:
@@ -2657,12 +2635,9 @@ class Region5:
 
         :return: specific internal energy in [kJ / kg]
         """
-        Ji0 = R4.Table37_J
-        ni0 = R4.Table37_n
         Iir = Region5.Iir
         Jir = Region5.Jir
         nir = Region5.nir
-        R = SPECIFIC_GAS_CONSTANT
         tau = 1000 / T
         Pi = p
 
@@ -2677,7 +2652,7 @@ class Region5:
         for i in range(0, 5):
             gammar_pi = gammar_pi + nir[i] * Iir[i] * Pi ** (Iir[i] - 1) * tau ** Jir[i]
             gammar_tau = gammar_tau + nir[i] * Pi ** Iir[i] * Jir[i] * tau ** (Jir[i] - 1)
-        return R * T * (tau * (gamma0_tau + gammar_tau) - Pi * (gamma0_pi + gammar_pi))
+        return _R * T * (tau * (gamma0_tau + gammar_tau) - Pi * (gamma0_pi + gammar_pi))
 
     @classmethod
     def Cp5_pT(cls, p: float, T: float) -> float:
@@ -2695,7 +2670,6 @@ class Region5:
         Iir = Region5.Iir
         Jir = Region5.Jir
         nir = Region5.nir
-        R = SPECIFIC_GAS_CONSTANT
         tau = 1000 / T
         Pi = p
 
@@ -2706,7 +2680,7 @@ class Region5:
         gammar_tautau = 0
         for i in range(0, 5):
             gammar_tautau = gammar_tautau + nir[i] * Pi ** Iir[i] * Jir[i] * (Jir[i] - 1) * tau ** (Jir[i] - 2)
-        return -R * tau**2 * (gamma0_tautau + gammar_tautau)
+        return -_R * tau**2 * (gamma0_tautau + gammar_tautau)
 
     @classmethod
     def s5_pT(cls, p: float, T: float) -> float:
@@ -2724,7 +2698,6 @@ class Region5:
         Iir = Region5.Iir
         Jir = Region5.Jir
         nir = Region5.nir
-        R = SPECIFIC_GAS_CONSTANT
         tau = 1000 / T
         Pi = p
 
@@ -2739,7 +2712,7 @@ class Region5:
         for i in range(0, 5):
             gammar = gammar + nir[i] * Pi ** Iir[i] * tau ** Jir[i]
             gammar_tau = gammar_tau + nir[i] * Pi ** Iir[i] * Jir[i] * tau ** (Jir[i] - 1)
-        return R * (tau * (gamma0_tau + gammar_tau) - (gamma0 + gammar))
+        return _R * (tau * (gamma0_tau + gammar_tau) - (gamma0 + gammar))
 
     @classmethod
     def Cv5_pT(cls, p: float, T: float) -> float:
@@ -2754,12 +2727,9 @@ class Region5:
 
         :return: specific isochoric heat capacity in [kJ / (kg K)]
         """
-        Ji0 = R4.Table37_J
-        ni0 = R4.Table37_n
         Iir = Region5.Iir
         Jir = Region5.Jir
         nir = Region5.nir
-        R = SPECIFIC_GAS_CONSTANT
         tau = 1000 / T
         Pi = p
 
@@ -2776,7 +2746,7 @@ class Region5:
             gammar_pitau = gammar_pitau + nir[i] * Iir[i] * Pi ** (Iir[i] - 1) * Jir[i] * tau ** (Jir[i] - 1)
             gammar_pipi = gammar_pipi + nir[i] * Iir[i] * (Iir[i] - 1) * Pi ** (Iir[i] - 2) * tau ** Jir[i]
             gammar_tautau = gammar_tautau + nir[i] * Pi ** Iir[i] * Jir[i] * (Jir[i] - 1) * tau ** (Jir[i] - 2)
-        return R * (
+        return _R * (
             -(tau**2 * (gamma0_tautau + gammar_tautau)) - (1 + Pi * gammar_pi - tau * Pi * gammar_pitau) ** 2 / (1 - Pi**2 * gammar_pipi)
         )
 
@@ -2796,7 +2766,6 @@ class Region5:
         Iir = Region5.Iir
         Jir = Region5.Jir
         nir = Region5.nir
-        R = SPECIFIC_GAS_CONSTANT
         tau = 1000 / T
         Pi = p
 
@@ -2816,7 +2785,7 @@ class Region5:
 
         return (
             1000
-            * R
+            * _R
             * T
             * (1 + 2 * Pi * gammar_pi + Pi**2 * gammar_pi**2)
             / ((1 - Pi**2 * gammar_pipi) + (1 + Pi * gammar_pi - tau * Pi * gammar_pitau) ** 2 / (tau**2 * (gamma0_tautau + gammar_tautau)))
