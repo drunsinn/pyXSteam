@@ -5,6 +5,8 @@ Original Released by Magnus Holmgren for Matlab and Excel:
 
 At [this github repository](https://github.com/stu314159/xsteam) you can find the/a matlab version.
 
+A .NET implementation is availible thanks to the work of rogerlew here: [XSteamNET](https://github.com/rogerlew/XSteamNET).
+
 XSteam provides (mostly) accurate steam and water properties from 0 -
 1000 bar and from 0 - 2000 °C according to the [IAPWS release IF-97](http://www.iapws.org/relguide/IF97-Rev.pdf). For
 accuracy of the functions in different regions see IF-97 Page 4
@@ -21,7 +23,7 @@ and also functions for calculations on heavy water. This includes:
 * IAPWS R14
 
 
-## Contributors
+## Contributors to pyXSteam
 In chronological order:
 - IAPWS
 - Magnus Holmgren
