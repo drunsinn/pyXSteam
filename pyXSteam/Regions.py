@@ -41,15 +41,16 @@ class Region1:
 
         :return: specific volume in [m³ / kg]
         """
-        I1 = R1.Table2_I
-        J1 = R1.Table2_J
-        n1 = R1.Table2_n
+        # I1 = R1.Table2_I
+        # J1 = R1.Table2_J
+        # n1 = R1.Table2_n
         R = SPECIFIC_GAS_CONSTANT
         Pi = p / 16.53  # 16.53 MPa
         tau = 1386 / T  # 1386 K
         gamma_der_pi = 0
-        for i in range(0, 34):
-            gamma_der_pi = gamma_der_pi - n1[i] * I1[i] * (7.1 - Pi) ** (I1[i] - 1) * (tau - 1.222) ** J1[i]
+        for I, J, n in zip(R1.Table2_I, R1.Table2_J, R1.Table2_n):
+            # for i in range(0, 34):
+            gamma_der_pi = gamma_der_pi - n * I * (7.1 - Pi) ** (I - 1) * (tau - 1.222) ** J
         return R * T / p * Pi * gamma_der_pi / 1000
 
     @classmethod
@@ -66,15 +67,16 @@ class Region1:
 
         :return: enthalpy in [kJ / kg]
         """
-        I1 = R1.Table2_I
-        J1 = R1.Table2_J
-        n1 = R1.Table2_n
+        # I1 = R1.Table2_I
+        # J1 = R1.Table2_J
+        # n1 = R1.Table2_n
         R = SPECIFIC_GAS_CONSTANT
         Pi = p / 16.53
         tau = 1386 / T
         gamma_der_tau = 0
-        for i in range(0, 34):
-            gamma_der_tau = gamma_der_tau + (n1[i] * (7.1 - Pi) ** I1[i] * J1[i] * (tau - 1.222) ** (J1[i] - 1))
+        for I, J, n in zip(R1.Table2_I, R1.Table2_J, R1.Table2_n):
+            # for i in range(0, 34):
+            gamma_der_tau = gamma_der_tau + (n * (7.1 - Pi) ** I * J * (tau - 1.222) ** (J - 1))
         return R * T * tau * gamma_der_tau
 
     @classmethod
@@ -90,17 +92,18 @@ class Region1:
 
         :return: specific internal energy in [kJ / kg]
         """
-        I1 = R1.Table2_I
-        J1 = R1.Table2_J
-        n1 = R1.Table2_n
+        # I1 = R1.Table2_I
+        # J1 = R1.Table2_J
+        # n1 = R1.Table2_n
         R = SPECIFIC_GAS_CONSTANT
         Pi = p / 16.53
         tau = 1386 / T
         gamma_der_tau = 0
         gamma_der_pi = 0
-        for i in range(0, 34):
-            gamma_der_pi = gamma_der_pi - n1[i] * I1[i] * (7.1 - Pi) ** (I1[i] - 1) * (tau - 1.222) ** J1[i]
-            gamma_der_tau = gamma_der_tau + (n1[i] * (7.1 - Pi) ** I1[i] * J1[i] * (tau - 1.222) ** (J1[i] - 1))
+        for I, J, n in zip(R1.Table2_I, R1.Table2_J, R1.Table2_n):
+            # for i in range(0, 34):
+            gamma_der_pi = gamma_der_pi - n * I * (7.1 - Pi) ** (I - 1) * (tau - 1.222) ** J
+            gamma_der_tau = gamma_der_tau + (n * (7.1 - Pi) ** I * J * (tau - 1.222) ** (J - 1))
         return R * T * (tau * gamma_der_tau - Pi * gamma_der_pi)
 
     @classmethod
@@ -116,17 +119,18 @@ class Region1:
 
         :return: specific entropy in [kJ / (kg K)]
         """
-        I1 = R1.Table2_I
-        J1 = R1.Table2_J
-        n1 = R1.Table2_n
+        # I1 = R1.Table2_I
+        # J1 = R1.Table2_J
+        # n1 = R1.Table2_n
         R = SPECIFIC_GAS_CONSTANT
         Pi = p / 16.53
         tau = 1386 / T
         gamma = 0
         gamma_der_tau = 0
-        for i in range(0, 34):
-            gamma_der_tau = gamma_der_tau + (n1[i] * (7.1 - Pi) ** I1[i] * J1[i] * (tau - 1.222) ** (J1[i] - 1))
-            gamma = gamma + n1[i] * (7.1 - Pi) ** I1[i] * (tau - 1.222) ** J1[i]
+        for I, J, n in zip(R1.Table2_I, R1.Table2_J, R1.Table2_n):
+            # for i in range(0, 34):
+            gamma_der_tau = gamma_der_tau + (n * (7.1 - Pi) ** I * J * (tau - 1.222) ** (J - 1))
+            gamma = gamma + n * (7.1 - Pi) ** I * (tau - 1.222) ** J
         return R * tau * gamma_der_tau - R * gamma
 
     @classmethod
@@ -142,15 +146,16 @@ class Region1:
 
         :return: specific isobaric heat capacity in [kJ / (kg K)]
         """
-        I1 = R1.Table2_I
-        J1 = R1.Table2_J
-        n1 = R1.Table2_n
+        # I1 = R1.Table2_I
+        # J1 = R1.Table2_J
+        # n1 = R1.Table2_n
         R = SPECIFIC_GAS_CONSTANT
         Pi = p / 16.53
         tau = 1386 / T
         gamma_der_tautau = 0
-        for i in range(0, 34):
-            gamma_der_tautau = gamma_der_tautau + (n1[i] * (7.1 - Pi) ** I1[i] * J1[i] * (J1[i] - 1) * (tau - 1.222) ** (J1[i] - 2))
+        for I, J, n in zip(R1.Table2_I, R1.Table2_J, R1.Table2_n):
+            # for i in range(0, 34):
+            gamma_der_tautau = gamma_der_tautau + (n * (7.1 - Pi) ** I * J * (J - 1) * (tau - 1.222) ** (J - 2))
         return -R * tau**2 * gamma_der_tautau
 
     @classmethod
@@ -166,9 +171,6 @@ class Region1:
 
         :return: specific isochoric heat capacity in [kJ / (kg K)]
         """
-        I1 = R1.Table2_I
-        J1 = R1.Table2_J
-        n1 = R1.Table2_n
         R = SPECIFIC_GAS_CONSTANT
         Pi = p / 16.53
         tau = 1386 / T
@@ -176,11 +178,12 @@ class Region1:
         gamma_der_pipi = 0
         gamma_der_pitau = 0
         gamma_der_tautau = 0
-        for i in range(0, 34):
-            gamma_der_pi = gamma_der_pi - n1[i] * I1[i] * (7.1 - Pi) ** (I1[i] - 1) * (tau - 1.222) ** J1[i]
-            gamma_der_pipi = gamma_der_pipi + n1[i] * I1[i] * (I1[i] - 1) * (7.1 - Pi) ** (I1[i] - 2) * (tau - 1.222) ** J1[i]
-            gamma_der_pitau = gamma_der_pitau - n1[i] * I1[i] * (7.1 - Pi) ** (I1[i] - 1) * J1[i] * (tau - 1.222) ** (J1[i] - 1)
-            gamma_der_tautau = gamma_der_tautau + n1[i] * (7.1 - Pi) ** I1[i] * J1[i] * (J1[i] - 1) * (tau - 1.222) ** (J1[i] - 2)
+        for I, J, n in zip(R1.Table2_I, R1.Table2_J, R1.Table2_n):
+            # for i in range(0, 34):
+            gamma_der_pi = gamma_der_pi - n * I * (7.1 - Pi) ** (I - 1) * (tau - 1.222) ** J
+            gamma_der_pipi = gamma_der_pipi + n * I * (I - 1) * (7.1 - Pi) ** (I - 2) * (tau - 1.222) ** J
+            gamma_der_pitau = gamma_der_pitau - n * I * (7.1 - Pi) ** (I - 1) * J * (tau - 1.222) ** (J - 1)
+            gamma_der_tautau = gamma_der_tautau + n * (7.1 - Pi) ** I * J * (J - 1) * (tau - 1.222) ** (J - 2)
         return R * (-(tau**2) * gamma_der_tautau + (gamma_der_pi - tau * gamma_der_pitau) ** 2 / gamma_der_pipi)
 
     @classmethod
@@ -196,9 +199,6 @@ class Region1:
 
         :return: speed of sound in [m / s]
         """
-        I1 = R1.Table2_I
-        J1 = R1.Table2_J
-        n1 = R1.Table2_n
         R = SPECIFIC_GAS_CONSTANT
         Pi = p / 16.53
         tau = 1386 / T
@@ -206,11 +206,12 @@ class Region1:
         gamma_der_pipi = 0
         gamma_der_pitau = 0
         gamma_der_tautau = 0
-        for i in range(0, 34):
-            gamma_der_pi = gamma_der_pi - n1[i] * I1[i] * (7.1 - Pi) ** (I1[i] - 1) * (tau - 1.222) ** J1[i]
-            gamma_der_pipi = gamma_der_pipi + n1[i] * I1[i] * (I1[i] - 1) * (7.1 - Pi) ** (I1[i] - 2) * (tau - 1.222) ** J1[i]
-            gamma_der_pitau = gamma_der_pitau - n1[i] * I1[i] * (7.1 - Pi) ** (I1[i] - 1) * J1[i] * (tau - 1.222) ** (J1[i] - 1)
-            gamma_der_tautau = gamma_der_tautau + n1[i] * (7.1 - Pi) ** I1[i] * J1[i] * (J1[i] - 1) * (tau - 1.222) ** (J1[i] - 2)
+        for I, J, n in zip(R1.Table2_I, R1.Table2_J, R1.Table2_n):
+            # for i in range(0, 34):
+            gamma_der_pi = gamma_der_pi - n * I * (7.1 - Pi) ** (I - 1) * (tau - 1.222) ** J
+            gamma_der_pipi = gamma_der_pipi + n * I * (I - 1) * (7.1 - Pi) ** (I - 2) * (tau - 1.222) ** J
+            gamma_der_pitau = gamma_der_pitau - n * I * (7.1 - Pi) ** (I - 1) * J * (tau - 1.222) ** (J - 1)
+            gamma_der_tautau = gamma_der_tautau + n * (7.1 - Pi) ** I * J * (J - 1) * (tau - 1.222) ** (J - 2)
         return (
             1000 * R * T * gamma_der_pi**2 / ((gamma_der_pi - tau * gamma_der_pitau) ** 2 / (tau**2 * gamma_der_tautau) - gamma_der_pipi)
         ) ** 0.5
@@ -229,14 +230,12 @@ class Region1:
 
         :return: temperature in [K]
         """
-        I1 = R1.Table6_I
-        J1 = R1.Table6_J
-        n1 = R1.Table6_n
         Pi = p / 1
         eta = h / 2500
         T = 0
-        for i in range(0, 20):
-            T = T + n1[i] * Pi ** I1[i] * (eta + 1) ** J1[i]
+        for I, J, n in zip(R1.Table6_I, R1.Table6_J, R1.Table6_n):
+            # for i in range(0, 20):
+            T = T + n * Pi**I * (eta + 1) ** J
         return T
 
     @classmethod
@@ -253,14 +252,12 @@ class Region1:
 
         :return: temperature in [K]
         """
-        I1 = R1.Table8_I
-        J1 = R1.Table8_J
-        n1 = R1.Table8_n
         Pi = p / 1
         Sigma = s / 1
         T = 0
-        for i in range(0, 20):
-            T = T + n1[i] * Pi ** I1[i] * (Sigma + 2) ** J1[i]
+        for I, J, n in zip(R1.Table8_I, R1.Table8_J, R1.Table8_n):
+            # for i in range(0, 20):
+            T = T + n * Pi**I * (Sigma + 2) ** J
         return T
 
     @classmethod
@@ -280,14 +277,12 @@ class Region1:
 
         :return: preasure in [MPa]
         """
-        I1 = R1.Sub_psh12_Table2_I
-        J1 = R1.Sub_psh12_Table2_J
-        n1 = R1.Sub_psh12_Table2_n
         eta = h / 3400
         Sigma = s / 7.6
         p = 0
-        for i in range(0, 19):
-            p = p + n1[i] * (eta + 0.05) ** I1[i] * (Sigma + 0.05) ** J1[i]
+        for I, J, n in zip(R1.Sub_psh12_Table2_I, R1.Sub_psh12_Table2_J, R1.Sub_psh12_Table2_n):
+            # for i in range(0, 19):
+            p = p + n * (eta + 0.05) ** I * (Sigma + 0.05) ** J
         return p * 100
 
     @classmethod
@@ -349,16 +344,14 @@ class Region2:
 
         :return: specific volume in [m³ / kg]
         """
-        Ir = R2.Table11_I
-        Jr = R2.Table11_J
-        nr = R2.Table11_n
         R = SPECIFIC_GAS_CONSTANT  # Eq 1
         Pi = p  # Eq 1
         tau = 540 / T  # Eq 1
         g0_pi = 1 / Pi  # see table 13
         gr_pi = 0
-        for i in range(0, 43):
-            gr_pi = gr_pi + nr[i] * Ir[i] * Pi ** (Ir[i] - 1) * (tau - 0.5) ** Jr[i]  # see table 14
+        for I, J, n in zip(R2.Table11_I, R2.Table11_J, R2.Table11_n):
+            # for i in range(0, 43):
+            gr_pi = gr_pi + n * I * Pi ** (I - 1) * (tau - 0.5) ** J  # see table 14
         return R * T / p * Pi * (g0_pi + gr_pi) / 1000  # see table 12
 
     @staticmethod
@@ -370,74 +363,18 @@ class Region2:
 
         specific volume
         """
-
-        Ir = R2.Table16_I
-        Jr = R2.Table16_J
-        nr = R2.Table16_n
-
         R = SPECIFIC_GAS_CONSTANT  # Eq 1
         Pi = p  # Eq 1
         tau = 540 / T  # Eq 1
 
-        # table 13 - dimensionless gibbs free energy - gamma 0
-        # g0 = math.log(Pi)
-        # for i, n in enumerate(n0):
-        #    g0 += n * tau ** J0[i]
-
         # table 13 - dimensionless gibbs free energy - gamma 0 pi
         g0_pi = 1 / Pi
 
-        # table 13 - dimensionless gibbs free energy - gamma 0 pi pi
-        # g0_pipi = -1 / (Pi**2)
-
-        # table 13 - dimensionless gibbs free energy - gamma 0 tau
-        # g0_tau = 0
-        # for i, n in enumerate(n0):
-        #    g0_tau += n * J0[i] * tau ** (J0[i] - 1)
-
-        # table 13 - dimensionless gibbs free energy - gamma 0 tau tau
-        # g0_tautau = 0
-        # for i, n in enumerate(n0):
-        #    g0_tautau += n * J0[i] * (J0[i] - 1) * tau ** (J0[i] - 2)
-
-        # table 13 - dimensionless gibbs free energy - gamma 0 pi tau
-        # g0_pitau = 0
-
-        # table 14 - residual dimensionless gibbs free energy - part r
-        # gr = 0
-        # for i, n in enumerate(nr):
-        #    gr += n * Pi ** Ir[i] * (tau - 0.5) ** Jr[i]
-
         # table 14 - residual dimensionless gibbs free energy - part r pi
         gr_pi = 0
-        for i, n in enumerate(nr):
-            gr_pi = gr_pi + n * Ir[i] * Pi ** (Ir[i] - 1) * (tau - 0.5) ** Jr[i]
-
-        # table 14 - residual dimensionless gibbs free energy - part r pi pi
-        # gr_pipi = 0
-        # for i, n in enumerate(nr):
-        #    gr_pipi += (
-        #        n * Ir[i] * (Ir[i] - 1) * Pi ** (Ir[i] - 2) ** (tau - 0.5) ** Jr[i]
-        #    )
-
-        # table 14 - residual dimensionless gibbs free energy - part r tau
-        # gr_tau = 0
-        # for i, n in enumerate(nr):
-        #    gr_tau += n * Pi ** Ir[i] * Jr[i] * (tau - 0.5) ** (Jr[i] - 1)
-
-        # table 14 - residual dimensionless gibbs free energy - part r tau tau
-        # gr_tautau = 0
-        # for i, n in enumerate(nr):
-        #    gr_tautau += (
-        #        n * Pi ** Ir[i] * Jr[i] * (Jr[i] - 1) * (tau - 0.5) ** (Jr[i] - 2)
-        #    )
-
-        # table 14 - residual dimensionless gibbs free energy - part r pi tau
-        # gr_pitau = 0
-        # for i, n in enumerate(nr):
-        #    gr_pitau += (
-        #        n * Ir[i] * Pi ** (Ir[i] - 1) * Jr[i] * (tau - 0.5) ** (Jr[i] - 1)
-        #    )
+        for I, J, n in zip(R2.Table16_I, R2.Table16_J, R2.Table16_n):
+            # for i, n in enumerate(nr):
+            gr_pi = gr_pi + n * I * Pi ** (I - 1) * (tau - 0.5) ** J
 
         return R * T / p * Pi * (g0_pi + gr_pi) / 1000  # see table 12
 
@@ -454,20 +391,17 @@ class Region2:
 
         :return: enthalpy in [kJ / kg]
         """
-        J0 = R2.Table10_J0
-        n0 = R2.Table10_n0
-        Ir = R2.Table11_I
-        Jr = R2.Table11_J
-        nr = R2.Table11_n
         R = SPECIFIC_GAS_CONSTANT
         Pi = p
         tau = 540 / T
         g0_tau = 0
-        for i in range(0, 9):
-            g0_tau = g0_tau + n0[i] * J0[i] * tau ** (J0[i] - 1)
+        for J, n in zip(R2.Table10_J0, R2.Table10_n0):
+            # for i in range(0, 9):
+            g0_tau = g0_tau + n * J * tau ** (J - 1)
         gr_tau = 0
-        for i in range(0, 43):
-            gr_tau = gr_tau + nr[i] * Pi ** Ir[i] * Jr[i] * (tau - 0.5) ** (Jr[i] - 1)
+        for I, J, n in zip(R2.Table11_I, R2.Table11_J, R2.Table11_n):
+            # for i in range(0, 43):
+            gr_tau = gr_tau + n * Pi**I * J * (tau - 0.5) ** (J - 1)
         return R * T * tau * (g0_tau + gr_tau)
 
     @staticmethod
@@ -479,85 +413,21 @@ class Region2:
 
         specific volume
         """
-
-        J0 = R2.Table10_J0
-        n0 = R2.Table10_n0
-
-        Ir = R2.Table16_I
-        Jr = R2.Table16_J
-        nr = R2.Table16_n
-
         R = SPECIFIC_GAS_CONSTANT  # Eq 1
         Pi = p  # Eq 1
         tau = 540 / T  # Eq 1
 
-        # table 13 - dimensionless gibbs free energy - gamma 0
-        # g0 = math.log(Pi)
-        # for i, n in enumerate(n0):
-        #    g0 += n * tau ** J0[i]
-
-        # table 13 - dimensionless gibbs free energy - gamma 0 pi
-        # g0_pi = 1 / Pi
-
-        # table 13 - dimensionless gibbs free energy - gamma 0 pi pi
-        # g0_pipi = -1 / (Pi**2)
-
         # table 13 - dimensionless gibbs free energy - gamma 0 tau
         g0_tau = 0
-        for i, n in enumerate(n0):
-            g0_tau += n * J0[i] * tau ** (J0[i] - 1)
-
-        # table 13 - dimensionless gibbs free energy - gamma 0 tau tau
-        # g0_tautau = 0
-        # for i, n in enumerate(n0):
-        #    g0_tautau += n * J0[i] * (J0[i] - 1) * tau ** (J0[i] - 2)
-
-        # table 13 - dimensionless gibbs free energy - gamma 0 pi tau
-        # g0_pitau = 0
-
-        # table 14 - residual dimensionless gibbs free energy - part r
-        # gr = 0
-        # for i, n in enumerate(nr):
-        #    gr += n * Pi ** Ir[i] * (tau - 0.5) ** Jr[i]
-
-        # table 14 - residual dimensionless gibbs free energy - part r pi
-        # gr_pi = 0
-        # for i, n in enumerate(nr):
-        #    gr_pi = gr_pi + n * Ir[i] * Pi ** (Ir[i] - 1) * (tau - 0.5) ** Jr[i]
-
-        # table 14 - residual dimensionless gibbs free energy - part r pi pi
-        # gr_pipi = 0
-        # for i, n in enumerate(nr):
-        #    gr_pipi += (
-        #        n * Ir[i] * (Ir[i] - 1) * Pi ** (Ir[i] - 2) ** (tau - 0.5) ** Jr[i]
-        #    )
+        for J, n in zip(R2.Table10_J0, R2.Table10_n0):
+            g0_tau += n * J * tau ** (J - 1)
 
         # table 14 - residual dimensionless gibbs free energy - part r tau
         gr_tau = 0
-        for i, n in enumerate(nr):
-            gr_tau += n * Pi ** Ir[i] * Jr[i] * (tau - 0.5) ** (Jr[i] - 1)
+        for I, J, n in zip(R2.Table16_I, R2.Table16_J, R2.Table16_n):
+            gr_tau += n * Pi**I * J * (tau - 0.5) ** (J - 1)
 
-        # table 14 - residual dimensionless gibbs free energy - part r tau tau
-        # gr_tautau = 0
-        # for i, n in enumerate(nr):
-        #    gr_tautau += (
-        #        n * Pi ** Ir[i] * Jr[i] * (Jr[i] - 1) * (tau - 0.5) ** (Jr[i] - 2)
-        #    )
-
-        # table 14 - residual dimensionless gibbs free energy - part r pi tau
-        # gr_pitau = 0
-        # for i, n in enumerate(nr):
-        #    gr_pitau += (
-        #        n * Ir[i] * Pi ** (Ir[i] - 1) * Jr[i] * (tau - 0.5) ** (Jr[i] - 1)
-        #    )
-
-        # return R * T / p * Pi * (g0_pi + gr_pi) / 1000  # v2_pT
         return R * T * tau * (g0_tau + gr_tau)  # h2_pT
-        # return R * T * (tau * (g0_tau + gr_tau) - Pi * (g0_pi + gr_pi))  # u2_pT
-        # return R * (tau * (g0_tau + gr_tau) - (g0 + gr))  # s2_pT
-        # return -R * tau**2 * (g0_tautau + gr_tautau)  # Cp2_pT
-        # return R * (-(tau**2) * (g0_tautau + gr_tautau) - (1 + Pi * gr_pi - tau * Pi * gr_pitau) ** 2 / (1 - Pi**2 * gr_pipi) )  # Cv2_pT
-        # return ( 1000 * R * T * (1 + 2 * Pi * gr_pi + Pi**2 * gr_pi**2) / ( (1 - Pi**2 * gr_pipi) + (1 + Pi * gr_pi - tau * Pi * gr_pitau) ** 2 / (tau**2 * (g0_tautau + gr_tautau)) ) ) ** 0.5  # w2_pT
 
     @staticmethod
     def u2_pT(p, T):
@@ -571,23 +441,22 @@ class Region2:
         :param T: temperature in [K]
         :return: specific internal energy in [kJ / kg]
         """
-        J0 = R2.Table10_J0
-        n0 = R2.Table10_n0
-        Ir = R2.Table11_I
-        Jr = R2.Table11_J
-        nr = R2.Table11_n
         R = SPECIFIC_GAS_CONSTANT
         Pi = p
         tau = 540 / T
         g0_pi = 1 / Pi
         g0_tau = 0
-        for i in range(0, 9):
-            g0_tau = g0_tau + n0[i] * J0[i] * tau ** (J0[i] - 1)
+
+        for J, n in zip(R2.Table10_J0, R2.Table10_n0):
+            g0_tau = g0_tau + n * J * tau ** (J - 1)
+
         gr_pi = 0
         gr_tau = 0
-        for i in range(0, 43):
-            gr_pi = gr_pi + nr[i] * Ir[i] * Pi ** (Ir[i] - 1) * (tau - 0.5) ** Jr[i]
-            gr_tau = gr_tau + nr[i] * Pi ** Ir[i] * Jr[i] * (tau - 0.5) ** (Jr[i] - 1)
+
+        for I, J, n in zip(R2.Table11_I, R2.Table11_J, R2.Table11_n):
+            gr_pi = gr_pi + n * I * Pi ** (I - 1) * (tau - 0.5) ** J
+            gr_tau = gr_tau + n * Pi**I * J * (tau - 0.5) ** (J - 1)
+
         return R * T * (tau * (g0_tau + gr_tau) - Pi * (g0_pi + gr_pi))
 
     @staticmethod
@@ -599,85 +468,29 @@ class Region2:
 
         specific volume
         """
-
-        J0 = R2.Table10_J0
-        n0 = R2.Table10_n0
-
-        Ir = R2.Table16_I
-        Jr = R2.Table16_J
-        nr = R2.Table16_n
-
         R = SPECIFIC_GAS_CONSTANT  # Eq 1
         Pi = p  # Eq 1
         tau = 540 / T  # Eq 1
 
-        # table 13 - dimensionless gibbs free energy - gamma 0
-        # g0 = math.log(Pi)
-        # for i, n in enumerate(n0):
-        #    g0 += n * tau ** J0[i]
-
         # table 13 - dimensionless gibbs free energy - gamma 0 pi
         g0_pi = 1 / Pi
 
-        # table 13 - dimensionless gibbs free energy - gamma 0 pi pi
-        # g0_pipi = -1 / (Pi**2)
-
         # table 13 - dimensionless gibbs free energy - gamma 0 tau
         g0_tau = 0
-        for i, n in enumerate(n0):
-            g0_tau += n * J0[i] * tau ** (J0[i] - 1)
-
-        # table 13 - dimensionless gibbs free energy - gamma 0 tau tau
-        # g0_tautau = 0
-        # for i, n in enumerate(n0):
-        #    g0_tautau += n * J0[i] * (J0[i] - 1) * tau ** (J0[i] - 2)
-
-        # table 13 - dimensionless gibbs free energy - gamma 0 pi tau
-        # g0_pitau = 0
-
-        # table 14 - residual dimensionless gibbs free energy - part r
-        # gr = 0
-        # for i, n in enumerate(nr):
-        #    gr += n * Pi ** Ir[i] * (tau - 0.5) ** Jr[i]
+        for J, n in zip(R2.Table10_J0, R2.Table10_n0):
+            g0_tau += n * J * tau ** (J - 1)
 
         # table 14 - residual dimensionless gibbs free energy - part r pi
         gr_pi = 0
-        for i, n in enumerate(nr):
-            gr_pi = gr_pi + n * Ir[i] * Pi ** (Ir[i] - 1) * (tau - 0.5) ** Jr[i]
-
-        # table 14 - residual dimensionless gibbs free energy - part r pi pi
-        # gr_pipi = 0
-        # for i, n in enumerate(nr):
-        #    gr_pipi += (
-        #        n * Ir[i] * (Ir[i] - 1) * Pi ** (Ir[i] - 2) ** (tau - 0.5) ** Jr[i]
-        #    )
+        for I, J, n in zip(R2.Table16_I, R2.Table16_J, R2.Table16_n):
+            gr_pi = gr_pi + n * I * Pi ** (I - 1) * (tau - 0.5) ** J
 
         # table 14 - residual dimensionless gibbs free energy - part r tau
         gr_tau = 0
-        for i, n in enumerate(nr):
-            gr_tau += n * Pi ** Ir[i] * Jr[i] * (tau - 0.5) ** (Jr[i] - 1)
+        for I, J, n in zip(R2.Table16_I, R2.Table16_J, R2.Table16_n):
+            gr_tau += n * Pi**I * J * (tau - 0.5) ** (J - 1)
 
-        # table 14 - residual dimensionless gibbs free energy - part r tau tau
-        # gr_tautau = 0
-        # for i, n in enumerate(nr):
-        #    gr_tautau += (
-        #        n * Pi ** Ir[i] * Jr[i] * (Jr[i] - 1) * (tau - 0.5) ** (Jr[i] - 2)
-        #    )
-
-        # table 14 - residual dimensionless gibbs free energy - part r pi tau
-        # gr_pitau = 0
-        # for i, n in enumerate(nr):
-        #    gr_pitau += (
-        #        n * Ir[i] * Pi ** (Ir[i] - 1) * Jr[i] * (tau - 0.5) ** (Jr[i] - 1)
-        #    )
-
-        # return R * T / p * Pi * (g0_pi + gr_pi) / 1000  # v2_pT
-        # return R * T * tau * (g0_tau + gr_tau)  # h2_pT
         return R * T * (tau * (g0_tau + gr_tau) - Pi * (g0_pi + gr_pi))  # u2_pT
-        # return R * (tau * (g0_tau + gr_tau) - (g0 + gr))  # s2_pT
-        # return -R * tau**2 * (g0_tautau + gr_tautau)  # Cp2_pT
-        # return R * (-(tau**2) * (g0_tautau + gr_tautau) - (1 + Pi * gr_pi - tau * Pi * gr_pitau) ** 2 / (1 - Pi**2 * gr_pipi) )  # Cv2_pT
-        # return ( 1000 * R * T * (1 + 2 * Pi * gr_pi + Pi**2 * gr_pi**2) / ( (1 - Pi**2 * gr_pipi) + (1 + Pi * gr_pi - tau * Pi * gr_pitau) ** 2 / (tau**2 * (g0_tautau + gr_tautau)) ) ) ** 0.5  # w2_pT
 
     @staticmethod
     def s2_pT(p, T):
@@ -692,24 +505,20 @@ class Region2:
 
         :return: specific entropy in [kJ / (kg K)]
         """
-        J0 = R2.Table10_J0
-        n0 = R2.Table10_n0
-        Ir = R2.Table11_I
-        Jr = R2.Table11_J
-        nr = R2.Table11_n
         R = SPECIFIC_GAS_CONSTANT
         Pi = p
         tau = 540 / T
         g0 = math.log(Pi)
         g0_tau = 0
-        for i in range(0, 9):
-            g0 = g0 + n0[i] * tau ** J0[i]
-            g0_tau = g0_tau + n0[i] * J0[i] * tau ** (J0[i] - 1)
+        for J, n in zip(R2.Table10_J0, R2.Table10_n0):
+            g0 = g0 + n * tau**J
+            g0_tau = g0_tau + n * J * tau ** (J - 1)
+
         gr = 0
         gr_tau = 0
-        for i in range(0, 43):
-            gr = gr + nr[i] * Pi ** Ir[i] * (tau - 0.5) ** Jr[i]
-            gr_tau = gr_tau + nr[i] * Pi ** Ir[i] * Jr[i] * (tau - 0.5) ** (Jr[i] - 1)
+        for I, J, n in zip(R2.Table11_I, R2.Table11_J, R2.Table11_n):
+            gr = gr + n * Pi**I * (tau - 0.5) ** J
+            gr_tau = gr_tau + n * Pi**I * J * (tau - 0.5) ** (J - 1)
         return R * (tau * (g0_tau + gr_tau) - (g0 + gr))
 
     @staticmethod
@@ -721,85 +530,31 @@ class Region2:
 
         specific volume
         """
-
-        J0 = R2.Table10_J0
-        n0 = R2.Table10_n0
-
-        Ir = R2.Table16_I
-        Jr = R2.Table16_J
-        nr = R2.Table16_n
-
         R = SPECIFIC_GAS_CONSTANT  # Eq 1
         Pi = p  # Eq 1
         tau = 540 / T  # Eq 1
 
         # table 13 - dimensionless gibbs free energy - gamma 0
         g0 = math.log(Pi)
-        for i, n in enumerate(n0):
-            g0 += n * tau ** J0[i]
-
-        # table 13 - dimensionless gibbs free energy - gamma 0 pi
-        # g0_pi = 1 / Pi
-
-        # table 13 - dimensionless gibbs free energy - gamma 0 pi pi
-        # g0_pipi = -1 / (Pi**2)
+        for J, n in zip(R2.Table10_J0, R2.Table10_n0):
+            g0 += n * tau**J
 
         # table 13 - dimensionless gibbs free energy - gamma 0 tau
         g0_tau = 0
-        for i, n in enumerate(n0):
-            g0_tau += n * J0[i] * tau ** (J0[i] - 1)
-
-        # table 13 - dimensionless gibbs free energy - gamma 0 tau tau
-        # g0_tautau = 0
-        # for i, n in enumerate(n0):
-        #    g0_tautau += n * J0[i] * (J0[i] - 1) * tau ** (J0[i] - 2)
-
-        # table 13 - dimensionless gibbs free energy - gamma 0 pi tau
-        # g0_pitau = 0
+        for J, n in zip(R2.Table10_J0, R2.Table10_n0):
+            g0_tau += n * J * tau ** (J - 1)
 
         # table 14 - residual dimensionless gibbs free energy - part r
         gr = 0
-        for i, n in enumerate(nr):
-            gr += n * Pi ** Ir[i] * (tau - 0.5) ** Jr[i]
-
-        # table 14 - residual dimensionless gibbs free energy - part r pi
-        # gr_pi = 0
-        # for i, n in enumerate(nr):
-        #    gr_pi = gr_pi + n * Ir[i] * Pi ** (Ir[i] - 1) * (tau - 0.5) ** Jr[i]
-
-        # table 14 - residual dimensionless gibbs free energy - part r pi pi
-        # gr_pipi = 0
-        # for i, n in enumerate(nr):
-        #    gr_pipi += (
-        #        n * Ir[i] * (Ir[i] - 1) * Pi ** (Ir[i] - 2) ** (tau - 0.5) ** Jr[i]
-        #    )
+        for I, J, n in zip(R2.Table16_I, R2.Table16_J, R2.Table16_n):
+            gr += n * Pi**I * (tau - 0.5) ** J
 
         # table 14 - residual dimensionless gibbs free energy - part r tau
         gr_tau = 0
-        for i, n in enumerate(nr):
-            gr_tau += n * Pi ** Ir[i] * Jr[i] * (tau - 0.5) ** (Jr[i] - 1)
+        for I, J, n in zip(R2.Table16_I, R2.Table16_J, R2.Table16_n):
+            gr_tau += n * Pi**I * J * (tau - 0.5) ** (J - 1)
 
-        # table 14 - residual dimensionless gibbs free energy - part r tau tau
-        # gr_tautau = 0
-        # for i, n in enumerate(nr):
-        #    gr_tautau += (
-        #        n * Pi ** Ir[i] * Jr[i] * (Jr[i] - 1) * (tau - 0.5) ** (Jr[i] - 2)
-        #    )
-
-        # table 14 - residual dimensionless gibbs free energy - part r pi tau
-        # gr_pitau = 0
-        # for i, n in enumerate(nr):
-        #    gr_pitau += (
-        #        n * Ir[i] * Pi ** (Ir[i] - 1) * Jr[i] * (tau - 0.5) ** (Jr[i] - 1)
-        #    )
-
-        # return R * T / p * Pi * (g0_pi + gr_pi) / 1000  # v2_pT
-        # return R * T * tau * (g0_tau + gr_tau)  # h2_pT
-        # return R * T * (tau * (g0_tau + gr_tau) - Pi * (g0_pi + gr_pi))  # u2_pT
         return R * (tau * (g0_tau + gr_tau) - (g0 + gr))  # s2_pT
-        # return -R * tau**2 * (g0_tautau + gr_tautau)  # Cp2_pT
-        # return R * (-(tau**2) * (g0_tautau + gr_tautau) - (1 + Pi * gr_pi - tau * Pi * gr_pitau) ** 2 / (1 - Pi**2 * gr_pipi) )  # Cv2_pT
-        # return ( 1000 * R * T * (1 + 2 * Pi * gr_pi + Pi**2 * gr_pi**2) / ( (1 - Pi**2 * gr_pipi) + (1 + Pi * gr_pi - tau * Pi * gr_pitau) ** 2 / (tau**2 * (g0_tautau + gr_tautau)) ) ) ** 0.5  # w2_pT
 
     @staticmethod
     def Cp2_pT(p, T):
@@ -814,20 +569,17 @@ class Region2:
 
         :return: specific isobaric heat capacity in [kJ / (kg K)]
         """
-        J0 = R2.Table10_J0
-        n0 = R2.Table10_n0
-        Ir = R2.Table11_I
-        Jr = R2.Table11_J
-        nr = R2.Table11_n
         R = SPECIFIC_GAS_CONSTANT
         Pi = p
         tau = 540 / T
+
         g0_tautau = 0
-        for i in range(0, 9):
-            g0_tautau = g0_tautau + n0[i] * J0[i] * (J0[i] - 1) * tau ** (J0[i] - 2)
+        for J, n in zip(R2.Table10_J0, R2.Table10_n0):
+            g0_tautau = g0_tautau + n * J * (J - 1) * tau ** (J - 2)
+
         gr_tautau = 0
-        for i in range(0, 43):
-            gr_tautau = gr_tautau + nr[i] * Pi ** Ir[i] * Jr[i] * (Jr[i] - 1) * (tau - 0.5) ** (Jr[i] - 2)
+        for I, J, n in zip(R2.Table11_I, R2.Table11_J, R2.Table11_n):
+            gr_tautau = gr_tautau + n * Pi**I * J * (J - 1) * (tau - 0.5) ** (J - 2)
         return -R * tau**2 * (g0_tautau + gr_tautau)
 
     @staticmethod
@@ -839,83 +591,21 @@ class Region2:
 
         specific volume
         """
-
-        J0 = R2.Table10_J0
-        n0 = R2.Table10_n0
-
-        Ir = R2.Table16_I
-        Jr = R2.Table16_J
-        nr = R2.Table16_n
-
         R = SPECIFIC_GAS_CONSTANT  # Eq 1
         Pi = p  # Eq 1
         tau = 540 / T  # Eq 1
 
-        # table 13 - dimensionless gibbs free energy - gamma 0
-        # g0 = math.log(Pi)
-        # for i, n in enumerate(n0):
-        #    g0 += n * tau ** J0[i]
-
-        # table 13 - dimensionless gibbs free energy - gamma 0 pi
-        # g0_pi = 1 / Pi
-
-        # table 13 - dimensionless gibbs free energy - gamma 0 pi pi
-        # g0_pipi = -1 / (Pi**2)
-
-        # table 13 - dimensionless gibbs free energy - gamma 0 tau
-        # g0_tau = 0
-        # for i, n in enumerate(n0):
-        #    g0_tau += n * J0[i] * tau ** (J0[i] - 1)
-
         # table 13 - dimensionless gibbs free energy - gamma 0 tau tau
         g0_tautau = 0
-        for i, n in enumerate(n0):
-            g0_tautau += n * J0[i] * (J0[i] - 1) * tau ** (J0[i] - 2)
-
-        # table 13 - dimensionless gibbs free energy - gamma 0 pi tau
-        # g0_pitau = 0
-
-        # table 14 - residual dimensionless gibbs free energy - part r
-        # gr = 0
-        # for i, n in enumerate(nr):
-        #    gr += n * Pi ** Ir[i] * (tau - 0.5) ** Jr[i]
-
-        # table 14 - residual dimensionless gibbs free energy - part r pi
-        # gr_pi = 0
-        # for i, n in enumerate(nr):
-        #    gr_pi = gr_pi + n * Ir[i] * Pi ** (Ir[i] - 1) * (tau - 0.5) ** Jr[i]
-
-        # table 14 - residual dimensionless gibbs free energy - part r pi pi
-        # gr_pipi = 0
-        # for i, n in enumerate(nr):
-        #    gr_pipi += (
-        #        n * Ir[i] * (Ir[i] - 1) * Pi ** (Ir[i] - 2) ** (tau - 0.5) ** Jr[i]
-        #    )
-
-        # table 14 - residual dimensionless gibbs free energy - part r tau
-        # gr_tau = 0
-        # for i, n in enumerate(nr):
-        #    gr_tau += n * Pi ** Ir[i] * Jr[i] * (tau - 0.5) ** (Jr[i] - 1)
+        for J, n in zip(R2.Table10_J0, R2.Table10_n0):
+            g0_tautau += n * J * (J - 1) * tau ** (J - 2)
 
         # table 14 - residual dimensionless gibbs free energy - part r tau tau
         gr_tautau = 0
-        for i, n in enumerate(nr):
-            gr_tautau += n * Pi ** Ir[i] * Jr[i] * (Jr[i] - 1) * (tau - 0.5) ** (Jr[i] - 2)
+        for I, J, n in zip(R2.Table16_I, R2.Table16_J, R2.Table16_n):
+            gr_tautau += n * Pi**I * J * (J - 1) * (tau - 0.5) ** (J - 2)
 
-        # table 14 - residual dimensionless gibbs free energy - part r pi tau
-        # gr_pitau = 0
-        # for i, n in enumerate(nr):
-        #    gr_pitau += (
-        #        n * Ir[i] * Pi ** (Ir[i] - 1) * Jr[i] * (tau - 0.5) ** (Jr[i] - 1)
-        #    )
-
-        # return R * T / p * Pi * (g0_pi + gr_pi) / 1000  # v2_pT
-        # return R * T * tau * (g0_tau + gr_tau)  # h2_pT
-        # return R * T * (tau * (g0_tau + gr_tau) - Pi * (g0_pi + gr_pi))  # u2_pT
-        # return R * (tau * (g0_tau + gr_tau) - (g0 + gr))  # s2_pT
         return -R * tau**2 * (g0_tautau + gr_tautau)  # Cp2_pT
-        # return R * (-(tau**2) * (g0_tautau + gr_tautau) - (1 + Pi * gr_pi - tau * Pi * gr_pitau) ** 2 / (1 - Pi**2 * gr_pipi) )  # Cv2_pT
-        # return ( 1000 * R * T * (1 + 2 * Pi * gr_pi + Pi**2 * gr_pi**2) / ( (1 - Pi**2 * gr_pipi) + (1 + Pi * gr_pi - tau * Pi * gr_pitau) ** 2 / (tau**2 * (g0_tautau + gr_tautau)) ) ) ** 0.5  # w2_pT
 
     @staticmethod
     def Cv2_pT(p, T):
@@ -930,26 +620,23 @@ class Region2:
 
         :return: specific isochoric heat capacity in [kJ / (kg K)]
         """
-        J0 = R2.Table10_J0
-        n0 = R2.Table10_n0
-        Ir = R2.Table11_I
-        Jr = R2.Table11_J
-        nr = R2.Table11_n
         R = SPECIFIC_GAS_CONSTANT
         Pi = p
         tau = 540 / T
+
         g0_tautau = 0
-        for i in range(0, 9):
-            g0_tautau = g0_tautau + n0[i] * J0[i] * (J0[i] - 1) * tau ** (J0[i] - 2)
+        for J, n in zip(R2.Table10_J0, R2.Table10_n0):
+            g0_tautau = g0_tautau + n * J * (J - 1) * tau ** (J - 2)
+
         gr_pi = 0
         gr_pitau = 0
         gr_pipi = 0
         gr_tautau = 0
-        for i in range(0, 43):
-            gr_pi = gr_pi + nr[i] * Ir[i] * Pi ** (Ir[i] - 1) * (tau - 0.5) ** Jr[i]
-            gr_pipi = gr_pipi + nr[i] * Ir[i] * (Ir[i] - 1) * Pi ** (Ir[i] - 2) * (tau - 0.5) ** Jr[i]
-            gr_pitau = gr_pitau + nr[i] * Ir[i] * Pi ** (Ir[i] - 1) * Jr[i] * (tau - 0.5) ** (Jr[i] - 1)
-            gr_tautau = gr_tautau + nr[i] * Pi ** Ir[i] * Jr[i] * (Jr[i] - 1) * (tau - 0.5) ** (Jr[i] - 2)
+        for I, J, n in zip(R2.Table11_I, R2.Table11_J, R2.Table11_n):
+            gr_pi = gr_pi + n * I * Pi ** (I - 1) * (tau - 0.5) ** J
+            gr_pipi = gr_pipi + n * I * (I - 1) * Pi ** (I - 2) * (tau - 0.5) ** J
+            gr_pitau = gr_pitau + n * I * Pi ** (I - 1) * J * (tau - 0.5) ** (J - 1)
+            gr_tautau = gr_tautau + n * Pi**I * J * (J - 1) * (tau - 0.5) ** (J - 2)
         return R * (-(tau**2) * (g0_tautau + gr_tautau) - (1 + Pi * gr_pi - tau * Pi * gr_pitau) ** 2 / (1 - Pi**2 * gr_pipi))
 
     @classmethod
@@ -965,26 +652,23 @@ class Region2:
 
         :return: speed of sound in [m / s]
         """
-        J0 = R2.Table10_J0
-        n0 = R2.Table10_n0
-        Ir = R2.Table11_I
-        Jr = R2.Table11_J
-        nr = R2.Table11_n
         R = SPECIFIC_GAS_CONSTANT
         Pi = p
         tau = 540 / T
+
         g0_tautau = 0
-        for i in range(0, 9):
-            g0_tautau = g0_tautau + n0[i] * J0[i] * (J0[i] - 1) * tau ** (J0[i] - 2)
+        for J, n in zip(R2.Table10_J0, R2.Table10_n0):
+            g0_tautau = g0_tautau + n * J * (J - 1) * tau ** (J - 2)
+
         gr_pi = 0
         gr_pitau = 0
         gr_pipi = 0
         gr_tautau = 0
-        for i in range(0, 43):
-            gr_pi = gr_pi + nr[i] * Ir[i] * Pi ** (Ir[i] - 1) * (tau - 0.5) ** Jr[i]
-            gr_pipi = gr_pipi + nr[i] * Ir[i] * (Ir[i] - 1) * Pi ** (Ir[i] - 2) * (tau - 0.5) ** Jr[i]
-            gr_pitau = gr_pitau + nr[i] * Ir[i] * Pi ** (Ir[i] - 1) * Jr[i] * (tau - 0.5) ** (Jr[i] - 1)
-            gr_tautau = gr_tautau + nr[i] * Pi ** Ir[i] * Jr[i] * (Jr[i] - 1) * (tau - 0.5) ** (Jr[i] - 2)
+        for I, J, n in zip(R2.Table11_I, R2.Table11_J, R2.Table11_n):
+            gr_pi = gr_pi + n * I * Pi ** (I - 1) * (tau - 0.5) ** J
+            gr_pipi = gr_pipi + n * I * (I - 1) * Pi ** (I - 2) * (tau - 0.5) ** J
+            gr_pitau = gr_pitau + n * I * Pi ** (I - 1) * J * (tau - 0.5) ** (J - 1)
+            gr_tautau = gr_tautau + n * Pi**I * J * (J - 1) * (tau - 0.5) ** (J - 2)
         return (
             1000
             * R
@@ -1002,81 +686,43 @@ class Region2:
 
         specific volume
         """
-
-        J0 = R2.Table10_J0
-        n0 = R2.Table10_n0
-
-        Ir = R2.Table16_I
-        Jr = R2.Table16_J
-        nr = R2.Table16_n
-
         R = SPECIFIC_GAS_CONSTANT  # Eq 1
         Pi = p  # Eq 1
         tau = 540 / T  # Eq 1
 
-        # table 13 - dimensionless gibbs free energy - gamma 0
-        # g0 = math.log(Pi)
-        # for i, n in enumerate(n0):
-        #    g0 += n * tau ** J0[i]
-
-        # table 13 - dimensionless gibbs free energy - gamma 0 pi
-        # g0_pi = 1 / Pi
-
-        # table 13 - dimensionless gibbs free energy - gamma 0 pi pi
-        # g0_pipi = -1 / (Pi**2)
-
-        # table 13 - dimensionless gibbs free energy - gamma 0 tau
-        # g0_tau = 0
-        # for i, n in enumerate(n0):
-        #    g0_tau += n * J0[i] * tau ** (J0[i] - 1)
-
         # table 13 - dimensionless gibbs free energy - gamma 0 tau tau
         g0_tautau = 0
-        for i, n in enumerate(n0):
-            g0_tautau += n * J0[i] * (J0[i] - 1) * tau ** (J0[i] - 2)
-
-        # table 13 - dimensionless gibbs free energy - gamma 0 pi tau
-        # g0_pitau = 0
-
-        # table 14 - residual dimensionless gibbs free energy - part r
-        # gr = 0
-        # for i, n in enumerate(nr):
-        #    gr += n * Pi ** Ir[i] * (tau - 0.5) ** Jr[i]
+        for J, n in zip(R2.Table10_J0, R2.Table10_n0):
+            g0_tautau += n * J * (J - 1) * tau ** (J - 2)
 
         # table 14 - residual dimensionless gibbs free energy - part r pi
         gr_pi = 0
-        for i, n in enumerate(nr):
-            gr_pi = gr_pi + n * Ir[i] * Pi ** (Ir[i] - 1) * (tau - 0.5) ** Jr[i]
+        for I, J, n in zip(R2.Table16_I, R2.Table16_J, R2.Table16_n):
+            gr_pi = gr_pi + n * I * Pi ** (I - 1) * (tau - 0.5) ** J
 
         # table 14 - residual dimensionless gibbs free energy - part r pi pi
         gr_pipi = 0
-        for i, n in enumerate(nr):
-            gr_pipi += n * Ir[i] * (Ir[i] - 1) * Pi ** (Ir[i] - 2) * (tau - 0.5) ** Jr[i]
+        for I, J, n in zip(R2.Table16_I, R2.Table16_J, R2.Table16_n):
+            gr_pipi += n * I * (I - 1) * Pi ** (I - 2) * (tau - 0.5) ** J
         if isinstance(gr_pipi, complex):
             if gr_pipi.imag != 0:
                 raise Exception()
             gr_pipi = gr_pipi.real
 
-        # table 14 - residual dimensionless gibbs free energy - part r tau
-        # gr_tau = 0
-        # for i, n in enumerate(nr):
-        #    gr_tau += n * Pi ** Ir[i] * Jr[i] * (tau - 0.5) ** (Jr[i] - 1)
-
         # table 14 - residual dimensionless gibbs free energy - part r tau tau
         gr_tautau = 0
-        for i, n in enumerate(nr):
-            gr_tautau += n * Pi ** Ir[i] * Jr[i] * (Jr[i] - 1) * (tau - 0.5) ** (Jr[i] - 2)
+        for I, J, n in zip(R2.Table16_I, R2.Table16_J, R2.Table16_n):
+            gr_tautau += n * Pi**I * J * (J - 1) * (tau - 0.5) ** (J - 2)
 
         # table 14 - residual dimensionless gibbs free energy - part r pi tau
         gr_pitau = 0
-        for i, n in enumerate(nr):
-            gr_pitau += n * Ir[i] * Pi ** (Ir[i] - 1) * Jr[i] * (tau - 0.5) ** (Jr[i] - 1)
+        for I, J, n in zip(R2.Table16_I, R2.Table16_J, R2.Table16_n):
+            gr_pitau += n * I * Pi ** (I - 1) * J * (tau - 0.5) ** (J - 1)
 
         part_1 = 1 + 2 * Pi * gr_pi + Pi**2 * gr_pi**2
         part_2_a = 1 - Pi**2 * gr_pipi
         part_2_b = (1 + Pi * gr_pi - tau * Pi * gr_pitau) ** 2  # x
         part_2_c = tau**2 * (g0_tautau + gr_tautau)
-        # return 1.0
         return math.sqrt(1000 * R * T * part_1 / (part_2_a + part_2_b / part_2_c))
 
     @staticmethod
@@ -1099,34 +745,29 @@ class Region2:
             else:
                 sub_reg = 3
         if sub_reg == 1:
-            Ji = R2.Table20_J
-            Ii = R2.Table20_I
-            ni = R2.Table20_n
             Ts = 0
             hs = h / 2000
-            for i in range(0, 34):
-                Ts = Ts + ni[i] * p ** (Ii[i]) * (hs - 2.1) ** Ji[i]
+            for I, J, n in zip(R2.Table20_I, R2.Table20_J, R2.Table20_n):
+                # for i in range(0, 34):
+                Ts = Ts + n * p**I * (hs - 2.1) ** J
         elif sub_reg == 2:
             # Subregion B
             # Table 21, Eq 23, page 23
-            Ji = R2.Table21_J
-            Ii = R2.Table21_I
-            ni = R2.Table21_n
             Ts = 0
             hs = h / 2000
+            # TODO check list range!
             # for i = 1 : 38
-            for i in range(0, 38):
-                Ts = Ts + ni[i] * (p - 2) ** (Ii[i]) * (hs - 2.6) ** Ji[i]
+            for I, J, n in zip(R2.Table21_I, R2.Table21_J, R2.Table21_n):
+                # for i in range(0, 38):
+                Ts = Ts + n * (p - 2) ** I * (hs - 2.6) ** J
         else:
             # Subregion C
             # Table 22, Eq 24, page 24
-            Ji = R2.Table22_J
-            Ii = R2.Table22_I
-            ni = R2.Table22_n
             Ts = 0
             hs = h / 2000
-            for i in range(0, 23):
-                Ts = Ts + ni[i] * (p + 25) ** (Ii[i]) * (hs - 1.8) ** Ji[i]
+            for I, J, n in zip(R2.Table22_I, R2.Table22_J, R2.Table22_n):
+                # for i in range(0, 23):
+                Ts = Ts + n * (p + 25) ** I * (hs - 1.8) ** J
         return Ts
 
     @classmethod
@@ -1153,37 +794,32 @@ class Region2:
         if sub_reg == 1:
             # Subregion A
             # Table 25, Eq 25, page 26
-            Ji = R2.Table25_J
-            Ii = R2.Table25_I
-            ni = R2.Table25_n
             Pi = p
             Sigma = s / 2
             teta = 0
+            # TODO check list range!
             # for i = 1 : 46
-            for i in range(0, 46):
-                teta = teta + ni[i] * Pi ** Ii[i] * (Sigma - 2) ** Ji[i]
+            for I, J, n in zip(R2.Table25_I, R2.Table25_J, R2.Table25_n):
+                # for i in range(0, 46):
+                teta = teta + n * Pi**I * (Sigma - 2) ** J
         elif sub_reg == 2:
             # Subregion B
             # Table 26, Eq 26, page 27
-            Ji = R2.Table26_J
-            Ii = R2.Table26_I
-            ni = R2.Table26_n
             Pi = p
             Sigma = s / 0.7853
             teta = 0
-            for i in range(0, 44):
-                teta = teta + ni[i] * Pi ** Ii[i] * (10 - Sigma) ** Ji[i]
+            for I, J, n in zip(R2.Table26_I, R2.Table26_J, R2.Table26_n):
+                # for i in range(0, 44):
+                teta = teta + n * Pi**I * (10 - Sigma) ** J
         else:
             # Subregion C
             # Table 27, Eq 27, page 28
-            Ji = R2.Table27_J
-            Ii = R2.Table27_I
-            ni = R2.Table27_n
             Pi = p
             Sigma = s / 2.9251
             teta = 0
-            for i in range(0, 30):
-                teta = teta + ni[i] * Pi ** Ii[i] * (2 - Sigma) ** Ji[i]
+            for I, J, n in zip(R2.Table27_I, R2.Table27_J, R2.Table27_n):
+                # for i in range(0, 30):
+                teta = teta + n * Pi**I * (2 - Sigma) ** J
         return teta
 
     @classmethod
@@ -1211,38 +847,31 @@ class Region2:
         if sub_reg == 1:
             # Subregion A
             # Table 6, Eq 3, page 8
-            Ii = R2.Sub_psh12_Table6_I
-            Ji = R2.Sub_psh12_Table6_J
-            ni = R2.Sub_psh12_Table6_n
             eta = h / 4200
             Sigma = s / 12
             Pi = 0
-            for i in range(0, 29):
-                Pi = Pi + ni[i] * (eta - 0.5) ** Ii[i] * (Sigma - 1.2) ** Ji[i]
+            for I, J, n in zip(R2.Sub_psh12_Table6_I, R2.Sub_psh12_Table6_J, R2.Sub_psh12_Table6_n):
+                Pi = Pi + n * (eta - 0.5) ** I * (Sigma - 1.2) ** J
             p2_hs = Pi**4 * 4
         elif sub_reg == 2:
             # Subregion B
             # Table 7, Eq 4, page 9
-            Ii = R2.Sub_psh12_Table7_I
-            Ji = R2.Sub_psh12_Table7_J
-            ni = R2.Sub_psh12_Table7_n
             eta = h / 4100
             Sigma = s / 7.9
             Pi = 0
-            for i in range(0, 33):
-                Pi = Pi + ni[i] * (eta - 0.6) ** Ii[i] * (Sigma - 1.01) ** Ji[i]
+            for I, J, n in zip(R2.Sub_psh12_Table7_I, R2.Sub_psh12_Table7_J, R2.Sub_psh12_Table7_n):
+                # for i in range(0, 33):
+                Pi = Pi + n * (eta - 0.6) ** I * (Sigma - 1.01) ** J
             p2_hs = Pi**4 * 100
         else:
             # Subregion C
             # Table 8, Eq 5, page 10
-            Ii = R2.Sub_psh12_Table8_I
-            Ji = R2.Sub_psh12_Table8_J
-            ni = R2.Sub_psh12_Table8_n
             eta = h / 3500
             Sigma = s / 5.9
             Pi = 0
-            for i in range(0, 31):
-                Pi = Pi + ni[i] * (eta - 0.7) ** Ii[i] * (Sigma - 1.1) ** Ji[i]
+            for I, J, n in zip(R2.Sub_psh12_Table8_I, R2.Sub_psh12_Table8_J, R2.Sub_psh12_Table8_n):
+                # for i in range(0, 31):
+                Pi = Pi + n * (eta - 0.7) ** I * (Sigma - 1.1) ** J
             p2_hs = Pi**4 * 100
         return p2_hs
 
@@ -1306,19 +935,16 @@ class Region3:
 
         :return: preasure in [MPa]
         """
-        Ii = R3.Table30_I
-        Ji = R3.Table30_J
-        ni = R3.Table30_n
         R = SPECIFIC_GAS_CONSTANT
         tc = CRITICAL_TEMPERATURE
         rhoc = CRITICAL_DENSITY
         delta = rho / rhoc
         tau = tc / T
         fidelta = 0
-        for i in range(1, 40):
-            fidelta = fidelta + ni[i] * Ii[i] * delta ** (Ii[i] - 1) * tau ** Ji[i]
+        for I, J, n in zip(R3.Table30_I, R3.Table30_J, R3.Table30_n):
+            fidelta = fidelta + n * I * delta ** (I - 1) * tau**J
 
-        fidelta = fidelta + (ni[0] / delta)
+        fidelta = fidelta + (R3.Table30_n[0] / delta)
         return (rho * R * T * delta * fidelta) / 1000.0
 
     @classmethod
@@ -1334,17 +960,15 @@ class Region3:
 
         :return: specific internal energy in [kJ / kg]
         """
-        Ii = R3.Table30_I
-        Ji = R3.Table30_J
-        ni = R3.Table30_n
         R = SPECIFIC_GAS_CONSTANT
         tc = CRITICAL_TEMPERATURE
         rhoc = CRITICAL_DENSITY
         delta = rho / rhoc
         tau = tc / T
         fitau = 0
-        for i in range(1, 40):
-            fitau = fitau + ni[i] * delta ** Ii[i] * Ji[i] * tau ** (Ji[i] - 1)
+        # TODO check table range
+        for I, J, n in zip(R3.Table30_I[1:], R3.Table30_J[1:], R3.Table30_n[1:]):
+            fitau = fitau + n * delta**I * J * tau ** (J - 1)
         return R * T * (tau * fitau)
 
     @classmethod
@@ -1360,9 +984,6 @@ class Region3:
 
         :return: enthalpy in [kJ / kg]
         """
-        Ii = R3.Table30_I
-        Ji = R3.Table30_J
-        ni = R3.Table30_n
         R = SPECIFIC_GAS_CONSTANT
         tc = CRITICAL_TEMPERATURE
         rhoc = CRITICAL_DENSITY
@@ -1370,10 +991,10 @@ class Region3:
         tau = tc / T
         fidelta = 0
         fitau = 0
-        for i in range(1, 40):
-            fidelta = fidelta + ni[i] * Ii[i] * delta ** (Ii[i] - 1) * tau ** Ji[i]
-            fitau = fitau + ni[i] * delta ** Ii[i] * Ji[i] * tau ** (Ji[i] - 1)
-        fidelta = fidelta + ni[0] / delta
+        for I, J, n in zip(R3.Table30_I[1:], R3.Table30_J[1:], R3.Table30_n[1:]):
+            fidelta = fidelta + n * I * delta ** (I - 1) * tau**J
+            fitau = fitau + n * delta**I * J * tau ** (J - 1)
+        fidelta = fidelta + R3.Table30_n[0] / delta
         return R * T * (tau * fitau + delta * fidelta)
 
     @classmethod
@@ -1389,9 +1010,6 @@ class Region3:
 
         :return: specific entropy in [kJ / (kg K)]
         """
-        Ii = R3.Table30_I
-        Ji = R3.Table30_J
-        ni = R3.Table30_n
         R = SPECIFIC_GAS_CONSTANT
         tc = CRITICAL_TEMPERATURE
         rhoc = CRITICAL_DENSITY
@@ -1399,10 +1017,10 @@ class Region3:
         tau = tc / T
         fi = 0
         fitau = 0
-        for i in range(1, 40):
-            fi = fi + ni[i] * delta ** Ii[i] * tau ** Ji[i]
-            fitau = fitau + ni[i] * delta ** Ii[i] * Ji[i] * tau ** (Ji[i] - 1)
-        fi = fi + ni[0] * math.log(delta)
+        for I, J, n in zip(R3.Table30_I[1:], R3.Table30_J[1:], R3.Table30_n[1:]):
+            fi = fi + n * delta**I * tau**J
+            fitau = fitau + n * delta**I * J * tau ** (J - 1)
+        fi = fi + R3.Table30_n[0] * math.log(delta)
         return R * (tau * fitau - fi)
 
     @classmethod
@@ -1418,9 +1036,6 @@ class Region3:
 
         :return: specific isobaric heat capacity in [kJ / (kg K)]
         """
-        Ii = R3.Table30_I
-        Ji = R3.Table30_J
-        ni = R3.Table30_n
         R = SPECIFIC_GAS_CONSTANT
         tc = CRITICAL_TEMPERATURE
         rhoc = CRITICAL_DENSITY
@@ -1430,13 +1045,13 @@ class Region3:
         fidelta = 0
         fideltatau = 0
         fideltadelta = 0
-        for i in range(1, 40):
-            fitautau = fitautau + ni[i] * delta ** Ii[i] * Ji[i] * (Ji[i] - 1) * tau ** (Ji[i] - 2)
-            fidelta = fidelta + ni[i] * Ii[i] * delta ** (Ii[i] - 1) * tau ** Ji[i]
-            fideltatau = fideltatau + ni[i] * Ii[i] * delta ** (Ii[i] - 1) * Ji[i] * tau ** (Ji[i] - 1)
-            fideltadelta = fideltadelta + ni[i] * Ii[i] * (Ii[i] - 1) * delta ** (Ii[i] - 2) * tau ** Ji[i]
-        fidelta = fidelta + ni[0] / delta
-        fideltadelta = fideltadelta - ni[0] / (delta**2)
+        for I, J, n in zip(R3.Table30_I[1:], R3.Table30_J[1:], R3.Table30_n[1:]):
+            fitautau = fitautau + n * delta**I * J * (J - 1) * tau ** (J - 2)
+            fidelta = fidelta + n * I * delta ** (I - 1) * tau**J
+            fideltatau = fideltatau + n * I * delta ** (I - 1) * J * tau ** (J - 1)
+            fideltadelta = fideltadelta + n * I * (I - 1) * delta ** (I - 2) * tau**J
+        fidelta = fidelta + R3.Table30_n[0] / delta
+        fideltadelta = fideltadelta - R3.Table30_n[0] / (delta**2)
         return R * (
             -(tau**2) * fitautau + (delta * fidelta - delta * tau * fideltatau) ** 2 / (2 * delta * fidelta + delta**2 * fideltadelta)
         )
@@ -1454,9 +1069,6 @@ class Region3:
 
         :return: specific isochoric heat capacity in [kJ / (kg K)]
         """
-        Ii = R3.Table30_I
-        Ji = R3.Table30_J
-        ni = R3.Table30_n
         R = SPECIFIC_GAS_CONSTANT
         tc = CRITICAL_TEMPERATURE
         rhoc = CRITICAL_DENSITY
@@ -1466,8 +1078,9 @@ class Region3:
         # TODO:vvvv Check for mistake vvvvv
         # for i = 1 : 40
         # IAWPS says i=2..40
-        for i in range(1, 40):
-            fitautau = fitautau + ni[i] * delta ** Ii[i] * Ji[i] * (Ji[i] - 1) * tau ** (Ji[i] - 2)
+        for I, J, n in zip(R3.Table30_I[1:], R3.Table30_J[1:], R3.Table30_n[1:]):
+            # for i in range(1, 40):
+            fitautau = fitautau + n * delta**I * J * (J - 1) * tau ** (J - 2)
         return R * -(tau * tau * fitautau)
 
     @classmethod
@@ -1483,9 +1096,6 @@ class Region3:
 
         :return: speed of sound in [m / s]
         """
-        Ii = R3.Table30_I
-        Ji = R3.Table30_J
-        ni = R3.Table30_n
         R = SPECIFIC_GAS_CONSTANT
         tc = CRITICAL_TEMPERATURE
         rhoc = CRITICAL_DENSITY
@@ -1495,13 +1105,13 @@ class Region3:
         fidelta = 0
         fideltatau = 0
         fideltadelta = 0
-        for i in range(1, 40):
-            fitautau = fitautau + ni[i] * delta ** Ii[i] * Ji[i] * (Ji[i] - 1) * tau ** (Ji[i] - 2)
-            fidelta = fidelta + ni[i] * Ii[i] * delta ** (Ii[i] - 1) * tau ** Ji[i]
-            fideltatau = fideltatau + ni[i] * Ii[i] * delta ** (Ii[i] - 1) * Ji[i] * tau ** (Ji[i] - 1)
-            fideltadelta = fideltadelta + ni[i] * Ii[i] * (Ii[i] - 1) * delta ** (Ii[i] - 2) * tau ** Ji[i]
-        fidelta = fidelta + ni[0] / delta
-        fideltadelta = fideltadelta - ni[0] / (delta**2)
+        for I, J, n in zip(R3.Table30_I[1:], R3.Table30_J[1:], R3.Table30_n[1:]):
+            fitautau = fitautau + n * delta**I * J * (J - 1) * tau ** (J - 2)
+            fidelta = fidelta + n * I * delta ** (I - 1) * tau**J
+            fideltatau = fideltatau + n * I * delta ** (I - 1) * J * tau ** (J - 1)
+            fideltadelta = fideltadelta + n * I * (I - 1) * delta ** (I - 2) * tau**J
+        fidelta = fidelta + R3.Table30_n[0] / delta
+        fideltadelta = fideltadelta - R3.Table30_n[0] / (delta**2)
         return (
             1000
             * R
@@ -2464,27 +2074,24 @@ class Region3:
         if s < 4.41202148223476:
             # Subregion 3a
             # Eq 1, Table 3, Page 8
-            Ii = R3.Sub_psh3_Table3_I
-            Ji = R3.Sub_psh3_Table3_J
-            ni = R3.Sub_psh3_Table3_n
             Sigma = s / 4.4
             eta = h / 2300
             Pi = 0
-            for i in range(0, 33):
-                Pi = Pi + ni[i] * (eta - 1.01) ** Ii[i] * (Sigma - 0.75) ** Ji[i]
+            for I, J, n in zip(R3.Sub_psh3_Table3_I, R3.Sub_psh3_Table3_J, R3.Sub_psh3_Table3_n):
+                # for i in range(0, 33):
+                Pi = Pi + n * (eta - 1.01) ** I * (Sigma - 0.75) ** J
             p3_hs = Pi * 99
         else:
             # Subregion 3b
             # Eq 2, Table 4, Page 8
-            Ii = R3.Sub_psh3_Table4_I
-            Ji = R3.Sub_psh3_Table4_J
-            ni = R3.Sub_psh3_Table4_n
             Sigma = s / 5.3
             eta = h / 2800
             Pi = 0
+            # TODO check table range
             # for i = 1 : 35
-            for i in range(0, 35):
-                Pi = Pi + ni[i] * (eta - 0.681) ** Ii[i] * (Sigma - 0.792) ** Ji[i]
+            for I, J, n in zip(R3.Sub_psh3_Table4_I, R3.Sub_psh3_Table4_J, R3.Sub_psh3_Table4_n):
+                # for i in range(0, 35):
+                Pi = Pi + n * (eta - 0.681) ** I * (Sigma - 0.792) ** J
             p3_hs = 16.6 / Pi
         return p3_hs
 
@@ -2710,50 +2317,38 @@ class Region4:
         if -0.0001545495919 < s <= 3.77828134:
             # hL1_s
             # Eq 3, Table 9, Page 16
-            Ii = R3.Sub_psh3_Table9_I
-            Ji = R3.Sub_psh3_Table9_J
-            ni = R3.Sub_psh3_Table9_n
             Sigma = s / 3.8
             eta = 0
-            for i in range(0, 27):
-                eta = eta + ni[i] * (Sigma - 1.09) ** Ii[i] * (Sigma + 0.0000366) ** Ji[i]
+            for I, J, n in zip(R3.Sub_psh3_Table9_I, R3.Sub_psh3_Table9_J, R3.Sub_psh3_Table9_n):
+                eta = eta + n * (Sigma - 1.09) ** I * (Sigma + 0.0000366) ** J
             h4_s = eta * 1700
         elif 3.77828134 < s <= 4.41202148223476:
             # hL3_s
             # Eq 4, Table 10, Page 16
-            Ii = R3.Sub_psh3_Table10_I
-            Ji = R3.Sub_psh3_Table10_J
-            ni = R3.Sub_psh3_Table10_n
             Sigma = s / 3.8
             eta = 0
-            for i in range(0, 19):
-                eta = eta + ni[i] * (Sigma - 1.09) ** Ii[i] * (Sigma + 0.0000366) ** Ji[i]
+            for I, J, n in zip(R3.Sub_psh3_Table10_I, R3.Sub_psh3_Table10_J, R3.Sub_psh3_Table10_n):
+                eta = eta + n * (Sigma - 1.09) ** I * (Sigma + 0.0000366) ** J
             h4_s = eta * 1700
         elif 4.41202148223476 < s <= 5.85:
             # Section 4.4 Equations () 2ab " h s and ( ) 2c3b "h s for the
             # Saturated Vapor Line
             # Page 19, Eq 5
             # hV2c3b_s(s)
-            Ii = R3.Sub_psh3_Table17_I
-            Ji = R3.Sub_psh3_Table17_J
-            ni = R3.Sub_psh3_Table17_n
             Sigma = s / 5.9
             eta = 0
-            for i in range(0, 16):
-                eta = eta + ni[i] * (Sigma - 1.02) ** Ii[i] * (Sigma - 0.726) ** Ji[i]
+            for I, J, n in zip(R3.Sub_psh3_Table17_I, R3.Sub_psh3_Table17_J, R3.Sub_psh3_Table17_n):
+                eta = eta + n * (Sigma - 1.02) ** I * (Sigma - 0.726) ** J
             h4_s = eta**4 * 2800
         elif 5.85 < s < 9.155759395:
             # Section 4.4 Equations () 2ab " h s and ( ) 2c3b "h s for the
             # Saturated Vapor Line
             # Page 20, Eq 6
-            Ii = R3.Sub_psh3_Table16_I
-            Ji = R3.Sub_psh3_Table16_J
-            ni = R3.Sub_psh3_Table16_n
             Sigma1 = s / 5.21
             Sigma2 = s / 9.2
             eta = 0
-            for i in range(0, 30):
-                eta = eta + ni[i] * (1 / Sigma1 - 0.513) ** Ii[i] * (Sigma2 - 0.524) ** Ji[i]
+            for I, J, n in zip(R3.Sub_psh3_Table16_I, R3.Sub_psh3_Table16_J, R3.Sub_psh3_Table16_n):
+                eta = eta + n * (1 / Sigma1 - 0.513) ** I * (Sigma2 - 0.524) ** J
             h4_s = math.exp(eta) * 2800
         else:
             h4_s = -99999
@@ -3008,17 +2603,17 @@ class Region5:
 
         :return: enthalpy in [kJ / kg]
         """
-        Ji0 = R4.Table37_J
-        ni0 = R4.Table37_n
         Iir = Region5.Iir
         Jir = Region5.Jir
         nir = Region5.nir
         R = SPECIFIC_GAS_CONSTANT
         tau = 1000 / T
         Pi = p
+
         gamma0_tau = 0
-        for i in range(0, 6):
-            gamma0_tau = gamma0_tau + ni0[i] * Ji0[i] * tau ** (Ji0[i] - 1)
+        for J, n in zip(R4.Table37_J, R4.Table37_n):
+            gamma0_tau = gamma0_tau + n * J * tau ** (J - 1)
+
         gammar_tau = 0
         for i in range(0, 5):
             gammar_tau = gammar_tau + nir[i] * Pi ** Iir[i] * Jir[i] * tau ** (Jir[i] - 1)
@@ -3070,10 +2665,13 @@ class Region5:
         R = SPECIFIC_GAS_CONSTANT
         tau = 1000 / T
         Pi = p
+
         gamma0_pi = 1 / Pi
+
         gamma0_tau = 0
-        for i in range(0, 6):
-            gamma0_tau = gamma0_tau + ni0[i] * Ji0[i] * tau ** (Ji0[i] - 1)
+        for J, n in zip(R4.Table37_J, R4.Table37_n):
+            gamma0_tau = gamma0_tau + n * J * tau ** (J - 1)
+
         gammar_pi = 0
         gammar_tau = 0
         for i in range(0, 5):
@@ -3094,17 +2692,17 @@ class Region5:
 
         :return: specific isobaric heat capacity in [kJ / (kg K)]
         """
-        Ji0 = R4.Table37_J
-        ni0 = R4.Table37_n
         Iir = Region5.Iir
         Jir = Region5.Jir
         nir = Region5.nir
         R = SPECIFIC_GAS_CONSTANT
         tau = 1000 / T
         Pi = p
+
         gamma0_tautau = 0
-        for i in range(0, 6):
-            gamma0_tautau = gamma0_tautau + ni0[i] * Ji0[i] * (Ji0[i] - 1) * tau ** (Ji0[i] - 2)
+        for J, n in zip(R4.Table37_J, R4.Table37_n):
+            gamma0_tautau = gamma0_tautau + n * J * (J - 1) * tau ** (J - 2)
+
         gammar_tautau = 0
         for i in range(0, 5):
             gammar_tautau = gammar_tautau + nir[i] * Pi ** Iir[i] * Jir[i] * (Jir[i] - 1) * tau ** (Jir[i] - 2)
@@ -3123,19 +2721,19 @@ class Region5:
 
         :return: specific entropy in [kJ / (kg K)]
         """
-        Ji0 = R4.Table37_J
-        ni0 = R4.Table37_n
         Iir = Region5.Iir
         Jir = Region5.Jir
         nir = Region5.nir
         R = SPECIFIC_GAS_CONSTANT
         tau = 1000 / T
         Pi = p
+
         gamma0 = math.log(Pi)
         gamma0_tau = 0
-        for i in range(0, 6):
-            gamma0_tau = gamma0_tau + ni0[i] * Ji0[i] * tau ** (Ji0[i] - 1)
-            gamma0 = gamma0 + ni0[i] * tau ** Ji0[i]
+        for J, n in zip(R4.Table37_J, R4.Table37_n):
+            gamma0 = gamma0 + n * tau**J
+            gamma0_tau = gamma0_tau + n * J * tau ** (J - 1)
+
         gammar = 0
         gammar_tau = 0
         for i in range(0, 5):
@@ -3164,9 +2762,11 @@ class Region5:
         R = SPECIFIC_GAS_CONSTANT
         tau = 1000 / T
         Pi = p
+
         gamma0_tautau = 0
-        for i in range(0, 6):
-            gamma0_tautau = gamma0_tautau + ni0[i] * (Ji0[i] - 1) * Ji0[i] * tau ** (Ji0[i] - 2)
+        for J, n in zip(R4.Table37_J, R4.Table37_n):
+            gamma0_tautau = gamma0_tautau + n * (J - 1) * J * tau ** (J - 2)
+
         gammar_pi = 0
         gammar_pitau = 0
         gammar_pipi = 0
@@ -3193,17 +2793,17 @@ class Region5:
 
         :return: speed of sound in [m / s]
         """
-        Ji0 = R4.Table37_J
-        ni0 = R4.Table37_n
         Iir = Region5.Iir
         Jir = Region5.Jir
         nir = Region5.nir
         R = SPECIFIC_GAS_CONSTANT
         tau = 1000 / T
         Pi = p
+
         gamma0_tautau = 0
-        for i in range(0, 6):
-            gamma0_tautau = gamma0_tautau + ni0[i] * (Ji0[i] - 1) * Ji0[i] * tau ** (Ji0[i] - 2)
+        for J, n in zip(R4.Table37_J, R4.Table37_n):
+            gamma0_tautau = gamma0_tautau + n * (J - 1) * J * tau ** (J - 2)
+
         gammar_pi = 0
         gammar_pitau = 0
         gammar_pipi = 0
@@ -3213,6 +2813,7 @@ class Region5:
             gammar_pitau = gammar_pitau + nir[i] * Iir[i] * Pi ** (Iir[i] - 1) * Jir[i] * tau ** (Jir[i] - 1)
             gammar_pipi = gammar_pipi + nir[i] * Iir[i] * (Iir[i] - 1) * Pi ** (Iir[i] - 2) * tau ** Jir[i]
             gammar_tautau = gammar_tautau + nir[i] * Pi ** Iir[i] * Jir[i] * (Jir[i] - 1) * tau ** (Jir[i] - 2)
+
         return (
             1000
             * R
