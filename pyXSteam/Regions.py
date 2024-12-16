@@ -1285,7 +1285,6 @@ class Region3:
             eta = h / 2300
             Pi = 0
             for I, J, n in zip(Sub_psh3.Table3_I, Sub_psh3.Table3_J, Sub_psh3.Table3_n):
-                # for i in range(0, 33):
                 Pi = Pi + n * (eta - 1.01) ** I * (Sigma - 0.75) ** J
             p3_hs = Pi * 99
         else:
@@ -1297,7 +1296,6 @@ class Region3:
             # TODO check table range
             # for i = 1 : 35
             for I, J, n in zip(Sub_psh3.Table4_I, Sub_psh3.Table4_J, Sub_psh3.Table4_n):
-                # for i in range(0, 35):
                 Pi = Pi + n * (eta - 0.681) ** I * (Sigma - 0.792) ** J
             p3_hs = 16.6 / Pi
         return p3_hs

@@ -24,6 +24,8 @@ Thermodynamic Properties of Water and Steam
 
 # Region 1
 class IF97:
+    """class with table data from IF97"""
+
     Table2_I = [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 8, 8, 21, 23, 29, 30, 31, 32]
     Table2_J = [
         -2,
@@ -909,6 +911,8 @@ class IF97:
 
 
 class Sub_psh12:
+    """class with table data from SUB psh12"""
+
     Table2_I = [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 3, 4, 4, 5]
     Table2_J = [0, 1, 2, 4, 5, 6, 8, 14, 0, 1, 4, 6, 0, 1, 10, 4, 1, 4, 0]
     Table2_n = [
@@ -1043,6 +1047,8 @@ class Sub_psh12:
 
 
 class Sub_psh3:
+    """class with table data from SUB psh12"""
+
     # TODO check table 3!
     Table3_I = [0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 3, 3, 3, 4, 4, 4, 4, 5, 6, 7, 8, 10, 10, 14, 18, 20, 22, 22, 24, 28, 28, 32, 32]
     Table3_J = [0, 1, 5, 0, 3, 4, 8, 14, 6, 16, 0, 2, 3, 0, 1, 4, 5, 28, 28, 24, 1, 32, 36, 22, 28, 36, 16, 28, 36, 16, 36, 10, 28]
@@ -1431,6 +1437,8 @@ class Sub_psh3:
 
 
 class Sub_Tsh:
+    """class with table data from SUB Tsh"""
+
     Table3_I = [
         -12,
         -12,

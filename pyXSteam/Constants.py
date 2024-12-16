@@ -8,7 +8,7 @@ Sources:
 * IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water
 and Steam, September 1997
 
-* IAWPS Release on Vaues of Temperature, Pressure and Density of Ordinary and
+* IAWPS Release on Values of Temperature, Pressure and Density of Ordinary and
 Heavy Water Substances at their Respective Critical Points Released
 September 1992, Revision of the Release of 1992
 """
@@ -24,7 +24,7 @@ TRIPLE_POINT_SPECIFIC_ENTHALPY = 0.611783e-3  # kJ / kg (Eq10 Page 7)
 FREEZING_TEMPERATURE_H2O = 273.15  # K
 
 
-# IAWPS Release on Vaues of Temperature, Pressure and Density of Ordinary and
+# IAWPS Release on Values of Temperature, Pressure and Density of Ordinary and
 # Heavy Water Substances at their Respective Critical Points
 # IAPWS R2-83(1992)
 # Released September 1992, Revision of the Release of 1983

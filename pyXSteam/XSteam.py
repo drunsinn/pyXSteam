@@ -100,7 +100,7 @@ class XSteam(object):
 
     def triplePointPressure(self):
         """
-        :return: Pressure of the triple poin with conversion to the selected unit systemt
+        :return: Pressure of the triple point with conversion to the selected unit systemt
         """
         return self._unit_converter.fromSIunit_p(TRIPLE_POINT_PRESSURE)
 

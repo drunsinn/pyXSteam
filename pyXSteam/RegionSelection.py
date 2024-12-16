@@ -72,7 +72,7 @@ def select_region_ph(p: float, h: float) -> DiagramRegion:
         return DiagramRegion.NILL
 
     # Check if outside low h.
-    # Linear adaption to h1_pt()+2 to speed up calcualations.
+    # Linear adaption to h1_pt()+2 to speed up calculations.
     if h < (0.963 * p + 2.2):
         if h < Region1.h1_pT(p, FREEZING_TEMPERATURE_H2O):
             logger.warning("Enthalpy outside valid area")
@@ -303,7 +303,7 @@ def select_region_prho(p: float, rho: float) -> DiagramRegion:
     if p < 16.5292:  # Below region 3, Check region 1,4,2
         if v < Region1.v1_pT(p, FREEZING_TEMPERATURE_H2O):
             # Observe that this is not actually min of v. Not valid for Water
-            # if temperature is smaler than 4°C since it is ligther.
+            # if temperature is smaller than 4°C since it is ligther.
             logger.warning("Specific volume outside valid area")
             return DiagramRegion.NILL
         if v <= Region1.v1_pT(p, Region4.T4_p(p)):
@@ -320,7 +320,7 @@ def select_region_prho(p: float, rho: float) -> DiagramRegion:
     else:  # Check region 1,3,4,3,2 (Above the lowest point of region 3.)
         if v < Region1.v1_pT(p, FREEZING_TEMPERATURE_H2O):
             # Observe that this is not actually min of v. Not valid for Water
-            # if temperature is smaler than 4°C since it is ligther.
+            # if temperature is smaller than 4°C since it is ligther.
             logger.warning("Specific volume outside valid area")
             return DiagramRegion.NILL
         if v < Region1.v1_pT(p, 623.15):
