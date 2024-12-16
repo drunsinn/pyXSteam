@@ -15,7 +15,7 @@ from .Constants import CRITICAL_TEMPERATURE as _tc
 from .Constants import CRITICAL_PRESSURE as _pc
 from .Constants import CRITICAL_DENSITY as _rhoc
 
-from .IF97_Tables import R1, R2, R3, R4, R5
+from .Tables import IF97, Sub_psh12, Sub_psh3, Sub_Tsh
 
 
 class Region1:
@@ -46,7 +46,7 @@ class Region1:
         tau = 1386 / T
 
         gamma_der_pi = 0
-        for I, J, n in zip(R1.Table2_I, R1.Table2_J, R1.Table2_n):
+        for I, J, n in zip(IF97.Table2_I, IF97.Table2_J, IF97.Table2_n):
             gamma_der_pi = gamma_der_pi - n * I * (7.1 - Pi) ** (I - 1) * (tau - 1.222) ** J
 
         return _R * T / p * Pi * gamma_der_pi / 1000
@@ -69,7 +69,7 @@ class Region1:
         tau = 1386 / T
 
         gamma_der_tau = 0
-        for I, J, n in zip(R1.Table2_I, R1.Table2_J, R1.Table2_n):
+        for I, J, n in zip(IF97.Table2_I, IF97.Table2_J, IF97.Table2_n):
             gamma_der_tau = gamma_der_tau + (n * (7.1 - Pi) ** I * J * (tau - 1.222) ** (J - 1))
 
         return _R * T * tau * gamma_der_tau
@@ -92,7 +92,7 @@ class Region1:
 
         gamma_der_tau = 0
         gamma_der_pi = 0
-        for I, J, n in zip(R1.Table2_I, R1.Table2_J, R1.Table2_n):
+        for I, J, n in zip(IF97.Table2_I, IF97.Table2_J, IF97.Table2_n):
             gamma_der_pi = gamma_der_pi - n * I * (7.1 - Pi) ** (I - 1) * (tau - 1.222) ** J
             gamma_der_tau = gamma_der_tau + (n * (7.1 - Pi) ** I * J * (tau - 1.222) ** (J - 1))
 
@@ -116,7 +116,7 @@ class Region1:
 
         gamma = 0
         gamma_der_tau = 0
-        for I, J, n in zip(R1.Table2_I, R1.Table2_J, R1.Table2_n):
+        for I, J, n in zip(IF97.Table2_I, IF97.Table2_J, IF97.Table2_n):
             gamma_der_tau = gamma_der_tau + (n * (7.1 - Pi) ** I * J * (tau - 1.222) ** (J - 1))
             gamma = gamma + n * (7.1 - Pi) ** I * (tau - 1.222) ** J
 
@@ -139,7 +139,7 @@ class Region1:
         tau = 1386 / T
 
         gamma_der_tautau = 0
-        for I, J, n in zip(R1.Table2_I, R1.Table2_J, R1.Table2_n):
+        for I, J, n in zip(IF97.Table2_I, IF97.Table2_J, IF97.Table2_n):
             gamma_der_tautau = gamma_der_tautau + (n * (7.1 - Pi) ** I * J * (J - 1) * (tau - 1.222) ** (J - 2))
 
         return -_R * tau**2 * gamma_der_tautau
@@ -164,7 +164,7 @@ class Region1:
         gamma_der_pipi = 0
         gamma_der_pitau = 0
         gamma_der_tautau = 0
-        for I, J, n in zip(R1.Table2_I, R1.Table2_J, R1.Table2_n):
+        for I, J, n in zip(IF97.Table2_I, IF97.Table2_J, IF97.Table2_n):
             gamma_der_pi = gamma_der_pi - n * I * (7.1 - Pi) ** (I - 1) * (tau - 1.222) ** J
             gamma_der_pipi = gamma_der_pipi + n * I * (I - 1) * (7.1 - Pi) ** (I - 2) * (tau - 1.222) ** J
             gamma_der_pitau = gamma_der_pitau - n * I * (7.1 - Pi) ** (I - 1) * J * (tau - 1.222) ** (J - 1)
@@ -192,7 +192,7 @@ class Region1:
         gamma_der_pipi = 0
         gamma_der_pitau = 0
         gamma_der_tautau = 0
-        for I, J, n in zip(R1.Table2_I, R1.Table2_J, R1.Table2_n):
+        for I, J, n in zip(IF97.Table2_I, IF97.Table2_J, IF97.Table2_n):
             gamma_der_pi = gamma_der_pi - n * I * (7.1 - Pi) ** (I - 1) * (tau - 1.222) ** J
             gamma_der_pipi = gamma_der_pipi + n * I * (I - 1) * (7.1 - Pi) ** (I - 2) * (tau - 1.222) ** J
             gamma_der_pitau = gamma_der_pitau - n * I * (7.1 - Pi) ** (I - 1) * J * (tau - 1.222) ** (J - 1)
@@ -220,7 +220,7 @@ class Region1:
         eta = h / 2500
 
         T = 0
-        for I, J, n in zip(R1.Table6_I, R1.Table6_J, R1.Table6_n):
+        for I, J, n in zip(IF97.Table6_I, IF97.Table6_J, IF97.Table6_n):
             T = T + n * Pi**I * (eta + 1) ** J
 
         return T
@@ -243,7 +243,7 @@ class Region1:
         Sigma = s / 1
 
         T = 0
-        for I, J, n in zip(R1.Table8_I, R1.Table8_J, R1.Table8_n):
+        for I, J, n in zip(IF97.Table8_I, IF97.Table8_J, IF97.Table8_n):
             T = T + n * Pi**I * (Sigma + 2) ** J
 
         return T
@@ -269,7 +269,7 @@ class Region1:
         Sigma = s / 7.6
 
         p = 0
-        for I, J, n in zip(R1.Sub_psh12_Table2_I, R1.Sub_psh12_Table2_J, R1.Sub_psh12_Table2_n):
+        for I, J, n in zip(Sub_psh12.Table2_I, Sub_psh12.Table2_J, Sub_psh12.Table2_n):
             p = p + n * (eta + 0.05) ** I * (Sigma + 0.05) ** J
 
         return p * 100
@@ -339,7 +339,7 @@ class Region2:
         g0_pi = 1 / Pi  # see table 13
 
         gr_pi = 0
-        for I, J, n in zip(R2.Table11_I, R2.Table11_J, R2.Table11_n):
+        for I, J, n in zip(IF97.Table11_I, IF97.Table11_J, IF97.Table11_n):
             gr_pi = gr_pi + n * I * Pi ** (I - 1) * (tau - 0.5) ** J  # see table 14
 
         return _R * T / p * Pi * (g0_pi + gr_pi) / 1000  # see table 12
@@ -361,7 +361,7 @@ class Region2:
 
         # table 14 - residual dimensionless gibbs free energy - part r pi
         gr_pi = 0
-        for I, J, n in zip(R2.Table16_I, R2.Table16_J, R2.Table16_n):
+        for I, J, n in zip(IF97.Table16_I, IF97.Table16_J, IF97.Table16_n):
             gr_pi = gr_pi + n * I * Pi ** (I - 1) * (tau - 0.5) ** J
 
         return _R * T / p * Pi * (g0_pi + gr_pi) / 1000  # see table 12
@@ -383,11 +383,11 @@ class Region2:
         tau = 540 / T
 
         g0_tau = 0
-        for J, n in zip(R2.Table10_J0, R2.Table10_n0):
+        for J, n in zip(IF97.Table10_J0, IF97.Table10_n0):
             g0_tau = g0_tau + n * J * tau ** (J - 1)
 
         gr_tau = 0
-        for I, J, n in zip(R2.Table11_I, R2.Table11_J, R2.Table11_n):
+        for I, J, n in zip(IF97.Table11_I, IF97.Table11_J, IF97.Table11_n):
             gr_tau = gr_tau + n * Pi**I * J * (tau - 0.5) ** (J - 1)
 
         return _R * T * tau * (g0_tau + gr_tau)
@@ -406,12 +406,12 @@ class Region2:
 
         # table 13 - dimensionless gibbs free energy - gamma 0 tau
         g0_tau = 0
-        for J, n in zip(R2.Table10_J0, R2.Table10_n0):
+        for J, n in zip(IF97.Table10_J0, IF97.Table10_n0):
             g0_tau += n * J * tau ** (J - 1)
 
         # table 14 - residual dimensionless gibbs free energy - part r tau
         gr_tau = 0
-        for I, J, n in zip(R2.Table16_I, R2.Table16_J, R2.Table16_n):
+        for I, J, n in zip(IF97.Table16_I, IF97.Table16_J, IF97.Table16_n):
             gr_tau += n * Pi**I * J * (tau - 0.5) ** (J - 1)
 
         return _R * T * tau * (g0_tau + gr_tau)  # h2_pT
@@ -434,12 +434,12 @@ class Region2:
         g0_pi = 1 / Pi
 
         g0_tau = 0
-        for J, n in zip(R2.Table10_J0, R2.Table10_n0):
+        for J, n in zip(IF97.Table10_J0, IF97.Table10_n0):
             g0_tau = g0_tau + n * J * tau ** (J - 1)
 
         gr_pi = 0
         gr_tau = 0
-        for I, J, n in zip(R2.Table11_I, R2.Table11_J, R2.Table11_n):
+        for I, J, n in zip(IF97.Table11_I, IF97.Table11_J, IF97.Table11_n):
             gr_pi = gr_pi + n * I * Pi ** (I - 1) * (tau - 0.5) ** J
             gr_tau = gr_tau + n * Pi**I * J * (tau - 0.5) ** (J - 1)
 
@@ -462,17 +462,17 @@ class Region2:
 
         # table 13 - dimensionless gibbs free energy - gamma 0 tau
         g0_tau = 0
-        for J, n in zip(R2.Table10_J0, R2.Table10_n0):
+        for J, n in zip(IF97.Table10_J0, IF97.Table10_n0):
             g0_tau += n * J * tau ** (J - 1)
 
         # table 14 - residual dimensionless gibbs free energy - part r pi
         gr_pi = 0
-        for I, J, n in zip(R2.Table16_I, R2.Table16_J, R2.Table16_n):
+        for I, J, n in zip(IF97.Table16_I, IF97.Table16_J, IF97.Table16_n):
             gr_pi = gr_pi + n * I * Pi ** (I - 1) * (tau - 0.5) ** J
 
         # table 14 - residual dimensionless gibbs free energy - part r tau
         gr_tau = 0
-        for I, J, n in zip(R2.Table16_I, R2.Table16_J, R2.Table16_n):
+        for I, J, n in zip(IF97.Table16_I, IF97.Table16_J, IF97.Table16_n):
             gr_tau += n * Pi**I * J * (tau - 0.5) ** (J - 1)
 
         return _R * T * (tau * (g0_tau + gr_tau) - Pi * (g0_pi + gr_pi))  # u2_pT
@@ -495,13 +495,13 @@ class Region2:
 
         g0 = math.log(Pi)
         g0_tau = 0
-        for J, n in zip(R2.Table10_J0, R2.Table10_n0):
+        for J, n in zip(IF97.Table10_J0, IF97.Table10_n0):
             g0 = g0 + n * tau**J
             g0_tau = g0_tau + n * J * tau ** (J - 1)
 
         gr = 0
         gr_tau = 0
-        for I, J, n in zip(R2.Table11_I, R2.Table11_J, R2.Table11_n):
+        for I, J, n in zip(IF97.Table11_I, IF97.Table11_J, IF97.Table11_n):
             gr = gr + n * Pi**I * (tau - 0.5) ** J
             gr_tau = gr_tau + n * Pi**I * J * (tau - 0.5) ** (J - 1)
 
@@ -521,22 +521,22 @@ class Region2:
 
         # table 13 - dimensionless gibbs free energy - gamma 0
         g0 = math.log(Pi)
-        for J, n in zip(R2.Table10_J0, R2.Table10_n0):
+        for J, n in zip(IF97.Table10_J0, IF97.Table10_n0):
             g0 += n * tau**J
 
         # table 13 - dimensionless gibbs free energy - gamma 0 tau
         g0_tau = 0
-        for J, n in zip(R2.Table10_J0, R2.Table10_n0):
+        for J, n in zip(IF97.Table10_J0, IF97.Table10_n0):
             g0_tau += n * J * tau ** (J - 1)
 
         # table 14 - residual dimensionless gibbs free energy - part r
         gr = 0
-        for I, J, n in zip(R2.Table16_I, R2.Table16_J, R2.Table16_n):
+        for I, J, n in zip(IF97.Table16_I, IF97.Table16_J, IF97.Table16_n):
             gr += n * Pi**I * (tau - 0.5) ** J
 
         # table 14 - residual dimensionless gibbs free energy - part r tau
         gr_tau = 0
-        for I, J, n in zip(R2.Table16_I, R2.Table16_J, R2.Table16_n):
+        for I, J, n in zip(IF97.Table16_I, IF97.Table16_J, IF97.Table16_n):
             gr_tau += n * Pi**I * J * (tau - 0.5) ** (J - 1)
 
         return _R * (tau * (g0_tau + gr_tau) - (g0 + gr))  # s2_pT
@@ -558,11 +558,11 @@ class Region2:
         tau = 540 / T
 
         g0_tautau = 0
-        for J, n in zip(R2.Table10_J0, R2.Table10_n0):
+        for J, n in zip(IF97.Table10_J0, IF97.Table10_n0):
             g0_tautau = g0_tautau + n * J * (J - 1) * tau ** (J - 2)
 
         gr_tautau = 0
-        for I, J, n in zip(R2.Table11_I, R2.Table11_J, R2.Table11_n):
+        for I, J, n in zip(IF97.Table11_I, IF97.Table11_J, IF97.Table11_n):
             gr_tautau = gr_tautau + n * Pi**I * J * (J - 1) * (tau - 0.5) ** (J - 2)
 
         return -_R * tau**2 * (g0_tautau + gr_tautau)
@@ -581,12 +581,12 @@ class Region2:
 
         # table 13 - dimensionless gibbs free energy - gamma 0 tau tau
         g0_tautau = 0
-        for J, n in zip(R2.Table10_J0, R2.Table10_n0):
+        for J, n in zip(IF97.Table10_J0, IF97.Table10_n0):
             g0_tautau += n * J * (J - 1) * tau ** (J - 2)
 
         # table 14 - residual dimensionless gibbs free energy - part r tau tau
         gr_tautau = 0
-        for I, J, n in zip(R2.Table16_I, R2.Table16_J, R2.Table16_n):
+        for I, J, n in zip(IF97.Table16_I, IF97.Table16_J, IF97.Table16_n):
             gr_tautau += n * Pi**I * J * (J - 1) * (tau - 0.5) ** (J - 2)
 
         return -_R * tau**2 * (g0_tautau + gr_tautau)  # Cp2_pT
@@ -608,14 +608,14 @@ class Region2:
         tau = 540 / T
 
         g0_tautau = 0
-        for J, n in zip(R2.Table10_J0, R2.Table10_n0):
+        for J, n in zip(IF97.Table10_J0, IF97.Table10_n0):
             g0_tautau = g0_tautau + n * J * (J - 1) * tau ** (J - 2)
 
         gr_pi = 0
         gr_pitau = 0
         gr_pipi = 0
         gr_tautau = 0
-        for I, J, n in zip(R2.Table11_I, R2.Table11_J, R2.Table11_n):
+        for I, J, n in zip(IF97.Table11_I, IF97.Table11_J, IF97.Table11_n):
             gr_pi = gr_pi + n * I * Pi ** (I - 1) * (tau - 0.5) ** J
             gr_pipi = gr_pipi + n * I * (I - 1) * Pi ** (I - 2) * (tau - 0.5) ** J
             gr_pitau = gr_pitau + n * I * Pi ** (I - 1) * J * (tau - 0.5) ** (J - 1)
@@ -640,14 +640,14 @@ class Region2:
         tau = 540 / T
 
         g0_tautau = 0
-        for J, n in zip(R2.Table10_J0, R2.Table10_n0):
+        for J, n in zip(IF97.Table10_J0, IF97.Table10_n0):
             g0_tautau = g0_tautau + n * J * (J - 1) * tau ** (J - 2)
 
         gr_pi = 0
         gr_pitau = 0
         gr_pipi = 0
         gr_tautau = 0
-        for I, J, n in zip(R2.Table11_I, R2.Table11_J, R2.Table11_n):
+        for I, J, n in zip(IF97.Table11_I, IF97.Table11_J, IF97.Table11_n):
             gr_pi = gr_pi + n * I * Pi ** (I - 1) * (tau - 0.5) ** J
             gr_pipi = gr_pipi + n * I * (I - 1) * Pi ** (I - 2) * (tau - 0.5) ** J
             gr_pitau = gr_pitau + n * I * Pi ** (I - 1) * J * (tau - 0.5) ** (J - 1)
@@ -675,17 +675,17 @@ class Region2:
 
         # table 13 - dimensionless gibbs free energy - gamma 0 tau tau
         g0_tautau = 0
-        for J, n in zip(R2.Table10_J0, R2.Table10_n0):
+        for J, n in zip(IF97.Table10_J0, IF97.Table10_n0):
             g0_tautau += n * J * (J - 1) * tau ** (J - 2)
 
         # table 14 - residual dimensionless gibbs free energy - part r pi
         gr_pi = 0
-        for I, J, n in zip(R2.Table16_I, R2.Table16_J, R2.Table16_n):
+        for I, J, n in zip(IF97.Table16_I, IF97.Table16_J, IF97.Table16_n):
             gr_pi = gr_pi + n * I * Pi ** (I - 1) * (tau - 0.5) ** J
 
         # table 14 - residual dimensionless gibbs free energy - part r pi pi
         gr_pipi = 0
-        for I, J, n in zip(R2.Table16_I, R2.Table16_J, R2.Table16_n):
+        for I, J, n in zip(IF97.Table16_I, IF97.Table16_J, IF97.Table16_n):
             gr_pipi += n * I * (I - 1) * Pi ** (I - 2) * (tau - 0.5) ** J
         if isinstance(gr_pipi, complex):
             if gr_pipi.imag != 0:
@@ -694,12 +694,12 @@ class Region2:
 
         # table 14 - residual dimensionless gibbs free energy - part r tau tau
         gr_tautau = 0
-        for I, J, n in zip(R2.Table16_I, R2.Table16_J, R2.Table16_n):
+        for I, J, n in zip(IF97.Table16_I, IF97.Table16_J, IF97.Table16_n):
             gr_tautau += n * Pi**I * J * (J - 1) * (tau - 0.5) ** (J - 2)
 
         # table 14 - residual dimensionless gibbs free energy - part r pi tau
         gr_pitau = 0
-        for I, J, n in zip(R2.Table16_I, R2.Table16_J, R2.Table16_n):
+        for I, J, n in zip(IF97.Table16_I, IF97.Table16_J, IF97.Table16_n):
             gr_pitau += n * I * Pi ** (I - 1) * J * (tau - 0.5) ** (J - 1)
 
         part_1 = 1 + 2 * Pi * gr_pi + Pi**2 * gr_pi**2
@@ -731,7 +731,7 @@ class Region2:
         if sub_reg == 1:
             Ts = 0
             hs = h / 2000
-            for I, J, n in zip(R2.Table20_I, R2.Table20_J, R2.Table20_n):
+            for I, J, n in zip(IF97.Table20_I, IF97.Table20_J, IF97.Table20_n):
                 Ts = Ts + n * p**I * (hs - 2.1) ** J
         elif sub_reg == 2:
             # Subregion B
@@ -740,7 +740,7 @@ class Region2:
             hs = h / 2000
             # TODO check list range!
             # for i = 1 : 38
-            for I, J, n in zip(R2.Table21_I, R2.Table21_J, R2.Table21_n):
+            for I, J, n in zip(IF97.Table21_I, IF97.Table21_J, IF97.Table21_n):
                 # for i in range(0, 38):
                 Ts = Ts + n * (p - 2) ** I * (hs - 2.6) ** J
         else:
@@ -748,7 +748,7 @@ class Region2:
             # Table 22, Eq 24, page 24
             Ts = 0
             hs = h / 2000
-            for I, J, n in zip(R2.Table22_I, R2.Table22_J, R2.Table22_n):
+            for I, J, n in zip(IF97.Table22_I, IF97.Table22_J, IF97.Table22_n):
                 Ts = Ts + n * (p + 25) ** I * (hs - 1.8) ** J
         return Ts
 
@@ -781,7 +781,7 @@ class Region2:
             teta = 0
             # TODO check list range!
             # for i = 1 : 46
-            for I, J, n in zip(R2.Table25_I, R2.Table25_J, R2.Table25_n):
+            for I, J, n in zip(IF97.Table25_I, IF97.Table25_J, IF97.Table25_n):
                 # for i in range(0, 46):
                 teta = teta + n * Pi**I * (Sigma - 2) ** J
         elif sub_reg == 2:
@@ -790,7 +790,7 @@ class Region2:
             Pi = p
             Sigma = s / 0.7853
             teta = 0
-            for I, J, n in zip(R2.Table26_I, R2.Table26_J, R2.Table26_n):
+            for I, J, n in zip(IF97.Table26_I, IF97.Table26_J, IF97.Table26_n):
                 # for i in range(0, 44):
                 teta = teta + n * Pi**I * (10 - Sigma) ** J
         else:
@@ -799,7 +799,7 @@ class Region2:
             Pi = p
             Sigma = s / 2.9251
             teta = 0
-            for I, J, n in zip(R2.Table27_I, R2.Table27_J, R2.Table27_n):
+            for I, J, n in zip(IF97.Table27_I, IF97.Table27_J, IF97.Table27_n):
                 # for i in range(0, 30):
                 teta = teta + n * Pi**I * (2 - Sigma) ** J
         return teta
@@ -834,7 +834,7 @@ class Region2:
             Sigma = s / 12
 
             Pi = 0
-            for I, J, n in zip(R2.Sub_psh12_Table6_I, R2.Sub_psh12_Table6_J, R2.Sub_psh12_Table6_n):
+            for I, J, n in zip(Sub_psh12.Table6_I, Sub_psh12.Table6_J, Sub_psh12.Table6_n):
                 Pi = Pi + n * (eta - 0.5) ** I * (Sigma - 1.2) ** J
 
             p2_hs = Pi**4 * 4
@@ -845,7 +845,7 @@ class Region2:
             Sigma = s / 7.9
 
             Pi = 0
-            for I, J, n in zip(R2.Sub_psh12_Table7_I, R2.Sub_psh12_Table7_J, R2.Sub_psh12_Table7_n):
+            for I, J, n in zip(Sub_psh12.Table7_I, Sub_psh12.Table7_J, Sub_psh12.Table7_n):
                 Pi = Pi + n * (eta - 0.6) ** I * (Sigma - 1.01) ** J
 
             p2_hs = Pi**4 * 100
@@ -856,7 +856,7 @@ class Region2:
             Sigma = s / 5.9
 
             Pi = 0
-            for I, J, n in zip(R2.Sub_psh12_Table8_I, R2.Sub_psh12_Table8_J, R2.Sub_psh12_Table8_n):
+            for I, J, n in zip(Sub_psh12.Table8_I, Sub_psh12.Table8_J, Sub_psh12.Table8_n):
                 Pi = Pi + n * (eta - 0.7) ** I * (Sigma - 1.1) ** J
 
             p2_hs = Pi**4 * 100
@@ -926,10 +926,10 @@ class Region3:
         tau = _tc / T
 
         fidelta = 0
-        for I, J, n in zip(R3.Table30_I, R3.Table30_J, R3.Table30_n):
+        for I, J, n in zip(IF97.Table30_I, IF97.Table30_J, IF97.Table30_n):
             fidelta = fidelta + n * I * delta ** (I - 1) * tau**J
 
-        fidelta = fidelta + (R3.Table30_n[0] / delta)
+        fidelta = fidelta + (IF97.Table30_n[0] / delta)
         return (rho * _R * T * delta * fidelta) / 1000.0
 
     @classmethod
@@ -950,7 +950,7 @@ class Region3:
 
         # TODO check table range
         fitau = 0
-        for I, J, n in zip(R3.Table30_I[1:], R3.Table30_J[1:], R3.Table30_n[1:]):
+        for I, J, n in zip(IF97.Table30_I[1:], IF97.Table30_J[1:], IF97.Table30_n[1:]):
             fitau = fitau + n * delta**I * J * tau ** (J - 1)
 
         return _R * T * (tau * fitau)
@@ -973,11 +973,11 @@ class Region3:
 
         fidelta = 0
         fitau = 0
-        for I, J, n in zip(R3.Table30_I[1:], R3.Table30_J[1:], R3.Table30_n[1:]):
+        for I, J, n in zip(IF97.Table30_I[1:], IF97.Table30_J[1:], IF97.Table30_n[1:]):
             fidelta = fidelta + n * I * delta ** (I - 1) * tau**J
             fitau = fitau + n * delta**I * J * tau ** (J - 1)
 
-        fidelta = fidelta + R3.Table30_n[0] / delta
+        fidelta = fidelta + IF97.Table30_n[0] / delta
         return _R * T * (tau * fitau + delta * fidelta)
 
     @classmethod
@@ -998,11 +998,11 @@ class Region3:
 
         fi = 0
         fitau = 0
-        for I, J, n in zip(R3.Table30_I[1:], R3.Table30_J[1:], R3.Table30_n[1:]):
+        for I, J, n in zip(IF97.Table30_I[1:], IF97.Table30_J[1:], IF97.Table30_n[1:]):
             fi = fi + n * delta**I * tau**J
             fitau = fitau + n * delta**I * J * tau ** (J - 1)
 
-        fi = fi + R3.Table30_n[0] * math.log(delta)
+        fi = fi + IF97.Table30_n[0] * math.log(delta)
         return _R * (tau * fitau - fi)
 
     @classmethod
@@ -1025,14 +1025,14 @@ class Region3:
         fidelta = 0
         fideltatau = 0
         fideltadelta = 0
-        for I, J, n in zip(R3.Table30_I[1:], R3.Table30_J[1:], R3.Table30_n[1:]):
+        for I, J, n in zip(IF97.Table30_I[1:], IF97.Table30_J[1:], IF97.Table30_n[1:]):
             fitautau = fitautau + n * delta**I * J * (J - 1) * tau ** (J - 2)
             fidelta = fidelta + n * I * delta ** (I - 1) * tau**J
             fideltatau = fideltatau + n * I * delta ** (I - 1) * J * tau ** (J - 1)
             fideltadelta = fideltadelta + n * I * (I - 1) * delta ** (I - 2) * tau**J
 
-        fidelta = fidelta + R3.Table30_n[0] / delta
-        fideltadelta = fideltadelta - R3.Table30_n[0] / (delta**2)
+        fidelta = fidelta + IF97.Table30_n[0] / delta
+        fideltadelta = fideltadelta - IF97.Table30_n[0] / (delta**2)
         return _R * (
             -(tau**2) * fitautau + (delta * fidelta - delta * tau * fideltatau) ** 2 / (2 * delta * fidelta + delta**2 * fideltadelta)
         )
@@ -1057,7 +1057,7 @@ class Region3:
         # TODO:vvvv Check for mistake vvvvv
         # for i = 1 : 40
         # IAWPS says i=2..40
-        for I, J, n in zip(R3.Table30_I[1:], R3.Table30_J[1:], R3.Table30_n[1:]):
+        for I, J, n in zip(IF97.Table30_I[1:], IF97.Table30_J[1:], IF97.Table30_n[1:]):
             # for i in range(1, 40):
             fitautau = fitautau + n * delta**I * J * (J - 1) * tau ** (J - 2)
 
@@ -1083,14 +1083,14 @@ class Region3:
         fidelta = 0
         fideltatau = 0
         fideltadelta = 0
-        for I, J, n in zip(R3.Table30_I[1:], R3.Table30_J[1:], R3.Table30_n[1:]):
+        for I, J, n in zip(IF97.Table30_I[1:], IF97.Table30_J[1:], IF97.Table30_n[1:]):
             fitautau = fitautau + n * delta**I * J * (J - 1) * tau ** (J - 2)
             fidelta = fidelta + n * I * delta ** (I - 1) * tau**J
             fideltatau = fideltatau + n * I * delta ** (I - 1) * J * tau ** (J - 1)
             fideltadelta = fideltadelta + n * I * (I - 1) * delta ** (I - 2) * tau**J
 
-        fidelta = fidelta + R3.Table30_n[0] / delta
-        fideltadelta = fideltadelta - R3.Table30_n[0] / (delta**2)
+        fidelta = fidelta + IF97.Table30_n[0] / delta
+        fideltadelta = fideltadelta - IF97.Table30_n[0] / (delta**2)
         return (
             1000
             * _R
@@ -1123,7 +1123,7 @@ class Region3:
             hs = h / 2300
 
             Ts = 0
-            for I, J, n in zip(R3.Sub_Tph_Table3_I_rev2004, R3.Sub_Tph_Table3_J_rev2004, R3.Sub_Tph_Table3_n_rev2004):
+            for I, J, n in zip(Sub_Tsh.Table3_I, Sub_Tsh.Table3_J, Sub_Tsh.Table3_n):
                 Ts = Ts + n * (ps + 0.24) ** I * (hs - 0.615) ** J
 
             T3_ph = Ts * 760
@@ -1134,7 +1134,7 @@ class Region3:
             ps = p / 100
 
             Ts = 0
-            for I, J, n in zip(R3.Sub_Tph_Table4_I_rev2004, R3.Sub_Tph_Table4_J_rev2004, R3.Sub_Tph_Table4_n_rev2004):
+            for I, J, n in zip(Sub_Tsh.Table4_I, Sub_Tsh.Table4_J, Sub_Tsh.Table4_n):
                 Ts = Ts + n * (ps + 0.298) ** I * (hs - 0.72) ** J
 
             T3_ph = Ts * 860
@@ -1163,7 +1163,7 @@ class Region3:
             hs = h / 2100
 
             vs = 0
-            for I, J, n in zip(R3.Sub_Tph_Table6_I_rev2004, R3.Sub_Tph_Table6_J_rev2004, R3.Sub_Tph_Table6_n_rev2004):
+            for I, J, n in zip(Sub_Tsh.Table6_I, Sub_Tsh.Table6_J, Sub_Tsh.Table6_n):
                 vs = vs + n * (ps + 0.128) ** I * (hs - 0.727) ** J
 
             v3_ph = vs * 0.0028
@@ -1174,7 +1174,7 @@ class Region3:
             hs = h / 2800
 
             vs = 0
-            for I, J, n in zip(R3.Sub_Tph_Table7_I_rev2004, R3.Sub_Tph_Table7_J_rev2004, R3.Sub_Tph_Table7_n_rev2004):
+            for I, J, n in zip(Sub_Tsh.Table7_I, Sub_Tsh.Table7_J, Sub_Tsh.Table7_n):
                 vs = vs + n * (ps + 0.0661) ** I * (hs - 0.72) ** J
 
             v3_ph = vs * 0.0088
@@ -1204,7 +1204,7 @@ class Region3:
             Pi = p / 100
 
             teta = 0
-            for I, J, n in zip(R3.Sub_Tph_Table10_I_rev2004, R3.Sub_Tph_Table10_J_rev2004, R3.Sub_Tph_Table10_n_rev2004):
+            for I, J, n in zip(Sub_Tsh.Table10_I, Sub_Tsh.Table10_J, Sub_Tsh.Table10_n):
                 teta = teta + n * (Pi + 0.24) ** I * (Sigma - 0.703) ** J
 
             T3_ps = teta * 760
@@ -1215,7 +1215,7 @@ class Region3:
             Pi = p / 100
 
             teta = 0
-            for I, J, n in zip(R3.Sub_Tph_Table11_I_rev2004, R3.Sub_Tph_Table11_J_rev2004, R3.Sub_Tph_Table11_n_rev2004):
+            for I, J, n in zip(Sub_Tsh.Table11_I, Sub_Tsh.Table11_J, Sub_Tsh.Table11_n):
                 teta = teta + n * (Pi + 0.76) ** I * (Sigma - 0.818) ** J
 
             T3_ps = teta * 860
@@ -1245,7 +1245,7 @@ class Region3:
             Sigma = s / 4.4
 
             omega = 0
-            for I, J, n in zip(R3.Sub_Tph_Table13_I_rev2004, R3.Sub_Tph_Table13_J_rev2004, R3.Sub_Tph_Table13_n_rev2004):
+            for I, J, n in zip(Sub_Tsh.Table13_I, Sub_Tsh.Table13_J, Sub_Tsh.Table13_n):
                 omega = omega + n * (Pi + 0.187) ** I * (Sigma - 0.755) ** J
 
             v3_ps = omega * 0.0028
@@ -1256,7 +1256,7 @@ class Region3:
             Sigma = s / 5.3
 
             omega = 0
-            for I, J, n in zip(R3.Sub_Tph_Table14_I_rev2004, R3.Sub_Tph_Table14_J_rev2004, R3.Sub_Tph_Table14_n_rev2004):
+            for I, J, n in zip(Sub_Tsh.Table14_I, Sub_Tsh.Table14_J, Sub_Tsh.Table14_n):
                 omega = omega + n * (Pi + 0.298) ** I * (Sigma - 0.816) ** J
 
             v3_ps = omega * 0.0088
@@ -1284,7 +1284,7 @@ class Region3:
             Sigma = s / 4.4
             eta = h / 2300
             Pi = 0
-            for I, J, n in zip(R3.Sub_psh3_Table3_I, R3.Sub_psh3_Table3_J, R3.Sub_psh3_Table3_n):
+            for I, J, n in zip(Sub_psh3.Table3_I, Sub_psh3.Table3_J, Sub_psh3.Table3_n):
                 # for i in range(0, 33):
                 Pi = Pi + n * (eta - 1.01) ** I * (Sigma - 0.75) ** J
             p3_hs = Pi * 99
@@ -1296,7 +1296,7 @@ class Region3:
             Pi = 0
             # TODO check table range
             # for i = 1 : 35
-            for I, J, n in zip(R3.Sub_psh3_Table4_I, R3.Sub_psh3_Table4_J, R3.Sub_psh3_Table4_n):
+            for I, J, n in zip(Sub_psh3.Table4_I, Sub_psh3.Table4_J, Sub_psh3.Table4_n):
                 # for i in range(0, 35):
                 Pi = Pi + n * (eta - 0.681) ** I * (Sigma - 0.792) ** J
             p3_hs = 16.6 / Pi
@@ -1324,7 +1324,7 @@ class Region3:
             else:
                 Low_Bound = Region4.h4V_p(p)  # Min h ???r Vapour h.
                 High_Bound = Region2.h2_pT(p, TB23_p(p))
-        else:  # Above triple point. R3 from R2 till R3.
+        else:  # Above triple point. R3 from R2 till R1.
             Low_Bound = Region1.h1_pT(p, 623.15)
             High_Bound = Region2.h2_pT(p, TB23_p(p))
 
@@ -1526,7 +1526,7 @@ class Region4:
             # Eq 3, Table 9, Page 16
             Sigma = s / 3.8
             eta = 0
-            for I, J, n in zip(R3.Sub_psh3_Table9_I, R3.Sub_psh3_Table9_J, R3.Sub_psh3_Table9_n):
+            for I, J, n in zip(Sub_psh3.Table9_I, Sub_psh3.Table9_J, Sub_psh3.Table9_n):
                 eta = eta + n * (Sigma - 1.09) ** I * (Sigma + 0.0000366) ** J
             h4_s = eta * 1700
         elif 3.77828134 < s <= 4.41202148223476:
@@ -1534,7 +1534,7 @@ class Region4:
             # Eq 4, Table 10, Page 16
             Sigma = s / 3.8
             eta = 0
-            for I, J, n in zip(R3.Sub_psh3_Table10_I, R3.Sub_psh3_Table10_J, R3.Sub_psh3_Table10_n):
+            for I, J, n in zip(Sub_psh3.Table10_I, Sub_psh3.Table10_J, Sub_psh3.Table10_n):
                 eta = eta + n * (Sigma - 1.09) ** I * (Sigma + 0.0000366) ** J
             h4_s = eta * 1700
         elif 4.41202148223476 < s <= 5.85:
@@ -1544,7 +1544,7 @@ class Region4:
             # hV2c3b_s(s)
             Sigma = s / 5.9
             eta = 0
-            for I, J, n in zip(R3.Sub_psh3_Table17_I, R3.Sub_psh3_Table17_J, R3.Sub_psh3_Table17_n):
+            for I, J, n in zip(Sub_psh3.Table17_I, Sub_psh3.Table17_J, Sub_psh3.Table17_n):
                 eta = eta + n * (Sigma - 1.02) ** I * (Sigma - 0.726) ** J
             h4_s = eta**4 * 2800
         elif 5.85 < s < 9.155759395:
@@ -1554,7 +1554,7 @@ class Region4:
             Sigma1 = s / 5.21
             Sigma2 = s / 9.2
             eta = 0
-            for I, J, n in zip(R3.Sub_psh3_Table16_I, R3.Sub_psh3_Table16_J, R3.Sub_psh3_Table16_n):
+            for I, J, n in zip(Sub_psh3.Table16_I, Sub_psh3.Table16_J, Sub_psh3.Table16_n):
                 eta = eta + n * (1 / Sigma1 - 0.513) ** I * (Sigma2 - 0.524) ** J
             h4_s = math.exp(eta) * 2800
         else:
@@ -1725,15 +1725,13 @@ class Region4:
         """
         PL = float("NaN")
         p = float("NaN")
-        Ii = R3.Sub_psh3_Table28_I
-        Ji = R3.Sub_psh3_Table28_J
-        ni = R3.Sub_psh3_Table28_n
+
         if 5.210887825 < s < 9.15546555571324:
             Sigma = s / 9.2
             eta = h / 2800
             teta = 0
-            for i in range(0, 36):
-                teta = teta + ni[i] * (eta - 0.119) ** Ii[i] * (Sigma - 1.07) ** Ji[i]
+            for I, J, n in zip(Sub_psh3.Table28_I, Sub_psh3.Table28_J, Sub_psh3.Table28_n):
+                teta = teta + n * (eta - 0.119) ** I * (Sigma - 1.07) ** J
             T4_hs = teta * 550
         else:
             # function psat_h
@@ -1784,17 +1782,6 @@ class Region5:
     of water in Region 5
     """
 
-    nir = [
-        -1.2563183589592e-04,
-        2.1774678714571e-03,
-        -0.004594282089991,
-        -3.9724828359569e-06,
-        1.2919228289784e-07,
-    ]
-
-    Iir = [1, 1, 1, 2, 3]
-    Jir = [0, 1, 3, 9, 3]
-
     _logger = logging.getLogger(__name__)
 
     @classmethod
@@ -1810,19 +1797,17 @@ class Region5:
 
         :return: enthalpy in [kJ / kg]
         """
-        Iir = Region5.Iir
-        Jir = Region5.Jir
-        nir = Region5.nir
         tau = 1000 / T
         Pi = p
 
         gamma0_tau = 0
-        for J, n in zip(R4.Table37_J, R4.Table37_n):
+        for J, n in zip(IF97.Table37_J, IF97.Table37_n):
             gamma0_tau = gamma0_tau + n * J * tau ** (J - 1)
 
         gammar_tau = 0
-        for i in range(0, 5):
-            gammar_tau = gammar_tau + nir[i] * Pi ** Iir[i] * Jir[i] * tau ** (Jir[i] - 1)
+        for I, J, n in zip(IF97.Tablexx_I, IF97.Tablexx_J, IF97.Tablexx_n):
+            gammar_tau = gammar_tau + n * Pi**I * J * tau ** (J - 1)
+
         return _R * T * tau * (gamma0_tau + gammar_tau)
 
     @classmethod
@@ -1838,15 +1823,15 @@ class Region5:
 
         :return: specific volume in [m³ / kg]
         """
-        Iir = Region5.Iir
-        Jir = Region5.Jir
-        nir = Region5.nir
-        tau = 1000 / T  #
-        Pi = p  #
-        gamma0_pi = 1 / Pi  #
-        gammar_pi = 0  #
-        for i in range(0, 5):
-            gammar_pi = gammar_pi + nir[i] * Iir[i] * Pi ** (Iir[i] - 1) * tau ** Jir[i]
+        tau = 1000 / T
+        Pi = p
+
+        gamma0_pi = 1 / Pi
+
+        gammar_pi = 0
+        for I, J, n in zip(IF97.Tablexx_I, IF97.Tablexx_J, IF97.Tablexx_n):
+            gammar_pi = gammar_pi + n * I * Pi ** (I - 1) * tau**J
+
         return _R * T / p * Pi * (gamma0_pi + gammar_pi) / 1000
 
     @classmethod
@@ -1862,23 +1847,21 @@ class Region5:
 
         :return: specific internal energy in [kJ / kg]
         """
-        Iir = Region5.Iir
-        Jir = Region5.Jir
-        nir = Region5.nir
         tau = 1000 / T
         Pi = p
 
         gamma0_pi = 1 / Pi
 
         gamma0_tau = 0
-        for J, n in zip(R4.Table37_J, R4.Table37_n):
+        for J, n in zip(IF97.Table37_J, IF97.Table37_n):
             gamma0_tau = gamma0_tau + n * J * tau ** (J - 1)
 
         gammar_pi = 0
         gammar_tau = 0
-        for i in range(0, 5):
-            gammar_pi = gammar_pi + nir[i] * Iir[i] * Pi ** (Iir[i] - 1) * tau ** Jir[i]
-            gammar_tau = gammar_tau + nir[i] * Pi ** Iir[i] * Jir[i] * tau ** (Jir[i] - 1)
+        for I, J, n in zip(IF97.Tablexx_I, IF97.Tablexx_J, IF97.Tablexx_n):
+            gammar_pi = gammar_pi + n * I * Pi ** (I - 1) * tau**J
+            gammar_tau = gammar_tau + n * Pi**I * J * tau ** (J - 1)
+
         return _R * T * (tau * (gamma0_tau + gammar_tau) - Pi * (gamma0_pi + gammar_pi))
 
     @classmethod
@@ -1894,19 +1877,17 @@ class Region5:
 
         :return: specific isobaric heat capacity in [kJ / (kg K)]
         """
-        Iir = Region5.Iir
-        Jir = Region5.Jir
-        nir = Region5.nir
         tau = 1000 / T
         Pi = p
 
         gamma0_tautau = 0
-        for J, n in zip(R4.Table37_J, R4.Table37_n):
+        for J, n in zip(IF97.Table37_J, IF97.Table37_n):
             gamma0_tautau = gamma0_tautau + n * J * (J - 1) * tau ** (J - 2)
 
         gammar_tautau = 0
-        for i in range(0, 5):
-            gammar_tautau = gammar_tautau + nir[i] * Pi ** Iir[i] * Jir[i] * (Jir[i] - 1) * tau ** (Jir[i] - 2)
+        for I, J, n in zip(IF97.Tablexx_I, IF97.Tablexx_J, IF97.Tablexx_n):
+            gammar_tautau = gammar_tautau + n * Pi**I * J * (J - 1) * tau ** (J - 2)
+
         return -_R * tau**2 * (gamma0_tautau + gammar_tautau)
 
     @classmethod
@@ -1922,23 +1903,21 @@ class Region5:
 
         :return: specific entropy in [kJ / (kg K)]
         """
-        Iir = Region5.Iir
-        Jir = Region5.Jir
-        nir = Region5.nir
         tau = 1000 / T
         Pi = p
 
         gamma0 = math.log(Pi)
         gamma0_tau = 0
-        for J, n in zip(R4.Table37_J, R4.Table37_n):
+        for J, n in zip(IF97.Table37_J, IF97.Table37_n):
             gamma0 = gamma0 + n * tau**J
             gamma0_tau = gamma0_tau + n * J * tau ** (J - 1)
 
         gammar = 0
         gammar_tau = 0
-        for i in range(0, 5):
-            gammar = gammar + nir[i] * Pi ** Iir[i] * tau ** Jir[i]
-            gammar_tau = gammar_tau + nir[i] * Pi ** Iir[i] * Jir[i] * tau ** (Jir[i] - 1)
+        for I, J, n in zip(IF97.Tablexx_I, IF97.Tablexx_J, IF97.Tablexx_n):
+            gammar = gammar + n * Pi**I * tau**J
+            gammar_tau = gammar_tau + n * Pi**I * J * tau ** (J - 1)
+
         return _R * (tau * (gamma0_tau + gammar_tau) - (gamma0 + gammar))
 
     @classmethod
@@ -1954,25 +1933,23 @@ class Region5:
 
         :return: specific isochoric heat capacity in [kJ / (kg K)]
         """
-        Iir = Region5.Iir
-        Jir = Region5.Jir
-        nir = Region5.nir
         tau = 1000 / T
         Pi = p
 
         gamma0_tautau = 0
-        for J, n in zip(R4.Table37_J, R4.Table37_n):
+        for J, n in zip(IF97.Table37_J, IF97.Table37_n):
             gamma0_tautau = gamma0_tautau + n * (J - 1) * J * tau ** (J - 2)
 
         gammar_pi = 0
         gammar_pitau = 0
         gammar_pipi = 0
         gammar_tautau = 0
-        for i in range(0, 5):
-            gammar_pi = gammar_pi + nir[i] * Iir[i] * Pi ** (Iir[i] - 1) * tau ** Jir[i]
-            gammar_pitau = gammar_pitau + nir[i] * Iir[i] * Pi ** (Iir[i] - 1) * Jir[i] * tau ** (Jir[i] - 1)
-            gammar_pipi = gammar_pipi + nir[i] * Iir[i] * (Iir[i] - 1) * Pi ** (Iir[i] - 2) * tau ** Jir[i]
-            gammar_tautau = gammar_tautau + nir[i] * Pi ** Iir[i] * Jir[i] * (Jir[i] - 1) * tau ** (Jir[i] - 2)
+        for I, J, n in zip(IF97.Tablexx_I, IF97.Tablexx_J, IF97.Tablexx_n):
+            gammar_pi = gammar_pi + n * I * Pi ** (I - 1) * tau**J
+            gammar_pitau = gammar_pitau + n * I * Pi ** (I - 1) * J * tau ** (J - 1)
+            gammar_pipi = gammar_pipi + n * I * (I - 1) * Pi ** (I - 2) * tau**J
+            gammar_tautau = gammar_tautau + n * Pi**I * J * (J - 1) * tau ** (J - 2)
+
         return _R * (
             -(tau**2 * (gamma0_tautau + gammar_tautau)) - (1 + Pi * gammar_pi - tau * Pi * gammar_pitau) ** 2 / (1 - Pi**2 * gammar_pipi)
         )
@@ -1990,25 +1967,22 @@ class Region5:
 
         :return: speed of sound in [m / s]
         """
-        Iir = Region5.Iir
-        Jir = Region5.Jir
-        nir = Region5.nir
         tau = 1000 / T
         Pi = p
 
         gamma0_tautau = 0
-        for J, n in zip(R4.Table37_J, R4.Table37_n):
+        for J, n in zip(IF97.Table37_J, IF97.Table37_n):
             gamma0_tautau = gamma0_tautau + n * (J - 1) * J * tau ** (J - 2)
 
         gammar_pi = 0
         gammar_pitau = 0
         gammar_pipi = 0
         gammar_tautau = 0
-        for i in range(0, 5):
-            gammar_pi = gammar_pi + nir[i] * Iir[i] * Pi ** (Iir[i] - 1) * tau ** Jir[i]
-            gammar_pitau = gammar_pitau + nir[i] * Iir[i] * Pi ** (Iir[i] - 1) * Jir[i] * tau ** (Jir[i] - 1)
-            gammar_pipi = gammar_pipi + nir[i] * Iir[i] * (Iir[i] - 1) * Pi ** (Iir[i] - 2) * tau ** Jir[i]
-            gammar_tautau = gammar_tautau + nir[i] * Pi ** Iir[i] * Jir[i] * (Jir[i] - 1) * tau ** (Jir[i] - 2)
+        for I, J, n in zip(IF97.Tablexx_I, IF97.Tablexx_J, IF97.Tablexx_n):
+            gammar_pi = gammar_pi + n * I * Pi ** (I - 1) * tau**J
+            gammar_pitau = gammar_pitau + n * I * Pi ** (I - 1) * J * tau ** (J - 1)
+            gammar_pipi = gammar_pipi + n * I * (I - 1) * Pi ** (I - 2) * tau**J
+            gammar_tautau = gammar_tautau + n * Pi**I * J * (J - 1) * tau ** (J - 2)
 
         return (
             1000

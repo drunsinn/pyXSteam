@@ -5,7 +5,7 @@ Section 4: Region Borders
 """
 import logging
 
-from .IF97_Tables import R3
+from .Tables import Sub_psh3
 
 logger = logging.getLogger(__name__)
 
@@ -61,13 +61,10 @@ def hB13_s(s: float) -> float:
 
     :return: enthalpy in [kJ / kg]
     """
-    Ii = R3.Sub_psh3_Table23_I
-    Ji = R3.Sub_psh3_Table23_J
-    ni = R3.Sub_psh3_Table23_n
     Sigma = s / 3.8
     eta = 0
-    for i in range(0, 6):
-        eta = eta + ni[i] * (Sigma - 0.884) ** Ii[i] * (Sigma - 0.864) ** Ji[i]
+    for I, J, n in zip(Sub_psh3.Table23_I, Sub_psh3.Table23_J, Sub_psh3.Table23_n):
+        eta = eta + n * (Sigma - 0.884) ** I * (Sigma - 0.864) ** J
     return eta * 1700
 
 
@@ -86,12 +83,9 @@ def TB23_hs(h: float, s: float) -> float:
 
     :return: temperature in [K]
     """
-    Ii = R3.Sub_psh3_Table25_I
-    Ji = R3.Sub_psh3_Table25_J
-    ni = R3.Sub_psh3_Table25_n
     Sigma = s / 5.3
     eta = h / 3000
     teta = 0
-    for i in range(0, 25):
-        teta = teta + ni[i] * (eta - 0.727) ** Ii[i] * (Sigma - 0.864) ** Ji[i]
+    for I, J, n in zip(Sub_psh3.Table23_I, Sub_psh3.Table23_J, Sub_psh3.Table23_n):
+        teta = teta + n * (eta - 0.727) ** I * (Sigma - 0.864) ** J
     return teta * 900
