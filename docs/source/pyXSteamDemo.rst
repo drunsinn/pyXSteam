@@ -16,14 +16,6 @@ By using the unitSystem Parameter, you can tell XSteam witch Unit System you are
     steam_table = XSteam(XSteam.UNIT_SYSTEM_FLS) # ft/lb/sec/°F/psi/btu
     steam_table = XSteam(XSteam.UNIT_SYSTEM_BARE) # m/kg/sec/K/MPa/W
 
-To enable logging, add the following lines to your code::
-
-    import logging
-    logger = logging.getLogger('pyXSteam')
-    logger.setLevel(logging.DEBUG) sh = logging.StreamHandler()
-    sh.setFormatter(logging.Formatter('%(name)s - %(levelname)s - %(message)s'))
-    logger.addHandler(sh)
-
 Calculate single values
 =======================
 This is a simple example::

@@ -11,9 +11,12 @@ from pyXSteam.Regions import Region1, Region2, Region3, Region4, Region5
 
 
 class Region1Tester(unittest.TestCase):
+    """tests for functions in region 1"""
+
     def setUp(self):
-        self.maxError = 1e-8
-        self.maxMatrixError = 2e-8  # The accumulated Error is bigger than the error of each single function
+        self.max_error = 1e-8
+        # The accumulated Error is bigger than the error of each single function
+        self.max_matrix_error = 2e-8
 
     def tearDown(self):
         pass
@@ -45,9 +48,9 @@ class Region1Tester(unittest.TestCase):
         Region1_error = numpy.sum(numpy.absolute((R1 - IF97) / IF97))
         self.assertLess(
             Region1_error,
-            self.maxMatrixError,
+            self.max_matrix_error,
             "Test of p,T Functions for Region 1 failed. Error was %(error)e allowed:"
-            " %(max)e" % {"error": Region1_error, "max": self.maxMatrixError},
+            " %(max)e" % {"error": Region1_error, "max": self.max_matrix_error},
         )
 
     def test_ph_function(self):
@@ -63,9 +66,9 @@ class Region1Tester(unittest.TestCase):
         T1_ph_error = numpy.sum(numpy.absolute((R1 - IF97) / IF97))
         self.assertLess(
             T1_ph_error,
-            self.maxError,
+            self.max_error,
             "Test of T(p,h) Function for Region 1 failed. Error was %(error)e allowed:"
-            " %(max)e" % {"error": T1_ph_error, "max": self.maxError},
+            " %(max)e" % {"error": T1_ph_error, "max": self.max_error},
         )
 
     def test_ps_function(self):
@@ -81,9 +84,9 @@ class Region1Tester(unittest.TestCase):
         T1_ps_error = numpy.sum(numpy.absolute((R1 - IF97) / IF97))
         self.assertLess(
             T1_ps_error,
-            self.maxError,
+            self.max_error,
             "Test of T(p,s) Function for Region 1 failed. Error was %(error)e allowed:"
-            " %(max)e" % {"error": T1_ps_error, "max": self.maxError},
+            " %(max)e" % {"error": T1_ps_error, "max": self.max_error},
         )
 
     def test_hs_function(self):
@@ -101,16 +104,19 @@ class Region1Tester(unittest.TestCase):
         p1_hs_error = numpy.sum(numpy.absolute((R1 - IF97) / IF97))
         self.assertLess(
             p1_hs_error,
-            self.maxError,
+            self.max_error,
             "Test of p(h,s) Function for Region 1 failed. Error was %(error)e allowed:"
-            " %(max)e" % {"error": p1_hs_error, "max": self.maxError},
+            " %(max)e" % {"error": p1_hs_error, "max": self.max_error},
         )
 
 
 class Region2Tester(unittest.TestCase):
+    """tests for functions in region 2"""
+
     def setUp(self):
-        self.maxError = 1e-8
-        self.maxMatrixError = 2e-8  # The accumulated Error is bigger than the error of each single function
+        self.max_error = 1e-8
+        # The accumulated Error is bigger than the error of each single function
+        self.max_matrix_error = 2e-8
 
     def tearDown(self):
         pass
@@ -143,9 +149,41 @@ class Region2Tester(unittest.TestCase):
         Region2_error = numpy.sum(numpy.absolute((R2 - IF97) / IF97))
         self.assertLess(
             Region2_error,
-            self.maxMatrixError,
+            self.max_matrix_error,
             "Test of p,T Functions for Region 2 failed. Error was %(error)e allowed:"
-            " %(max)e" % {"error": Region2_error, "max": self.maxMatrixError},
+            " %(max)e" % {"error": Region2_error, "max": self.max_matrix_error},
+        )
+
+    def test_pT_meta_function(self):
+        """Tests to verify all functions with the Parameters p and T of Region 2 along the 10 MPa isobar in the metastable-vapor region by comparing the Results to IF-97 Page 20 Table 18"""
+        # IF-97 Table 18, Page 20
+        T = [450.0, 440.0, 450.0]
+        p = [1.0, 1.0, 1.5]
+
+        IF97 = [
+            [0.192516540, 0.186212297, 0.121685206],  # v
+            [0.276881115e4, 0.274015123e4, 0.272134539e4],  # h
+            [0.257629461e4, 0.255393894e4, 0.253881758e4],  # u
+            [0.656660377e1, 0.650218759e1, 0.629170440e1],  # s
+            [0.276349265e1, 0.298166443e1, 0.362795578e1],  # cp
+            [0.498408101e3, 0.489363295e3, 0.481941819e3],  # w
+        ]
+        R2 = numpy.zeros((6, 3))
+
+        for i in range(3):
+            R2[0][i] = Region2.v2_pT_meta(p[i], T[i])
+            R2[1][i] = Region2.h2_pT_meta(p[i], T[i])
+            R2[2][i] = Region2.u2_pT_meta(p[i], T[i])
+            R2[3][i] = Region2.s2_pT_meta(p[i], T[i])
+            R2[4][i] = Region2.Cp2_pT_meta(p[i], T[i])
+            R2[5][i] = Region2.w2_pT_meta(p[i], T[i])
+
+        Region2_error = numpy.sum(numpy.absolute((R2 - IF97) / IF97))
+        self.assertLess(
+            Region2_error,
+            self.max_matrix_error,
+            "Test of p,T Functions for Region 2 in the metastable-vapor region failed. Error was %(error)e allowed:"
+            " %(max)e" % {"error": Region2_error, "max": self.max_matrix_error},
         )
 
     def test_ph_function(self):
@@ -180,9 +218,9 @@ class Region2Tester(unittest.TestCase):
         T2_ph_error = numpy.sum(numpy.absolute((R2 - IF97) / IF97))
         self.assertLess(
             T2_ph_error,
-            self.maxMatrixError,
+            self.max_matrix_error,
             "Test of ph Function for Region 2 failed. Error was %(error)e allowed:"
-            " %(max)e" % {"error": T2_ph_error, "max": self.maxMatrixError},
+            " %(max)e" % {"error": T2_ph_error, "max": self.max_matrix_error},
         )
 
     def test_ps_function(self):
@@ -207,9 +245,9 @@ class Region2Tester(unittest.TestCase):
         T2_ps_error = numpy.sum(numpy.absolute((R2 - IF97) / IF97))
         self.assertLess(
             T2_ps_error,
-            self.maxMatrixError,
+            self.max_matrix_error,
             "Test of ps Function for Region 2 failed. Error was %(error)e allowed:"
-            " %(max)e" % {"error": T2_ps_error, "max": self.maxMatrixError},
+            " %(max)e" % {"error": T2_ps_error, "max": self.max_matrix_error},
         )
 
     def test_hs_function(self):
@@ -235,16 +273,19 @@ class Region2Tester(unittest.TestCase):
         p2_hs_error = numpy.sum(numpy.absolute((R2 - IF97) / IF97))
         self.assertLess(
             p2_hs_error,
-            self.maxError,
+            self.max_error,
             "Test of hs Function for Region 2 failed. Error was %(error)e allowed:"
-            " %(max)e" % {"error": p2_hs_error, "max": self.maxError},
+            " %(max)e" % {"error": p2_hs_error, "max": self.max_error},
         )
 
 
 class Region3Tester(unittest.TestCase):
+    """tests for functions in region 3"""
+
     def setUp(self):
-        self.maxError = 1e-8
-        self.maxMatrixError = 2e-8  # The accumulated Error is bigger than the error of each single function
+        self.max_error = 1e-8
+        # The accumulated Error is bigger than the error of each single function
+        self.max_matrix_error = 2e-8
 
     def tearDown(self):
         pass
@@ -278,9 +319,9 @@ class Region3Tester(unittest.TestCase):
         Region3_error = numpy.sum(numpy.absolute((R3 - IF97) / IF97))
         self.assertLess(
             Region3_error,
-            self.maxMatrixError,
+            self.max_matrix_error,
             "Test of rhoT Function for Region 3 failed. Error was %(error)e allowed:"
-            " %(max)e" % {"error": Region3_error, "max": self.maxMatrixError},
+            " %(max)e" % {"error": Region3_error, "max": self.max_matrix_error},
         )
 
     def test_T_ph_function(self):
@@ -302,9 +343,9 @@ class Region3Tester(unittest.TestCase):
         T3_ph_error = numpy.sum(numpy.absolute((R3 - IF97) / IF97))
         self.assertLess(
             T3_ph_error,
-            self.maxError,
+            self.max_error,
             "Test of T(p,h) Function for Region 3 failed. Error was %(error)e allowed:"
-            " %(max)e" % {"error": T3_ph_error, "max": self.maxError},
+            " %(max)e" % {"error": T3_ph_error, "max": self.max_error},
         )
 
     def test_v_ph_function(self):
@@ -327,8 +368,7 @@ class Region3Tester(unittest.TestCase):
         self.assertLess(
             v3_ph_error,
             1e-7,
-            "Test of v(p,h) Function for Region 3 failed. Error was %(error)e allowed:"
-            " %(max)e" % {"error": v3_ph_error, "max": 1e-7},
+            "Test of v(p,h) Function for Region 3 failed. Error was %(error)e allowed:" " %(max)e" % {"error": v3_ph_error, "max": 1e-7},
         )
 
     def test_T_ps_function(self):
@@ -350,9 +390,9 @@ class Region3Tester(unittest.TestCase):
         T3_ps_error = numpy.sum(numpy.absolute((R3 - IF97) / IF97))
         self.assertLess(
             T3_ps_error,
-            self.maxError,
+            self.max_error,
             "Test of T(p,s) Function for Region 3 failed. Error was %(error)e allowed:"
-            " %(max)e" % {"error": T3_ps_error, "max": self.maxError},
+            " %(max)e" % {"error": T3_ps_error, "max": self.max_error},
         )
 
     def test_v_ps_function(self):
@@ -374,9 +414,9 @@ class Region3Tester(unittest.TestCase):
         v3_ps_error = numpy.sum(numpy.absolute((R3 - IF97) / IF97))
         self.assertLess(
             v3_ps_error,
-            self.maxError,
+            self.max_error,
             "Test of v(p,s) Function for Region 3 failed. Error was %(error)e allowed:"
-            " %(max)e" % {"error": v3_ps_error, "max": self.maxError},
+            " %(max)e" % {"error": v3_ps_error, "max": self.max_error},
         )
 
     def test_hs_function(self):
@@ -398,9 +438,9 @@ class Region3Tester(unittest.TestCase):
         p3_hs_error = numpy.sum(numpy.absolute((R3 - IF97) / IF97))
         self.assertLess(
             p3_hs_error,
-            self.maxError,
+            self.max_error,
             "Test of p(h,s) Function for Region 3 failed. Error was %(error)e allowed:"
-            " %(max)e" % {"error": p3_hs_error, "max": self.maxError},
+            " %(max)e" % {"error": p3_hs_error, "max": self.max_error},
         )
 
     def test_pT_function(self):
@@ -416,15 +456,17 @@ class Region3Tester(unittest.TestCase):
         self.assertLess(
             h3_pT_error,
             1e-6,
-            "Test of h(p,T) Function for Region 3 failed. Error was %(error)e allowed:"
-            " %(max)e" % {"error": h3_pT_error, "max": 1e-6},
+            "Test of h(p,T) Function for Region 3 failed. Error was %(error)e allowed:" " %(max)e" % {"error": h3_pT_error, "max": 1e-6},
         )
 
 
 class Region4Tester(unittest.TestCase):
+    """tests for functions in region 4"""
+
     def setUp(self):
-        self.maxError = 1e-7
-        self.maxMatrixError = 2e-8  # The accumulated Error is bigger than the error of each single function
+        self.max_error = 1e-7
+        # The accumulated Error is bigger than the error of each single function
+        self.max_matrix_error = 2e-8
 
     def tearDown(self):
         pass
@@ -440,9 +482,9 @@ class Region4Tester(unittest.TestCase):
         p4_t_error = numpy.sum(numpy.absolute((R4 - IF97) / IF97))
         self.assertLess(
             p4_t_error,
-            self.maxError,
+            self.max_error,
             "Test of p(T) Function for Region 4 failed. Error was %(error)e allowed:"
-            " %(max)e" % {"error": p4_t_error, "max": self.maxError},
+            " %(max)e" % {"error": p4_t_error, "max": self.max_error},
         )
 
     def test_p_functions(self):
@@ -455,9 +497,9 @@ class Region4Tester(unittest.TestCase):
         T4_p_error = numpy.sum(numpy.absolute((R4 - IF97) / IF97))
         self.assertLess(
             T4_p_error,
-            self.maxError,
+            self.max_error,
             "Test of T(p) Function for Region 4 failed. Error was %(error)e allowed:"
-            " %(max)e" % {"error": T4_p_error, "max": self.maxError},
+            " %(max)e" % {"error": T4_p_error, "max": self.max_error},
         )
 
     def test_s_functions(self):
@@ -483,16 +525,19 @@ class Region4Tester(unittest.TestCase):
         h4_s_error = numpy.sum(numpy.absolute((R4 - IF97) / IF97))
         self.assertLess(
             h4_s_error,
-            self.maxError,
+            self.max_error,
             "Test of h(s) Function for Region 4 failed. Error was %(error)e allowed:"
-            " %(max)e" % {"error": h4_s_error, "max": self.maxError},
+            " %(max)e" % {"error": h4_s_error, "max": self.max_error},
         )
 
 
 class Region5Tester(unittest.TestCase):
+    """tests for functions in region 5"""
+
     def setUp(self):
-        self.maxError = 1e-8
-        self.maxMatrixError = 2e-8  # The accumulated Error is bigger than the error of each single function
+        self.max_error = 1e-8
+        # The accumulated Error is bigger than the error of each single function
+        self.max_matrix_error = 2e-8
 
     def tearDown(self):
         pass
@@ -522,9 +567,9 @@ class Region5Tester(unittest.TestCase):
         Region5_error = numpy.sum(numpy.absolute((R5 - IF97) / IF97))
         self.assertLess(
             Region5_error,
-            self.maxMatrixError,
+            self.max_matrix_error,
             "Test of p,T Function for Region 5 failed. Error was %(error)e allowed:"
-            " %(max)e" % {"error": Region5_error, "max": self.maxMatrixError},
+            " %(max)e" % {"error": Region5_error, "max": self.max_matrix_error},
         )
 
     def test_ph_function(self):
@@ -539,9 +584,9 @@ class Region5Tester(unittest.TestCase):
         T5_ph_error = numpy.sum(numpy.absolute((R5 - IF97) / IF97))
         self.assertLess(
             T5_ph_error,
-            self.maxError,
+            self.max_error,
             "Test of T(p,h) Function for Region 5 failed. Error was %(error)e allowed:"
-            " %(max)e" % {"error": T5_ph_error, "max": self.maxError},
+            " %(max)e" % {"error": T5_ph_error, "max": self.max_error},
         )
 
     def test_ps_function(self):
@@ -557,6 +602,5 @@ class Region5Tester(unittest.TestCase):
         self.assertLess(
             T5_ps_error,
             1e-4,
-            "Test of T(p,s) Function for Region 5 failed. Error was %(error)e allowed:"
-            " %(max)e" % {"error": T5_ps_error, "max": 1e-4},
+            "Test of T(p,s) Function for Region 5 failed. Error was %(error)e allowed:" " %(max)e" % {"error": T5_ps_error, "max": 1e-4},
         )
