@@ -75,8 +75,8 @@ def demo_generate_ph_diagramm(precision=1.0):
 
     # critical point
     pyplot.plot([h_krit], [p_krit], marker="s", mfc="k", ms=8, label="critical point")
-    (line1,) = pyplot.plot(hL, p_range, linewidth=2, color="b", label="liquide line")
-    (line2,) = pyplot.plot(hV, p_range, linewidth=2, color="r", label="vapour line")
+    _ = pyplot.plot(hL, p_range, linewidth=2, color="b", label="liquide line")
+    _ = pyplot.plot(hV, p_range, linewidth=2, color="r", label="vapour line")
 
     pyplot.title("saturation Line p(h)")
 

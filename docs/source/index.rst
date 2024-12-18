@@ -4,24 +4,18 @@
 Welcome to pyXSteam's documentation!
 ####################################
 
-Original Released by Magnus Holmgren for Matlab and Excel:
-<http://xsteam.sourceforge.net> and/or <http://www.x-eng.com>
+Original Released by Magnus Holmgren for Matlab and Excel: <http://xsteam.sourceforge.net> and/or <http://www.x-eng.com>
 
-XSteam provides (mostly) accurate steam and water properties from 0 -
-1000 bar and from 0 - 2000 °C according to the [IAPWS release IF-97](http://www.iapws.org/relguide/IF97-Rev.pdf). For
-accuracy of the functions in different regions see IF-97 Page 4
+XSteam provides (mostly) accurate steam and water properties from 0 - 1000 bar and from 0 - 2000 °C according to the [IAPWS release IF-97](http://www.iapws.org/relguide/IF97-Rev.pdf). For accuracy of the functions in different regions see IF-97 Page 4
 
-Also includes thermal conductivity and viscosity, which are not part of
-the IF97 release.
+Also includes thermal conductivity and viscosity, which are not part of the IF97 release.
 * `Thermal Conductivity: (IAPWS 1998) <http://www.iapws.org/relguide/ThCond.pdf>`_
 
-This Python Library is based on the original XSteam Library for Matlab and Excel
-from Magnus Holmgren, www.x-eng.com.
-We take no responsibilities for any errors in the code or damage thereby!
+This Python Library is based on the original XSteam Library for Matlab and Excel from Magnus Holmgren, www.x-eng.com. We take no responsibilities for any errors in the code or damage thereby!
+
 See README.md for examples
 
-Some effort has been made to include the refined function of more recent releases
-and also functions for calculations on heavy water. This includes:
+Some effort has been made to include the refined function of more recent releases and also functions for calculations on heavy water. This includes:
 * IAPWS R4
 * IAPWS R14
 
@@ -33,26 +27,19 @@ Notes
 *****
 Density (rho)
 =============
-Density is calculated as 1/v. See section 1.5 Volume
+Density is calculated as 1/v. See section for Specific volume
 
 Viscosity
 =========
-Viscosity is not part of IAPWS Steam IF97. Equations from "Revised Release
-on the IAPWS Formulation 1985 for the Viscosity of Ordinary Water
-Substance", 2003 are used. Viscosity in the mixed region (4) is interpolated
-according to the density. This is not true since it will be two phases.
+Viscosity is not part of IAPWS Steam IF97. Equations from "Revised Release on the IAPWS Formulation 1985 for the Viscosity of Ordinary Water Substance", 2003 are used. Viscosity in the mixed region (4) is interpolated according to the density. This is not true since it will be two phases.
 
 Thermal conductivity
 ====================
-Revised release on the IAPS Formulation 1985 for the Thermal Conductivity
-of ordinary water substance (IAPWS 1998)
+Revised release on the IAPS Formulation 1985 for the Thermal Conductivity of ordinary water substance (IAPWS 1998)
 
 Nomenclature
 ============
-All Functions follow the same naming schema: First the wanted property,
-then a underscore `_`, then the wanted input properties Example:
-`t_ph` is temperature as a function of pressure and enthalpy. For a list
-of valid functions se below:
+All Functions follow the same naming schema: First the wanted property, then a underscore `_`, then the wanted input properties Example: `t_ph` is temperature as a function of pressure and enthalpy. For a list of valid functions se below:
 
 ========   ============================================================
 Property   Description
@@ -73,6 +60,14 @@ st         Surface Tension (N/m or lb/ft)
 x          Vapor fraction
 vx         Vapor Volume Fraction
 ========   ============================================================
+
+Related projects
+================
+
+Implementaions of the IAPWS releases are also availible for other programing languages:
+
+- Matlab: [xsteam](https://github.com/stu314159/xsteam)
+- .NET: [XSteamNET](https://github.com/rogerlew/XSteamNET)
 
 .. toctree::
    :maxdepth: 2
