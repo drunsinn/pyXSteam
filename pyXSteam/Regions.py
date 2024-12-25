@@ -383,7 +383,7 @@ class Region2:
         tau = 540 / T
 
         g0_tau = 0
-        for J, n in zip(IF97.Table10_J0, IF97.Table10_n0):
+        for J, n in zip(IF97.Table10_J0, IF97.Table10_n0_a):
             g0_tau = g0_tau + n * J * tau ** (J - 1)
 
         gr_tau = 0
@@ -406,7 +406,7 @@ class Region2:
 
         # table 13 - dimensionless gibbs free energy - gamma 0 tau
         g0_tau = 0
-        for J, n in zip(IF97.Table10_J0, IF97.Table10_n0):
+        for J, n in zip(IF97.Table10_J0, IF97.Table10_n0_a):
             g0_tau += n * J * tau ** (J - 1)
 
         # table 14 - residual dimensionless gibbs free energy - part r tau
@@ -434,7 +434,7 @@ class Region2:
         g0_pi = 1 / Pi
 
         g0_tau = 0
-        for J, n in zip(IF97.Table10_J0, IF97.Table10_n0):
+        for J, n in zip(IF97.Table10_J0, IF97.Table10_n0_a):
             g0_tau = g0_tau + n * J * tau ** (J - 1)
 
         gr_pi = 0
@@ -462,7 +462,7 @@ class Region2:
 
         # table 13 - dimensionless gibbs free energy - gamma 0 tau
         g0_tau = 0
-        for J, n in zip(IF97.Table10_J0, IF97.Table10_n0):
+        for J, n in zip(IF97.Table10_J0, IF97.Table10_n0_a):
             g0_tau += n * J * tau ** (J - 1)
 
         # table 14 - residual dimensionless gibbs free energy - part r pi
@@ -495,7 +495,7 @@ class Region2:
 
         g0 = math.log(Pi)
         g0_tau = 0
-        for J, n in zip(IF97.Table10_J0, IF97.Table10_n0):
+        for J, n in zip(IF97.Table10_J0, IF97.Table10_n0_a):
             g0 = g0 + n * tau**J
             g0_tau = g0_tau + n * J * tau ** (J - 1)
 
@@ -521,12 +521,12 @@ class Region2:
 
         # table 13 - dimensionless gibbs free energy - gamma 0
         g0 = math.log(Pi)
-        for J, n in zip(IF97.Table10_J0, IF97.Table10_n0):
+        for J, n in zip(IF97.Table10_J0, IF97.Table10_n0_a):
             g0 += n * tau**J
 
         # table 13 - dimensionless gibbs free energy - gamma 0 tau
         g0_tau = 0
-        for J, n in zip(IF97.Table10_J0, IF97.Table10_n0):
+        for J, n in zip(IF97.Table10_J0, IF97.Table10_n0_a):
             g0_tau += n * J * tau ** (J - 1)
 
         # table 14 - residual dimensionless gibbs free energy - part r
@@ -558,7 +558,7 @@ class Region2:
         tau = 540 / T
 
         g0_tautau = 0
-        for J, n in zip(IF97.Table10_J0, IF97.Table10_n0):
+        for J, n in zip(IF97.Table10_J0, IF97.Table10_n0_a):
             g0_tautau = g0_tautau + n * J * (J - 1) * tau ** (J - 2)
 
         gr_tautau = 0
@@ -581,7 +581,7 @@ class Region2:
 
         # table 13 - dimensionless gibbs free energy - gamma 0 tau tau
         g0_tautau = 0
-        for J, n in zip(IF97.Table10_J0, IF97.Table10_n0):
+        for J, n in zip(IF97.Table10_J0, IF97.Table10_n0_a):
             g0_tautau += n * J * (J - 1) * tau ** (J - 2)
 
         # table 14 - residual dimensionless gibbs free energy - part r tau tau
@@ -608,7 +608,7 @@ class Region2:
         tau = 540 / T
 
         g0_tautau = 0
-        for J, n in zip(IF97.Table10_J0, IF97.Table10_n0):
+        for J, n in zip(IF97.Table10_J0, IF97.Table10_n0_a):
             g0_tautau = g0_tautau + n * J * (J - 1) * tau ** (J - 2)
 
         gr_pi = 0
@@ -640,7 +640,7 @@ class Region2:
         tau = 540 / T
 
         g0_tautau = 0
-        for J, n in zip(IF97.Table10_J0, IF97.Table10_n0):
+        for J, n in zip(IF97.Table10_J0, IF97.Table10_n0_a):
             g0_tautau = g0_tautau + n * J * (J - 1) * tau ** (J - 2)
 
         gr_pi = 0
@@ -675,7 +675,7 @@ class Region2:
 
         # table 13 - dimensionless gibbs free energy - gamma 0 tau tau
         g0_tautau = 0
-        for J, n in zip(IF97.Table10_J0, IF97.Table10_n0):
+        for J, n in zip(IF97.Table10_J0, IF97.Table10_n0_a):
             g0_tautau += n * J * (J - 1) * tau ** (J - 2)
 
         # table 14 - residual dimensionless gibbs free energy - part r pi
@@ -724,7 +724,7 @@ class Region2:
         if p < 4:
             sub_reg = 1
         else:
-            if p < (905.84278514723 - 0.67955786399241 * h + 1.2809002730136e-04 * h**2):
+            if p < (IF97.Table19_n[0] + IF97.Table19_n[1] * h + IF97.Table19_n[2] * h**2):
                 sub_reg = 2
             else:
                 sub_reg = 3
@@ -1478,11 +1478,11 @@ class Region4:
 
         :return: preasure in [MPa]
         """
-        teta = T - 0.23855557567849 / (T - 650.17534844798)
-        a = teta**2 + 1167.0521452767 * teta - 724213.16703206
-        B = -17.073846940092 * teta**2 + 12020.82470247 * teta - 3232555.0322333
-        C = 14.91510861353 * teta**2 - 4823.2657361591 * teta + 405113.40542057
-        return (2 * C / (-B + (B**2 - 4 * a * C) ** 0.5)) ** 4
+        teta = T + IF97.Table34_n[8] / (T - IF97.Table34_n[9])
+        A = teta**2 + IF97.Table34_n[0] * teta + IF97.Table34_n[1]
+        B = IF97.Table34_n[2] * teta**2 + IF97.Table34_n[3] * teta + IF97.Table34_n[4]
+        C = IF97.Table34_n[5] * teta**2 + IF97.Table34_n[6] * teta + IF97.Table34_n[7]
+        return (2 * C / (-B + (B**2 - 4 * A * C) ** 0.5)) ** 4
 
     @classmethod
     def T4_p(cls, p: float) -> float:
@@ -1496,12 +1496,13 @@ class Region4:
 
         :return: temperature in [K]
         """
+        # TODO: replace values with table ref (at least table 34 if not more)
         beta = p**0.25
-        E = beta**2 - 17.073846940092 * beta + 14.91510861353
-        f = 1167.0521452767 * beta**2 + 12020.82470247 * beta - 4823.2657361591
-        G = -724213.16703206 * beta**2 - 3232555.0322333 * beta + 405113.40542057
-        D = 2 * G / (-f - (f**2 - 4 * E * G) ** 0.5)
-        return (650.17534844798 + D - ((650.17534844798 + D) ** 2 - 4 * (-0.23855557567849 + 650.17534844798 * D)) ** 0.5) / 2
+        E = beta**2 + IF97.Table34_n[2] * beta + IF97.Table34_n[5]
+        F = IF97.Table34_n[0] * beta**2 + IF97.Table34_n[3] * beta + IF97.Table34_n[6]
+        G = IF97.Table34_n[1] * beta**2 + IF97.Table34_n[4] * beta + IF97.Table34_n[7]
+        D = 2 * G / (-F - (F**2 - 4 * E * G) ** 0.5)
+        return (IF97.Table34_n[9] + D - ((IF97.Table34_n[9] + D) ** 2 - 4 * (IF97.Table34_n[8] + IF97.Table34_n[9] * D)) ** 0.5) / 2
 
     @classmethod
     def h4_s(cls, s: float) -> float:

@@ -5,7 +5,7 @@ Section 4: Region Borders
 """
 import logging
 
-from .Tables import Sub_psh3
+from .Tables import IF97, Sub_psh3
 
 logger = logging.getLogger(__name__)
 
@@ -26,7 +26,7 @@ def pB23_T(T: float) -> float:
 
     :return: preasure in [MPa]
     """
-    return 348.05185628969 - 1.1671859879975 * T + 1.0192970039326e-03 * (T**2)
+    return IF97.Table1_n[0] + IF97.Table1_n[1] * T + IF97.Table1_n[2] * (T**2)
 
 
 def TB23_p(p: float) -> float:
@@ -45,14 +45,14 @@ def TB23_p(p: float) -> float:
 
     :return: temperature in [K]
     """
-    return 572.54459862746 + ((p - 13.91883977887) / 1.0192970039326e-03) ** 0.5
+    return IF97.Table1_n[3] + ((p - IF97.Table1_n[4]) / IF97.Table1_n[2]) ** 0.5
 
 
 def hB13_s(s: float) -> float:
     """
     calculate enthalpy from specific entropy for border between region 1 and 3
 
-    Section 4.3 Region boundary 1 to 3  & 3to2 as a functions of s
+    Section 4.3 Region boundary 1 to 3  & 3 to 2 as a functions of s
 
     Supplementary Release on Backward Equations ( ) , p h s for Region 3,
     Chapter 4.5 page 23.
