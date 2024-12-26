@@ -15,7 +15,7 @@ from .Constants import CRITICAL_TEMPERATURE as _tc
 from .Constants import CRITICAL_PRESSURE as _pc
 from .Constants import CRITICAL_DENSITY as _rhoc
 
-from .Tables import R7_97, Sub_psh12, SR4_04, Sub_Tsh
+from .Tables import R7_97, SR2_01, SR4_04, Sub_Tsh
 
 
 class Region1:
@@ -269,7 +269,7 @@ class Region1:
         Sigma = s / 7.6
 
         p = 0
-        for I, J, n in zip(Sub_psh12.Table2_I, Sub_psh12.Table2_J, Sub_psh12.Table2_n):
+        for I, J, n in zip(SR2_01.Table2_I, SR2_01.Table2_J, SR2_01.Table2_n):
             p = p + n * (eta + 0.05) ** I * (Sigma + 0.05) ** J
 
         return p * 100
@@ -834,7 +834,7 @@ class Region2:
             Sigma = s / 12
 
             Pi = 0
-            for I, J, n in zip(Sub_psh12.Table6_I, Sub_psh12.Table6_J, Sub_psh12.Table6_n):
+            for I, J, n in zip(SR2_01.Table6_I, SR2_01.Table6_J, SR2_01.Table6_n):
                 Pi = Pi + n * (eta - 0.5) ** I * (Sigma - 1.2) ** J
 
             p2_hs = Pi**4 * 4
@@ -845,7 +845,7 @@ class Region2:
             Sigma = s / 7.9
 
             Pi = 0
-            for I, J, n in zip(Sub_psh12.Table7_I, Sub_psh12.Table7_J, Sub_psh12.Table7_n):
+            for I, J, n in zip(SR2_01.Table7_I, SR2_01.Table7_J, SR2_01.Table7_n):
                 Pi = Pi + n * (eta - 0.6) ** I * (Sigma - 1.01) ** J
 
             p2_hs = Pi**4 * 100
@@ -856,7 +856,7 @@ class Region2:
             Sigma = s / 5.9
 
             Pi = 0
-            for I, J, n in zip(Sub_psh12.Table8_I, Sub_psh12.Table8_J, Sub_psh12.Table8_n):
+            for I, J, n in zip(SR2_01.Table8_I, SR2_01.Table8_J, SR2_01.Table8_n):
                 Pi = Pi + n * (eta - 0.7) ** I * (Sigma - 1.1) ** J
 
             p2_hs = Pi**4 * 100
