@@ -5,7 +5,7 @@ Section 4: Region Borders
 """
 import logging
 
-from .Tables import IF97, Sub_psh3
+from .Tables import R7_97, SR4_04
 
 logger = logging.getLogger(__name__)
 
@@ -26,7 +26,7 @@ def pB23_T(T: float) -> float:
 
     :return: preasure in [MPa]
     """
-    return IF97.Table1_n[0] + IF97.Table1_n[1] * T + IF97.Table1_n[2] * (T**2)
+    return R7_97.Table1_n[0] + R7_97.Table1_n[1] * T + R7_97.Table1_n[2] * (T**2)
 
 
 def TB23_p(p: float) -> float:
@@ -45,7 +45,7 @@ def TB23_p(p: float) -> float:
 
     :return: temperature in [K]
     """
-    return IF97.Table1_n[3] + ((p - IF97.Table1_n[4]) / IF97.Table1_n[2]) ** 0.5
+    return R7_97.Table1_n[3] + ((p - R7_97.Table1_n[4]) / R7_97.Table1_n[2]) ** 0.5
 
 
 def hB13_s(s: float) -> float:
@@ -63,7 +63,7 @@ def hB13_s(s: float) -> float:
     """
     Sigma = s / 3.8
     eta = 0
-    for I, J, n in zip(Sub_psh3.Table23_I, Sub_psh3.Table23_J, Sub_psh3.Table23_n):
+    for I, J, n in zip(SR4_04.Table23_I, SR4_04.Table23_J, SR4_04.Table23_n):
         eta = eta + n * (Sigma - 0.884) ** I * (Sigma - 0.864) ** J
     return eta * 1700
 
@@ -86,6 +86,6 @@ def TB23_hs(h: float, s: float) -> float:
     Sigma = s / 5.3
     eta = h / 3000
     teta = 0
-    for I, J, n in zip(Sub_psh3.Table23_I, Sub_psh3.Table23_J, Sub_psh3.Table23_n):
+    for I, J, n in zip(SR4_04.Table23_I, SR4_04.Table23_J, SR4_04.Table23_n):
         teta = teta + n * (eta - 0.727) ** I * (Sigma - 0.864) ** J
     return teta * 900
