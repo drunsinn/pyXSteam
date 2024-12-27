@@ -15,7 +15,7 @@ from .Constants import CRITICAL_TEMPERATURE as _tc
 from .Constants import CRITICAL_PRESSURE as _pc
 from .Constants import CRITICAL_DENSITY as _rhoc
 
-from .Tables import R7_97, SR2_01, SR4_04, Sub_Tsh
+from .Tables import R7_97, SR2_01, SR3_03, SR4_04
 
 
 class Region1:
@@ -819,7 +819,7 @@ class Region2:
 
         :return: preasure in [MPa]
         """
-        if h < (-3498.98083432139 + 2575.60716905876 * s - 421.073558227969 * s**2 + 27.6349063799944 * s**3):
+        if h < (SR2_01.Table5_n[0] + SR2_01.Table5_n[1] * s + SR2_01.Table5_n[2] * s**2 + SR2_01.Table5_n[3] * s**3):
             sub_reg = 1
         else:
             if s < 5.85:
@@ -1115,7 +1115,7 @@ class Region3:
 
         :return: temperature in [K]
         """
-        h3ab = 2014.64004206875 + 3.74696550136983 * p - 2.19921901054187e-02 * p**2 + 8.7513168600995e-05 * p**3
+        h3ab = SR3_03.Table2_n[0] + SR3_03.Table2_n[1] * p + SR3_03.Table2_n[2] * p**2 + SR3_03.Table2_n[3] * p**3
         if h < h3ab:
             # Subregion 3a
             # Eq 2, Table 3, Page 7
@@ -1123,7 +1123,7 @@ class Region3:
             hs = h / 2300
 
             Ts = 0
-            for I, J, n in zip(Sub_Tsh.Table3_I, Sub_Tsh.Table3_J, Sub_Tsh.Table3_n):
+            for I, J, n in zip(SR3_03.Table3_I, SR3_03.Table3_J, SR3_03.Table3_n):
                 Ts = Ts + n * (ps + 0.24) ** I * (hs - 0.615) ** J
 
             T3_ph = Ts * 760
@@ -1134,7 +1134,7 @@ class Region3:
             ps = p / 100
 
             Ts = 0
-            for I, J, n in zip(Sub_Tsh.Table4_I, Sub_Tsh.Table4_J, Sub_Tsh.Table4_n):
+            for I, J, n in zip(SR3_03.Table4_I, SR3_03.Table4_J, SR3_03.Table4_n):
                 Ts = Ts + n * (ps + 0.298) ** I * (hs - 0.72) ** J
 
             T3_ph = Ts * 860
@@ -1155,7 +1155,7 @@ class Region3:
 
         :return: specific volume in [m³ / kg]
         """
-        h3ab = 2014.64004206875 + 3.74696550136983 * p - 2.19921901054187e-02 * p**2 + 8.7513168600995e-05 * p**3
+        h3ab = SR3_03.Table2_n[0] + SR3_03.Table2_n[1] * p + SR3_03.Table2_n[2] * p**2 + SR3_03.Table2_n[3] * p**3
         if h < h3ab:
             # Subregion 3a
             # Eq 4, Table 6, Page 9
@@ -1163,7 +1163,7 @@ class Region3:
             hs = h / 2100
 
             vs = 0
-            for I, J, n in zip(Sub_Tsh.Table6_I, Sub_Tsh.Table6_J, Sub_Tsh.Table6_n):
+            for I, J, n in zip(SR3_03.Table6_I, SR3_03.Table6_J, SR3_03.Table6_n):
                 vs = vs + n * (ps + 0.128) ** I * (hs - 0.727) ** J
 
             v3_ph = vs * 0.0028
@@ -1174,7 +1174,7 @@ class Region3:
             hs = h / 2800
 
             vs = 0
-            for I, J, n in zip(Sub_Tsh.Table7_I, Sub_Tsh.Table7_J, Sub_Tsh.Table7_n):
+            for I, J, n in zip(SR3_03.Table7_I, SR3_03.Table7_J, SR3_03.Table7_n):
                 vs = vs + n * (ps + 0.0661) ** I * (hs - 0.72) ** J
 
             v3_ph = vs * 0.0088
@@ -1204,7 +1204,7 @@ class Region3:
             Pi = p / 100
 
             teta = 0
-            for I, J, n in zip(Sub_Tsh.Table10_I, Sub_Tsh.Table10_J, Sub_Tsh.Table10_n):
+            for I, J, n in zip(SR3_03.Table10_I, SR3_03.Table10_J, SR3_03.Table10_n):
                 teta = teta + n * (Pi + 0.24) ** I * (Sigma - 0.703) ** J
 
             T3_ps = teta * 760
@@ -1215,7 +1215,7 @@ class Region3:
             Pi = p / 100
 
             teta = 0
-            for I, J, n in zip(Sub_Tsh.Table11_I, Sub_Tsh.Table11_J, Sub_Tsh.Table11_n):
+            for I, J, n in zip(SR3_03.Table11_I, SR3_03.Table11_J, SR3_03.Table11_n):
                 teta = teta + n * (Pi + 0.76) ** I * (Sigma - 0.818) ** J
 
             T3_ps = teta * 860
@@ -1245,7 +1245,7 @@ class Region3:
             Sigma = s / 4.4
 
             omega = 0
-            for I, J, n in zip(Sub_Tsh.Table13_I, Sub_Tsh.Table13_J, Sub_Tsh.Table13_n):
+            for I, J, n in zip(SR3_03.Table13_I, SR3_03.Table13_J, SR3_03.Table13_n):
                 omega = omega + n * (Pi + 0.187) ** I * (Sigma - 0.755) ** J
 
             v3_ps = omega * 0.0028
@@ -1256,7 +1256,7 @@ class Region3:
             Sigma = s / 5.3
 
             omega = 0
-            for I, J, n in zip(Sub_Tsh.Table14_I, Sub_Tsh.Table14_J, Sub_Tsh.Table14_n):
+            for I, J, n in zip(SR3_03.Table14_I, SR3_03.Table14_J, SR3_03.Table14_n):
                 omega = omega + n * (Pi + 0.298) ** I * (Sigma - 0.816) ** J
 
             v3_ps = omega * 0.0088
@@ -1402,28 +1402,11 @@ class Region3:
 
         :return: saturation preasure in [MPa]
         """
-        Ii = [0, 1, 1, 1, 1, 5, 7, 8, 14, 20, 22, 24, 28, 36]
-        Ji = [0, 1, 3, 4, 36, 3, 0, 24, 16, 16, 3, 18, 8, 24]
-        ni = [
-            0.600073641753024,
-            -9.36203654849857,
-            24.6590798594147,
-            -107.014222858224,
-            -91582131580576.8,
-            -8623.32011700662,
-            -23.5837344740032,
-            2.52304969384128e17,
-            -3.89718771997719e18,
-            -3.33775713645296e22,
-            35649946963.6328,
-            -1.48547544720641e26,
-            3.30611514838798e18,
-            8.13641294467829e37,
-        ]
         hs = h / 2600
         ps = 0
-        for i in range(0, 14):
-            ps = ps + ni[i] * (hs - 1.02) ** Ii[i] * (hs - 0.608) ** Ji[i]
+        for I, J, n in zip(SR3_03.Table17_I, SR3_03.Table17_J, SR3_03.Table17_n):
+            # for i in range(0, 14):
+            ps = ps + n * (hs - 1.02) ** I * (hs - 0.608) ** J
         return ps * 22
 
     @staticmethod
@@ -1437,24 +1420,11 @@ class Region3:
 
         :return: saturation preasure in [MPa]
         """
-        Ii = [0, 1, 1, 4, 12, 12, 16, 24, 28, 32]
-        Ji = [0, 1, 32, 7, 4, 14, 36, 10, 0, 18]
-        ni = [
-            0.639767553612785,
-            -12.9727445396014,
-            -2.24595125848403e15,
-            1774667.41801846,
-            7170793495.71538,
-            -3.78829107169011e17,
-            -9.55586736431328e34,
-            1.87269814676188e23,
-            119254746466.473,
-            1.10649277244882e36,
-        ]
         Sigma = s / 5.2
         Pi = 0
-        for i in range(0, 10):
-            Pi = Pi + ni[i] * (Sigma - 1.03) ** Ii[i] * (Sigma - 0.699) ** Ji[i]
+        for I, J, n in zip(SR3_03.Table19_I, SR3_03.Table19_J, SR3_03.Table19_n):
+            # for i in range(0, 14):
+            Pi = Pi + n * (Sigma - 1.03) ** I * (Sigma - 0.699) ** J
         return Pi * 22
 
 
