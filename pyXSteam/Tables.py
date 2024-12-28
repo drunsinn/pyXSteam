@@ -1110,6 +1110,8 @@ class SR2_01:
 class SR3_03:
     """class with table data from IAPWS SR3-03(2014)"""
 
+    s_c = 4.41202148223476  # kJ / kg K
+
     # Table 2: Numerical values of the coefficients of the equation h_3ab(p) in its dimensionless form, Eq. (1), for defining the boundary between subregions 3a and 3b
     Table2_n = [
         +0.201464004206875e4,

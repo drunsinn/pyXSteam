@@ -5,7 +5,7 @@ Section 2: IAPWS IF 97 Calling functions
 """
 import math
 import logging
-from .RegionBorders import TB23_p
+from .RegionBorders import TB23_p, pB2bc_h
 from .Constants import (
     TRIPLE_POINT_PRESSURE,
     FREEZING_TEMPERATURE_H2O,
@@ -724,7 +724,7 @@ class Region2:
         if p < 4:
             sub_reg = 1
         else:
-            if p < (R7_97.Table19_n[0] + R7_97.Table19_n[1] * h + R7_97.Table19_n[2] * h**2):
+            if p < pB2bc_h(h):  # Ep20
                 sub_reg = 2
             else:
                 sub_reg = 3
@@ -1175,7 +1175,7 @@ class Region3:
 
             vs = 0
             for I, J, n in zip(SR3_03.Table7_I, SR3_03.Table7_J, SR3_03.Table7_n):
-                vs = vs + n * (ps + 0.0661) ** I * (hs - 0.72) ** J
+                vs = vs + n * (ps + 0.0661) ** I * (hs - 0.720) ** J
 
             v3_ph = vs * 0.0088
         return v3_ph
@@ -1197,7 +1197,7 @@ class Region3:
 
         :return: temperature in [K]
         """
-        if s <= 4.41202148223476:
+        if s <= SR3_03.s_c:
             # Subregion 3a
             # Eq 6, Table 10, Page 11
             Sigma = s / 4.4
@@ -1238,7 +1238,7 @@ class Region3:
 
         :return: specific volume in [m³ / kg]
         """
-        if s <= 4.41202148223476:
+        if s <= SR3_03.s_c:
             # Subregion 3a
             # Eq 8, Table 13, Page 14
             Pi = p / 100
@@ -1278,7 +1278,7 @@ class Region3:
 
         :return: preasure in [MPa]
         """
-        if s < 4.41202148223476:
+        if s < SR3_03.s_c:
             # Subregion 3a
             # Eq 1, Table 3, Page 8
             Sigma = s / 4.4
@@ -1498,7 +1498,7 @@ class Region4:
             for I, J, n in zip(SR4_04.Table9_I, SR4_04.Table9_J, SR4_04.Table9_n):
                 eta = eta + n * (Sigma - 1.09) ** I * (Sigma + 0.0000366) ** J
             h4_s = eta * 1700
-        elif 3.77828134 < s <= 4.41202148223476:
+        elif 3.77828134 < s <= SR3_03.s_c:
             # hL3_s
             # Eq 4, Table 10, Page 16
             Sigma = s / 3.8
@@ -1506,7 +1506,7 @@ class Region4:
             for I, J, n in zip(SR4_04.Table10_I, SR4_04.Table10_J, SR4_04.Table10_n):
                 eta = eta + n * (Sigma - 1.09) ** I * (Sigma + 0.0000366) ** J
             h4_s = eta * 1700
-        elif 4.41202148223476 < s <= 5.85:
+        elif SR3_03.s_c < s <= 5.85:
             # Section 4.4 Equations () 2ab " h s and ( ) 2c3b "h s for the
             # Saturated Vapor Line
             # Page 19, Eq 5
@@ -1716,9 +1716,9 @@ class Region4:
                         High_Bound = PL
                     else:
                         Low_Bound = PL
-            elif 3.77828134 < s <= 4.41202148223476:
+            elif 3.77828134 < s <= SR3_03.s_c:
                 PL = Region3.psat3_h(h)
-            elif 4.41202148223476 < s <= 5.210887663:
+            elif SR3_03.s_c < s <= 5.210887663:
                 PL = Region3.psat3_h(h)
             Low_Bound = 0.000611
             High_Bound = PL
