@@ -13,6 +13,7 @@ from .Constants import (
     FREEZING_TEMPERATURE_H2O,
     DiagramRegion,
 )
+from .Tables import SR3_03
 
 logger = logging.getLogger(__name__)
 
@@ -236,7 +237,7 @@ def select_region_hs(h: float, s: float) -> DiagramRegion:
         logger.warning("Entalpy outside valid area")
         return DiagramRegion.NILL
     # Check region 3 or 4 below the critical point.
-    if 3.77828134 <= s <= 4.41202148223476:
+    if 3.77828134 <= s <= SR3_03.s_c:
         hL = Region4.h4_s(s)
         if h < hL:
             return DiagramRegion.R4
@@ -248,7 +249,7 @@ def select_region_hs(h: float, s: float) -> DiagramRegion:
         logger.warning("Entalpy outside valid area")
         return DiagramRegion.NILL
     # Check region 3 or 4 from the critical point to the upper part of B23
-    if 4.41202148223476 <= s <= 5.260578707:
+    if SR3_03.s_c <= s <= 5.260578707:
         hV = Region4.h4_s(s)
         if h < hV:
             return DiagramRegion.R4
