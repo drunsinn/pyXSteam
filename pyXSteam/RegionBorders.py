@@ -6,7 +6,7 @@ Section 4: Region Borders
 import math
 import logging
 
-from .Tables import R7_97, SR2_01, SR4_04
+from .Tables import R7_97, SR2_01, SR3_03, SR4_04
 
 logger = logging.getLogger(__name__)
 
@@ -106,3 +106,8 @@ def hB2bc_p(p: float) -> float:
 def hB2bc_s(s: float) -> float:
     """SR2-02(2016) Ep 2"""
     return SR2_01.Table5_n[0] + SR2_01.Table5_n[1] * s + SR2_01.Table5_n[2] * s**2 + SR2_01.Table5_n[3] * s**3
+
+
+def hB3ab_p(p: float) -> float:
+    """SR3-03(2014) Eq 1"""
+    return SR3_03.Table2_n[0] + SR3_03.Table2_n[1] * p + SR3_03.Table2_n[2] * p**2 + SR3_03.Table2_n[3] * p**3

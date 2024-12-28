@@ -1111,6 +1111,10 @@ class SR3_03:
     """class with table data from IAPWS SR3-03(2014)"""
 
     s_c = 4.41202148223476  # kJ / kg K
+    h_dash = 1.670858218e3  # kJ / kg @ 623,15K
+    h_doubledash = 2.563592004  # kJ / kg @ 623,15K
+    s_dash = 3.778281340  # kJ / kg K @ 623,15K
+    s_doubledash = 5.210887825  # kJ / kg K @ 623,15K
 
     # Table 2: Numerical values of the coefficients of the equation h_3ab(p) in its dimensionless form, Eq. (1), for defining the boundary between subregions 3a and 3b
     Table2_n = [
@@ -1943,7 +1947,7 @@ class SR3_03:
     ]
 
     # Table 19: Coefficients and exponents of the boundary equation p_3sat(s) in its dimensionless form, Eq. (11)
-    Table19_I = [0, 1, 104, 12, 12, 16, 24, 28, 32]
+    Table19_I = [0, 1, 1, 4, 12, 12, 16, 24, 28, 32]
     Table19_J = [0, 1, 32, 7, 4, 14, 36, 10, 0, 18]
     Table19_n = [
         +0.639767553612785,

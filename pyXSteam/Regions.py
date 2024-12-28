@@ -5,7 +5,7 @@ Section 2: IAPWS IF 97 Calling functions
 """
 import math
 import logging
-from .RegionBorders import TB23_p, pB2bc_h, hB2bc_s
+from .RegionBorders import TB23_p, pB2bc_h, hB2bc_s, hB3ab_p
 from .Constants import (
     TRIPLE_POINT_PRESSURE,
     FREEZING_TEMPERATURE_H2O,
@@ -1115,8 +1115,7 @@ class Region3:
 
         :return: temperature in [K]
         """
-        h3ab = SR3_03.Table2_n[0] + SR3_03.Table2_n[1] * p + SR3_03.Table2_n[2] * p**2 + SR3_03.Table2_n[3] * p**3
-        if h < h3ab:
+        if h < hB3ab_p(p):
             # Subregion 3a
             # Eq 2, Table 3, Page 7
             ps = p / 100
@@ -1155,8 +1154,7 @@ class Region3:
 
         :return: specific volume in [m³ / kg]
         """
-        h3ab = SR3_03.Table2_n[0] + SR3_03.Table2_n[1] * p + SR3_03.Table2_n[2] * p**2 + SR3_03.Table2_n[3] * p**3
-        if h < h3ab:
+        if h < hB3ab_p(p):
             # Subregion 3a
             # Eq 4, Table 6, Page 9
             ps = p / 100
@@ -1405,8 +1403,7 @@ class Region3:
         hs = h / 2600
         ps = 0
         for I, J, n in zip(SR3_03.Table17_I, SR3_03.Table17_J, SR3_03.Table17_n):
-            # for i in range(0, 14):
-            ps = ps + n * (hs - 1.02) ** I * (hs - 0.608) ** J
+            ps = ps + n * (hs - 1.02) ** I * (hs - 0.608) ** J  # SR3-03 Eq 10
         return ps * 22
 
     @staticmethod
@@ -1420,12 +1417,11 @@ class Region3:
 
         :return: saturation preasure in [MPa]
         """
-        Sigma = s / 5.2
-        Pi = 0
+        sigma = s / 5.2
+        pi = 0
         for I, J, n in zip(SR3_03.Table19_I, SR3_03.Table19_J, SR3_03.Table19_n):
-            # for i in range(0, 14):
-            Pi = Pi + n * (Sigma - 1.03) ** I * (Sigma - 0.699) ** J
-        return Pi * 22
+            pi += n * (sigma - 1.03) ** I * (sigma - 0.699) ** J  # SR3-03 Eq 11
+        return pi * 22
 
 
 class Region4:
@@ -1514,7 +1510,7 @@ class Region4:
             Sigma = s / 5.9
             eta = 0
             for I, J, n in zip(SR4_04.Table17_I, SR4_04.Table17_J, SR4_04.Table17_n):
-                eta = eta + n * (Sigma - 1.02) ** I * (Sigma - 0.726) ** J
+                eta = eta + n * (Sigma - 1.02) ** I * (Sigma - 0.726) ** J  # SR3-03 Eq 10
             h4_s = eta**4 * 2800
         elif 5.85 < s < 9.155759395:
             # Section 4.4 Equations () 2ab " h s and ( ) 2c3b "h s for the
@@ -1609,7 +1605,7 @@ class Region4:
             else:
                 # Iterate to find the the backward solution of p3sat_h
                 Low_Bound = 2087.23500164864
-                High_Bound = 2563.592004 + 5
+                High_Bound = (SR3_03.h_doubledash * 1000) + 5
                 ps = -1000
                 step_counter = 0
                 while math.fabs(p - ps) > 0.000001:

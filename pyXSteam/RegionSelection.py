@@ -273,7 +273,7 @@ def select_region_hs(h: float, s: float) -> DiagramRegion:
                 return DiagramRegion.NILL
             logger.warning("Entropy outside valid area")
             return DiagramRegion.NILL
-        if h < 2563.592004:  # Below B23 in h_led but we have already checked above for hV2c3b
+        if h < (SR3_03.h_doubledash * 1000):  # Below B23 in h_led but we have already checked above for hV2c3b
             return DiagramRegion.R3
         # We are in the B23 field in both s and h joints.
         Tact = TB23_hs(h, s)
