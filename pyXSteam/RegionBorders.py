@@ -3,6 +3,7 @@
 """
 Section 4: Region Borders
 """
+import math
 import logging
 
 from .Tables import R7_97, SR4_04
@@ -89,3 +90,14 @@ def TB23_hs(h: float, s: float) -> float:
     for I, J, n in zip(SR4_04.Table23_I, SR4_04.Table23_J, SR4_04.Table23_n):
         teta = teta + n * (eta - 0.727) ** I * (Sigma - 0.864) ** J
     return teta * 900
+
+
+def pB2bc_h(h: float) -> float:
+    """R7-97(2012) Eq 20"""
+    return R7_97.Table19_n[0] + R7_97.Table19_n[1] * h + R7_97.Table19_n[2] * h**2
+
+
+def hB2bc_p(p: float) -> float:
+    """R7-97(2012) Eq 21"""
+    # TODO: this functions isn't used ....
+    return R7_97.Table19_n[3] + math.sqrt((p - R7_97.Table19_n[4]) / R7_97.Table19_n[2])
