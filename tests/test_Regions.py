@@ -43,8 +43,8 @@ class Region1Tester(unittest.TestCase):
             res[4][i] = Region1.Cp1_pT(p, T)
             res[5][i] = Region1.w1_pT(p, T)
 
-        Region1_error = numpy.sum(numpy.absolute((res - ref) / ref))
-        self.assertLess(Region1_error, self.max_matrix_error, "Test of *(p,T) functions for Region 1 failed.")
+        error = numpy.sum(numpy.absolute((res - ref) / ref))
+        self.assertLess(error, self.max_matrix_error, "Test of *(p,T) functions for Region 1 failed.")
 
     def test_ph_function(self):
         """R7-97(2012) Tests to verify all functions with the Parameters p and h of Region 1"""
@@ -56,8 +56,8 @@ class Region1Tester(unittest.TestCase):
         for i, (p, h) in enumerate(zip(in_p, in_h)):
             res[i] = Region1.T1_ph(p, h)
 
-        T1_ph_error = numpy.sum(numpy.absolute((res - ref) / ref))
-        self.assertLess(T1_ph_error, self.max_error, "Test of T(p,h) Function for Region 1 failed")
+        error = numpy.sum(numpy.absolute((res - ref) / ref))
+        self.assertLess(error, self.max_error, "Test of T(p,h) Function for Region 1 failed")
 
     def test_ps_function(self):
         """R7-97(2012) Tests to verify all functions with the Parameters p and s of Region 1"""
@@ -69,24 +69,21 @@ class Region1Tester(unittest.TestCase):
         for i, (p, s) in enumerate(zip(in_p, in_s)):
             res[i] = Region1.T1_ps(p, s)
 
-        T1_ps_error = numpy.sum(numpy.absolute((res - ref) / ref))
-        self.assertLess(T1_ps_error, self.max_error, "Test of T(p,s) Function for Region 1 failed.")
+        error = numpy.sum(numpy.absolute((res - ref) / ref))
+        self.assertLess(error, self.max_error, "Test of T(p,s) Function for Region 1 failed.")
 
     def test_hs_function(self):
-        """Tests to verify all functions with the Parameters h and s of Region 1 by comparing the Results to IF-97 Page 6 Table 3"""
-        # TODO
-        # % Supplementary Release on Backward Equations
-        # % for Pressure as a Function of Enthalpy and Entropy p(h, s)
-        # % Table 3, Page 6
+        """SR2-01(2014) Tests to verify all functions with the Parameters h and s of Region 1"""
+        # Table 3
         in_h = [0.001, 90.0, 1500.0]
         in_s = [0.0, 0.0, 3.4]
-        ref = [0.0009800980612, 91.929547272, 58.68294423]
+        ref = [9.800980612e-4, 9.192954727e1, 5.868294423e1]
         res = numpy.zeros(3)
         for i, (h, s) in enumerate(zip(in_h, in_s)):
             res[i] = Region1.p1_hs(h, s)
 
-        p1_hs_error = numpy.sum(numpy.absolute((res - ref) / ref))
-        self.assertLess(p1_hs_error, self.max_error, "Test of p(h,s) Function for Region 1 failed.")
+        error = numpy.sum(numpy.absolute((res - ref) / ref))
+        self.assertLess(error, self.max_error, "Test of p(h,s) Function for Region 1 failed.")
 
 
 class Region2Tester(unittest.TestCase):
@@ -200,29 +197,27 @@ class Region2Tester(unittest.TestCase):
         self.assertLess(T2_ps_error, self.max_matrix_error, "Test of T(p,s) Function for Region 2 failed")
 
     def test_hs_function(self):
-        """Tests to verify all functions with the Parameters h and s of Region 2 by comparing the Results to IF-97 Page 6 Table 3"""
-        # TODO
-        # % Supplementary Release on Backward Equations for Pressure as a Function of Enthalpy and Entropy p(h, s)
-        # % Table 3, Page 6
-        h = [2800.0, 2800.0, 4100.0, 2800.0, 3600.0, 3600.0, 2800.0, 2800.0, 3400.0]
-        s = [6.5, 9.5, 9.5, 6, 6, 7, 5.1, 5.8, 5.8]
-        IF97 = [
+        """SR2-01(2014) Tests to verify all functions with the Parameters h and s of Region 2"""
+        # Table 9
+        in_h = [2800.0, 2800.0, 4100.0, 2800.0, 3600.0, 3600.0, 2800.0, 2800.0, 3400.0]
+        in_s = [6.5, 9.5, 9.5, 6.0, 6.0, 7.0, 5.1, 5.8, 5.8]
+        ref = [
             1.371012767,
-            0.001879743844,
-            0.1024788997,
+            1.879743844e-3,
+            1.024788997e-1,
             4.793911442,
-            83.95519209,
+            8.395519209e1,
             7.527161441,
-            94.3920206,
+            9.439202060e1,
             8.414574124,
-            83.76903879,
+            8.376903879e1,
         ]
-        R2 = numpy.zeros(9)
-        for i in range(9):
-            R2[i] = Region2.p2_hs(h[i], s[i])
+        res = numpy.zeros(9)
+        for i, (h, s) in enumerate(zip(in_h, in_s)):
+            res[i] = Region2.p2_hs(h, s)
 
-        p2_hs_error = numpy.sum(numpy.absolute((R2 - IF97) / IF97))
-        self.assertLess(p2_hs_error, self.max_error, "Test of hs Function for Region 2 failed")
+        error = numpy.sum(numpy.absolute((res - ref) / ref))
+        self.assertLess(error, self.max_error, "Test of hs Function for Region 2 failed")
 
 
 class Region3Tester(unittest.TestCase):

@@ -5,7 +5,7 @@ Section 2: IAPWS IF 97 Calling functions
 """
 import math
 import logging
-from .RegionBorders import TB23_p, pB2bc_h
+from .RegionBorders import TB23_p, pB2bc_h, hB2bc_s
 from .Constants import (
     TRIPLE_POINT_PRESSURE,
     FREEZING_TEMPERATURE_H2O,
@@ -819,7 +819,7 @@ class Region2:
 
         :return: preasure in [MPa]
         """
-        if h < (SR2_01.Table5_n[0] + SR2_01.Table5_n[1] * s + SR2_01.Table5_n[2] * s**2 + SR2_01.Table5_n[3] * s**3):
+        if h < hB2bc_s(s):
             sub_reg = 1
         else:
             if s < 5.85:
