@@ -50,13 +50,7 @@ def TB23_p(p: float) -> float:
 
 
 def hB13_s(s: float) -> float:
-    """
-    calculate enthalpy from specific entropy for border between region 1 and 3
-
-    Section 4.3 Region boundary 1 to 3  & 3 to 2 as a functions of s
-
-    Supplementary Release on Backward Equations ( ) , p h s for Region 3,
-    Chapter 4.5 page 23.
+    """SR4-04(2014) Eq 7 calculate enthalpy from specific entropy for border between region 1 and 3
 
     :param s: specific entropy in [kJ / (kg K)]
 
@@ -65,30 +59,23 @@ def hB13_s(s: float) -> float:
     Sigma = s / 3.8
     eta = 0
     for I, J, n in zip(SR4_04.Table23_I, SR4_04.Table23_J, SR4_04.Table23_n):
-        eta = eta + n * (Sigma - 0.884) ** I * (Sigma - 0.864) ** J
+        eta += n * (Sigma - 0.884) ** I * (Sigma - 0.864) ** J  # Eq7
     return eta * 1700
 
 
 def TB23_hs(h: float, s: float) -> float:
-    """
-    calculate temperature from specific entropy and enthalpy for border
-    between region 2 and 3
-
-    Section 4.3 Region boundary 1 to 3  & 3 to 2 as a functions of s
-
-    Supplementary Release on Backward Equations () , p h s for Region 3,
-    Chapter 4.6 page 25.
+    """SR4-04(2014) Eq 8 calculate temperature from specific entropy and enthalpy for border between region 2 and 3
 
     :param h: enthalpy in [kJ / kg]
     :param s: Specific entropy in [kJ / (kg K)]
 
     :return: temperature in [K]
     """
-    Sigma = s / 5.3
+    sigma = s / 5.3
     eta = h / 3000
     teta = 0
-    for I, J, n in zip(SR4_04.Table23_I, SR4_04.Table23_J, SR4_04.Table23_n):
-        teta = teta + n * (eta - 0.727) ** I * (Sigma - 0.864) ** J
+    for I, J, n in zip(SR4_04.Table25_I, SR4_04.Table25_J, SR4_04.Table25_n):
+        teta += n * (eta - 0.727) ** I * (sigma - 0.864) ** J  # Eq 8
     return teta * 900
 
 

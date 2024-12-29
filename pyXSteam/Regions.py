@@ -1486,21 +1486,21 @@ class Region4:
 
         :return: enthalpy in [kJ / kg]
         """
-        if -0.0001545495919 < s <= 3.77828134:
+        if SR4_04.s_dash_low < s <= SR4_04.s_dash_heigh:
             # hL1_s
             # Eq 3, Table 9, Page 16
             Sigma = s / 3.8
             eta = 0
             for I, J, n in zip(SR4_04.Table9_I, SR4_04.Table9_J, SR4_04.Table9_n):
-                eta = eta + n * (Sigma - 1.09) ** I * (Sigma + 0.0000366) ** J
+                eta = eta + n * (Sigma - 1.09) ** I * (Sigma + 0.366e-4) ** J  # SR4-04 Eq 3
             h4_s = eta * 1700
-        elif 3.77828134 < s <= SR3_03.s_c:
+        elif SR4_04.s_dash_heigh < s <= SR3_03.s_c:
             # hL3_s
             # Eq 4, Table 10, Page 16
             Sigma = s / 3.8
             eta = 0
             for I, J, n in zip(SR4_04.Table10_I, SR4_04.Table10_J, SR4_04.Table10_n):
-                eta = eta + n * (Sigma - 1.09) ** I * (Sigma + 0.0000366) ** J
+                eta = eta + n * (Sigma - 1.09) ** I * (Sigma + 0.366e-4) ** J  # SR4-04 Eq 4
             h4_s = eta * 1700
         elif SR3_03.s_c < s <= 5.85:
             # Section 4.4 Equations () 2ab " h s and ( ) 2c3b "h s for the
@@ -1512,7 +1512,7 @@ class Region4:
             for I, J, n in zip(SR4_04.Table17_I, SR4_04.Table17_J, SR4_04.Table17_n):
                 eta = eta + n * (Sigma - 1.02) ** I * (Sigma - 0.726) ** J  # SR3-03 Eq 10
             h4_s = eta**4 * 2800
-        elif 5.85 < s < 9.155759395:
+        elif 5.85 < s < SR4_04.s_doubledash:
             # Section 4.4 Equations () 2ab " h s and ( ) 2c3b "h s for the
             # Saturated Vapor Line
             # Page 20, Eq 6
@@ -1537,11 +1537,11 @@ class Region4:
         :return: preasure in [MPa]
         """
         h_sat = Region4.h4_s(s)
-        if -0.0001545495919 < s <= 3.77828134:
+        if SR4_04.s_dash_low < s <= SR4_04.s_dash_heigh:
             p4_s = Region1.p1_hs(h_sat, s)
-        elif 3.77828134 < s <= 5.210887663:
+        elif SR4_04.s_dash_heigh < s <= 5.210887663:
             p4_s = Region3.p3_hs(h_sat, s)
-        elif 5.210887663 < s < 9.155759395:
+        elif 5.210887663 < s < SR4_04.s_doubledash:
             p4_s = Region2.p2_hs(h_sat, s)
         else:
             p4_s = -99999
@@ -1605,7 +1605,7 @@ class Region4:
             else:
                 # Iterate to find the the backward solution of p3sat_h
                 Low_Bound = 2087.23500164864
-                High_Bound = (SR3_03.h_doubledash * 1000) + 5
+                High_Bound = SR3_03.h_doubledash + 5
                 ps = -1000
                 step_counter = 0
                 while math.fabs(p - ps) > 0.000001:
@@ -1696,11 +1696,11 @@ class Region4:
             eta = h / 2800
             teta = 0
             for I, J, n in zip(SR4_04.Table28_I, SR4_04.Table28_J, SR4_04.Table28_n):
-                teta = teta + n * (eta - 0.119) ** I * (Sigma - 1.07) ** J
+                teta = teta + n * (eta - 0.119) ** I * (Sigma - 1.07) ** J  # SR4-04 Eq 9
             T4_hs = teta * 550
         else:
             # function psat_h
-            if -0.0001545495919 < s <= 3.77828134:
+            if SR4_04.s_dash_low < s <= SR4_04.s_dash_heigh:
                 Low_Bound = 0.000611
                 High_Bound = 165.291642526045
                 hL = -1000
@@ -1712,7 +1712,7 @@ class Region4:
                         High_Bound = PL
                     else:
                         Low_Bound = PL
-            elif 3.77828134 < s <= SR3_03.s_c:
+            elif SR4_04.s_dash_heigh < s <= SR3_03.s_c:
                 PL = Region3.psat3_h(h)
             elif SR3_03.s_c < s <= 5.210887663:
                 PL = Region3.psat3_h(h)

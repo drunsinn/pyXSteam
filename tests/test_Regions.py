@@ -261,14 +261,7 @@ class Region3Tester(unittest.TestCase):
         # Table 5
         in_p = [20.0, 50.0, 100.0, 20.0, 50.0, 100.0]
         in_h = [1700.0, 2000.0, 2100.0, 2500.0, 2400.0, 2700.0]
-        ref = [
-            6.293083892e2,
-            6.905718338e2,
-            7.336163014e2,
-            6.418418053e2,
-            7.351848618e2,
-            8.420460876e2,
-        ]
+        ref = [6.293083892e2, 6.905718338e2, 7.336163014e2, 6.418418053e2, 7.351848618e2, 8.420460876e2]
         res = numpy.zeros(6)
         for i, (p, h) in enumerate(zip(in_p, in_h)):
             res[i] = Region3.T3_ph(p, h)
@@ -281,14 +274,7 @@ class Region3Tester(unittest.TestCase):
         # Table 8
         in_p = [20.0, 50.0, 100.0, 20.0, 50.0, 100.0]
         in_h = [1700.0, 2000.0, 2100.0, 2500.0, 2400.0, 2700.0]
-        ref = [
-            1.749903962e-3,
-            1.908139035e-3,
-            1.676229776e-3,
-            6.670547043e-3,
-            2.801244590e-3,
-            2.404234998e-3,
-        ]
+        ref = [1.749903962e-3, 1.908139035e-3, 1.676229776e-3, 6.670547043e-3, 2.801244590e-3, 2.404234998e-3]
         res = numpy.zeros(6)
         for i, (p, h) in enumerate(zip(in_p, in_h)):
             res[i] = Region3.v3_ph(p, h)
@@ -303,22 +289,8 @@ class Region3Tester(unittest.TestCase):
         in_p = [20.0, 50.0, 100.0, 20.0, 50.0, 100.0]
         # in_s = [3.7, 3.5, 4, 5, 4.5, 5.0]
         in_s = [3.8, 3.6, 4.0, 5.0, 4.5, 5.0]
-        # ref = [
-        #     620.8841563,
-        #     618.1549029,
-        #     705.6880237,
-        #     640.1176443,
-        #     716.3687517,
-        #     847.4332825,
-        # ]
-        ref = [
-            6.282959869e2,
-            6.297158726e2,
-            7.056880237e2,
-            6.401176443e2,
-            7.163687517e2,
-            8.474332825e2,
-        ]
+        # ref = [620.8841563, 618.1549029, 705.6880237, 640.1176443, 716.3687517, 847.4332825]
+        ref = [6.282959869e2, 6.297158726e2, 7.056880237e2, 6.401176443e2, 7.163687517e2, 8.474332825e2]
         res = numpy.zeros(6)
         for i, (p, s) in enumerate(zip(in_p, in_s)):
             res[i] = Region3.T3_ps(p, s)
@@ -333,22 +305,8 @@ class Region3Tester(unittest.TestCase):
         in_p = [20.0, 50.0, 100.0, 20.0, 50.0, 100.0]
         # in_s = [3.7, 3.5, 4.0, 5.0, 4.5, 5.0]
         in_s = [3.8, 3.6, 4.0, 5.0, 4.5, 5.0]
-        # ref = [
-        #     0.001639890984,
-        #     0.001423030205,
-        #     0.001555893131,
-        #     0.006262101987,
-        #     0.002332634294,
-        #     0.002449610757,
-        # ]
-        ref = [
-            1.733791463e-3,
-            1.469680170e-3,
-            1.555893131e-3,
-            6.262101987e-3,
-            2.332634294e-3,
-            2.449610757e-3,
-        ]
+        # ref = [0.001639890984, 0.001423030205, 0.001555893131, 0.006262101987, 0.002332634294, 0.002449610757]
+        ref = [1.733791463e-3, 1.469680170e-3, 1.555893131e-3, 6.262101987e-3, 2.332634294e-3, 2.449610757e-3]
         res = numpy.zeros(6)
         for i, (p, s) in enumerate(zip(in_p, in_s)):
             res[i] = Region3.v3_ps(p, s)
@@ -381,29 +339,17 @@ class Region3Tester(unittest.TestCase):
         self.assertLess(error, self.max_error, "Test of psat(s) function for Region 3 failed")
 
     def test_hs_function(self):
-        """Tests to verify all functions with the Parameters h and s of Region 3"""
-        # TODO
-        # % p3_hs
-        h = [1700.0, 2000.0, 2100.0, 2500.0, 2400.0, 2700.0]
-        s = [3.8, 4.2, 4.3, 5.1, 4.7, 5.0]
-        IF97 = [
-            25.55703246,
-            45.40873468,
-            60.7812334,
-            17.20612413,
-            63.63924887,
-            88.39043281,
-        ]
-        R3 = numpy.zeros(6)
-        for i in range(6):
-            R3[i] = Region3.p3_hs(h[i], s[i])
-        p3_hs_error = numpy.sum(numpy.absolute((R3 - IF97) / IF97))
-        self.assertLess(
-            p3_hs_error,
-            self.max_error,
-            "Test of p(h,s) Function for Region 3 failed. Error was %(error)e allowed:"
-            " %(max)e" % {"error": p3_hs_error, "max": self.max_error},
-        )
+        """SR4-04(2014) Tests to verify p function with the parameters h and s of Region 3"""
+        # Table 5
+        in_h = [1700.0, 2000.0, 2100.0, 2500.0, 2400.0, 2700.0]
+        in_s = [3.8, 4.2, 4.3, 5.1, 4.7, 5.0]
+        ref = [2.555703246e1, 4.540873468e1, 6.078123340e1, 1.720612413e1, 6.363924887e1, 8.839043281e1]
+        res = numpy.zeros(6)
+        for i, (h, s) in enumerate(zip(in_h, in_s)):
+            res[i] = Region3.p3_hs(h, s)
+
+        error = numpy.sum(numpy.absolute((res - ref) / ref))
+        self.assertLess(error, self.max_error, "Test of p(h,s) Function for Region 3 failed")
 
     def test_pT_function(self):
         """Tests to verify all functions with the Parameters p and T of Region 3"""
@@ -454,37 +400,47 @@ class Region4Tester(unittest.TestCase):
         for i, p in enumerate(in_p):
             res[i] = Region4.T4_p(p)
 
-        T4_p_error = numpy.sum(numpy.absolute((res - ref) / ref))
-        self.assertLess(T4_p_error, self.max_error, "Test of T(p) Function for Region 4 failed")
+        error = numpy.sum(numpy.absolute((res - ref) / ref))
+        self.assertLess(error, self.max_error, "Test of T(p) Function for Region 4 failed")
 
-    def test_s_functions(self):
-        """Tests to verify all functions with the Parameters s of Region 4"""
-        # TODO
-        s = [1.0, 2.0, 3.0, 3.8, 4.0, 4.2, 7.0, 8.0, 9.0, 5.5, 5.0, 4.5]
-        IF97 = [
-            308.5509647,
-            700.6304472,
-            1198.359754,
-            1685.025565,
-            1816.891476,
-            1949.352563,
-            2723.729985,
-            2599.04721,
-            2511.861477,
-            2687.69385,
-            2451.623609,
-            2144.360448,
+    def test_SR4_04_h_boundary(self):
+        """SR4-04(2014): computer-program verification for boundary fucntions for h"""
+        # Table 11 and Table 18
+        in_s = [1.0, 2.0, 3.0, 3.8, 4.0, 4.2, 7.0, 8.0, 9.0, 5.5, 5.0, 4.5]
+        ref = [
+            3.085509647e2,  # h'_1
+            7.006304472e2,  # h'_1
+            1.198359754e3,  # h'_1
+            1.685025565e3,  # h'_3a
+            1.816891476e3,  # h'_3a
+            1.949352563e3,  # h'_3a
+            2.723729985e3,  # h"_2ab
+            2.599047210e3,  # h"_2ab
+            2.511861477e3,  # h"_2ab
+            2.687693850e3,  # h"_2c3b
+            2.451623609e3,  # h"_2c3b
+            2.144360448e3,  # h"_2c3b
         ]
-        R4 = numpy.zeros(12)
-        for i in range(12):
-            R4[i] = Region4.h4_s(s[i])
-        h4_s_error = numpy.sum(numpy.absolute((R4 - IF97) / IF97))
-        self.assertLess(
-            h4_s_error,
-            self.max_error,
-            "Test of h(s) Function for Region 4 failed. Error was %(error)e allowed:"
-            " %(max)e" % {"error": h4_s_error, "max": self.max_error},
-        )
+        res = numpy.zeros(12)
+        for i, s in enumerate(in_s):
+            res[i] = Region4.h4_s(s)
+
+        error = numpy.sum(numpy.absolute((res - ref) / ref))
+        self.assertLess(error, self.max_error, "Test of h(s) Function for Region 4 failed")
+
+    def test_Tsat_function(self):
+        """SR4-04(2014): computer-program verification for Tsat functions (Eq 9) for h and s"""
+        # Table 29
+        in_h = [1800.0, 2400.0, 2500.0]
+        in_s = [5.3, 6.0, 5.5]
+        ref = [3.468476498e2, 4.251373305e2, 5.225579013e2]
+        res = numpy.zeros(3)
+        for i, (h, s) in enumerate(zip(in_h, in_s)):
+            res[i] = Region4.T4_hs(h, s)
+
+        # FIXME the calculated error is to large, Table values have been checked
+        error = numpy.sum(numpy.absolute((res - ref) / ref))
+        self.assertLess(error, self.max_error, "Test of T(h,s) Function for Region 4 failed")
 
 
 class Region5Tester(unittest.TestCase):
@@ -530,8 +486,8 @@ class Region5Tester(unittest.TestCase):
             res[4][i] = Region5.Cp5_pT(p, T)
             res[5][i] = Region5.w5_pT(p, T)
 
-        Region5_error = numpy.sum(numpy.absolute((res - ref) / ref))
-        self.assertLess(Region5_error, self.max_matrix_error, "Test of *(p,T) Function for Region 5 failed")
+        error = numpy.sum(numpy.absolute((res - ref) / ref))
+        self.assertLess(error, self.max_matrix_error, "Test of *(p,T) Function for Region 5 failed")
 
     def test_ph_function(self):
         """Tests to verify all functions with the Parameters p and h of Region 5"""

@@ -1112,7 +1112,7 @@ class SR3_03:
 
     s_c = 4.41202148223476  # kJ / kg K
     h_dash = 1.670858218e3  # kJ / kg @ 623,15K
-    h_doubledash = 2.563592004  # kJ / kg @ 623,15K
+    h_doubledash = 2.563592004e3  # kJ / kg @ 623,15K
     s_dash = 3.778281340  # kJ / kg K @ 623,15K
     s_doubledash = 5.210887825  # kJ / kg K @ 623,15K
 
@@ -1966,6 +1966,17 @@ class SR3_03:
 class SR4_04:
     """class with table data from IAPWS SR4-04(2014)"""
 
+    s_dash_low = -1.545495919e-4  # kJ / kg K @ 273.15K
+    s_dash_heigh = 3.778281340  # kJ / kg K @ 623.15K
+    s_c = SR3_03.s_c  # 4.41202148223476  # kJ / kg K @ 623.15K
+    s_doubledash = 9.155759395  # kJ / kg K @ 273.15K
+    s_heigh_mpa = 3.397782955  # kJ / kg K @ 100MPA, 673.15K
+    s_min_B23 = 5.048096828  # kJ / kg K
+    s_max_B23 = 5.260578707  # kJ / kg K
+
+    h_min_B23 = SR3_03.h_doubledash  # kJ / kg
+    h_max_B23 = 2.812942061e2  # kJ / kg
+
     # Table 3: Coefficients and exponents of the backward equation p_3a (h,s) for subregion 3a in its dimensionless form, Eq. (1)
     Table3_I = [0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 3, 3, 3, 4, 4, 4, 4, 5, 6, 7, 8, 10, 10, 14, 18, 20, 22, 22, 24, 28, 28, 32, 32]
     Table3_J = [0, 1, 5, 0, 3, 4, 8, 14, 6, 16, 0, 2, 3, 0, 1, 4, 5, 28, 28, 24, 1, 32, 36, 22, 28, 36, 16, 28, 36, 16, 36, 10, 28]
@@ -2330,7 +2341,7 @@ class SR4_04:
         -0.335704552142140e1,
         +0.108890916499278e2,
         -0.248483390456012,
-        +0.30415322190639,
+        +0.304153221906390,
         -0.494819763939905,
         +0.107551674933261e1,
         +0.733888415457688e-1,

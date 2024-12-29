@@ -13,7 +13,7 @@ from .Constants import (
     FREEZING_TEMPERATURE_H2O,
     DiagramRegion,
 )
-from .Tables import SR3_03
+from .Tables import SR3_03, SR4_04
 
 logger = logging.getLogger(__name__)
 
@@ -181,19 +181,19 @@ def select_region_hs(h: float, s: float) -> DiagramRegion:
 
     :return: diagram region
     """
-    if s < -0.0001545495919:
+    if s < SR4_04.s_dash_low:
         logger.warning("Entropy outside valid area")
         return DiagramRegion.NILL
     # Check linear adaption to p=0.000611. if below region 4.
     hMin = ((-0.0415878 - 2500.89262) / (-0.00015455 - 9.155759)) * s
-    if (s < 9.155759395) and (h < hMin):
+    if (s < SR4_04.s_doubledash) and (h < hMin):
         logger.warning("Entalpy or Entropy outside valid area")
         return DiagramRegion.NILL
     # Kolla 1 eller 4. (+liten bit ???ver B13)
-    if -0.0001545495919 <= s <= 3.77828134:
+    if SR4_04.s_dash_low <= s <= SR4_04.s_dash_heigh:
         if h < Region4.h4_s(s):
             return DiagramRegion.R4
-        if s < 3.397782955:  # 100MPa line is limiting
+        if s < SR4_04.s_heigh_mpa:  # 100MPa line is limiting
             TMax = Region1.T1_ps(100, s)
             hMax = Region1.h1_pT(100, TMax)
             if h < hMax:
@@ -213,8 +213,8 @@ def select_region_hs(h: float, s: float) -> DiagramRegion:
         return DiagramRegion.NILL
 
     # Kolla region 2 eller 4. (???vre delen av omr???de b23-> max)
-    if 5.260578707 <= s <= 11.9212156897728:
-        if s > 9.155759395:  # Above region 4
+    if SR4_04.s_max_B23 <= s <= 11.9212156897728:
+        if s > SR4_04.s_doubledash:  # Above region 4
             Tmin = Region2.T2_ps(0.000611, s)
             hMin = Region2.h2_pT(0.000611, Tmin)
             # function adapted to h(1073.15,s)
@@ -237,7 +237,7 @@ def select_region_hs(h: float, s: float) -> DiagramRegion:
         logger.warning("Entalpy outside valid area")
         return DiagramRegion.NILL
     # Check region 3 or 4 below the critical point.
-    if 3.77828134 <= s <= SR3_03.s_c:
+    if SR4_04.s_dash_heigh <= s <= SR3_03.s_c:
         hL = Region4.h4_s(s)
         if h < hL:
             return DiagramRegion.R4
@@ -249,12 +249,12 @@ def select_region_hs(h: float, s: float) -> DiagramRegion:
         logger.warning("Entalpy outside valid area")
         return DiagramRegion.NILL
     # Check region 3 or 4 from the critical point to the upper part of B23
-    if SR3_03.s_c <= s <= 5.260578707:
+    if SR4_04.s_c <= s <= SR4_04.s_max_B23:
         hV = Region4.h4_s(s)
         if h < hV:
             return DiagramRegion.R4
         # Check if we are under the B23 validity area.
-        if s <= 5.048096828:
+        if s <= SR4_04.s_min_B23:
             TMax = Region3.T3_ps(100, s)
             vmax = Region3.v3_ps(100, s)
             hMax = Region3.h3_rhoT(1 / vmax, TMax)
@@ -273,7 +273,7 @@ def select_region_hs(h: float, s: float) -> DiagramRegion:
                 return DiagramRegion.NILL
             logger.warning("Entropy outside valid area")
             return DiagramRegion.NILL
-        if h < (SR3_03.h_doubledash * 1000):  # Below B23 in h_led but we have already checked above for hV2c3b
+        if h < SR3_03.h_doubledash:  # Below B23 in h_led but we have already checked above for hV2c3b
             return DiagramRegion.R3
         # We are in the B23 field in both s and h joints.
         Tact = TB23_hs(h, s)
