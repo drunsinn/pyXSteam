@@ -24,8 +24,8 @@ def pmelt_T_iceIh(T: float) -> float:
     T_star = 273.16
     p_star = 611.657e-6
     theta = T / T_star
-    a = (0.119539337e7, 0.808183159e5, 0.333826860e4)
-    b = (0.300000e1, 0.257500e2, 0.103750e3)
+    a = [0.119539337e7, 0.808183159e5, 0.333826860e4]
+    b = [0.300000e1, 0.257500e2, 0.103750e3]
     temp_sum = 0
     for i in range(0, 3):
         temp_sum += a[i] * (1 - theta ** b[i])
@@ -126,8 +126,8 @@ def psubl_T(T: float) -> float:
     logger.debug("calculating 'sublimation preasure of ice' for T=%f", T)
     T_star = 273.16
     p_star = 611.657e-6
-    a = (-0.212144006e2, 0.273203819e2, -0.610598130e1)
-    b = (0.333333333e-2, 0.120666667e1, 0.170333333e1)
+    a = [-0.212144006e2, 0.273203819e2, -0.610598130e1]
+    b = [0.333333333e-2, 0.120666667e1, 0.170333333e1]
     theta = T / T_star
     temp_sum = 0
     for i in range(0, 3):

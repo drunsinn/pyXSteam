@@ -25,11 +25,7 @@ class FixedBugsTester(unittest.TestCase):
         """
 
         error = self.steam_table.h_pt(800.0, 554.0) - 2733.6986817
-        self.assertLess(
-            error,
-            self.max_error,
-            "h_pt not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.max_error},
-        )
+        self.assertLess(error, self.max_error, "h_pt not passed")
 
     def test_inf_loop_rho_pt(self):
         """Bug: pyXSteam hangs
@@ -38,11 +34,7 @@ class FixedBugsTester(unittest.TestCase):
         """
 
         error = self.steam_table.rho_pt(167.11, 351.73) - 113.6761489
-        self.assertLess(
-            error,
-            self.max_error,
-            "rho_pt not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.max_error},
-        )
+        self.assertLess(error, self.max_error, "rho_pt not passed")
 
     def test_missing_unit_conversion_h_xx(self):
         """Bug: missing unit conversion in h_px for FLS units
@@ -53,15 +45,7 @@ class FixedBugsTester(unittest.TestCase):
         self.steam_table._unit_converter.set_unitSystem(XSteam.UNIT_SYSTEM_FLS)
 
         error = self.steam_table.h_px(160, 0.5) - 765.8069264
-        self.assertLess(
-            error,
-            self.max_error,
-            " not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.max_error},
-        )
+        self.assertLess(error, self.max_error, " not passed")
 
         error = self.steam_table.h_tx(160, 0.5) - 628.905695
-        self.assertLess(
-            error,
-            self.max_error,
-            " not passed Error %(error)e allowed: %(max)e" % {"error": error, "max": self.max_error},
-        )
+        self.assertLess(error, self.max_error, " not passed")
