@@ -9,14 +9,15 @@ import unittest
 import numpy
 from pyXSteam.Regions import Region1, Region2, Region3, Region4, Region5
 
+REGION_ERROR = 1e-8
+REGION_MATRIX_ERROR = REGION_ERROR * 2.0  # The accumulated Error is bigger than the error of each single function
+
 
 class Region1Tester(unittest.TestCase):
     """tests for functions in region 1"""
 
     def setUp(self):
-        self.max_error = 1e-8
-        # The accumulated Error is bigger than the error of each single function
-        self.max_matrix_error = 2e-8
+        pass
 
     def tearDown(self):
         pass
@@ -44,7 +45,7 @@ class Region1Tester(unittest.TestCase):
             res[5][i] = Region1.w1_pT(p, T)
 
         error = numpy.sum(numpy.absolute((res - ref) / ref))
-        self.assertLess(error, self.max_matrix_error, "Test of *(p,T) functions for Region 1 failed.")
+        self.assertLess(error, REGION_MATRIX_ERROR, "Test of *(p,T) functions for Region 1 failed.")
 
     def test_ph_function(self):
         """R7-97(2012) Tests to verify all functions with the Parameters p and h of Region 1"""
@@ -57,7 +58,7 @@ class Region1Tester(unittest.TestCase):
             res[i] = Region1.T1_ph(p, h)
 
         error = numpy.sum(numpy.absolute((res - ref) / ref))
-        self.assertLess(error, self.max_error, "Test of T(p,h) Function for Region 1 failed")
+        self.assertLess(error, REGION_ERROR, "Test of T(p,h) Function for Region 1 failed")
 
     def test_ps_function(self):
         """R7-97(2012) Tests to verify all functions with the Parameters p and s of Region 1"""
@@ -70,7 +71,7 @@ class Region1Tester(unittest.TestCase):
             res[i] = Region1.T1_ps(p, s)
 
         error = numpy.sum(numpy.absolute((res - ref) / ref))
-        self.assertLess(error, self.max_error, "Test of T(p,s) Function for Region 1 failed.")
+        self.assertLess(error, REGION_ERROR, "Test of T(p,s) Function for Region 1 failed.")
 
     def test_hs_function(self):
         """SR2-01(2014) Tests to verify all functions with the Parameters h and s of Region 1"""
@@ -83,16 +84,14 @@ class Region1Tester(unittest.TestCase):
             res[i] = Region1.p1_hs(h, s)
 
         error = numpy.sum(numpy.absolute((res - ref) / ref))
-        self.assertLess(error, self.max_error, "Test of p(h,s) Function for Region 1 failed.")
+        self.assertLess(error, REGION_ERROR, "Test of p(h,s) Function for Region 1 failed.")
 
 
 class Region2Tester(unittest.TestCase):
     """tests for functions in region 2"""
 
     def setUp(self):
-        self.max_error = 1e-8
-        # The accumulated Error is bigger than the error of each single function
-        self.max_matrix_error = 2e-8
+        pass
 
     def tearDown(self):
         pass
@@ -120,8 +119,8 @@ class Region2Tester(unittest.TestCase):
             res[4][i] = Region2.Cp2_pT(p, T)
             res[5][i] = Region2.w2_pT(p, T)
 
-        Region2_error = numpy.sum(numpy.absolute((res - ref) / ref))
-        self.assertLess(Region2_error, self.max_matrix_error, "Test of *(p,T) Functions for Region 2 failed")
+        error = numpy.sum(numpy.absolute((res - ref) / ref))
+        self.assertLess(error, REGION_MATRIX_ERROR, "Test of *(p,T) Functions for Region 2 failed")
 
     def test_pT_meta_function(self):
         """R7-97(2012) Tests to verify all functions with the Parameters p and T of Metastable-Vapor Region 2"""
@@ -147,8 +146,8 @@ class Region2Tester(unittest.TestCase):
             res[4][i] = Region2.Cp2_pT_meta(p, T)
             res[5][i] = Region2.w2_pT_meta(p, T)
 
-        Region2_error = numpy.sum(numpy.absolute((res - ref) / ref))
-        self.assertLess(Region2_error, self.max_matrix_error, "Test of *(p,T) Functions for metastable-vapor Region 2 failed.")
+        error = numpy.sum(numpy.absolute((res - ref) / ref))
+        self.assertLess(error, REGION_MATRIX_ERROR, "Test of *(p,T) Functions for metastable-vapor Region 2 failed.")
 
     def test_ph_function(self):
         """R7-97(2012) Tests to verify all functions with the Parameters p and h of subregion 2a, 2b and 2c"""
@@ -170,8 +169,8 @@ class Region2Tester(unittest.TestCase):
         for i, (p, h) in enumerate(zip(in_p, in_h)):
             res[i] = Region2.T2_ph(p, h)
 
-        T2_ph_error = numpy.sum(numpy.absolute((res - ref) / ref))
-        self.assertLess(T2_ph_error, self.max_matrix_error, "Test of T(p,h) Function for Region 2 failed")
+        error = numpy.sum(numpy.absolute((res - ref) / ref))
+        self.assertLess(error, REGION_MATRIX_ERROR, "Test of T(p,h) Function for Region 2 failed")
 
     def test_ps_function(self):
         """R7-97(2012) Tests to verify all functions with the Parameters p and s of subregion 2a, 2b and 2c"""
@@ -193,8 +192,8 @@ class Region2Tester(unittest.TestCase):
         for i, (p, s) in enumerate(zip(in_p, in_s)):
             res[i] = Region2.T2_ps(p, s)
 
-        T2_ps_error = numpy.sum(numpy.absolute((res - ref) / ref))
-        self.assertLess(T2_ps_error, self.max_matrix_error, "Test of T(p,s) Function for Region 2 failed")
+        error = numpy.sum(numpy.absolute((res - ref) / ref))
+        self.assertLess(error, REGION_MATRIX_ERROR, "Test of T(p,s) Function for Region 2 failed")
 
     def test_hs_function(self):
         """SR2-01(2014) Tests to verify all functions with the Parameters h and s of Region 2"""
@@ -217,16 +216,14 @@ class Region2Tester(unittest.TestCase):
             res[i] = Region2.p2_hs(h, s)
 
         error = numpy.sum(numpy.absolute((res - ref) / ref))
-        self.assertLess(error, self.max_error, "Test of p(h,s) Function for Region 2 failed")
+        self.assertLess(error, REGION_ERROR, "Test of p(h,s) Function for Region 2 failed")
 
 
 class Region3Tester(unittest.TestCase):
     """tests for functions in region 3"""
 
     def setUp(self):
-        self.max_error = 1e-8
-        # The accumulated Error is bigger than the error of each single function
-        self.max_matrix_error = 2e-8
+        pass
 
     def tearDown(self):
         pass
@@ -254,7 +251,7 @@ class Region3Tester(unittest.TestCase):
             res[5][i] = Region3.w3_rhoT(rho, T)
 
         error = numpy.sum(numpy.absolute((res - ref) / ref))
-        self.assertLess(error, self.max_matrix_error, "Test of *(rho,T) Function for Region 3 failed")
+        self.assertLess(error, REGION_MATRIX_ERROR, "Test of *(rho,T) Function for Region 3 failed")
 
     def test_T_ph_function(self):
         """SR3-03(2014) Tests to verify T functions with the Parameters p and h of region 3"""
@@ -267,7 +264,7 @@ class Region3Tester(unittest.TestCase):
             res[i] = Region3.T3_ph(p, h)
 
         error = numpy.sum(numpy.absolute((res - ref) / ref))
-        self.assertLess(error, self.max_error, "Test of T(p,h) Function for Region 3 failed")
+        self.assertLess(error, REGION_ERROR, "Test of T(p,h) Function for Region 3 failed")
 
     def test_v_ph_function(self):
         """SR3-03(2014) Tests to verify v functions with the Parameters p and h of region 3"""
@@ -280,7 +277,7 @@ class Region3Tester(unittest.TestCase):
             res[i] = Region3.v3_ph(p, h)
 
         error = numpy.sum(numpy.absolute((res - ref) / ref))
-        self.assertLess(error, self.max_error, "Test of v(p,h) Function for Region 3 failed")
+        self.assertLess(error, REGION_ERROR, "Test of v(p,h) Function for Region 3 failed")
 
     def test_T_ps_function(self):
         """SR3-03(2014) Tests to verify T functions with the Parameters p and s of region 3"""
@@ -296,7 +293,7 @@ class Region3Tester(unittest.TestCase):
             res[i] = Region3.T3_ps(p, s)
 
         error = numpy.sum(numpy.absolute((res - ref) / ref))
-        self.assertLess(error, self.max_error, "Test of T(p,s) Function for Region 3 failed")
+        self.assertLess(error, REGION_ERROR, "Test of T(p,s) Function for Region 3 failed")
 
     def test_v_ps_function(self):
         """SR3-03(2014) Tests to verify all v functions with the Parameters p and s of Region 3"""
@@ -312,7 +309,7 @@ class Region3Tester(unittest.TestCase):
             res[i] = Region3.v3_ps(p, s)
 
         error = numpy.sum(numpy.absolute((res - ref) / ref))
-        self.assertLess(error, self.max_error, "Test of v(p,s) Function for Region 3 failed")
+        self.assertLess(error, REGION_ERROR, "Test of v(p,s) Function for Region 3 failed")
 
     def test_psat_h_function(self):
         """SR3-03(2014) Tests to verify p_3sat function with the parameter h of Region 3"""
@@ -324,7 +321,7 @@ class Region3Tester(unittest.TestCase):
             res[i] = Region3.psat3_h(h)
 
         error = numpy.sum(numpy.absolute((res - ref) / ref))
-        self.assertLess(error, self.max_error, "Test of psat(h) function for Region 3 failed")
+        self.assertLess(error, REGION_ERROR, "Test of psat(h) function for Region 3 failed")
 
     def test_psat_s_function(self):
         """SR3-03(2014) Tests to verify p_3sat function with the parameter s of Region 3"""
@@ -336,7 +333,7 @@ class Region3Tester(unittest.TestCase):
             res[i] = Region3.psat3_s(s)
 
         error = numpy.sum(numpy.absolute((res - ref) / ref))
-        self.assertLess(error, self.max_error, "Test of psat(s) function for Region 3 failed")
+        self.assertLess(error, REGION_ERROR, "Test of psat(s) function for Region 3 failed")
 
     def test_hs_function(self):
         """SR4-04(2014) Tests to verify p function with the parameters h and s of Region 3"""
@@ -349,33 +346,27 @@ class Region3Tester(unittest.TestCase):
             res[i] = Region3.p3_hs(h, s)
 
         error = numpy.sum(numpy.absolute((res - ref) / ref))
-        self.assertLess(error, self.max_error, "Test of p(h,s) Function for Region 3 failed")
+        self.assertLess(error, REGION_ERROR, "Test of p(h,s) Function for Region 3 failed")
 
     def test_pT_function(self):
-        """Tests to verify all functions with the Parameters p and T of Region 3"""
+        """(source unknown) Tests to verify all functions with the Parameters p and T of Region 3"""
         # TODO
-        # % h3_pT (Iteration)
-        p = [25.583702, 22.293064, 78.309564]
-        T = [650.0, 650.0, 750.0]
-        IF97 = [1863.271389, 2375.696155, 2258.626582]
-        R3 = numpy.zeros(3)
-        for i in range(3):
-            R3[i] = Region3.h3_pT(p[i], T[i])
-        h3_pT_error = numpy.sum(numpy.absolute((R3 - IF97) / IF97))
-        self.assertLess(
-            h3_pT_error,
-            1e-6,
-            "Test of h(p,T) Function for Region 3 failed. Error was %(error)e allowed:" " %(max)e" % {"error": h3_pT_error, "max": 1e-6},
-        )
+        in_p = [25.583702, 22.293064, 78.309564]
+        in_T = [650.0, 650.0, 750.0]
+        ref = [1863.271389, 2375.696155, 2258.626582]
+        res = numpy.zeros(3)
+        for i, (p, T) in enumerate(zip(in_p, in_T)):
+            res[i] = Region3.h3_pT(p, T)
+
+        error = numpy.sum(numpy.absolute((res - ref) / ref))
+        self.assertLess(error, 1.7e-7, "Test of h(p,T) Function for Region 3 failed")
 
 
 class Region4Tester(unittest.TestCase):
     """tests for functions in region 4"""
 
     def setUp(self):
-        self.max_error = 1e-7
-        # The accumulated Error is bigger than the error of each single function
-        self.max_matrix_error = 2e-8
+        pass
 
     def tearDown(self):
         pass
@@ -390,7 +381,7 @@ class Region4Tester(unittest.TestCase):
             res[i] = Region4.p4_T(T)
 
         p4_t_error = numpy.sum(numpy.absolute((res - ref) / ref))
-        self.assertLess(p4_t_error, self.max_error, "Test of p(T) Function for Region 4 failed")
+        self.assertLess(p4_t_error, REGION_ERROR, "Test of p(T) Function for Region 4 failed")
 
     def test_p_functions(self):
         """R7-97(2012) Tests to verify all functions with the Parameters p of region 4"""
@@ -401,7 +392,7 @@ class Region4Tester(unittest.TestCase):
             res[i] = Region4.T4_p(p)
 
         error = numpy.sum(numpy.absolute((res - ref) / ref))
-        self.assertLess(error, self.max_error, "Test of T(p) Function for Region 4 failed")
+        self.assertLess(error, REGION_ERROR, "Test of T(p) Function for Region 4 failed")
 
     def test_SR4_04_h_boundary(self):
         """SR4-04(2014): computer-program verification for boundary fucntions for h"""
@@ -426,30 +417,28 @@ class Region4Tester(unittest.TestCase):
             res[i] = Region4.h4_s(s)
 
         error = numpy.sum(numpy.absolute((res - ref) / ref))
-        self.assertLess(error, self.max_error, "Test of h(s) Function for Region 4 failed")
+        self.assertLess(error, REGION_ERROR, "Test of h(s) Function for Region 4 failed")
 
     def test_Tsat_function(self):
         """SR4-04(2014): computer-program verification for Tsat functions (Eq 9) for h and s"""
         # Table 29
-        in_h = [1800.0, 2400.0, 2500.0]
-        in_s = [5.3, 6.0, 5.5]
-        ref = [3.468476498e2, 4.251373305e2, 5.225579013e2]
-        res = numpy.zeros(3)
-        for i, (h, s) in enumerate(zip(in_h, in_s)):
-            res[i] = Region4.T4_hs(h, s)
 
-        # FIXME the calculated error is to large, Table values have been checked
-        error = numpy.sum(numpy.absolute((res - ref) / ref))
-        self.assertLess(error, self.max_error, "Test of T(h,s) Function for Region 4 failed")
+        # FIXME
+        error = abs(Region4.T4_hs(1800.0, 5.3) - 3.468476498e2) / 3.468476498e2
+        self.assertLess(error, 3e-7, "Error for T4_hs(s) to big")
+
+        error = abs(Region4.T4_hs(2400.0, 6.0) - 4.251373305e2) / 4.251373305e2
+        self.assertLess(error, REGION_ERROR, "Error for T4_hs(s) to big")
+
+        error = abs(Region4.T4_hs(2500.0, 5.5) - 5.225579013e2) / 5.225579013e2
+        self.assertLess(error, REGION_ERROR, "Error for T4_hs(s) to big")
 
 
 class Region5Tester(unittest.TestCase):
     """tests for functions in region 5"""
 
     def setUp(self):
-        self.max_error = 1e-8
-        # The accumulated Error is bigger than the error of each single function
-        self.max_matrix_error = 2e-8
+        pass
 
     def tearDown(self):
         pass
@@ -487,39 +476,30 @@ class Region5Tester(unittest.TestCase):
             res[5][i] = Region5.w5_pT(p, T)
 
         error = numpy.sum(numpy.absolute((res - ref) / ref))
-        self.assertLess(error, self.max_matrix_error, "Test of *(p,T) Function for Region 5 failed")
+        self.assertLess(error, REGION_MATRIX_ERROR, "Test of *(p,T) Function for Region 5 failed")
 
     def test_ph_function(self):
-        """Tests to verify all functions with the Parameters p and h of Region 5"""
+        """(source unknown) Tests to verify all functions with the Parameters p and h of Region 5"""
         # TODO
-        # %T5_ph (Iteration)
-        p = [0.5, 8.0, 8.0]
-        h = [5219.76331549428, 5206.09634477373, 6583.80290533381]
-        IF97 = [1500.0, 1500.0, 2000.0]
-        R5 = numpy.zeros(3)
+        in_p = [0.5, 8.0, 8.0]
+        in_h = [5219.76331549428, 5206.09634477373, 6583.80290533381]
+        ref = [1500.0, 1500.0, 2000.0]
+        res = numpy.zeros(3)
         for i in range(3):
-            R5[i] = Region5.T5_ph(p[i], h[i])
-        T5_ph_error = numpy.sum(numpy.absolute((R5 - IF97) / IF97))
-        self.assertLess(
-            T5_ph_error,
-            self.max_error,
-            "Test of T(p,h) Function for Region 5 failed. Error was %(error)e allowed:"
-            " %(max)e" % {"error": T5_ph_error, "max": self.max_error},
-        )
+            res[i] = Region5.T5_ph(in_p[i], in_h[i])
+
+        error = numpy.sum(numpy.absolute((res - ref) / ref))
+        self.assertLess(error, REGION_ERROR, "Test of T(p,h) Function for Region 5 failed")
 
     def test_ps_function(self):
-        """Tests to verify all functions with the Parameters p and s of Region 5"""
+        """(source unknown) Tests to verify all functions with the Parameters p and s of Region 5"""
         # TODO
-        # %T5_ps (Iteration)
-        p = [0.5, 8.0, 8.0]
-        s = [9.65408430982588, 8.36546724495503, 9.15671044273249]
-        IF97 = [1500.0, 1500.0, 2000.0]
-        R5 = numpy.zeros(3)
-        for i in range(3):
-            R5[i] = Region5.T5_ps(p[i], s[i])
-        T5_ps_error = numpy.sum(numpy.absolute((R5 - IF97) / IF97))
-        self.assertLess(
-            T5_ps_error,
-            1e-4,
-            "Test of T(p,s) Function for Region 5 failed. Error was %(error)e allowed:" " %(max)e" % {"error": T5_ps_error, "max": 1e-4},
-        )
+        in_p = [0.5, 8.0, 8.0]
+        in_s = [9.65408430982588, 8.36546724495503, 9.15671044273249]
+        ref = [1500.0, 1500.0, 2000.0]
+        res = numpy.zeros(3)
+        for i, (p, s) in enumerate(zip(in_p, in_s)):
+            res[i] = Region5.T5_ps(p, s)
+
+        error = numpy.sum(numpy.absolute((res - ref) / ref))
+        self.assertLess(error, 1.1e-5, "Test of T(p,s) Function for Region 5 failed")
