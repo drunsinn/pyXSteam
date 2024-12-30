@@ -80,21 +80,41 @@ def TB23_hs(h: float, s: float) -> float:
 
 
 def pB2bc_h(h: float) -> float:
-    """R7-97(2012) Eq 20"""
+    """R7-97(2012) Eq 2
+
+    :param h: enthalpy in [kJ / kg]
+
+    :return: preasure in [MPa]
+    """
     return R7_97.Table19_n[0] + R7_97.Table19_n[1] * h + R7_97.Table19_n[2] * h**2
 
 
 def hB2bc_p(p: float) -> float:
-    """R7-97(2012) Eq 21"""
+    """R7-97(2012) Eq 21
+
+    :param p: preasure in [MPa]
+
+    :return: enthalpy in [kJ / kg]
+    """
     # TODO: this functions isn't used ....
     return R7_97.Table19_n[3] + math.sqrt((p - R7_97.Table19_n[4]) / R7_97.Table19_n[2])
 
 
 def hB2bc_s(s: float) -> float:
-    """SR2-02(2016) Ep 2"""
+    """SR2-02(2016) Ep 2
+
+    :param s: Specific entropy in [kJ / (kg K)]
+
+    :return: enthalpy in [kJ / kg]
+    """
     return SR2_01.Table5_n[0] + SR2_01.Table5_n[1] * s + SR2_01.Table5_n[2] * s**2 + SR2_01.Table5_n[3] * s**3
 
 
 def hB3ab_p(p: float) -> float:
-    """SR3-03(2014) Eq 1"""
+    """SR3-03(2014) Eq 1
+
+    :param p: preasure in [MPa]
+
+    :return: enthalpy in [kJ / kg]
+    """
     return SR3_03.Table2_n[0] + SR3_03.Table2_n[1] * p + SR3_03.Table2_n[2] * p**2 + SR3_03.Table2_n[3] * p**3
