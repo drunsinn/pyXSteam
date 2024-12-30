@@ -2313,7 +2313,7 @@ class XSteam(object):
         T = self._unit_converter.toSIunit_T(t)
 
         if hint is None or hint == IceType.NONE:
-            if T >= 251.165 and T < 256.164:
+            if 251.165 <= T < 256.164:
                 self.logger.error("can't select ice type based on temperature %f, hint required", T)
                 return float("NaN")
 
