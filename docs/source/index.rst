@@ -64,7 +64,7 @@ vx         Vapor Volume Fraction
 Related projects
 ================
 
-Implementaions of the IAPWS releases are also availible for other programing languages:
+Implementations of the IAPWS releases are also available for other programming languages:
 
 - Matlab: [xsteam](https://github.com/stu314159/xsteam)
 - .NET: [XSteamNET](https://github.com/rogerlew/XSteamNET)

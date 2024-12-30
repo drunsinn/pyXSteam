@@ -976,7 +976,7 @@ class SR1_86:
     # coefficients for Eq 3: density of saturated vapour
     c = [-2.03150240, -2.68302940, -5.38626492, -17.2991605, -44.7586581, -63.9201063]
 
-    # coefficients for Eq 4 and 5: auxilary quations
+    # coefficients for Eq 4 and 5: auxiliary equations
     d = [-5.65134998e-8, 2690.66631, 127.287297, -135.003439, 0.981825814]
     d_alpha = -1135.905627715
     d_phi = 2319.5246

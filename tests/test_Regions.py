@@ -395,7 +395,7 @@ class Region4Tester(unittest.TestCase):
         self.assertLess(error, REGION_ERROR, "Test of T(p) Function for Region 4 failed")
 
     def test_SR4_04_h_boundary(self):
-        """SR4-04(2014): computer-program verification for boundary fucntions for h"""
+        """SR4-04(2014): computer-program verification for boundary functions for h"""
         # Table 11 and Table 18
         in_s = [1.0, 2.0, 3.0, 3.8, 4.0, 4.2, 7.0, 8.0, 9.0, 5.5, 5.0, 4.5]
         ref = [
@@ -445,7 +445,7 @@ class Region5Tester(unittest.TestCase):
 
     def test_pT_function(self):
         """R7-97(2012) Tests to verify all functions with the Parameters rhpo and T of region 5"""
-        # FIXME this test does not work! the values found in R7-97 do not match with the vaules found here!
+        # FIXME this test does not work! the values found in R7-97 do not match with the values found here!
         # Table 42
         # in_p = [0.5, 30.0, 30.0] # Table 42
         in_p = [0.5, 8.0, 8.0]  # mod
