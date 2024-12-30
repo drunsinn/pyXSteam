@@ -406,7 +406,7 @@ class Region2:
 
         # table 13 - dimensionless gibbs free energy - gamma 0 tau
         g0_tau = 0
-        for J, n in zip(R7_97.Table10_J0, R7_97.Table10_n0_a):
+        for J, n in zip(R7_97.Table10_J0, R7_97.Table10_n0_b):
             g0_tau += n * J * tau ** (J - 1)
 
         # table 14 - residual dimensionless gibbs free energy - part r tau
@@ -462,7 +462,7 @@ class Region2:
 
         # table 13 - dimensionless gibbs free energy - gamma 0 tau
         g0_tau = 0
-        for J, n in zip(R7_97.Table10_J0, R7_97.Table10_n0_a):
+        for J, n in zip(R7_97.Table10_J0, R7_97.Table10_n0_b):
             g0_tau += n * J * tau ** (J - 1)
 
         # table 14 - residual dimensionless gibbs free energy - part r pi
@@ -521,12 +521,12 @@ class Region2:
 
         # table 13 - dimensionless gibbs free energy - gamma 0
         g0 = math.log(Pi)
-        for J, n in zip(R7_97.Table10_J0, R7_97.Table10_n0_a):
+        for J, n in zip(R7_97.Table10_J0, R7_97.Table10_n0_b):
             g0 += n * tau**J
 
         # table 13 - dimensionless gibbs free energy - gamma 0 tau
         g0_tau = 0
-        for J, n in zip(R7_97.Table10_J0, R7_97.Table10_n0_a):
+        for J, n in zip(R7_97.Table10_J0, R7_97.Table10_n0_b):
             g0_tau += n * J * tau ** (J - 1)
 
         # table 14 - residual dimensionless gibbs free energy - part r
@@ -581,7 +581,7 @@ class Region2:
 
         # table 13 - dimensionless gibbs free energy - gamma 0 tau tau
         g0_tautau = 0
-        for J, n in zip(R7_97.Table10_J0, R7_97.Table10_n0_a):
+        for J, n in zip(R7_97.Table10_J0, R7_97.Table10_n0_b):
             g0_tautau += n * J * (J - 1) * tau ** (J - 2)
 
         # table 14 - residual dimensionless gibbs free energy - part r tau tau
@@ -675,7 +675,7 @@ class Region2:
 
         # table 13 - dimensionless gibbs free energy - gamma 0 tau tau
         g0_tautau = 0
-        for J, n in zip(R7_97.Table10_J0, R7_97.Table10_n0_a):
+        for J, n in zip(R7_97.Table10_J0, R7_97.Table10_n0_b):
             g0_tautau += n * J * (J - 1) * tau ** (J - 2)
 
         # table 14 - residual dimensionless gibbs free energy - part r pi
