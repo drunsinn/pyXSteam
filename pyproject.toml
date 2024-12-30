@@ -136,17 +136,17 @@ confidence = [
     "UNDEFINED",
 ]
 disable = [
-    "raw-checker-failed",
-    "bad-inline-option",
-    "locally-disabled",
-    "file-ignored",
-    "suppressed-message",
+    #"raw-checker-failed",
+    #"bad-inline-option",
+    #"locally-disabled",
+    #"file-ignored",
+    #"suppressed-message",
     "useless-suppression",
-    "deprecated-pragma",
+    #"deprecated-pragma",
     "use-symbolic-message-instead",
-    # "use-implicit-booleaness-not-comparison-to-string",
-    # "use-implicit-booleaness-not-comparison-to-zero",
-    "consider-using-f-string",
+    #"use-implicit-booleaness-not-comparison-to-string",
+    #"use-implicit-booleaness-not-comparison-to-zero",
+    #"consider-using-f-string",
 ]
 
 [tool.pylint.method_args]
