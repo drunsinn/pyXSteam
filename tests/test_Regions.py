@@ -147,7 +147,7 @@ class Region2Tester(unittest.TestCase):
             res[5][i] = Region2.w2_pT_meta(p, T)
 
         error = numpy.sum(numpy.absolute((res - ref) / ref))
-        self.assertLess(error, REGION_MATRIX_ERROR, "Test of *(p,T) Functions for metastable-vapor Region 2 failed.")
+        self.assertLess(error, REGION_MATRIX_ERROR, "Test of *_meta(p,T) Functions for metastable-vapor Region 2 failed.")
 
     def test_ph_function(self):
         """R7-97(2012) Tests to verify all functions with the Parameters p and h of subregion 2a, 2b and 2c"""

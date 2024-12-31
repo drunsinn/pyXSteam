@@ -11,13 +11,15 @@ accuracy of the functions in different regions see IF-97 Page 4
 
 Also includes thermal conductivity and viscosity, which are not part of
 the IF97 release.
-* Thermal Conductivity: (IAPWS 1998)
-<http://www.iapws.org/relguide/ThCond.pdf>
-* Viscosity: (2003)
+* Thermal Conductivity: IAPWS R15-11
+* Viscosity: IAPWS R12-08
+* Surface Tension: IAPWS R1-76(2014)
+
 
 Some effort has been made to include the refined function of more recent releases
 and also functions for calculations on heavy water. This includes:
 * IAPWS R4
+* Surface Tension: IAPWS R5-85(1994)
 * IAPWS R14
 
 

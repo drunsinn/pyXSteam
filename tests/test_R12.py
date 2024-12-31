@@ -44,9 +44,9 @@ class R12_FunctionTester(unittest.TestCase):
         values = list()
         values.append({"T": 647.35, "rho": 122, "result": 25.520677e-6})
         values.append({"T": 647.35, "rho": 222, "result": 31.337589e-6})
-        # values.append({"T":647.35, "rho":272, "result":36.228143E-6})
-        # values.append({"T":647.35, "rho":322, "result":42.961579E-6})
-        # values.append({"T":647.35, "rho":372, "result":45.688204E-6})
+        # values.append({"T": 647.35, "rho": 272, "result": 36.228143e-6})
+        # values.append({"T": 647.35, "rho": 322, "result": 42.961579e-6})
+        # values.append({"T": 647.35, "rho": 372, "result": 45.688204e-6})
         values.append({"T": 647.35, "rho": 422, "result": 49.436256e-6})
 
         for value in values:
