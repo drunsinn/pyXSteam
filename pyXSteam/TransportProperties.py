@@ -10,7 +10,7 @@ from .RegionSelection import (
     select_region_ph,
 )
 from .Regions import Region1, Region2, Region3, Region4, Region5
-from .Constants import CRITICAL_TEMPERATURE, FREEZING_TEMPERATURE_H2O
+from .Constants import TRIPLE_POINT_TEMPERATURE, CRITICAL_TEMPERATURE, FREEZING_TEMPERATURE_H2O
 
 logger = logging.getLogger(__name__)
 
@@ -204,27 +204,23 @@ def tc_ptrho(p: float, T: float, rho: float) -> float:
 
 
 def surface_tension_T(T: float) -> float:
-    """
-    Section 5.3 Surface Tension
-    IAPWS Release on Surface Tension of Ordinary Water Substance, September 1994
-
-    also
+    """R1-76(2014) calculate surface tension as a function of temperature
 
     IAPWS Revised Release on Surface Tension of Ordinary Water Substance, June 2014 R1-76(2014)
     http://www.iapws.org/relguide/Surf-H2O-2014.pdf
-
 
     :param T: temperature in Kelvin
 
     :return: surface tension in mN/m
     """
-    tc = CRITICAL_TEMPERATURE
-    B = 0.2358  # N/m
-    bb = -0.625  #
-    my = 1.256  #
-    if (T < 0.01) or (T > tc):
-        logger.warning("Temperature out of range of validity")
-        return float("NaN")
+    B = 235.8  # N/m
+    bb = -0.625
+    my = 1.256
 
-    tau = 1 - T / tc
-    return B * tau**my * (1 + bb * tau)
+    if TRIPLE_POINT_TEMPERATURE <= T <= CRITICAL_TEMPERATURE:
+        tau = 1 - T / CRITICAL_TEMPERATURE
+        sigma = B * tau**my * (1 + bb * tau)
+        return sigma
+
+    logger.warning("Temperature out of range of validity")
+    return float("NaN")
