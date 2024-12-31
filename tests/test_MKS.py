@@ -309,11 +309,11 @@ class MKSFunctionTester(unittest.TestCase):
         self.assertLess(error, self.max_error, "test of tc_hs not passed")
 
     def test_st_t(self):
-        error = abs(self.steam_table.st_t(100.0) - 0.0589118685877)
+        error = abs(self.steam_table.st_t(100.0) - 58.9118685877)
         self.assertLess(error, self.max_error, "test of st_t not passed")
 
     def test_st_p(self):
-        error = abs(self.steam_table.st_p(1.0) - 0.058987784)
+        error = abs(self.steam_table.st_p(1.0) - 58.987784)
         self.assertLess(error, self.max_error, "test of st_p not passed")
 
     def test_x_ph(self):
