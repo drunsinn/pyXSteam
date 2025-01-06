@@ -10,7 +10,7 @@ from .Constants import (
 )
 from .UnitConverter import UnitConverter
 from .IAPWS_R4 import myHW_rhoT_R4, tcHW_rhoT_R4
-from .IAPWS_R5 import surface_tension_T
+from .TransportProperties_HW import surface_tension_T
 
 
 class XSteam_HW:

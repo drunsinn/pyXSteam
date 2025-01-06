@@ -6,7 +6,7 @@ import numpy
 
 from pyXSteam import XSteam_HW
 from pyXSteam.Constants import TRIPLE_POINT_TEMPERATURE, CRITICAL_TEMPERATURE
-from pyXSteam.IAPWS_R5 import surface_tension_T
+from pyXSteam.TransportProperties_HW import surface_tension_T
 
 
 class HWTester(unittest.TestCase):
