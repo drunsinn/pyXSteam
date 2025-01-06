@@ -140,7 +140,7 @@ def _my_dash_2(T: float, rho: float, T_dash: float, rho_dash: float) -> float:
 
 
 def eq10(T: float, rho: float, industrial: bool = True) -> float:
-    """ """
+    """equation 10"""
     logger.debug("input values T=%fK rho=%fkm/m^3", T, rho)
     # p_t = Constants.__TRIPLE_POINT_PRESSURE__
     # T_t = Constants.__TRIPLE_POINT_TEMPERATURE__

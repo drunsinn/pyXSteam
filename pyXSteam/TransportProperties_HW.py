@@ -31,7 +31,7 @@ def tc_() -> float:
 
 
 def surface_tension_T(T: float) -> float:
-    """R5-85(1994) calculate surface tention as a function of temperature for heavy water
+    """R5-85(1994) calculate surface tension as a function of temperature for heavy water
 
     IAPWS Release on Surface Tension of Heavy Water Substance
     http://www.iapws.org/relguide/surfd2o.pdf
