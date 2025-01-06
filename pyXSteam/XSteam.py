@@ -1909,7 +1909,6 @@ class XSteam:
         Note: Viscosity is not part of IAPWS Steam IF97. Equations from "Revised Release on the IAPWS Formulation 1985 for the
         Viscosity of Ordinary Water Substance", 2003 are used. Viscosity in the mixed region (4) is interpolated according to the
         density. This is not true since it will be two phases.
-
         Viscosity as a function of pressure and temperature
 
         :param p: preasure
@@ -2301,12 +2300,10 @@ class XSteam:
         `IceType.V` = 5
         `IceType.VI` = 6
         `IceType.VII` = 7
-        If the hint is not one of the values above or None(Default), an Exception is
-        raised
+        If the hint is not one of the values above or None(Default), an Exception is raised
 
         :param t: temperature
-        :param hint: hint for the selection logic to decide which part of the melting
-        curve to use. For supported values see IceType
+        :param hint: hint for the selection logic to decide which part of the melting curve to use. For supported values see IceType
 
         :raises ValueError: unknown value for hint
 

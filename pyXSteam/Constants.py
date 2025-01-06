@@ -4,15 +4,14 @@
 Constants for the calculation of water steam properties
 
 Sources:
-
-* IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water
-and Steam, September 1997
-
-* IAWPS Release on Values of Temperature, Pressure and Density of Ordinary and
-Heavy Water Substances at their Respective Critical Points Released
-September 1992, Revision of the Release of 1992
+* IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Waterand Steam, September 1997
+* IAWPS R2-83(1992) Values of Temperature, Pressure and Density of Ordinary and Heavy Water Substances at their Respective Critical Points
+* IAPWS R15-11
+* IAPWS R17 and IAPWS R18
+* https://doi.org/10.1063/1.5053993
 """
 from enum import IntEnum
+
 
 SPECIFIC_GAS_CONSTANT = 0.461526  # kJ / (kg K)
 CRITICAL_TEMPERATURE = 647.096  # K
@@ -24,10 +23,8 @@ TRIPLE_POINT_SPECIFIC_ENTHALPY = 0.611783e-3  # kJ / kg (Eq10 Page 7)
 FREEZING_TEMPERATURE_H2O = 273.15  # K
 
 
-# IAWPS Release on Values of Temperature, Pressure and Density of Ordinary and
-# Heavy Water Substances at their Respective Critical Points
-# IAPWS R2-83(1992)
-# Released September 1992, Revision of the Release of 1983
+# IAWPS R2-83(1992) Release on Values of Temperature, Pressure and Density of Ordinary and Heavy Water Substances at their
+# Respective Critical Points, Released September 1992, Revision of the Release of 1983
 # http://www.iapws.org/relguide/crits.pdf
 CRITICAL_TEMPERATURE_H20_1992 = 647.096  # +-0.1 K
 CRITICAL_PRESSURE_H20_1992 = 22.067  # +0.27*(+-0.1)+-0.005 MPa
@@ -37,11 +34,9 @@ CRITICAL_TEMPERATURE_D20_1992 = 643.847  # +-0.2 K
 CRITICAL_PRESSURE_D20_1992 = 21.671  # +0.27*(+-0.2)+-0.01 MPa
 CRITICAL_DENSITY_D20_1992 = 356.0  # +-5 kg / m
 
-
 # Other common constants used in calculations
 ABSOLUTE_ZERO_CELSIUS = -273.15  # °C
 ABSOLUTE_ZERO_FAHRENHEIT = -459.67  # °F
-
 
 # IAPWS R15-11
 __SPECIFIC_GAS_CONSTANT_IAPWS_R15_11__ = 0.46151805  # kJ kg^-1 K^-1

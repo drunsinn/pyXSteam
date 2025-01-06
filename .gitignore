@@ -110,3 +110,4 @@ venv.bak/
 *.todo
 /extern_docs
 .vscode/
+docs/source/README.md
