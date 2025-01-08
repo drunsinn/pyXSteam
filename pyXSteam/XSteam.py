@@ -2283,15 +2283,9 @@ class XSteam:
         return float("NaN")
 
     def pmelt_t(self, t: float, hint: IceType = IceType.NONE) -> float:
-        """
-        Revised Release on the Pressure along the Melting and Sublimation Curves of
-        Ordinary Water Substance
-        Release IAPWS R14-08(2011)
+        """R14-08(2011) Pressure along the melting curve as a function of temperature
         http://www.iapws.org/relguide/MeltSub2011.pdf
 
-        Pressure along the melting curve as a function of temperature. Based
-        on IAPWS R14-08(2011)
-        http://www.iapws.org/relguide/MeltSub2011.pdf
         Because of the shape of the meltin curve it is not possible to automatically
         select the correct region automatically. Therefore the optional
         hint-parameter is used to tell the function which area you are interested in.
@@ -2366,13 +2360,7 @@ class XSteam:
         raise ValueError("unknown value for parameter 'hint'")
 
     def psubl_t(self, t: float) -> float:
-        """Pressure along the sublimation curve as a function of temperature. Based
-        on IAPWS R14-08(2011)
-        http://www.iapws.org/relguide/MeltSub2011.pdf
-
-        Revised Release on the Pressure along the Melting and Sublimation Curves of
-        Ordinary Water Substance
-        Release IAPWS R14-08(2011)
+        """R14-08(2011) Pressure along the sublimation curve as a function of temperature
         http://www.iapws.org/relguide/MeltSub2011.pdf
 
         :param t: temperature

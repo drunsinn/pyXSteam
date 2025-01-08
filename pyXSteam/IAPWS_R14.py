@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 IAPWS R14-08(2011)
-Pressure along the Melting and Sublimation Curves of Ordinary Water Substance
+Revised Release on the Pressure along the Melting and Sublimation Curves of Ordinary Water Substance
 http://www.iapws.org/relguide/MeltSub2011.pdf
 """
 import math
@@ -12,9 +12,7 @@ logger = logging.getLogger(__name__)
 
 
 def pmelt_T_iceIh(T: float) -> float:
-    """
-    Melting pressure of ice of type Ih
-    based on IAPWS R14-08(2011) EQ 1
+    """R14-08(2011) calculate melting preassure for ice of type Ih, based on IAPWS R14-08(2011) EQ 1
 
     :param T: temperature in [K]
 
@@ -24,11 +22,19 @@ def pmelt_T_iceIh(T: float) -> float:
     T_star = 273.16
     p_star = 611.657e-6
     theta = T / T_star
-    a = [0.119539337e7, 0.808183159e5, 0.333826860e4]
-    b = [0.300000e1, 0.257500e2, 0.103750e3]
+    in_a = [
+        +0.119539337e7,
+        +0.808183159e5,
+        +0.333826860e4,
+    ]
+    in_b = [
+        +0.300000e1,
+        +0.257500e2,
+        +0.103750e3,
+    ]
     temp_sum = 0
-    for i in range(0, 3):
-        temp_sum += a[i] * (1 - theta ** b[i])
+    for a, b in zip(in_a, in_b):
+        temp_sum += a * (1 - theta**b)
     pi_melt = 1 + temp_sum
     p_melt = pi_melt * p_star
     logger.debug("result for 'melting preasure of ice type Ih': %f", p_melt)
@@ -36,9 +42,7 @@ def pmelt_T_iceIh(T: float) -> float:
 
 
 def pmelt_T_iceIII(T: float) -> float:
-    """
-    Melting pressure of ice of type III
-    based on IAPWS R14-08(2011) EQ 2
+    """R14-08(2011) calculate melting preassure for ice of type III, based on IAPWS R14-08(2011) EQ 2
 
     :param T: temperature in [K]
 
@@ -55,9 +59,7 @@ def pmelt_T_iceIII(T: float) -> float:
 
 
 def pmelt_T_iceV(T: float) -> float:
-    """
-    Melting pressure of ice of type V
-    based on IAPWS R14-08(2011) EQ 3
+    """R14-08(2011) calculate melting preassure for ice of type V, based on IAPWS R14-08(2011) EQ 3
 
     :param T: temperature in [K]
 
@@ -74,9 +76,7 @@ def pmelt_T_iceV(T: float) -> float:
 
 
 def pmelt_T_iceVI(T: float) -> float:
-    """
-    Melting pressure of ice of type VI
-    based on IAPWS R14-08(2011) EQ 4
+    """R14-08(2011) calculate melting preassure for ice of type VI, based on IAPWS R14-08(2011) EQ 4
 
     :param T: temperature in [K]
 
@@ -93,9 +93,7 @@ def pmelt_T_iceVI(T: float) -> float:
 
 
 def pmelt_T_iceVII(T: float) -> float:
-    """
-    Melting pressure of ice of type VII
-    based on IAPWS R14-08(2011) EQ 5
+    """R14-08(2011) calculate melting preassure for ice of type VII, based on IAPWS R14-08(2011) EQ 5
 
     :param T: temperature in [K]
 
@@ -115,9 +113,7 @@ def pmelt_T_iceVII(T: float) -> float:
 
 
 def psubl_T(T: float) -> float:
-    """
-    Sublimation Pressure of ice
-    based on IAPWS R14-08(2011) EQ 6
+    """R14-08(2011) calculate sublimation preassure for ice of type, based on IAPWS R14-08(2011) EQ 6
 
     :param T: temperature in [K]
 
@@ -126,12 +122,20 @@ def psubl_T(T: float) -> float:
     logger.debug("calculating 'sublimation preasure of ice' for T=%f", T)
     T_star = 273.16
     p_star = 611.657e-6
-    a = [-0.212144006e2, 0.273203819e2, -0.610598130e1]
-    b = [0.333333333e-2, 0.120666667e1, 0.170333333e1]
+    in_a = [
+        -0.212144006e2,
+        +0.273203819e2,
+        -0.610598130e1,
+    ]
+    in_b = [
+        +0.333333333e-2,
+        +0.120666667e1,
+        +0.170333333e1,
+    ]
     theta = T / T_star
     temp_sum = 0
-    for i in range(0, 3):
-        temp_sum += a[i] * theta ** b[i]
+    for a, b in zip(in_a, in_b):
+        temp_sum += a * theta**b
     pi_subl = math.exp((theta**-1) * temp_sum)
     p_subl = pi_subl * p_star
     logger.debug("result for 'sublimation preasure of ice': %f", p_subl)
