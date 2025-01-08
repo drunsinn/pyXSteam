@@ -15,7 +15,7 @@ from .Constants import CRITICAL_TEMPERATURE as _tc
 from .Constants import CRITICAL_PRESSURE as _pc
 from .Constants import CRITICAL_DENSITY as _rhoc
 
-from .Tables import R7_97, SR2_01, SR3_03, SR4_04
+from .tables import R7_97, SR2_01, SR3_03, SR4_04
 
 
 class Region1:

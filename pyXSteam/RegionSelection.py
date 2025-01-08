@@ -13,7 +13,7 @@ from .Constants import (
     FREEZING_TEMPERATURE_H2O,
     DiagramRegion,
 )
-from .Tables import SR3_03, SR4_04
+from .tables import SR3_03, SR4_04
 
 logger = logging.getLogger(__name__)
 

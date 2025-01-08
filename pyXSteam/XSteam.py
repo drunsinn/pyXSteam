@@ -1021,6 +1021,7 @@ class XSteam:
             if p < 16.529:
                 return self._unit_converter.fromSIunit_u(Region2.u2_pT(p, Region4.T4_p(p)))
             return self._unit_converter.fromSIunit_u(Region3.u3_rhoT(1 / (Region3.v3_ph(p, Region4.h4V_p(p))), Region4.T4_p(p)))
+        self.logger.warning("preasure %f out of range for uV_p(p)", p)
         return float("NaN")
 
     def uL_p(self, p: float) -> float:
@@ -1037,7 +1038,7 @@ class XSteam:
             if p < 16.529:
                 return self._unit_converter.fromSIunit_u(Region1.u1_pT(p, Region4.T4_p(p)))
             return self._unit_converter.fromSIunit_u(Region3.u3_rhoT(1 / (Region3.v3_ph(p, Region4.h4L_p(p))), Region4.T4_p(p)))
-        self.logger.warning("pressure %f out of range", p)
+        self.logger.warning("pressure %f out of range for uL_p(p)", p)
         return float("NaN")
 
     def uV_t(self, t: float) -> float:

@@ -6,7 +6,7 @@ Section 4: Region Borders
 import math
 import logging
 
-from .Tables import R7_97, SR2_01, SR3_03, SR4_04
+from .tables import R7_97, SR2_01, SR3_03, SR4_04
 
 logger = logging.getLogger(__name__)
 
