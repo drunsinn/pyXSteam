@@ -90,7 +90,7 @@ class XSteam:
         """
         :return: specific density with conversion to the selected unit system
         """
-        return self._unit_converter.fromSIunit_p(CRITICAL_DENSITY)
+        return self._unit_converter.fromSIunit_v(1 / CRITICAL_DENSITY)
 
     def triplePointTemperatur(self):
         """
