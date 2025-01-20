@@ -1462,7 +1462,6 @@ class Region4:
 
         :return: temperature in [K]
         """
-        # TODO: replace values with table ref (at least table 34 if not more)
         beta = p**0.25
         E = beta**2 + R7_97.Table34_n[2] * beta + R7_97.Table34_n[5]
         F = R7_97.Table34_n[0] * beta**2 + R7_97.Table34_n[3] * beta + R7_97.Table34_n[6]

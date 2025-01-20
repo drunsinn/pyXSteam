@@ -66,7 +66,7 @@ class Region1Tester(unittest.TestCase):
         in_p = [3.0, 80.0, 80.0]
         in_s = [0.5, 0.5, 3.0]
         ref = [0.307842258e3, 0.309979785e3, 0.565899909e3]
-        res = numpy.zeros(3)
+        res = numpy.zeros(len(ref))
         for i, (p, s) in enumerate(zip(in_p, in_s)):
             res[i] = Region1.T1_ps(p, s)
 
@@ -76,10 +76,10 @@ class Region1Tester(unittest.TestCase):
     def test_hs_function(self):
         """SR2-01(2014) Tests to verify all functions with the Parameters h and s of Region 1"""
         # Table 3
-        in_h = [0.001, 90.0, 1500.0]
-        in_s = [0.0, 0.0, 3.4]
-        ref = [9.800980612e-4, 9.192954727e1, 5.868294423e1]
-        res = numpy.zeros(3)
+        in_h = [0.001, 90.0, 1500.0]  # kJ / kg
+        in_s = [0.0, 0.0, 3.4]  # kg / kJ K
+        ref = [9.800980612e-4, 9.192954727e1, 5.868294423e1]  # in MPa
+        res = numpy.zeros(len(ref))
         for i, (h, s) in enumerate(zip(in_h, in_s)):
             res[i] = Region1.p1_hs(h, s)
 
