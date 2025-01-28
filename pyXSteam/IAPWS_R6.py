@@ -5,6 +5,7 @@ IAPWS R6-95(2018)
 Revised Release on the IAPWS Formulation 1995 for the Thermodynamic
 Properties of Ordinary Water Substance for General and Scientific Use
 """
+import sys
 import math
 import logging
 
@@ -91,6 +92,7 @@ def eq_ddDelta_ddeltadelta(tau: float, delta: float, a: float, A: float, B: floa
 
     :return: ∂^2∆ / ∂δ^2
     """
+
     Theta = eq_Theta(tau, delta, A, beta)
     part_1 = (1 / (delta - 1)) * eq_dDelta_ddelta(tau, delta, a, A, B, beta)
     part_2_1 = 4 * B * a * (a - 1) * math.pow(math.pow(delta - 1, 2), a - 2)
@@ -596,6 +598,10 @@ def R6_p_rhoT(rho: float, T: float) -> float:
     delta = rho / R6_95.CRITICAL_DENSITY
     tau = R6_95.CRITICAL_TEMPERATURE / T
 
+    if delta == 1:
+        logger.info("change delta slightly to avoid div 0 at delta = 1.0")
+        delta += sys.float_info.epsilon
+
     phi_r_delta = eq_phi_r_delta(tau, delta)
 
     org = 1
@@ -617,6 +623,10 @@ def R6_u_rhoT(rho: float, T: float):
     delta = rho / R6_95.CRITICAL_DENSITY
     tau = R6_95.CRITICAL_TEMPERATURE / T
 
+    if delta == 1:
+        logger.info("change delta slightly to avoid div 0 at delta = 1.0")
+        delta += sys.float_info.epsilon
+
     return tau * (eq_phi_o_tau(tau) + eq_phi_r_tau(tau, delta)) * R6_95.SPECIFIC_GAS_CONSTANT * T
 
 
@@ -632,6 +642,10 @@ def R6_s_rhoT(rho: float, T: float) -> float:
     """
     delta = rho / R6_95.CRITICAL_DENSITY
     tau = R6_95.CRITICAL_TEMPERATURE / T
+
+    if delta == 1:
+        logger.info("change delta slightly to avoid div 0 at delta = 1.0")
+        delta += sys.float_info.epsilon
 
     phi_o_tau = eq_phi_o_tau(tau)
     phi_r_tau = eq_phi_r_tau(tau, delta)
@@ -658,6 +672,10 @@ def R6_h_rhoT(rho: float, T: float) -> float:
     delta = rho / R6_95.CRITICAL_DENSITY
     tau = R6_95.CRITICAL_TEMPERATURE / T
 
+    if delta == 1:
+        logger.info("change delta slightly to avoid div 0 at delta = 1.0")
+        delta += sys.float_info.epsilon
+
     phi_o_tau = eq_phi_o_tau(tau)
     phi_r_tau = eq_phi_r_tau(tau, delta)
     phi_r_delta = eq_phi_r_delta(tau, delta)
@@ -681,6 +699,10 @@ def R6_cv_rhoT(rho: float, T: float) -> float:
     delta = rho / R6_95.CRITICAL_DENSITY
     tau = R6_95.CRITICAL_TEMPERATURE / T
 
+    if delta == 1:
+        logger.info("change delta slightly to avoid div 0 at delta = 1.0")
+        delta += sys.float_info.epsilon
+
     phi_o_tautau = eq_phi_o_tautau(tau)
     phi_r_tautau = eq_phi_r_tautau(tau, delta)
 
@@ -702,6 +724,10 @@ def R6_cp_rhoT(rho: float, T: float) -> float:
 
     delta = rho / R6_95.CRITICAL_DENSITY
     tau = R6_95.CRITICAL_TEMPERATURE / T
+
+    if delta == 1:
+        logger.info("change delta slightly to avoid div 0 at delta = 1.0")
+        delta += sys.float_info.epsilon
 
     phi_r_delta = eq_phi_r_delta(tau, delta)
     phi_o_tautau = eq_phi_o_tautau(tau)
@@ -729,6 +755,10 @@ def R6_w_rhoT(rho: float, T: float) -> float:
     """
     delta = rho / R6_95.CRITICAL_DENSITY
     tau = R6_95.CRITICAL_TEMPERATURE / T
+
+    if delta == 1:
+        logger.info("change delta slightly to avoid div 0 at delta = 1.0")
+        delta += sys.float_info.epsilon
 
     phi_r_delta = eq_phi_r_delta(tau, delta)
     phi_r_deltadelta = eq_phi_r_deltadelta(tau, delta)
@@ -760,6 +790,10 @@ def R6_joulethomson_rhoT(rho: float, T: float) -> float:
     delta = rho / R6_95.CRITICAL_DENSITY
     tau = R6_95.CRITICAL_TEMPERATURE / T
 
+    if delta == 1:
+        logger.info("change delta slightly to avoid div 0 at delta = 1.0")
+        delta += sys.float_info.epsilon
+
     phi_r_delta = eq_phi_r_delta(tau, delta)
     phi_r_deltadelta = eq_phi_r_deltadelta(tau, delta)
     phi_r_tautau = eq_phi_r_tautau(tau, delta)
@@ -787,6 +821,10 @@ def R6_delta_T_rhoT(rho: float, T: float) -> float:
     delta = rho / R6_95.CRITICAL_DENSITY
     tau = R6_95.CRITICAL_TEMPERATURE / T
 
+    if delta == 1:
+        logger.info("change delta slightly to avoid div 0 at delta = 1.0")
+        delta += sys.float_info.epsilon
+
     phi_r_delta = eq_phi_r_delta(tau, delta)
     phi_r_deltadelta = eq_phi_r_deltadelta(tau, delta)
     phi_r_deltatau = eq_phi_r_deltatau(tau, delta)
@@ -811,6 +849,10 @@ def R6_isen_t_p_rhoT(rho: float, T: float) -> float:
     """
     delta = rho / R6_95.CRITICAL_DENSITY
     tau = R6_95.CRITICAL_TEMPERATURE / T
+
+    if delta == 1:
+        logger.info("change delta slightly to avoid div 0 at delta = 1.0")
+        delta += sys.float_info.epsilon
 
     phi_r_delta = eq_phi_r_delta(tau, delta)
     phi_r_deltadelta = eq_phi_r_deltadelta(tau, delta)
