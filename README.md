@@ -31,6 +31,7 @@ In chronological order:
 - mohit0749
 - gonmolina
 - xjtu-blacksmith
+- sebastiantuinstra
 
 
 ## Requirements
