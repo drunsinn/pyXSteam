@@ -308,7 +308,7 @@ class XSteam(object):
 
             rhos = 1 / self.v_ph(ps, h)
 
-            if last_rhos == rhos:
+            if last_rhos == rho:
                 self.logger.warning(
                     "p_hrho stopped iterating after %d steps because values did not converge for input values h %f and rho %f",
                     step_counter,
