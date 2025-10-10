@@ -17,7 +17,16 @@ dependencies = []
 file = "LICENSE"
 
 [project.optional-dependencies]
-SSH = ["numpy", "scipy", "matplotlib"]
+demo = [
+    "matplotlib>=3.7.5",
+    "numpy>=1.24.4",
+    "scipy>=1.10.1",
+]
+documentation = [
+    "myst-parser>=3.0.1",
+    "sphinx>=7.1.2",
+    "sphinx-autodoc-typehints>=2.0.1",
+]
 
 [project.urls]
 "Homepage" = "https://github.com/drunsinn/pyXSteam"
@@ -26,6 +35,15 @@ SSH = ["numpy", "scipy", "matplotlib"]
 [project.scripts]
 pyXSteamDemo = "pyXSteam.scripts.pyXSteamDemo:main"
 pyXSteamRankineDemo = "pyXSteam.scripts.pyXSteamRankineDemo:main"
+
+[dependency-groups]
+dev = [
+    "black>=24.8.0",
+    "codespell>=2.4.1",
+    "numpy>=1.24.4",
+    "pytest>=8.3.5",
+    "ruff>=0.14.0",
+]
 
 [tool.setuptools]
 packages = ["pyXSteam"]
@@ -49,173 +67,92 @@ addopts = "--cov=pyXSteam --cov-report html:docs/reports/coverage.html"
 
 
 [tool.codespell]
-skip = "*.po,*.ts,./docs/build/*,./build/*,./dist/*,./.git,./.venv,*.pdf,*.m"
+skip = "*.po,*.ts,./docs/build/*,./build/*,./dist/*,./.git,./.venv,*.pdf,*.m,./*.egg-info/*"
 count = ""
 quiet-level = 3
 
-[tool.pylint.main]
-fail-under = 9
-ignore = ["CVS"]
-ignore-patterns = ["^\\.#"]
-jobs = 0
-limit-inference-results = 100
-persistent = true
-py-version = "3.8"
-suggestion-mode = true
-
-[tool.pylint.basic]
-argument-naming-style = "any"
-attr-naming-style = "snake_case"
-bad-names = ["foo", "bar", "baz", "toto", "tutu", "tata"]
-class-attribute-naming-style = "any"
-class-const-naming-style = "any"
-class-naming-style = "PascalCase"
-const-naming-style = "UPPER_CASE"
-docstring-min-length = -1
-function-naming-style = "any"
-good-names = ["i", "j", "k", "ex", "Run", "_", "pyXSteam"]
-inlinevar-naming-style = "any"
-method-naming-style = "any"
-module-naming-style = "any"
-no-docstring-rgx = "^_"
-property-classes = ["abc.abstractproperty"]
-variable-naming-style = "any"
-
-[tool.pylint.classes]
-defining-attr-methods = [
-    "__init__",
-    "__new__",
-    "setUp",
-    "asyncSetUp",
-    "__post_init__",
-]
-exclude-protected = [
-    "_asdict",
-    "_fields",
-    "_replace",
-    "_source",
-    "_make",
-    "os._exit",
-]
-valid-classmethod-first-arg = ["cls"]
-valid-metaclass-classmethod-first-arg = ["mcs"]
-
-[tool.pylint.design]
-max-args = 5
-max-attributes = 7
-max-bool-expr = 5
-max-branches = 12
-max-locals = 15
-max-parents = 7
-max-public-methods = 20
-max-returns = 6
-max-statements = 50
-min-public-methods = 2
-
-[tool.pylint.exceptions]
-overgeneral-exceptions = ["builtins.BaseException", "builtins.Exception"]
-
-[tool.pylint.format]
-ignore-long-lines = "^\\s*(# )?<?https?://\\S+>?$"
-indent-after-paren = 4
-indent-string = "    "
-max-line-length = 140
-max-module-lines = 1000
-
-[tool.pylint.imports]
-known-third-party = ["enchant"]
-
-[tool.pylint.logging]
-logging-format-style = "old"
-logging-modules = ["logging"]
-
-[tool.pylint."messages control"]
-confidence = [
-    "HIGH",
-    "CONTROL_FLOW",
-    "INFERENCE",
-    "INFERENCE_FAILURE",
-    "UNDEFINED",
-]
-disable = [
-    #"raw-checker-failed",
-    #"bad-inline-option",
-    #"locally-disabled",
-    #"file-ignored",
-    #"suppressed-message",
-    #"useless-suppression",
-    #"deprecated-pragma",
-    #"use-symbolic-message-instead",
-    #"use-implicit-booleaness-not-comparison-to-string",
-    #"use-implicit-booleaness-not-comparison-to-zero",
-    #"consider-using-f-string",
+[tool.ruff]
+# Exclude a variety of commonly ignored directories.
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".hg",
+    ".ipynb_checkpoints",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pyenv",
+    ".pytest_cache",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    ".vscode",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "site-packages",
+    "venv",
 ]
 
-[tool.pylint.method_args]
+# Same as Black.
+line-length = 140
+indent-width = 4
 
-timeout-methods = [
-    "requests.api.delete",
-    "requests.api.get",
-    "requests.api.head",
-    "requests.api.options",
-    "requests.api.patch",
-    "requests.api.post",
-    "requests.api.put",
-    "requests.api.request",
-]
+# Assume Python 3.11
+target-version = "py311"
 
-[tool.pylint.miscellaneous]
-notes = ["FIXME", "XXX", "TODO", "ToDo"]
+[tool.ruff.lint]
+# Enable Pyflakes (`F`) and a subset of the pycodestyle (`E`) codes by default.
+# Unlike Flake8, Ruff doesn't enable pycodestyle warnings (`W`) or
+# McCabe complexity (`C901`) by default.
+select = ["E4", "E7", "E9", "F"]
+ignore = []
 
-[tool.pylint.refactoring]
-max-nested-blocks = 5
-never-returning-functions = ["sys.exit", "argparse.parse_error"]
+# Allow fix for all enabled rules (when `--fix`) is provided.
+fixable = ["ALL"]
+unfixable = []
 
-[tool.pylint.reports]
-evaluation = "max(0, 0 if fatal else 10.0 - ((float(5 * error + warning + refactor + convention) / statement) * 10))"
-score = true
+# Allow unused variables when underscore-prefixed.
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
 
-[tool.pylint.similarities]
-ignore-comments = true
-ignore-docstrings = true
-ignore-imports = true
-ignore-signatures = true
-min-similarity-lines = 4
+[tool.ruff.lint.per-file-ignores]
+# Allow unused imports in `__init__.py` files.
+"__init__.py" = ["F401"]
+"pyXSteam/TransportProperties_HW.py" = ["F401"]
+"pyXSteam/Regions.py" = ["E741"]
+"pyXSteam/RegionBorders.py" = ["E741"]
 
-[tool.pylint.spelling]
-max-spelling-suggestions = 4
-spelling-ignore-comment-directives = "fmt: on,fmt: off,noqa:,noqa,nosec,isort:skip,mypy:"
+[tool.ruff.format]
+# Like Black, use double quotes for strings.
+quote-style = "double"
 
-[tool.pylint.typecheck]
-contextmanager-decorators = ["contextlib.contextmanager"]
-ignore-none = true
-ignore-on-opaque-inference = true
-ignored-checks-for-mixins = [
-    "no-member",
-    "not-async-context-manager",
-    "not-context-manager",
-    "attribute-defined-outside-init",
-]
-ignored-classes = [
-    "optparse.Values",
-    "thread._local",
-    "_thread._local",
-    "argparse.Namespace",
-]
-missing-member-hint = true
-missing-member-hint-distance = 1
-missing-member-max-choices = 1
-mixin-class-rgx = ".*[Mm]ixin"
+# Like Black, indent with spaces, rather than tabs.
+indent-style = "space"
 
-[tool.pylint.variables]
-allow-global-unused-variables = true
-callbacks = ["cb_", "_cb"]
-dummy-variables-rgx = "_+$|(_[a-zA-Z0-9_]*[a-zA-Z0-9]+?$)|dummy|^ignored_|^unused_"
-ignored-argument-names = "_.*|^ignored_|^unused_"
-redefining-builtins-modules = [
-    "six.moves",
-    "past.builtins",
-    "future.builtins",
-    "builtins",
-    "io",
-]
+# Like Black, respect magic trailing commas.
+skip-magic-trailing-comma = false
+
+# Like Black, automatically detect the appropriate line ending.
+line-ending = "auto"
+
+# Enable auto-formatting of code examples in docstrings. Markdown,
+# reStructuredText code/literal blocks and doctests are all supported.
+#
+# This is currently disabled by default, but it is planned for this
+# to be opt-out in the future.
+docstring-code-format = false
+
+# Set the line length limit used when formatting code snippets in
+# docstrings.
+#
+# This only has an effect when the `docstring-code-format` setting is
+# enabled.
+docstring-code-line-length = "dynamic"
