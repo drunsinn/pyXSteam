@@ -7,6 +7,9 @@
 * switch to pyproject.toml
 ** move file location of demo scripts
 
+## v0.4.10, 10.2025
+* @sebastiantuinstra fixed issue #19: Iteration loop in p_hrho(h, rho) used incorrect value for convergence check.
+
 ## v0.4.9, 05.2022
 * fix issue with missing unit conversion in h_px and h_tx
 * add tests for fixed bugs
