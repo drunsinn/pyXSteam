@@ -1,3 +1,8 @@
+.PHONY: clean
+
+clean:
+	rm -rf build dist *.egg-info
+
 test:
 	uv run pytest
 
@@ -17,5 +22,7 @@ build:
 doc:
 	cd docs && $(MAKE) html
 
-.PHONY: 
+all: clean test spell lint format build doc
+
+
 
