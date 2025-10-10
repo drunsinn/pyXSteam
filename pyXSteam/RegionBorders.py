@@ -3,207 +3,118 @@
 """
 Section 4: Region Borders
 """
+import math
+import logging
+
+from .Tables import R7_97, SR2_01, SR3_03, SR4_04
+
+logger = logging.getLogger(__name__)
 
 
-def B23p_T(T):
-    """function B23p_T = B23p_T(T)
+def pB23_T(T: float) -> float:
+    """
+    calculate preasure from temperature for boundary between region 2 and 3
 
     Section 4.1 Boundary between region 2 and 3.
 
-    Release on the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam 1997 Section 4 Auxiliary Equation for the Boundary between Regions 2 and 3
+    Release on the IAPWS Industrial formulation 1997 for the Thermodynamic Properties
+    of Water and Steam 1997 Section 4 Auxiliary Equation for the Boundary
+    between Regions 2 and 3
 
     Eq 5, Page 5
+
+    :param T: temperature in [K]
+
+    :return: preasure in [MPa]
     """
-    return 348.05185628969 - 1.1671859879975 * T + 1.0192970039326e-03 * (T**2)
+    return R7_97.Table1_n[0] + R7_97.Table1_n[1] * T + R7_97.Table1_n[2] * (T**2)
 
 
-def B23T_p(p):
-    """function B23T_p = B23T_p(p)
+def TB23_p(p: float) -> float:
+    """
+    calculate temperature from preasure for boundary between region 2 and 3
 
     Section 4.1 Boundary between region 2 and 3.
 
-    Release on the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water and Steam 1997 Section 4 Auxiliary Equation for the Boundary between Regions 2 and 3
+    Release on the IAPWS Industrial formulation 1997 for the Thermodynamic Properties
+    of Water and Steam 1997 Section 4 Auxiliary Equation for the Boundary
+    between Regions 2 and 3
 
     Eq 6, Page 6
+
+    :param p: preasure in [MPa]
+
+    :return: temperature in [K]
     """
-    return 572.54459862746 + ((p - 13.91883977887) / 1.0192970039326e-03) ** 0.5
+    return R7_97.Table1_n[3] + ((p - R7_97.Table1_n[4]) / R7_97.Table1_n[2]) ** 0.5
 
 
-def p3sat_h(h):
-    """function p3sat_h = p3sat_h(h)
+def hB13_s(s: float) -> float:
+    """SR4-04(2014) Eq 7 calculate enthalpy from specific entropy for border between region 1 and 3
 
-    Section 4.2 Region 3. pSat_h  & pSat_s
+    :param s: specific entropy in [kJ / (kg K)]
 
-    Revised Supplementary Release on Backward Equations for the functions T(p,h), v(p,h) s& T(p,s), v(p,s) for Region 3 of the IAPWS Industrial formulation 1997 for the Thermodynamic Properties of Water & Steam 2004 Section 4 Boundary Equations psat(h) & psat(s) for the Saturation Lines of Region 3
-
-    See pictures Page 17, Eq 10, Table 17, Page 18
+    :return: enthalpy in [kJ / kg]
     """
-    Ii = [0, 1, 1, 1, 1, 5, 7, 8, 14, 20, 22, 24, 28, 36]
-    Ji = [0, 1, 3, 4, 36, 3, 0, 24, 16, 16, 3, 18, 8, 24]
-    ni = [
-        0.600073641753024,
-        -9.36203654849857,
-        24.6590798594147,
-        -107.014222858224,
-        -91582131580576.8,
-        -8623.32011700662,
-        -23.5837344740032,
-        2.52304969384128e17,
-        -3.89718771997719e18,
-        -3.33775713645296e22,
-        35649946963.6328,
-        -1.48547544720641e26,
-        3.30611514838798e18,
-        8.13641294467829e37,
-    ]
-    hs = h / 2600
-    ps = 0
-    for i in range(0, 14):
-        ps = ps + ni[i] * (hs - 1.02) ** Ii[i] * (hs - 0.608) ** Ji[i]
-    return ps * 22
-
-
-def p3sat_s(s):
-    """function p3sat_s = p3sat_s(s)
-
-    Section 4.2 Region 3. pSat_h  & pSat_s
-    """
-    Ii = [0, 1, 1, 4, 12, 12, 16, 24, 28, 32]
-    Ji = [0, 1, 32, 7, 4, 14, 36, 10, 0, 18]
-    ni = [
-        0.639767553612785,
-        -12.9727445396014,
-        -2.24595125848403e15,
-        1774667.41801846,
-        7170793495.71538,
-        -3.78829107169011e17,
-        -9.55586736431328e34,
-        1.87269814676188e23,
-        119254746466.473,
-        1.10649277244882e36,
-    ]
-    Sigma = s / 5.2
-    Pi = 0
-    for i in range(0, 10):
-        Pi = Pi + ni[i] * (Sigma - 1.03) ** Ii[i] * (Sigma - 0.699) ** Ji[i]
-    return Pi * 22
-
-
-def hB13_s(s):
-    """function hB13_s = hB13_s(s)
-
-    Section 4.3 Region boundary 1 to 3  & 3to2 as a functions of s
-
-    Supplementary Release on Backward Equations ( ) , p h s for Region 3, Chapter 4.5 page 23.
-    """
-    Ii = [0, 1, 1, 3, 5, 6]
-    Ji = [0, -2, 2, -12, -4, -3]
-    ni = [
-        0.913965547600543,
-        -4.30944856041991e-05,
-        60.3235694765419,
-        1.17518273082168e-18,
-        0.220000904781292,
-        -69.0815545851641,
-    ]
     Sigma = s / 3.8
     eta = 0
-    for i in range(0, 6):
-        eta = eta + ni[i] * (Sigma - 0.884) ** Ii[i] * (Sigma - 0.864) ** Ji[i]
+    for I, J, n in zip(SR4_04.Table23_I, SR4_04.Table23_J, SR4_04.Table23_n):
+        eta += n * (Sigma - 0.884) ** I * (Sigma - 0.864) ** J  # Eq7
     return eta * 1700
 
 
-def TB23_hs(h, s):
-    """function TB23_hs = TB23_hs(h, s)
+def TB23_hs(h: float, s: float) -> float:
+    """SR4-04(2014) Eq 8 calculate temperature from specific entropy and enthalpy for border between region 2 and 3
 
-    Section 4.3 Region boundary 1to3  & 3to2 as a functions of s
+    :param h: enthalpy in [kJ / kg]
+    :param s: Specific entropy in [kJ / (kg K)]
 
-    Supplementary Release on Backward Equations () , p h s for Region 3, Chapter 4.6 page 25.
+    :return: temperature in [K]
     """
-    Ii = [
-        -12,
-        -10,
-        -8,
-        -4,
-        -3,
-        -2,
-        -2,
-        -2,
-        -2,
-        0,
-        1,
-        1,
-        1,
-        3,
-        3,
-        5,
-        6,
-        6,
-        8,
-        8,
-        8,
-        12,
-        12,
-        14,
-        14,
-    ]
-    Ji = [
-        10,
-        8,
-        3,
-        4,
-        3,
-        -6,
-        2,
-        3,
-        4,
-        0,
-        -3,
-        -2,
-        10,
-        -2,
-        -1,
-        -5,
-        -6,
-        -3,
-        -8,
-        -2,
-        -1,
-        -12,
-        -1,
-        -12,
-        1,
-    ]
-    ni = [
-        6.2909626082981e-04,
-        -8.23453502583165e-04,
-        5.15446951519474e-08,
-        -1.17565945784945,
-        3.48519684726192,
-        -5.07837382408313e-12,
-        -2.84637670005479,
-        -2.36092263939673,
-        6.01492324973779,
-        1.48039650824546,
-        3.60075182221907e-04,
-        -1.26700045009952e-02,
-        -1221843.32521413,
-        0.149276502463272,
-        0.698733471798484,
-        -2.52207040114321e-02,
-        1.47151930985213e-02,
-        -1.08618917681849,
-        -9.36875039816322e-04,
-        81.9877897570217,
-        -182.041861521835,
-        2.61907376402688e-06,
-        -29162.6417025961,
-        1.40660774926165e-05,
-        7832370.62349385,
-    ]
-    Sigma = s / 5.3
+    sigma = s / 5.3
     eta = h / 3000
     teta = 0
-    for i in range(0, 25):
-        teta = teta + ni[i] * (eta - 0.727) ** Ii[i] * (Sigma - 0.864) ** Ji[i]
+    for I, J, n in zip(SR4_04.Table25_I, SR4_04.Table25_J, SR4_04.Table25_n):
+        teta += n * (eta - 0.727) ** I * (sigma - 0.864) ** J  # Eq 8
     return teta * 900
+
+
+def pB2bc_h(h: float) -> float:
+    """R7-97(2012) Eq 2
+
+    :param h: enthalpy in [kJ / kg]
+
+    :return: preasure in [MPa]
+    """
+    return R7_97.Table19_n[0] + R7_97.Table19_n[1] * h + R7_97.Table19_n[2] * h**2
+
+
+def hB2bc_p(p: float) -> float:
+    """R7-97(2012) Eq 21
+
+    :param p: preasure in [MPa]
+
+    :return: enthalpy in [kJ / kg]
+    """
+    # TODO: this functions isn't used ....
+    return R7_97.Table19_n[3] + math.sqrt((p - R7_97.Table19_n[4]) / R7_97.Table19_n[2])
+
+
+def hB2bc_s(s: float) -> float:
+    """SR2-02(2016) Ep 2
+
+    :param s: Specific entropy in [kJ / (kg K)]
+
+    :return: enthalpy in [kJ / kg]
+    """
+    return SR2_01.Table5_n[0] + SR2_01.Table5_n[1] * s + SR2_01.Table5_n[2] * s**2 + SR2_01.Table5_n[3] * s**3
+
+
+def hB3ab_p(p: float) -> float:
+    """SR3-03(2014) Eq 1
+
+    :param p: preasure in [MPa]
+
+    :return: enthalpy in [kJ / kg]
+    """
+    return SR3_03.Table2_n[0] + SR3_03.Table2_n[1] * p + SR3_03.Table2_n[2] * p**2 + SR3_03.Table2_n[3] * p**3

@@ -16,14 +16,6 @@ By using the unitSystem Parameter, you can tell XSteam witch Unit System you are
     steam_table = XSteam(XSteam.UNIT_SYSTEM_FLS) # ft/lb/sec/°F/psi/btu
     steam_table = XSteam(XSteam.UNIT_SYSTEM_BARE) # m/kg/sec/K/MPa/W
 
-To enable logging, add the following lines to your code::
-
-    import logging
-    logger = logging.getLogger('pyXSteam')
-    logger.setLevel(logging.DEBUG) sh = logging.StreamHandler()
-    sh.setFormatter(logging.Formatter('%(name)s - %(levelname)s - %(message)s'))
-    logger.addHandler(sh)
-
 Calculate single values
 =======================
 This is a simple example::
@@ -42,7 +34,7 @@ By converting one to the functions to a NumPy universal function it is easy to u
     >>> npv_pt = np.frompyfunc(steam_table.v_pt, 2, 1)
 
 * `NumPy documentation for frombyfunc <https://numpy.org/doc/stable/reference/generated/numpy.frompyfunc.html>`_
-* `pyXSteamDemo.py <https://github.com/drunsinn/pyXSteam/blob/master/bin/pyXSteamDemo.py>`_
+* `pyXSteamDemo.py <https://github.com/drunsinn/pyXSteam/blob/master/pyXSteam/skripts/pyXSteamDemo.py>`_
 
 Usage with pandas
 =================
@@ -75,7 +67,18 @@ Example: To draw a T(p) diagram showing the saturation curve::
     pyplot.setp(line1, linewidth=1, color='b')
     pyplot.show()
 
-For more demos, see `pyXSteamDemo.py <https://github.com/drunsinn/pyXSteam/blob/master/bin/pyXSteamDemo.py>`_
+For more demos, see `pyXSteamDemo.py <https://github.com/drunsinn/pyXSteam/blob/master/pyXSteam/skripts/pyXSteamDemo.py>`_
+
+More Diagrams
+-------------
+
+For even more examples of diagrams generated with pyXSteam, see the repositories by Richard J Smith
+
+ - `steam-properties <https://github.com/Richard66NZ/steam-properties>`_
+ - `steam-cycles-Ideal <https://github.com/Richard66NZ/steam-cycles-Ideal>`_
+ - `steam-cycles-non-ideal <https://github.com/Richard66NZ/steam-cycles-non-ideal>`_
+ - `steam-cycles-regenerative <https://github.com/Richard66NZ/steam-cycles-regenerative>`_
+
 
 Heavy Water functions
 =====================
@@ -91,7 +94,7 @@ Content of the demo files
 
 Main demo file pyXSteamDemo.py
 ==============================
-.. literalinclude:: ../../bin/pyXSteamDemo.py
+.. literalinclude:: ../../pyXSteam/scripts/pyXSteamDemo.py
     :language: python
 
 Example on how to calculate the values for a rankine cycle
@@ -99,5 +102,5 @@ Example on how to calculate the values for a rankine cycle
 Matlab example from converted example from Stu Blair converted to python
 Original can be found at `his github page <https://github.com/stu314159/xsteam/blob/master/Examples/SimpleRankineCycle.m>`_
 
-.. literalinclude:: ../../bin/pyXSteamRankineDemo.py
+.. literalinclude:: ../../pyXSteam/scripts/pyXSteamRankineDemo.py
     :language: python

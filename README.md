@@ -1,26 +1,26 @@
-# XSteam
+# pyXSteam
 
-Original Released by Magnus Holmgren for Matlab and Excel:
-<http://xsteam.sourceforge.net> and/or <http://www.x-eng.com>
+pyXSteam is a Python library designed for calculating thermodynamic properties of water and steam based on the [IAPWS](http://www.iapws.org) (International Association for the Properties of Water and Steam) formulations.
 
-At [this github repository](https://github.com/stu314159/xsteam) you can find the/a matlab version.
+This library was ported from the original Matlab released by Magnus Holmgren. The original can be founbd at [Sourceforge](http://xsteam.sourceforge.net) and/or <http://www.x-eng.com>.
 
-A .NET implementation is availible thanks to the work of rogerlew here: [XSteamNET](https://github.com/rogerlew/XSteamNET).
+A .NET implementation is available thanks to the work of rogerlew here: [XSteamNET](https://github.com/rogerlew/XSteamNET).
 
 XSteam provides (mostly) accurate steam and water properties from 0 -
 1000 bar and from 0 - 2000 °C according to the [IAPWS release IF-97](http://www.iapws.org/relguide/IF97-Rev.pdf). For
 accuracy of the functions in different regions see IF-97 Page 4
 
-Also includes thermal conductivity and viscosity, which are not part of
-the IF97 release.
-* Thermal Conductivity: (IAPWS 1998)
-<http://www.iapws.org/relguide/ThCond.pdf>
-* Viscosity: (2003)
+Also included are functions for thermal conductivity and viscosity which are not part of R7-97(2012).
 
-Some effort has been made to include the refined function of more recent releases
-and also functions for calculations on heavy water. This includes:
-* IAPWS R4
-* IAPWS R14
+ - [IAPWS R15-11: Thermal Conductivity of Ordinary Water Substance](http://www.iapws.org/relguide/ThCond.pdf)
+ - [IAPWS R12-08: Viscosity of Ordinary Water Substance](http://www.iapws.org/relguide/visc.pdf)
+ - [IAPWS R1-76(2014): Surface Tension of Ordinary Water Substance](https://www.iapws.org/relguide/Surf-H2O-2014.pdf)
+
+Some effort has been made to include the refined function of more recent releases and also functions for calculations on heavy water. This implementation is still in progress, these function should not be used. This includes:
+
+ - IAPWS R4 (deprecated)
+ - IAPWS R5-85(1994)
+ - IAPWS R14
 
 
 ## Contributors to pyXSteam
@@ -33,29 +33,88 @@ In chronological order:
 - xjtu-blacksmith
 - sebastiantuinstra
 
+## Documentation
+
+Check out [pyXSteam at readthedocs](https://pyxsteam.readthedocs.io)
 
 ## Requirements
 
-There are no requirements for installing pyXSteam with Python 3.6 and up.
+There are no requirements for installing pyXSteam with Python 3.8 and up. The demos require `numpy` and `matplotlib`.
 
-Tests require numpy, demos require numpy and matplotlib
+### Tests
+
+Tests require `pytest` and `numpy`
 
 ## Install
 
-run `python3 setup.py install`
+run `pip install pyXSteam`
 
-To run unittests you need two additional packages: `pytest` and `numpy`. After installing both, just run pytest in
-the base directory. The tests use some fixed values from the documentation to make sure that every coefficient
-and formula works as intended.
+To run unittests you need two additional packages: `pytest` and `numpy`. After installing both, just run pytest in the base directory. The tests use some fixed values from the documentation to make sure that every coefficient and formula works as intended.
 
-To test if setup was successful, run `python3 bin/pyXSteamDemo.py`. This will require numpy and matplotlib to be installed.
+To test if setup was successful, run `pyXSteamDemo`. This will require numpy and matplotlib to be installed.
+
+## Usage
+
+Simple Example:
+
+```
+    from pyXSteam.XSteam import XSteam
+    steamTable = XSteam(XSteam.UNIT_SYSTEM_MKS)
+    print(steamTable.hL_p(220.0))
+```
+
+By using the unitSystem Parameter, you can tell XSteam witch Unit System you are using.
+
+```
+    steamTable = XSteam(XSteam.UNIT_SYSTEM_MKS) # m/kg/sec/°C/bar/W
+    steamTable = XSteam(XSteam.UNIT_SYSTEM_FLS) # ft/lb/sec/°F/psi/btu
+    steamTable = XSteam(XSteam.UNIT_SYSTEM_BARE) # m/kg/sec/K/MPa/W
+```
+
+To enable logging, add the following lines to your code:
+
+```
+    import logging
+    logging.basicConfig(level=logging.INFO)
+```
+
+or alternatively
+
+```
+    import logging
+    logger = logging.getLogger('pyXSteam')
+    logger.setLevel(logging.DEBUG)
+    sh = logging.StreamHandler()
+    sh.setFormatter(logging.Formatter('%(name)s - %(levelname)s - %(message)s'))
+    logger.addHandler(sh)
+```
+
+## Related projects
+
+Implementations of the IAPWS releases are also available for other programming languages:
+
+- Matlab and Excel: [xsteam](http://xsteam.sourceforge.net)
+- Matlab: [xsteam](https://github.com/stu314159/xsteam)
+- .NET: [XSteamNET](https://github.com/rogerlew/XSteamNET)
+
+
+## Notes
+
+### Density (rho)
+
+Density is calculated as 1/v. See section for Specific volume
+
+### Viscosity
+
+Viscosity is not part of IAPWS Steam IF97. Equations from "Revised Release on the IAPWS Formulation 1985 for the Viscosity of Ordinary Water Substance", 2003 are used. Viscosity in the mixed region (4) is interpolated according to the density. This is not true since it will be two phases.
+
+### Thermal conductivity
+
+Revised release on the IAPS Formulation 1985 for the Thermal Conductivity of ordinary water substance (IAPWS 1998)
 
 ## Nomenclature
 
-All Functions follow the same naming schema: First the wanted property,
-then a underscore `_`, then the wanted input properties Example:
-`t_ph` is temperature as a function of pressure and enthalpy. For a list
-of valid functions se below:
+All Functions follow the same naming schema: First the wanted property, then a underscore `_`, then the wanted input properties Example: `t_ph` is temperature as a function of pressure and enthalpy. For a list of valid functions se below:
 
 | Property | Description                                                  |
 |----------|--------------------------------------------------------------|
@@ -75,33 +134,6 @@ of valid functions se below:
 | x        | Vapor fraction                                               |
 | vx       | Vapor Volume Fraction                                        |
 
-## Usage
-
-Simple Example:
-
-    from pyXSteam.XSteam import XSteam
-    steamTable = XSteam(XSteam.UNIT_SYSTEM_MKS)
-    print(steamTable.hL_p(220.0))
-
-By using the unitSystem Parameter, you can tell XSteam witch Unit System you are using.
-
-    steamTable = XSteam(XSteam.UNIT_SYSTEM_MKS) # m/kg/sec/°C/bar/W
-    steamTable = XSteam(XSteam.UNIT_SYSTEM_FLS) # ft/lb/sec/°F/psi/btu
-    steamTable = XSteam(XSteam.UNIT_SYSTEM_BARE) # m/kg/sec/K/MPa/W
-
-To enable logging, add the following lines to your code:
-
-    import logging
-    logging.basicConfig(level=logging.INFO)
-
-or alternatively
-
-    import logging
-    logger = logging.getLogger('pyXSteam')
-    logger.setLevel(logging.DEBUG)
-    sh = logging.StreamHandler()
-    sh.setFormatter(logging.Formatter('%(name)s - %(levelname)s - %(message)s'))
-    logger.addHandler(sh)
 
 ## Available Functions
 
@@ -242,25 +274,18 @@ or alternatively
 | x_ph     | vapor fraction as a function of pressure and enthalpy |
 | x_ps     | vapor fraction as a function of pressure and entropy  |
 
-## vapor volume fraction
+### vapor volume fraction
 | Function | Description                                                  |
 |----------|--------------------------------------------------------------|
 | vx_ph    | vapor volume fraction as a function of pressure and enthalpy |
 | vx_ps    | vapor volume fraction as a function of pressure and entropy  |
 
-## Pressure along the Melting and Sublimation Curves
-| Function     | Description                                                        |
-|--------------|--------------------------------------------------------------------|
-| pmelt_t      | Pressure along the melting curve as a function of temperature      |
-| vx_psubl_tps | Pressure along the sublimation curve as a function of temperature  |
+### Pressure along the Melting and Sublimation Curves
+| Function | Description                                                        |
+|----------|--------------------------------------------------------------------|
+| pmelt_t  | Pressure along the melting curve as a function of temperature      |
+| psubl_t  | Pressure along the sublimation curve as a function of temperature  |
 
-# Available Functions for Heavy Water
-| Function | Description                                                   |
-|----------|---------------------------------------------------------------|
-| my_rhoT  | Viscosity as a function of density and temperature            |
-| tc_rhoT  | Thermal conductivity as a function of density and temperature |
-
-
-# Development
+## Development
 - pull requests are always wellcome!
 - code style is enforced by black

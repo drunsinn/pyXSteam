@@ -42,6 +42,8 @@ release = __version__
 extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.githubpages",
+    "sphinx_autodoc_typehints",
+    "myst_parser",
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -66,7 +68,7 @@ language = "en"
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
-exclude_patterns = []
+exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = None
@@ -183,3 +185,14 @@ epub_exclude_files = ["search.html"]
 
 
 # -- Extension configuration -------------------------------------------------
+
+set_type_checking_flag = True
+
+# -- Options for sphinx_autodoc_typehints ------------------------------------
+typehints_fully_qualified = False
+always_document_param_types = True
+typehints_document_rtype = True
+typehints_use_rtype = True
+typehints_defaults = "comma"
+simplify_optional_unions = True
+typehints_formatter = None
