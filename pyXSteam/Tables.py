@@ -12,18 +12,18 @@ Properties of Water and Steam, September 1997
 Ordinary Water Substances
 
 * IAPWS SR2-01(2014) Revised Supplementary Release on Backward Equations for
-Pressure as a Function of Enthalpy and Entropy p(h,s) for Regions 1 and 2 of 
-the IAPWS Industrial Formulation 1997 for the Thermodynamic Properties of 
+Pressure as a Function of Enthalpy and Entropy p(h,s) for Regions 1 and 2 of
+the IAPWS Industrial Formulation 1997 for the Thermodynamic Properties of
 Water and Steam
 
-* IAPWS SR3-03(2014) Revised Supplementary Release on Backward Equations for 
+* IAPWS SR3-03(2014) Revised Supplementary Release on Backward Equations for
 the Functions T(p,h), v(p,h) and T(p,s), v(p,s) for Region 3 of the IAPWS Industrial
 Formulation 1997 for the Thermodynamic Properties of Water and Steam
 
-* IAPWS SR4-04(2014) Revised Supplementary Release on Backward Equations p(h,s) 
-for Region 3, Equations as a Function of h and s for the Region Boundaries, and 
-an Equation Tsat(h,s) for Region 4 of the IAPWS Industrial Formulation 1997 for 
-the Thermodynamic Properties of Water and Steam 
+* IAPWS SR4-04(2014) Revised Supplementary Release on Backward Equations p(h,s)
+for Region 3, Equations as a Function of h and s for the Region Boundaries, and
+an Equation Tsat(h,s) for Region 4 of the IAPWS Industrial Formulation 1997 for
+the Thermodynamic Properties of Water and Steam
 
 
 """

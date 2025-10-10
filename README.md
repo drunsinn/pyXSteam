@@ -4,7 +4,7 @@ pyXSteam is a Python library designed for calculating thermodynamic properties o
 
 This library was ported from the original Matlab released by Magnus Holmgren. The original can be founbd at [Sourceforge](http://xsteam.sourceforge.net) and/or <http://www.x-eng.com>.
 
-A .NET implementation is availible thanks to the work of rogerlew here: [XSteamNET](https://github.com/rogerlew/XSteamNET).
+A .NET implementation is available thanks to the work of rogerlew here: [XSteamNET](https://github.com/rogerlew/XSteamNET).
 
 XSteam provides (mostly) accurate steam and water properties from 0 -
 1000 bar and from 0 - 2000 °C according to the [IAPWS release IF-97](http://www.iapws.org/relguide/IF97-Rev.pdf). For

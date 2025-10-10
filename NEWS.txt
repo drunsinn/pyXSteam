@@ -6,6 +6,11 @@
 * restructure imports
 * switch to pyproject.toml
 ** move file location of demo scripts
+** use separate dependencies for development, demo and for generating the documentation
+** use ruff instead of pylint
+* use uv for development workflow
+** add Makefile to automate simple tasks
+* move most constant values into separate module for tables, remove duplicate entries
 
 ## v0.4.10, 10.2025
 * @sebastiantuinstra fixed issue #19: Iteration loop in p_hrho(h, rho) used incorrect value for convergence check.
