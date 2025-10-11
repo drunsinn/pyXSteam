@@ -17,11 +17,7 @@ dependencies = []
 file = "LICENSE"
 
 [project.optional-dependencies]
-demo = [
-    "matplotlib>=3.7.5",
-    "numpy>=1.24.4",
-    "scipy>=1.10.1",
-]
+demo = ["matplotlib>=3.7.5", "numpy>=1.24.4", "scipy>=1.10.1"]
 documentation = [
     "myst-parser>=3.0.1",
     "sphinx>=7.1.2",
@@ -41,6 +37,7 @@ dev = [
     "black>=24.8.0",
     "codespell>=2.4.1",
     "numpy>=1.24.4",
+    "pyclean>=3.1.0",
     "pytest>=8.3.5",
     "ruff>=0.14.0",
 ]
@@ -63,11 +60,12 @@ log_cli = true
 log_cli_level = "INFO"
 log_format = "%(asctime)s %(levelname)s %(message)s"
 log_date_format = "%Y-%m-%d %H:%M:%S"
-addopts = "--cov=pyXSteam --cov-report html:docs/reports/coverage.html"
+norecursedirs = ["docs", "build", "downloads"]
+addopts = "--cov=pyXSteam --cov-report html:dist/reports/coverage.html"
 
 
 [tool.codespell]
-skip = "*.po,*.ts,./docs/build/*,./build/*,./dist/*,./.git,./.venv,*.pdf,*.m,./*.egg-info/*"
+skip = "*.po,*.ts,./docs/build/*,./build/*,./dist/*,./.git,./.venv,*.pdf,*.m,./*.egg-info/*,./docs/*,./downloads/*"
 count = ""
 quiet-level = 3
 

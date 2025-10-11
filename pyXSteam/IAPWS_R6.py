@@ -13,13 +13,13 @@ from .tables import R6_95
 
 logger = logging.getLogger(__name__)
 
-# TODO: make functions availible via XSteam
-# TODO: verify functions R6_* for which no test values are availible in R6
+# TODO: make functions available via XSteam
+# TODO: verify functions R6_* for which no test values are available in R6
 # TODO: add missing tests
 
 
 def eq_Theta(tau: float, delta: float, A: float, beta: float) -> float:
-    """line 2 of eq 6 or table 5 - function not to be used seperatly
+    """line 2 of eq 6 or table 5 - function not to be used separately
 
     :param tau: temperature coefficient τ
     :param delta: density coefficient δ
@@ -32,7 +32,7 @@ def eq_Theta(tau: float, delta: float, A: float, beta: float) -> float:
 
 
 def eq_Delta(tau: float, delta: float, a: float, A: float, B: float, beta: float) -> float:
-    """line 1 of eq 6 or table 5 - function not to be used seperatly
+    """line 1 of eq 6 or table 5 - function not to be used separately
 
     :param tau: temperature coefficient τ
     :param delta: density coefficient δ
@@ -48,7 +48,7 @@ def eq_Delta(tau: float, delta: float, a: float, A: float, B: float, beta: float
 
 
 def eq_Psi(tau: float, delta: float, C: float, D: float) -> float:
-    """line 3 of eq 6 or table 5 - function not to be used seperatly
+    """line 3 of eq 6 or table 5 - function not to be used separately
 
     :param tau: temperature coefficient τ
     :param delta: density coefficient δ
@@ -61,7 +61,7 @@ def eq_Psi(tau: float, delta: float, C: float, D: float) -> float:
 
 
 def eq_dDelta_ddelta(tau: float, delta: float, a: float, A: float, B: float, beta: float) -> float:
-    """line 6 in table 5 continued - function not to be used seperatly
+    """line 6 in table 5 continued - function not to be used separately
     Derivatives of the distance function ∆
 
     :param tau: temperature coefficient τ
@@ -80,7 +80,7 @@ def eq_dDelta_ddelta(tau: float, delta: float, a: float, A: float, B: float, bet
 
 
 def eq_ddDelta_ddeltadelta(tau: float, delta: float, a: float, A: float, B: float, beta: float):
-    """line 7 in table 5 continued - function not to be used seperatly
+    """line 7 in table 5 continued - function not to be used separately
     Derivatives of the distance function ∆
 
     :param tau: temperature coefficient τ
@@ -102,7 +102,7 @@ def eq_ddDelta_ddeltadelta(tau: float, delta: float, a: float, A: float, B: floa
 
 
 def eq_dDelta_b_ddelta(tau: float, delta: float, a: float, b: float, A: float, B: float, beta: float) -> float:
-    """line 1 of table 5 continued - function not to be used seperatly
+    """line 1 of table 5 continued - function not to be used separately
     Derivatives of the distance function ∆^b
 
     :param tau: temperature coefficient τ
@@ -121,7 +121,7 @@ def eq_dDelta_b_ddelta(tau: float, delta: float, a: float, b: float, A: float, B
 
 
 def eq_ddDelta_b_ddeltadelta(tau: float, delta: float, a: float, b: float, A: float, B: float, beta: float) -> float:
-    """line 2 in table 5 continued - function not to be used seperatly
+    """line 2 in table 5 continued - function not to be used separately
     Derivatives of the distance function ∆^b
 
     :param tau: temperature coefficient τ
@@ -141,7 +141,7 @@ def eq_ddDelta_b_ddeltadelta(tau: float, delta: float, a: float, b: float, A: fl
 
 
 def eq_dDelta_b_dtau(tau: float, delta: float, a: float, b: float, A: float, B: float, beta: float) -> float:
-    """line 3 in table 5 continued - function not to be used seperatly
+    """line 3 in table 5 continued - function not to be used separately
     Derivatives of the distance function ∆^b
 
     :param tau: temperature coefficient τ
@@ -160,7 +160,7 @@ def eq_dDelta_b_dtau(tau: float, delta: float, a: float, b: float, A: float, B: 
 
 
 def eq_ddDelta_b_dtautau(tau: float, delta: float, a: float, b: float, A: float, B: float, beta: float) -> float:
-    """line 4 of table 5 continued - function not to be used seperatly
+    """line 4 of table 5 continued - function not to be used separately
     Derivatives of the distance function ∆^b
 
     :param tau: temperature coefficient τ
@@ -179,7 +179,7 @@ def eq_ddDelta_b_dtautau(tau: float, delta: float, a: float, b: float, A: float,
 
 
 def eq_ddDelta_b_ddeltadtau(tau: float, delta: float, a: float, b: float, A: float, B: float, beta: float) -> float:
-    """line 5 of table 5 continued - function not to be used seperatly
+    """line 5 of table 5 continued - function not to be used separately
     Derivatives of the distance function ∆^b
 
     :param tau: temperature coefficient τ
@@ -202,7 +202,7 @@ def eq_ddDelta_b_ddeltadtau(tau: float, delta: float, a: float, b: float, A: flo
 
 
 def eq_dPsi_ddelta(tau: float, delta: float, C: float, D: float) -> float:
-    """line 1 in column 2 of table 5 continued - function not to be used seperatly
+    """line 1 in column 2 of table 5 continued - function not to be used separately
     Derivatives of the exponential function ψ
 
     :param tau: temperature coefficient τ
@@ -217,7 +217,7 @@ def eq_dPsi_ddelta(tau: float, delta: float, C: float, D: float) -> float:
 
 
 def eq_ddPsi_ddeltadelta(tau: float, delta: float, C: float, D: float) -> float:
-    """line 2 in column 2 of table 5 continued - function not to be used seperatly
+    """line 2 in column 2 of table 5 continued - function not to be used separately
     Derivatives of the exponential function ψ
 
     :param tau: temperature coefficient τ
@@ -232,7 +232,7 @@ def eq_ddPsi_ddeltadelta(tau: float, delta: float, C: float, D: float) -> float:
 
 
 def eq_dPsi_dtau(tau: float, delta: float, C: float, D: float) -> float:
-    """line 3 in column 2 of table 5 continued - function not to be used seperatly
+    """line 3 in column 2 of table 5 continued - function not to be used separately
     Derivatives of the exponential function ψ
 
     :param tau: temperature coefficient τ
@@ -247,7 +247,7 @@ def eq_dPsi_dtau(tau: float, delta: float, C: float, D: float) -> float:
 
 
 def eq_ddPsi_dtautau(tau: float, delta: float, C: float, D: float) -> float:
-    """line 4 in column 2 of table 5 continued - function not to be used seperatly
+    """line 4 in column 2 of table 5 continued - function not to be used separately
     Derivatives of the exponential function ψ
 
     :param tau: temperature coefficient τ
@@ -262,7 +262,7 @@ def eq_ddPsi_dtautau(tau: float, delta: float, C: float, D: float) -> float:
 
 
 def eq_ddPsi_ddeltadtau(tau: float, delta: float, C: float, D: float) -> float:
-    """line 5 in column 2 of table 5 continued - function not to be used seperatly
+    """line 5 in column 2 of table 5 continued - function not to be used separately
     Derivatives of the exponential function ψ
 
     :param tau: temperature coefficient τ
@@ -277,7 +277,7 @@ def eq_ddPsi_ddeltadtau(tau: float, delta: float, C: float, D: float) -> float:
 
 
 def eq_phi_o(tau: float, delta: float) -> float:
-    """Ep 5 or line 1 in table 4 - function not to be used seperatly
+    """Ep 5 or line 1 in table 4 - function not to be used separately
     The ideal-gas part φo of the dimensionless Helmholtz free energy
 
     :param tau: temperature coefficient τ
@@ -295,7 +295,7 @@ def eq_phi_o(tau: float, delta: float) -> float:
 
 
 def eq_phi_o_delta(delta: float) -> float:
-    """line 2 in table 4 - function not to be used seperatly
+    """line 2 in table 4 - function not to be used separately
     The ideal-gas part φo of the dimensionless Helmholtz free energy
 
     :param delta: density coefficient δ
@@ -306,7 +306,7 @@ def eq_phi_o_delta(delta: float) -> float:
 
 
 def eq_phi_o_deltadelta(delta: float) -> float:
-    """line 3 in table 4 - function not to be used seperatly
+    """line 3 in table 4 - function not to be used separately
     The ideal-gas part φo of the dimensionless Helmholtz free energy
 
     :param delta: density coefficient δ
@@ -317,7 +317,7 @@ def eq_phi_o_deltadelta(delta: float) -> float:
 
 
 def eq_phi_o_tau(tau: float) -> float:
-    """line 5 in table 4 - function not to be used seperatly
+    """line 5 in table 4 - function not to be used separately
     The ideal-gas part φo of the dimensionless Helmholtz free energy
 
     :param tau: temperature coefficient τ
@@ -332,7 +332,7 @@ def eq_phi_o_tau(tau: float) -> float:
 
 
 def eq_phi_o_tautau(tau: float) -> float:
-    """line 6 in table 4 - function not to be used seperatly
+    """line 6 in table 4 - function not to be used separately
     The ideal-gas part φo of the dimensionless Helmholtz free energy
 
     :param tau: temperature coefficient τ
@@ -348,7 +348,7 @@ def eq_phi_o_tautau(tau: float) -> float:
 
 
 def eq_phi_o_deltatau() -> float:
-    """Table 4, Eq 6 - function not to be used seperatly
+    """Table 4, Eq 6 - function not to be used separately
     The ideal-gas part φo of the dimensionless Helmholtz free energy
 
     :return: φ^o_δτ
@@ -357,7 +357,7 @@ def eq_phi_o_deltatau() -> float:
 
 
 def eq_phi_r(tau: float, delta: float) -> float:
-    """Eq 6 or line 1 in table 5 - function not to be used seperatly
+    """Eq 6 or line 1 in table 5 - function not to be used separately
     The residual part φr of the dimensionless Helmholtz free energy
 
     :param tau: temperature coefficient τ
@@ -389,7 +389,7 @@ def _exp(tau, delta, alpha, beta, gamma, epsilon) -> float:
 
 
 def eq_phi_r_delta(tau: float, delta: float) -> float:
-    """line 2 in table 5 - function not to be used seperatly
+    """line 2 in table 5 - function not to be used separately
     The residual part φr of the dimensionless Helmholtz free energy
 
     :param tau: temperature coefficient τ
@@ -420,7 +420,7 @@ def eq_phi_r_delta(tau: float, delta: float) -> float:
 
 
 def eq_phi_r_deltadelta(tau: float, delta: float) -> float:
-    """line 3 in table 5 - function not to be used seperatly
+    """line 3 in table 5 - function not to be used separately
     The residual part φr of the dimensionless Helmholtz free energy
 
     :param tau: temperature coefficient τ
@@ -469,7 +469,7 @@ def eq_phi_r_deltadelta(tau: float, delta: float) -> float:
 
 
 def eq_phi_r_tau(tau: float, delta: float) -> float:
-    """line 4 in table 5 - function not to be used seperatly
+    """line 4 in table 5 - function not to be used separately
     The residual part φr of the dimensionless Helmholtz free energy
 
     :param tau: temperature coefficient τ
@@ -501,7 +501,7 @@ def eq_phi_r_tau(tau: float, delta: float) -> float:
 
 
 def eq_phi_r_tautau(tau: float, delta: float) -> float:
-    """line 5 in table 5 - function not to be used seperatly
+    """line 5 in table 5 - function not to be used separately
     The residual part φr of the dimensionless Helmholtz free energy
 
     :param tau: temperature coefficient τ
@@ -540,7 +540,7 @@ def eq_phi_r_tautau(tau: float, delta: float) -> float:
 
 
 def eq_phi_r_deltatau(tau: float, delta: float) -> float:
-    """line 6 in table 5 - function not to be used seperatly
+    """line 6 in table 5 - function not to be used separately
     The residual part φr of the dimensionless Helmholtz free energy
 
     :param tau: temperature coefficient τ

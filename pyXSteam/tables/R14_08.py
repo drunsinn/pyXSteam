@@ -5,7 +5,7 @@ Content of the Tables from related documents
 
 Sources:
 
-* IAPWS R14-08(2011) Revised Release on the Pressure along the Melting 
+* IAPWS R14-08(2011) Revised Release on the Pressure along the Melting
 and Sublimation Curves of Ordinary Water Substance
 
 """

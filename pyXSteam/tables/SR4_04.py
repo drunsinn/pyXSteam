@@ -5,10 +5,10 @@ Content of the Tables from related documents
 
 Sources:
 
-* IAPWS SR4-04(2014) Revised Supplementary Release on Backward Equations p(h,s) 
-for Region 3, Equations as a Function of h and s for the Region Boundaries, and 
-an Equation Tsat(h,s) for Region 4 of the IAPWS Industrial Formulation 1997 for 
-the Thermodynamic Properties of Water and Steam 
+* IAPWS SR4-04(2014) Revised Supplementary Release on Backward Equations p(h,s)
+for Region 3, Equations as a Function of h and s for the Region Boundaries, and
+an Equation Tsat(h,s) for Region 4 of the IAPWS Industrial Formulation 1997 for
+the Thermodynamic Properties of Water and Steam
 
 """
 

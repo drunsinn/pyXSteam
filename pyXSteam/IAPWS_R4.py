@@ -12,7 +12,9 @@ logger = logging.getLogger(__name__)
 
 
 def myHW_rhoT(rho: float, T: float) -> float:
-    pass
+    """placeholder"""
+    raise DeprecationWarning("R4-84 was superseded by R17 and R18!")
+    return
 
 
 def myHW_rhoT_R4(rho: float, T: float) -> float:
@@ -25,7 +27,7 @@ def myHW_rhoT_R4(rho: float, T: float) -> float:
 
     :return: viscosity µ or NaN if arguments are out of range, in [Pa s]
     """
-    raise DeprecationWarning("R4-84 was superseded by R17 and R18!")
+    logger.warning("R4-84 was superseded by R17 and R18!")
     logger.debug("calculating 'viscosity of heavy water' for ρ=%f and T=%f", rho, T)
 
     T_star = 643.847  # K
@@ -83,7 +85,7 @@ def tcHW_rhoT_R4(rho: float, T: float) -> float:
 
     :return: thermal conductivity λ or NaN, in [W / (m * K)]
     """
-    raise DeprecationWarning("R4-84 was superseded by R17 and R18!")
+    logger.warning("R4-84 was superseded by R17 and R18!")
     logger.debug("calculating 'thermal conductivity of heavy water' for ρ=%f and T=%f", rho, T)
 
     T_star = 643.847  # K

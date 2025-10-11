@@ -6,8 +6,8 @@ Content of the Tables from related documents
 Sources:
 
 * IAPWS SR2-01(2014) Revised Supplementary Release on Backward Equations for
-Pressure as a Function of Enthalpy and Entropy p(h,s) for Regions 1 and 2 of 
-the IAPWS Industrial Formulation 1997 for the Thermodynamic Properties of 
+Pressure as a Function of Enthalpy and Entropy p(h,s) for Regions 1 and 2 of
+the IAPWS Industrial Formulation 1997 for the Thermodynamic Properties of
 Water and Steam
 
 """

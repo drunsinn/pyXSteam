@@ -3,6 +3,11 @@
 clean:
 	rm -rf build dist *.egg-info
 
+clear_cache:
+	rm -rf .pytest_cache
+	rm -rf .ruff_cache
+	uv run pyclean .
+
 test:
 	uv run pytest
 

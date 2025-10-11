@@ -5,7 +5,7 @@ Content of the Tables from related documents
 
 Sources:
 
-* IAPWS SR3-03(2014) Revised Supplementary Release on Backward Equations for 
+* IAPWS SR3-03(2014) Revised Supplementary Release on Backward Equations for
 the Functions T(p,h), v(p,h) and T(p,s), v(p,s) for Region 3 of the IAPWS Industrial
 Formulation 1997 for the Thermodynamic Properties of Water and Steam
 
