@@ -21,6 +21,9 @@ format:
 #	uv run ruff format
 	uv run black . --config ./pyproject.toml
 
+version_check:
+	uv run vermin ./pyXSteam/ 
+
 build:
 	uv build
 
