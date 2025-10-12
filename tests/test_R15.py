@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 
 import unittest
-import numpy
-from pyXSteam import IAPWS_R15
+
+# import numpy
+# from pyXSteam import IAPWS_R15
 
 
 class TransportTester(unittest.TestCase):

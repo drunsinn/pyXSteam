@@ -15,10 +15,8 @@ from .IAPWS_R6 import R6_p_rhoT, eq_phi_r_delta, eq_phi_r_deltadelta
 logger = logging.getLogger(__name__)
 
 
-def R12_my_dash_0(T: float) -> float:
+def R12_my_dash_0(T_dash: float) -> float:
     """eq 11, viscosity in the dilute-gas limit"""
-    T_dash = T / R12_08.T_STAR
-
     numerator = 100 * math.sqrt(T_dash)
     denominator = 0
     for i, H in enumerate(R12_08.Table1_H):
@@ -26,24 +24,16 @@ def R12_my_dash_0(T: float) -> float:
     return numerator / denominator
 
 
-def R12_my_dash_1(rho: float, T: float) -> float:
+def R12_my_dash_1(rho_dash: float, T_dash: float) -> float:
     """eq 12, contribution to viscosity due to finite density"""
-    rho_dash = rho / R12_08.P_STAR
-    T_dash = T / R12_08.T_STAR
-
+    coeff_t = (1 / T_dash) - 1
+    sum_ij = 0.0
     H = R12_08.Table2_H()
-
-    sum = 0
-    for i, _ in enumerate(H):  # i
-        sum_T_i = ((1 / T_dash) - 1) ** i
-
-        sum_rho_ij = 0
-        for j, _ in enumerate(H[0]):  # j
-            print(i, j, H[i][j])
-            sum_rho_ij += H[i][j] * ((rho_dash - 1) ** j)
-        sum += sum_T_i * sum_rho_ij
-
-    return math.exp(rho_dash * sum)
+    for j, _ in enumerate(H[0]):
+        for i, _ in enumerate(H):
+            if H[i][j] != 0.0:
+                sum_ij += math.pow(coeff_t, i) * H[i][j] * math.pow((rho_dash - 1), j)
+    return math.exp(rho_dash * sum_ij)
 
 
 def R12_helpereq_rhoT(rho: float, T: float):
@@ -133,12 +123,15 @@ def R12_my_dash_2(rho: float, T: float) -> float:
     return 1.0
 
 
-def my_rhoT(rho: float, T: float, industrial_use: bool = False) -> float:
+def my_rhoT(rho: float, T: float, industrial_application: bool = False) -> float:
     """eq 10, viscosity"""
 
-    my_dash = R12_my_dash_0(T)
-    my_dash = my_dash * R12_my_dash_1(rho, T)
-    if not industrial_use:
+    rho_dash = rho / R12_08.RHO_STAR
+    T_dash = T / R12_08.T_STAR
+
+    my_dash = R12_my_dash_0(T_dash) * R12_my_dash_1(rho_dash, T_dash)
+
+    if not industrial_application:
         my_dash = my_dash * R12_my_dash_2(rho, T)
 
     return my_dash * R12_08.MU_STAR

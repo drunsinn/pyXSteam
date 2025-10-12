@@ -2373,24 +2373,23 @@ class XSteam:
         self.logger.warning("temperature %f out of range", T)
         return float("NaN")
 
-    # def R12_my_rhot(self, rho: float, t: float, industrial_application: bool = True) -> float:
-    #     """shear viscosity of pure water substance over an extensive range of fluid states
+    def R12_my_rhot(self, rho: float, t: float, industrial_application: bool = True) -> float:
+        """shear viscosity of pure water substance over an extensive range of fluid states
 
-    #     Release on the IAPWS Formulation 2008 for the Viscosity of Ordinary Water Substance
-    #     IAPWS R12-08
-    #     http://www.iapws.org/relguide/visc.pdf
+        Release on the IAPWS Formulation 2008 for the Viscosity of Ordinary Water Substance
+        IAPWS R12-08
+        http://www.iapws.org/relguide/visc.pdf
 
-    #     :param rho: density
-    #     :param t: temperature
-    #     :param industrial_application: select if simple or detailes approximation should be used
+        :param rho: density
+        :param t: temperature
+        :param industrial_application: select if simple or detailes approximation should be used
 
-    #     :return: shear viscosity
-    #     """
-    #     self.logger.warning("this function is still experimental, use at your own risk!")
+        :return: shear viscosity
+        """
+        self.logger.warning("this function is still experimental, use at your own risk!")
 
-    #     T = self._unit_converter.toSIunit_T(t)
+        T = self._unit_converter.toSIunit_T(t)
 
-    #     my_my = my_rhoT(rho, T)
-    #     my = my_my * 10e5
+        my = my_rhoT(rho, T, industrial_application)
 
-    #     return self._unit_converter.fromSIunit_my(my)
+        return self._unit_converter.fromSIunit_my(my)
