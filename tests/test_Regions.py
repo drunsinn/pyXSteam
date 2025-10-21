@@ -385,6 +385,7 @@ class Region4Tester(unittest.TestCase):
 
     def test_p_functions(self):
         """R7-97(2012) Tests to verify all functions with the Parameters p of region 4"""
+        # TODO find correct table number
         in_p = [0.1, 1.0, 10.0]
         ref = [0.372755919e3, 0.453035632e3, 0.584149488e3]
         res = numpy.zeros(3)
@@ -397,6 +398,7 @@ class Region4Tester(unittest.TestCase):
     def test_SR4_04_h_boundary(self):
         """SR4-04(2014): computer-program verification for boundary functions for h"""
         # Table 11 and Table 18
+        # TODO split table
         in_s = [1.0, 2.0, 3.0, 3.8, 4.0, 4.2, 7.0, 8.0, 9.0, 5.5, 5.0, 4.5]
         ref = [
             3.085509647e2,  # h'_1

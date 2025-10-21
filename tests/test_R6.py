@@ -1,16 +1,16 @@
 # -*- coding: utf-8 -*-
 
 import unittest
-import numpy
 from pyXSteam import IAPWS_R6
 from pyXSteam.tables import R6_95
+from . import helpers
 
 
 class R6_FunctionTester(unittest.TestCase):
 
     def setUp(self):
         self.max_error = 1e-8
-        # self.max_matrix_error = 3e-3
+        self.max_matrix_error = self.max_error * 2
 
     def tearDown(self):
         pass
@@ -56,27 +56,30 @@ class R6_FunctionTester(unittest.TestCase):
     def test_p_function(self):
         """check functions against values of R6-95 Table 7"""
 
-        res = numpy.zeros(len(R6_95.Table7_p))
-        for i, (rho, T) in enumerate(zip(R6_95.Table7_rho, R6_95.Table7_T)):
-            res[i] = IAPWS_R6.R6_p_rhoT(rho, T)
-        error = numpy.sum(numpy.absolute((res - R6_95.Table7_p) / R6_95.Table7_p))
-        self.assertLess(error, self.max_error * 2, "Test of p(rho,T) Function failed")
+        helpers.array_2d_test(
+            IAPWS_R6.R6_p_rhoT,
+            (R6_95.Table7_rho, R6_95.Table7_T),
+            R6_95.Table7_p,
+            self.max_matrix_error,
+        )
 
-        res = numpy.zeros(len(R6_95.Table7_cv))
-        for i, (rho, T) in enumerate(zip(R6_95.Table7_rho, R6_95.Table7_T)):
-            res[i] = IAPWS_R6.R6_cv_rhoT(rho, T)
-        error = numpy.sum(numpy.absolute((res - R6_95.Table7_cv) / R6_95.Table7_cv))
-        self.assertLess(error, self.max_error * 2, "Test of cv(rho,T) Function failed")
+        helpers.array_2d_test(
+            IAPWS_R6.R6_cv_rhoT,
+            (R6_95.Table7_rho, R6_95.Table7_T),
+            R6_95.Table7_cv,
+            self.max_matrix_error,
+        )
 
-        res = numpy.zeros(len(R6_95.Table7_w))
-        for i, (rho, T) in enumerate(zip(R6_95.Table7_rho, R6_95.Table7_T)):
-            res[i] = IAPWS_R6.R6_w_rhoT(rho, T)
-        # FIXME
-        error = numpy.sum(numpy.absolute((res - R6_95.Table7_w) / R6_95.Table7_w))
-        self.assertLess(error, 5.3e-3, "Test of w(rho,T) Function failed")
+        helpers.array_2d_test(
+            IAPWS_R6.R6_w_rhoT,
+            (R6_95.Table7_rho, R6_95.Table7_T),
+            R6_95.Table7_w,
+            5.3e-3,
+        )
 
-        res = numpy.zeros(len(R6_95.Table7_s))
-        for i, (rho, T) in enumerate(zip(R6_95.Table7_rho, R6_95.Table7_T)):
-            res[i] = IAPWS_R6.R6_s_rhoT(rho, T)
-        error = numpy.sum(numpy.absolute((res - R6_95.Table7_s) / R6_95.Table7_s))
-        self.assertLess(error, self.max_error * 2, "Test of s(rho,T) Function failed")
+        helpers.array_2d_test(
+            IAPWS_R6.R6_s_rhoT,
+            (R6_95.Table7_rho, R6_95.Table7_T),
+            R6_95.Table7_s,
+            self.max_matrix_error,
+        )

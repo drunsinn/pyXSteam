@@ -7,6 +7,9 @@ import unittest
 from pyXSteam.TransportProperties import surface_tension_T
 from pyXSteam.Constants import TRIPLE_POINT_TEMPERATURE, CRITICAL_TEMPERATURE
 
+# from pyXSteam.tables import R1_76
+# from . import helpers
+
 
 class TransportTester(unittest.TestCase):
     """tests for functions in Transport Properties"""

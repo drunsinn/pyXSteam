@@ -123,7 +123,7 @@ def R12_my_dash_2(rho: float, T: float) -> float:
     return 1.0
 
 
-def my_rhoT(rho: float, T: float, industrial_application: bool = False) -> float:
+def my_rhoT(rho: float, T: float, industrial_application: bool = True) -> float:
     """eq 10, viscosity"""
 
     rho_dash = rho / R12_08.RHO_STAR

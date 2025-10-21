@@ -2,7 +2,7 @@
 
 import unittest
 
-from test_Regions import REGION_ERROR
+from .test_Regions import REGION_ERROR
 import pyXSteam.RegionBorders as RB
 
 
