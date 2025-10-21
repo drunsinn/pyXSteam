@@ -926,7 +926,7 @@ class Region3:
         tau = _tc / T
 
         fidelta = 0
-        for I, J, n in zip(R7_97.Table30_I, R7_97.Table30_J, R7_97.Table30_n):
+        for I, J, n in zip(R7_97.Table30_I[1:], R7_97.Table30_J[1:], R7_97.Table30_n[1:]):
             fidelta = fidelta + n * I * delta ** (I - 1) * tau**J
 
         fidelta = fidelta + (R7_97.Table30_n[0] / delta)
@@ -948,7 +948,6 @@ class Region3:
         delta = rho / _rhoc
         tau = _tc / T
 
-        # TODO check table range
         fitau = 0
         for I, J, n in zip(R7_97.Table30_I[1:], R7_97.Table30_J[1:], R7_97.Table30_n[1:]):
             fitau = fitau + n * delta**I * J * tau ** (J - 1)
