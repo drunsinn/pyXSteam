@@ -590,7 +590,7 @@ def R6_p_rhoT(rho: float, T: float) -> float:
     line 1 in table 3, Relations of thermodynamic properties to the ideal-gas part o φ and
     the residual part r φ of the dimensionless Helmholtz free energy and their derivatives
 
-    :param rho: density [kg / m^3]
+    :param rho: density [kg / m³]
     :param T: temperature [k]
 
     :return: preasure in [MPa]
@@ -615,7 +615,7 @@ def R6_u_rhoT(rho: float, T: float):
     line 2 in table 3, Relations of thermodynamic properties to the ideal-gas part o φ and
     the residual part r φ of the dimensionless Helmholtz free energy and their derivatives
 
-    :param rho: density [kg / m^3]
+    :param rho: density [kg / m³]
     :param T: temperature [K]
 
     :return: internal energy
@@ -635,7 +635,7 @@ def R6_s_rhoT(rho: float, T: float) -> float:
     line 3 in table 3, Relations of thermodynamic properties to the ideal-gas part o φ and
     the residual part r φ of the dimensionless Helmholtz free energy and their derivatives
 
-    :param rho: density [kg / m^3]
+    :param rho: density [kg / m³]
     :param T: temperature [k]
 
     :return: entropy [kJ / kg K]
@@ -664,7 +664,7 @@ def R6_h_rhoT(rho: float, T: float) -> float:
     line 5 in table 3, Relations of thermodynamic properties to the ideal-gas part o φ and
     the residual part r φ of the dimensionless Helmholtz free energy and their derivatives
 
-    :param rho: density [kg / m^3]
+    :param rho: density [kg / m³]
     :param T: temperature [k]
 
     :return: enthalpy
@@ -690,7 +690,7 @@ def R6_cv_rhoT(rho: float, T: float) -> float:
     line 5 in table 3, Relations of thermodynamic properties to the ideal-gas part o φ and
     the residual part r φ of the dimensionless Helmholtz free energy and their derivatives
 
-    :param rho: density [kg / m^3]
+    :param rho: density [kg / m³]
     :param T: temperature [k]
 
     :return: isochoric heat capacity [kJ / kg K]
@@ -716,7 +716,7 @@ def R6_cp_rhoT(rho: float, T: float) -> float:
     line 5 in table 3, Relations of thermodynamic properties to the ideal-gas part o φ and
     the residual part r φ of the dimensionless Helmholtz free energy and their derivatives
 
-    :param rho: density [kg / m^3]
+    :param rho: density [kg / m³]
     :param T: temperature [k]
 
     :return: isobaric heat capacity [kJ / kg K]
@@ -748,7 +748,7 @@ def R6_w_rhoT(rho: float, T: float) -> float:
     the residual part r φ of the dimensionless Helmholtz free energy and their derivatives
 
 
-    :param rho: density [kg / m^3]
+    :param rho: density [kg / m³]
     :param T: temperature [K]
 
     :return: speed of sound [m / s]
@@ -782,7 +782,7 @@ def R6_joulethomson_rhoT(rho: float, T: float) -> float:
     the residual part r φ of the dimensionless Helmholtz free energy and their derivatives
 
 
-    :param rho: density [kg / m^3]
+    :param rho: density [kg / m³]
     :param T: temperature [K]
 
     :return: Joule-Thomson coefficient
@@ -813,7 +813,7 @@ def R6_delta_T_rhoT(rho: float, T: float) -> float:
     the residual part r φ of the dimensionless Helmholtz free energy and their derivatives
 
 
-    :param rho: density [kg / m^3]
+    :param rho: density [kg / m³]
     :param T: temperature [K]
 
     :return: Isothermal throttling coefficient
@@ -842,7 +842,7 @@ def R6_isen_t_p_rhoT(rho: float, T: float) -> float:
     the residual part r φ of the dimensionless Helmholtz free energy and their derivatives
 
 
-    :param rho: density [kg / m^3]
+    :param rho: density [kg / m³]
     :param T: temperature [K]
 
     :return: Isentropic temperature-pressure coefficient
