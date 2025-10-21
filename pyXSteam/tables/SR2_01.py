@@ -41,6 +41,11 @@ class SR2_01:
         -0.436407041874559e3,
     ]
 
+    # Table 3: Selected pressure values calculated from the backward equation
+    Table5_h = [0.001, 90.0, 1500.0]  # kJ / kg
+    Table5_s = [0.0, 0.0, 3.4]  # kg / kJ K
+    Table5_p = [9.800980612e-4, 9.192954727e1, 5.868294423e1]  # in MPa
+
     # Table 5: Numerical values of the coefficients of the equation h2ab(s) in its dimensionless
     # form, Eq. (2), for defining the boundary between subregions 2a and 2b
     Table5_n = [-0.349898083432139e4, +0.257560716905876e4, -0.421073558227969e3, +0.276349063799944e2]
@@ -156,3 +161,18 @@ class SR2_01:
         -0.296492620980124e11,
         -0.111754907323424e16,
     ]
+
+    # Table 9: Selected pressure values calculated from Eqs. (3), (4), and (5)
+    Table9_h = [2800.0, 2800.0, 4100.0, 2800.0, 3600.0, 3600.0, 2800.0, 2800.0, 3400.0]  # in kJ / kg
+    Table9_s = [6.5, 9.5, 9.5, 6.0, 6.0, 7.0, 5.1, 5.8, 5.8]  # kg / kJ K
+    Table9_p = [
+        1.371012767,
+        1.879743844e-3,
+        1.024788997e-1,
+        4.793911442,
+        8.395519209e1,
+        7.527161441,
+        9.439202060e1,
+        8.414574124,
+        8.376903879e1,
+    ]  # in MPa

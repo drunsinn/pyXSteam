@@ -145,6 +145,11 @@ class SR4_04:
         +0.568795808129714e10,
     ]
 
+    # Table 5: Selected pressure values calculated from Eqs. (1) and (2)a
+    Table5_h = [1700.0, 2000.0, 2100.0, 2500.0, 2400.0, 2700.0]  # in kg / kJ
+    Table5_s = [3.8, 4.2, 4.3, 5.1, 4.7, 5.0]  # in kg / kJ K
+    Table5_p = [2.555703246e1, 4.540873468e1, 6.078123340e1, 1.720612413e1, 6.363924887e1, 8.839043281e1]  # in MPa
+
     # Table 9: Coefficients and exponents of the boundary equation h'_1 (s) in its dimensionless form, Eq. (3)
     Table9_I = [0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 4, 5, 5, 7, 8, 12, 12, 14, 14, 16, 20, 20, 22, 24, 28, 32, 32]
     Table9_J = [14, 36, 3, 16, 0, 5, 4, 36, 4, 16, 24, 18, 24, 1, 4, 2, 4, 1, 22, 10, 12, 28, 8, 3, 0, 6, 8]

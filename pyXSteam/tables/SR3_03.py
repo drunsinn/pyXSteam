@@ -239,6 +239,11 @@ class SR3_03:
         +0.676682064330275e-2,
     ]
 
+    # Table 5: TODSelected temperature values calculated from Eqs. (2) and (3)
+    Table5_p = [20.0, 50.0, 100.0, 20.0, 50.0, 100.0]  # in MPa
+    Table5_h = [1700.0, 2000.0, 2100.0, 2500.0, 2400.0, 2700.0]  # in kJ / kg
+    Table5_T = [6.293083892e2, 6.905718338e2, 7.336163014e2, 6.418418053e2, 7.351848618e2, 8.420460876e2]  # in K
+
     # Table 6: Coefficients and exponents of the backward equation v_3a(p,h) for subregion 3a in its dimensionless form, Eq. (4)
     Table6_I = [
         -12,
@@ -441,6 +446,11 @@ class SR3_03:
         +0.160697101092520e1,
     ]
 
+    # Table 8: Selected specific volume values calculated from Eqs. (4) and (5)
+    Table8_p = [20.0, 50.0, 100.0, 20.0, 50.0, 100.0]  # in MPa
+    Table8_h = [1700.0, 2000.0, 2100.0, 2500.0, 2400.0, 2700.0]  # in kJ / kg
+    Table8_v = [1.749903962e-3, 1.908139035e-3, 1.676229776e-3, 6.670547043e-3, 2.801244590e-3, 2.404234998e-3]  # in m³ / kg
+
     # Table 10: Coefficients and exponents of the backward equation T_3a(p,s) for subregion 3a in its dimensionless form, Eq. (6)
     Table10_I = [
         -12,
@@ -640,6 +650,11 @@ class SR3_03:
         -0.215095749182309e-4,
     ]
 
+    # Table 12: Selected temperature values calculated from Eqs. (6) and (7)
+    Table12_p = [20.0, 50.0, 100.0, 20.0, 50.0, 100.0]  # in MPa
+    Table12_s = [3.8, 3.6, 4.0, 5.0, 4.5, 5.0]  # in kJ / kg K
+    Table12_T = [6.282959869e2, 6.297158726e2, 7.056880237e2, 6.401176443e2, 7.163687517e2, 8.474332825e2]  # in K
+
     # Table 13: Coefficients and exponents of the backward equation v_3a(p,s) for subregion 3a in its dimensionless form, Eq. (8).
     Table13_I = [
         -12,
@@ -833,6 +848,11 @@ class SR3_03:
         -0.327477787188230e1,
     ]
 
+    # Table 15: Selected specific volume values calculated from Eqs. (8) and (9)
+    Table15_p = [20.0, 50.0, 100.0, 20.0, 50.0, 100.0]  # MPa
+    Table15_s = [3.8, 3.6, 4.0, 5.0, 4.5, 5.0]  # in kJ / kg K
+    Table15_v = [1.733791463e-3, 1.469680170e-3, 1.555893131e-3, 6.262101987e-3, 2.332634294e-3, 2.449610757e-3]  # in m³ / kg
+
     # Table 17: Coefficients and exponents of the boundary equation p_3sat(h) in its dimensionless form, Eq. (10)
     Table17_I = [0, 1, 1, 1, 1, 5, 7, 8, 14, 20, 22, 24, 28, 36]
     Table17_J = [0, 1, 3, 4, 36, 3, 0, 24, 16, 16, 3, 18, 8, 24]
@@ -853,6 +873,10 @@ class SR3_03:
         +0.813641294467829e38,
     ]
 
+    # Table 18: Selected pressure values calculated from Eq. (10)
+    Table18_h = [1700.0, 2000.0, 2400.0]  # in kJ / kg
+    Table18_psat = [1.724175718e1, 2.193442957e1, 2.018090839e1]  # in MPa
+
     # Table 19: Coefficients and exponents of the boundary equation p_3sat(s) in its dimensionless form, Eq. (11)
     Table19_I = [0, 1, 1, 4, 12, 12, 16, 24, 28, 32]
     Table19_J = [0, 1, 32, 7, 4, 14, 36, 10, 0, 18]
@@ -868,3 +892,7 @@ class SR3_03:
         +0.119254746466473e12,
         +0.110649277244882e37,
     ]
+
+    # Table 20: Selected pressure values calculated from Eq. (11)
+    Table20_s = [3.8, 4.2, 5.2]  # in kJ / kg K
+    Table20_psat = [1.687755057e1, 2.164451789e1, 1.668968482e1]  # in MPa

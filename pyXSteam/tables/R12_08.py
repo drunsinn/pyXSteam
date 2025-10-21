@@ -14,7 +14,7 @@ class R12_08:
     """class with table data from IAPWS R12-08"""
 
     T_STAR = 647.096  # reference temperature [K], eq 1
-    RHO_STAR = 322.0  # reference density [kg / m^3], eq 2
+    RHO_STAR = 322.0  # reference density [kg / m³], eq 2
     P_STAR = 22.064  # reference pressure [Pa], eq 3
     MU_STAR = 1.0e-6  # reference viscosity [Pa s], eq 4
 
@@ -85,7 +85,7 @@ class R12_08:
 
     # Table 5: Sample points for computer-program verification of the correlating equation, Eq. (10), in the region near the critical point.
     Table5_T = [647.35, 647.35, 647.35, 647.35, 647.35, 647.35]  # in K
-    Table5_rho = [122, 222, 272, 322, 372, 422]  # in kg / m^3
+    Table5_rho = [122, 222, 272, 322, 372, 422]  # in kg / m³
     Table5_xi = [
         0.309247,
         1.571405,
