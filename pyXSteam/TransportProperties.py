@@ -19,6 +19,11 @@ def my_AllRegions_pT(p: float, T: float) -> float:
     """function my_AllRegions_pT = my_AllRegions_pT(p, T)
 
     Section 5.1 Viscosity (IAPWS formulation 1985, Revised 2003)
+
+    :param p: preasure in [MPa]
+    :param T: temperature in [K]
+
+    :return: dynamic viscosity in [Pa s]
     """
     h0 = [0.5132047, 0.3205656, 0, 0, -0.7782567, 0.1885447]
     h1 = [0.2151778, 0.7317883, 1.241044, 1.476783, 0, 0]
@@ -81,6 +86,11 @@ def my_AllRegions_ph(p: float, h: float) -> float:
     """function my_AllRegions_ph = my_AllRegions_ph(p, h)
 
     Section 5.1 Viscosity (IAPWS formulation 1985, Revised 2003)
+
+    :param p: preasure in [MPa]
+    :param h: enthalpy in [kJ / kg]
+
+    :return: dynamic viscosity in [Pa s]
     """
     h0 = [0.5132047, 0.3205656, 0, 0, -0.7782567, 0.1885447]
     h1 = [0.2151778, 0.7317883, 1.241044, 1.476783, 0, 0]
@@ -161,6 +171,12 @@ def tc_ptrho(p: float, T: float, rho: float) -> float:
     Revised release on the IAPWS formulation 1985 for the Thermal Conductivity of ordinary water IAPWS, September 1998
 
     Page 8
+
+    :param p: preasure in [MPa]
+    :param T: temperature in [K]
+    :param rho: density in [kg / m³]
+
+    :return: thermal conductivity in [W / (m K)]
     """
 
     # ver2.6 Start corrected bug
@@ -209,9 +225,9 @@ def surface_tension_T(T: float) -> float:
     IAPWS Revised Release on Surface Tension of Ordinary Water Substance, June 2014 R1-76(2014)
     http://www.iapws.org/relguide/Surf-H2O-2014.pdf
 
-    :param T: temperature in Kelvin
+    :param T: temperature in [K]
 
-    :return: surface tension in mN/m
+    :return: surface tension in [N / m]
     """
     B = 235.8  # N/m
     bb = -0.625

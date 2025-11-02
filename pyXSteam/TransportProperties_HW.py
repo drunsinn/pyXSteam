@@ -23,11 +23,13 @@ def my_AllRegions_pT() -> float:
     # 0 < p ≤ pt pt ≤ p ≤ 100 MPa 100 MPa < p ≤ 200 MPa 200 MPa < p ≤ 960 MPa and and and and Tt ≤ T ≤ 775 K
     # Tm(p) ≤ T ≤ 775 K
     # Tm(p) ≤ T ≤ 473 K Tm(p) ≤ T ≤ 373 K
+    raise NotImplementedError()
     return
 
 
 def tc_() -> float:
     """R18-21 calculate thermal conductivity of heavy water, replaces IAPWS R4-84(2007)"""
+    raise NotImplementedError()
     return
 
 
@@ -37,9 +39,9 @@ def surface_tension_T(T: float) -> float:
     IAPWS Release on Surface Tension of Heavy Water Substance
     http://www.iapws.org/relguide/surfd2o.pdf
 
-    :param T: temperature in Kelvin
+    :param T: temperature in [K]
 
-    :return: surface tension in mN/m
+    :return: surface tension in [N / m]
     """
     B = 238.0  # N/m
     bb = -0.639

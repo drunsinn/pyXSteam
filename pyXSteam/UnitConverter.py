@@ -18,7 +18,9 @@ class UnitConverter:
 
     def __init__(self, unitSystem: UnitSystem = UnitSystem.BARE):
         """
-        Constructor method
+        :param unitSystem: new unit system to use for input and output values
+
+        :raises ValueError: unknown value for unit system
         """
         self.logger = logging.getLogger(__name__)
         self.set_unitSystem(unitSystem)
@@ -43,6 +45,8 @@ class UnitConverter:
         convert preasure from user selected unit system to SI units
 
         :param ins: preasure in [bar] or [psi]
+
+        :return: preasure in [MPa]
         """
         if self._unit_system is UnitSystem.MKS:
             return float(ins / 10)  # bar to MPa
@@ -55,9 +59,11 @@ class UnitConverter:
         convert preasure from SI units to user selected unit system
 
         :param ins: preasure in [MPa]
+
+        :return: preasure in [bar] or [psi]
         """
         if self._unit_system is UnitSystem.MKS:
-            return float(ins * 10)  # bar to MPa
+            return float(ins * 10)  # MPa to bar
         if self._unit_system is UnitSystem.FLS:
             return float(ins / 0.00689475729)  # MPa to psi
         return float(ins)
@@ -67,6 +73,8 @@ class UnitConverter:
         convert temperature from user selected unit system to SI units
 
         :param ins: temperature in [°C] or [°F]
+
+        :return: temperature in [K]
         """
         if self._unit_system is UnitSystem.MKS:
             # degC to Kelvin
@@ -80,6 +88,8 @@ class UnitConverter:
         convert temperature from SI units to user selected unit system
 
         :param ins: temperature in [K]
+
+        :return: temperature in [°C] or [°F]
         """
         if self._unit_system is UnitSystem.MKS:
             # Kelvin to degC
@@ -93,6 +103,8 @@ class UnitConverter:
         convert enthalpy from user selected unit system to SI units
 
         :param ins: enthalpy [kJ / kg] or [btu / lb]
+
+        :return: enthalpy [kJ / kg]
         """
         if self._unit_system is UnitSystem.FLS:
             return float(2.32600 * ins)  # btu/lb to kJ/kg
@@ -103,6 +115,8 @@ class UnitConverter:
         convert enthalpy from SI units to user selected unit system
 
         :param ins: enthalpy [kJ / kg]
+
+        :return: enthalpy [kJ / kg] or [btu / lb]
         """
         if self._unit_system is UnitSystem.FLS:
             return float(ins / 2.32600)  # kJ/kg to btu/lb
@@ -113,6 +127,8 @@ class UnitConverter:
         convert specific volume from user selected unit system to SI units
 
         :param ins: specific volume in [m³ / kg] or [ft³ / lb]
+
+        :return: specific volume in [m³ / kg]
         """
         if self._unit_system is UnitSystem.FLS:
             return float(ins * 0.0624279606)  # ft³/lb to m³/kg
@@ -123,6 +139,8 @@ class UnitConverter:
         convert specific volume from SI units to user selected unit system
 
         :param ins: specific volume in [m³ / kg]
+
+        :return: specific volume in [m³ / kg] or [ft³ / lb]
         """
         if self._unit_system is UnitSystem.FLS:
             return float(ins / 0.0624279606)  # m³/kg to ft³/lb
@@ -133,6 +151,8 @@ class UnitConverter:
         convert specific entropy from user selected unit system to SI units
 
         :param ins: specific volume in [kJ / (kg °C)] or [btu / (lb °F)]
+
+        :return: specific entropy in [kJ / (kg °C)]
         """
         if self._unit_system is UnitSystem.FLS:
             return float(ins / 0.238845896627)  # btu/(lb degF) to kJ/(kg degC)
@@ -143,6 +163,8 @@ class UnitConverter:
         convert specific entropy from SI units to user selected unit system
 
         :param ins: specific entropy in [kJ / (kg °C)]
+
+        :return: specific entropy in [kJ / (kg °C)] or [btu / (lb °F)]
         """
         if self._unit_system is UnitSystem.FLS:
             return float(ins * 0.238845896627)  # kJ/(kg degC) to btu/(lb degF)
@@ -153,6 +175,8 @@ class UnitConverter:
         convert specific internal energy from user selected unit system to SI units
 
         :param ins: specific internal energy in [kJ / kg] or [btu / lb]
+
+        :return: specific internal energy in [kJ / kg]
         """
         if self._unit_system is UnitSystem.FLS:
             return float(ins * 2.32600)  # btu/lb to kJ/kg
@@ -163,6 +187,8 @@ class UnitConverter:
         convert specific internal energy from SI units to user selected unit system
 
         :param ins: specific internal energy in [kJ / kg]
+
+        :return: specific internal energy in [kJ / kg] or [btu / lb]
         """
         if self._unit_system is UnitSystem.FLS:
             return float(ins / 2.32600)  # kJ/kg to btu/lb
@@ -174,6 +200,8 @@ class UnitConverter:
         system to SI units
 
         :param ins: specific isobaric heat capacity in [kJ / (kg °C)] or [btu / (lb °F)]
+
+        :return: specific isobaric heat capacity in [kJ / (kg °C)]
         """
         if self._unit_system is UnitSystem.FLS:
             return float(ins / 0.238846)  # btu/(lb degF) to kJ/(kg degC)
@@ -185,6 +213,8 @@ class UnitConverter:
         selected unit system
 
         :param ins: specific isobaric heat capacity in [kJ / (kg °C)]
+
+        :return: specific isobaric heat capacity in [kJ / (kg °C)] or [btu / (lb °F)]
         """
         if self._unit_system is UnitSystem.FLS:
             return float(ins * 0.238846)  # kJ/(kg degC) to btu/(lb degF)
@@ -195,8 +225,9 @@ class UnitConverter:
         convert specific isochoric heat capacity from user selected unit
         system to SI units
 
-        :param ins: specific isochoric heat capacity in [kJ / (kg °C)]
-                    or [btu / (lb °F)]
+        :param ins: specific isochoric heat capacity in [kJ / (kg °C)] or [btu / (lb °F)]
+
+        :return: specific isochoric heat capacity in [kJ / (kg °C)]
         """
         if self._unit_system is UnitSystem.FLS:
             return float(ins / 0.238846)  # btu/(lb degF) to kJ/(kg degC)
@@ -208,6 +239,8 @@ class UnitConverter:
         selected unit system
 
         :param ins: specific isochoric heat capacity in [kJ / (kg °C)]
+
+        :return: specific isochoric heat capacity in [kJ / (kg °C)] or [btu / (lb °F)]
         """
         if self._unit_system is UnitSystem.FLS:
             return float(ins * 0.238846)  # kJ/(kg degC) to btu/(lb degF)
@@ -218,6 +251,8 @@ class UnitConverter:
         convert speed of sound from user selected unit system to SI units
 
         :param ins: speed of sound in [m / s] or [ft / s]
+
+        :return: speed of sound in [m / s]
         """
         if self._unit_system is UnitSystem.FLS:
             return float(ins * 0.3048)  # ft/s to m/s
@@ -228,6 +263,8 @@ class UnitConverter:
         convert speed of sound from SI units to user selected unit system
 
         :param ins: speed of sound in [m / s]
+
+        :return: speed of sound in [m / s] or [ft / s]
         """
         if self._unit_system is UnitSystem.FLS:
             return float(ins / 0.3048)  # m/s to ft/s
@@ -239,6 +276,8 @@ class UnitConverter:
         system to SI units
 
         :param ins: thermal conductivity in [W / (m °C)] or [btu / (h ft °F)]
+
+        :return: thermal conductivity in [W / (m °C)]
         """
         if self._unit_system is UnitSystem.FLS:
             return float(ins / 0.577789)  # btu/(h*ft*degF) to W/(m*degC)
@@ -249,6 +288,8 @@ class UnitConverter:
         convert thermal conductivity from SI units to user selected unit system
 
         :param ins: thermal conductivity in [W / (m °C)]
+
+        :return: thermal conductivity in [W / (m °C)] or [btu / (h ft °F)]
         """
         if self._unit_system is UnitSystem.FLS:
             return float(ins * 0.577789)  # W/(m*degC) to btu/(h*ft*degF)
@@ -259,6 +300,8 @@ class UnitConverter:
         convert surface tension from user selected unit system to SI units
 
         :param ins: surface tension in [N / m] or [lb / ft]
+
+        :return: surface tension in [N / m]
         """
         if self._unit_system is UnitSystem.FLS:
             return float(ins / 0.068521766)  # lb/ft to N/m
@@ -269,6 +312,8 @@ class UnitConverter:
         convert surface tension from SI units to user selected unit system
 
         :param ins: surface tension in [N / m]
+
+        :return: surface tension in [N / m] or [lb / ft]
         """
         if self._unit_system is UnitSystem.FLS:
             return float(ins * 0.068521766)  # N/m to lb/ft
@@ -279,6 +324,8 @@ class UnitConverter:
         convert vapor fraction from user selected unit system to SI units
 
         :param ins: vapor fraction
+
+        :return: vapor fraction
 
         :raises ValueError: value of vapour fraction out of range
         """
@@ -293,6 +340,8 @@ class UnitConverter:
 
         :param ins: vapor fraction
 
+        :return: vapor fraction
+
         :raises ValueError: value of vapour fraction out of range
         """
         if 0.0 <= ins <= 1.0:
@@ -305,6 +354,8 @@ class UnitConverter:
         convert vapor volume fraction from user selected unit system to SI units
 
         :param ins: vapor volume fraction
+
+        :return: vapor volume fraction
 
         :raises ValueError: value of vapour volume fraction out of range
         """
@@ -319,6 +370,8 @@ class UnitConverter:
 
         :param ins: vapor volume fraction
 
+        :return: vapor volume fraction
+
         :raises ValueError: value of vapour volume fraction out of range
         """
         if 0.0 <= ins <= 1.0:
@@ -331,22 +384,26 @@ class UnitConverter:
         convert viscosity from user selected unit system to SI units
 
         :param ins: viscosity in [Pa s], [N s / m²] or [lbm / ft / hr]
+
+        :return: viscosity in [N s / m²]
         """
         if self._unit_system is UnitSystem.FLS:
-            return float(ins / 2419.088311)  # lbm/ft/hr to PaS (N*s/m²)
+            return float(ins / 2419.088311)  # lbm/ft/hr to Pa*s (N*s/m²)
         return float(ins)
 
     def fromSIunit_my(self, ins: float) -> float:
         """
         convert viscosity from SI units to user selected unit system
 
-        :param ins: viscosity in [PaS] or [N*s/m²]
+        :param ins: viscosity in [Pa s] or [N s / m²]
+
+        :return: viscosity in [Pa s], [N s / m²] or [lbm / ft / hr]
         """
         if self._unit_system is UnitSystem.FLS:
             return float(ins * 2419.088311)  # PaS (N*s/m²) to lbm/ft/hr
         return float(ins)
 
-    def __str__(self):
+    def __str__(self) -> str:
         """
         :return: string representation of the selected unit system
         """

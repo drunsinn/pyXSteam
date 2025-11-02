@@ -47,7 +47,8 @@ def pmelt_T_iceIII(T: float) -> float:
 
 def Tmelt_p_iceIII(p: float) -> float:
     """inverse of `pmelt_T_iceIII`
-    :param T: melting preasure in [MPa]
+
+    :param p: melting preasure in [MPa]
 
     :return: temperature in [K]
     """
@@ -74,7 +75,8 @@ def pmelt_T_iceV(T: float) -> float:
 
 def Tmelt_p_iceV(p: float) -> float:
     """inversee of `pmelt_T_iceV`
-    :param T: melting preasure in [MPa]
+
+    :param p: melting preasure in [MPa]
 
     :return: temperature in [K]
     """
@@ -100,7 +102,8 @@ def pmelt_T_iceVI(T: float) -> float:
 
 def Tmelt_p_iceVI(p: float) -> float:
     """inversee of `pmelt_T_iceVI`
-    :param T: melting preasure in [MPa]
+
+    :param p: melting preasure in [MPa]
 
     :return: temperature in [K]
     """

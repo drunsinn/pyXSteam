@@ -9,6 +9,7 @@
    README.md
    pyXSteam
    pyXSteamDemo
+   pyXSteamTables
 
 .. automodule:: pyXSteam.XSteam
    :noindex:

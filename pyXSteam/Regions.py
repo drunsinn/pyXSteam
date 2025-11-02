@@ -345,13 +345,18 @@ class Region2:
         return _R * T / p * Pi * (g0_pi + gr_pi) / 1000  # see table 12
 
     @staticmethod
-    def v2_pT_meta(p, T):
+    def v2_pT_meta(p: float, T: float) -> float:
         """
         6 Equations for Region 2, Section. 6.2 Supplementary Equation for the Metastable-Vapor Region
 
         Table 16, Page 18
 
         specific volume
+
+        :param p: preasure in [MPa]
+        :param T: temperature in [K]
+
+        :return: specific volume in [m³ / kg]
         """
         Pi = p  # Eq 1
         tau = 540 / T  # Eq 1
@@ -367,7 +372,7 @@ class Region2:
         return _R * T / p * Pi * (g0_pi + gr_pi) / 1000  # see table 12
 
     @staticmethod
-    def h2_pT(p, T):
+    def h2_pT(p: float, T: float) -> float:
         """function h2_pT = h2_pT(p, T)
 
         6 Equations for Region 2, Section. 6.1 Basic Equation
@@ -393,13 +398,18 @@ class Region2:
         return _R * T * tau * (g0_tau + gr_tau)
 
     @staticmethod
-    def h2_pT_meta(p, T):
+    def h2_pT_meta(p: float, T: float) -> float:
         """
         6 Equations for Region 2, Section. 6.2 Supplementary Equation for the Metastable-Vapor Region
 
         Table 16, Page 18
 
         specific volume
+
+        :param p: preasure in [MPa]
+        :param T: temperature in [K]
+
+        :return: enthalpy in [kJ / kg]
         """
         Pi = p  # Eq 1
         tau = 540 / T  # Eq 1
@@ -417,7 +427,7 @@ class Region2:
         return _R * T * tau * (g0_tau + gr_tau)  # h2_pT
 
     @staticmethod
-    def u2_pT(p, T):
+    def u2_pT(p: float, T: float) -> float:
         """function u2_pT = u2_pT(p, T)
 
         6 Equations for Region 2, Section. 6.1 Basic Equation
@@ -426,6 +436,7 @@ class Region2:
 
         :param p: preasure in [MPa]
         :param T: temperature in [K]
+
         :return: specific internal energy in [kJ / kg]
         """
         Pi = p
@@ -446,13 +457,18 @@ class Region2:
         return _R * T * (tau * (g0_tau + gr_tau) - Pi * (g0_pi + gr_pi))
 
     @staticmethod
-    def u2_pT_meta(p, T):
+    def u2_pT_meta(p: float, T: float) -> float:
         """
         6 Equations for Region 2, Section. 6.2 Supplementary Equation for the Metastable-Vapor Region
 
         Table 16, Page 18
 
         specific volume
+
+        :param p: preasure in [MPa]
+        :param T: temperature in [K]
+
+        :return: specific internal energy in [kJ / kg]
         """
         Pi = p  # Eq 1
         tau = 540 / T  # Eq 1
@@ -478,7 +494,7 @@ class Region2:
         return _R * T * (tau * (g0_tau + gr_tau) - Pi * (g0_pi + gr_pi))  # u2_pT
 
     @staticmethod
-    def s2_pT(p, T):
+    def s2_pT(p: float, T: float) -> float:
         """function s2_pT = s2_pT(p, T)
 
         6 Equations for Region 2, Section. 6.1 Basic Equation
@@ -508,13 +524,18 @@ class Region2:
         return _R * (tau * (g0_tau + gr_tau) - (g0 + gr))
 
     @staticmethod
-    def s2_pT_meta(p, T):
+    def s2_pT_meta(p: float, T: float) -> float:
         """
         6 Equations for Region 2, Section. 6.2 Supplementary Equation for the Metastable-Vapor Region
 
         Table 16, Page 18
 
         specific volume
+
+        :param p: preasure in [MPa]
+        :param T: temperature in [K]
+
+        :return: specific entropy in [kJ / (kg K)]
         """
         Pi = p  # Eq 1
         tau = 540 / T  # Eq 1
@@ -542,7 +563,7 @@ class Region2:
         return _R * (tau * (g0_tau + gr_tau) - (g0 + gr))  # s2_pT
 
     @staticmethod
-    def Cp2_pT(p, T):
+    def Cp2_pT(p: float, T: float) -> float:
         """function Cp2_pT = Cp2_pT(p, T)
 
         6 Equations for Region 2, Section. 6.1 Basic Equation
@@ -568,13 +589,18 @@ class Region2:
         return -_R * tau**2 * (g0_tautau + gr_tautau)
 
     @staticmethod
-    def Cp2_pT_meta(p, T):
+    def Cp2_pT_meta(p: float, T: float) -> float:
         """
         6 Equations for Region 2, Section. 6.2 Supplementary Equation for the Metastable-Vapor Region
 
         Table 16, Page 18
 
         specific volume
+
+        :param p: preasure in [MPa]
+        :param T: temperature in [K]
+
+        :return: specific isobaric heat capacity in [kJ / (kg K)]
         """
         Pi = p  # Eq 1
         tau = 540 / T  # Eq 1
@@ -592,7 +618,7 @@ class Region2:
         return -_R * tau**2 * (g0_tautau + gr_tautau)  # Cp2_pT
 
     @staticmethod
-    def Cv2_pT(p, T):
+    def Cv2_pT(p: float, T: float) -> float:
         """function Cv2_pT = Cv2_pT(p, T)
 
         6 Equations for Region 2, Section. 6.1 Basic Equation
@@ -662,13 +688,18 @@ class Region2:
         ) ** 0.5
 
     @staticmethod
-    def w2_pT_meta(p, T):
+    def w2_pT_meta(p: float, T: float) -> float:
         """
         6 Equations for Region 2, Section. 6.2 Supplementary Equation for the Metastable-Vapor Region
 
         Table 16, Page 18
 
         specific volume
+
+        :param p: preasure in [MPa]
+        :param T: temperature in [K]
+
+        :return: speed of sound in [m / s]
         """
         Pi = p  # Eq 1
         tau = 540 / T  # Eq 1
@@ -710,7 +741,7 @@ class Region2:
         return math.sqrt(1000 * _R * T * part_1 / (part_2_a + part_2_b / part_2_c))
 
     @staticmethod
-    def T2_ph(p, h):
+    def T2_ph(p: float, h: float) -> float:
         """function T2_ph = T2_ph(p, h)
 
         6 Equations for Region 2, 6.3.1 The Backward Equations T(p, h) for
