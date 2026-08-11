@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 
 import math
-from .tables import R15_11
+from .tables import R15_11, R12_08
+from .IAPWS_R6 import R6_cp_rhoT, R6_cv_rhoT, R6_p_rhoT
+from .IAPWS_R12 import R12_helpereq_rhoT, R12_xi, my_rhoT as R12_my_rhoT
 
 
 def R15_11_correlation(T: float, rho: float) -> float:
@@ -9,8 +11,8 @@ def R15_11_correlation(T: float, rho: float) -> float:
     :param T: temperature in [K]
     :param rho: density in [m³ / kg]
     """
-    t_dash = T / 647.26  # Eq 7
-    rho_dash = rho / 322.0  # Eq 9
+    t_dash = T / R15_11.T_star  # Eq 7
+    rho_dash = rho / R15_11.rho_star  # Eq 9
 
     # thermal conductivity in the dilute-gas limit
     sum_1 = 0.0
@@ -30,72 +32,57 @@ def R15_11_correlation(T: float, rho: float) -> float:
     return lambda_dash_0 * lambda_dash_1  # Eq 15 (part)
 
 
+def R15_11_Z(y: float, rho_dash: float, kappa: float) -> float:
+    if y < 1.2e-7:
+        return 0.0
+
+    kappa_inv = 1.0 / kappa if kappa != 0.0 else 1.0
+    denominator = (1.0 / y) + (y * y) / (3.0 * rho_dash) if rho_dash != 0 else (1.0 / y)
+    return 2.0 / (math.pi * y) * (
+        ((1.0 - kappa_inv) * math.atan(y) + kappa_inv * y)
+        - (1.0 - math.exp(-1.0 / (denominator * denominator)))
+    )
+
+
 def R15_11_critical_enhancement(T: float, rho: float) -> float:
     """R15-11 second partial result of correlating equation Eq 15
     :param T: temperature in [K]
     :param rho: density in [m³ / kg]
     """
-    # t_dash = T / 647.26  # Eq 7
-    # rho_dash = rho / 322.0  # Eq 9
-    # GAMMA = 177.8514
-    # cp =
-    # lambda_dash_2 = GAMMA * (rho_dash * )
-    # return lambda_dash_2
-    raise NotImplementedError()
+    t_dash = T / R15_11.T_star
+    rho_dash = rho / R15_11.rho_star
+
+    T_R = R15_11.Table3_T_dash_R * R15_11.T_star
+    p_b = R6_p_rhoT(rho, T) / R15_11.p_star
+    p_b_R = R6_p_rhoT(rho, T_R) / R15_11.p_star
+
+    zeta_T = (rho_dash / p_b) * rho / R12_helpereq_rhoT(rho, T)
+    zeta_T_R = (rho_dash / p_b_R) * rho / R12_helpereq_rhoT(rho, T_R)
+
+    delta_chi = rho_dash * (zeta_T - zeta_T_R * (R15_11.Table3_T_dash_R / t_dash))
+    if delta_chi <= 0.0:
+        return 0.0
+
+    xi = R12_xi(rho, T)
+    if xi <= 0.0:
+        return 0.0
+    y = xi / R15_11.Table3_inv_q_dash_D
+
+    cp = R6_cp_rhoT(rho, T) / R15_11.R
+    cv = R6_cv_rhoT(rho, T) / R15_11.R
+    mu = R12_my_rhoT(rho, T, industrial_application=True) / R12_08.MU_STAR
+    kappa = cp / cv if cv != 0.0 else 1.0
+
+    return R15_11.Table3_GAMMA * rho_dash * cp * t_dash / mu * R15_11_Z(y, rho_dash, kappa)
 
 
 def tc_ptrho(p: float, T: float, rho: float) -> float:
-    """R15-11 calculate thermal conductivity as a function of preasure temperature and density
+    """R15-11 calculate thermal conductivity as a function of pressure, temperature and density.
 
-    Section 5.2 Thermal Conductivity (IAPWS formulation 1985)
-
-    Revised release on the IAPWS formulation 1985 for the Thermal Conductivity of ordinary water IAPWS, September 1998
-
-    :param p: preasure in [MPa]
+    :param p: pressure in [MPa]
     :param T: temperature in [K]
     :param rho: density in [m³ / kg]
 
-    :return: surface tension in [mN/m]
+    :return: thermal conductivity in [W / (m K)]
     """
-    raise NotImplementedError()
-
-    # # ver2.6 Start corrected bug
-    # if T < FREEZING_TEMPERATURE_H2O:
-    #     logger.warning("Temperature out of range of validity")
-    #     return float("NaN")
-    # if T < 500 + FREEZING_TEMPERATURE_H2O:
-    #     if p > 100:
-    #         logger.warning("Preasure out of range of validity")
-    #         return float("NaN")
-    # if T <= 650 + FREEZING_TEMPERATURE_H2O:
-    #     if p > 70:
-    #         logger.warning("Preasure out of range of validity")
-    #         return float("NaN")
-    # else:  # T <= 800 + __FREEZING_POINT_H2O__:
-    #     if p > 40:
-    #         logger.warning("Preasure out of range of validity")
-    #         return float("NaN")
-    # # ver2.6 End corrected bug
-
-    # t_dash = T / 647.26  # Eq 7
-    # p_dash = p / 22.064  # Eq 8
-    # rho_dash = rho / 322.0  # Eq 9
-    # lambda_dash_1_2 = R15_11_correlation(T, rho)
-
-    # tc0 = T**0.5 * (0.0102811 + 0.0299621 * T + 0.0156146 * (T**2) - 0.00422464 * (T**3))  # Page 9, Eq 9
-
-    # tc1 = -0.397070 + 0.400302 * rho + 1.06 * math.exp(-0.171587 * ((rho + 2.392190) ** 2))  # Page 9, Eq 10
-
-    # dT = abs(T - 1) + 0.00308976  # Page 9, Eq 12
-    # Q = 2 + 0.0822994 / (dT ** (3 / 5))  # Page 10, Eq 13
-    # if T >= 1:  # Page 10, Eq 14
-    #     s = 1 / dT
-    # else:
-    #     s = 10.0932 / (dT ** (3 / 5))
-
-    # tc2 = (
-    #     (0.0701309 / (T**10) + 0.0118520) * (rho ** (9 / 5)) * math.exp(0.642857 * (1 - rho ** (14 / 5)))
-    #     + 0.00169937 * s * (rho**Q) * math.exp((Q / (1 + Q)) * (1 - rho ** (1 + Q)))
-    #     - 1.02 * math.exp(-4.11717 * (T ** (3 / 2)) - 6.17937 / (rho**5))
-    # )  # Page 9, Eq 11
-    # return tc0 + tc1 + tc2  # Page 9, Eq 8
+    return (R15_11_correlation(T, rho) + R15_11_critical_enhancement(T, rho)) / 1000.0
