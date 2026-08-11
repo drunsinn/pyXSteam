@@ -58,7 +58,7 @@ class R15_11:
     Table3_nu = 0.630
     Table3_gamma = 1.239
     Table3_xi_0 = 0.13  # in [nm]
-    Table3_TAU_0 = 0.06
+    Table3_Gamma_0 = 0.06
     Table3_T_dash_R = 1.5
 
     # Table 4: Sample points for computer-program verification of the correlating equation, Eq. (15). At these points, λ2 = 0.
