@@ -38,10 +38,7 @@ def R15_11_Z(y: float, rho_dash: float, kappa: float) -> float:
 
     kappa_inv = 1.0 / kappa if kappa != 0.0 else 1.0
     denominator = (1.0 / y) + (y * y) / (3.0 * rho_dash) if rho_dash != 0 else (1.0 / y)
-    return 2.0 / (math.pi * y) * (
-        ((1.0 - kappa_inv) * math.atan(y) + kappa_inv * y)
-        - (1.0 - math.exp(-1.0 / (denominator * denominator)))
-    )
+    return 2.0 / (math.pi * y) * (((1.0 - kappa_inv) * math.atan(y) + kappa_inv * y) - (1.0 - math.exp(-1.0 / (denominator * denominator))))
 
 
 def R15_11_critical_enhancement(T: float, rho: float) -> float:
