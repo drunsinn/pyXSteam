@@ -93,14 +93,14 @@ class R7_97:
     ]
 
     # Table 5: Thermodynamic property values calculated from Eq. (7) for selected values of T and p
-    Table5_T = [300.0, 300.0, 500.0]  # in K
-    Table5_p = [3.0, 80.0, 3.0]  # in MPa
-    Table5_v = [0.100215168e-2, 0.971180894e-3, 0.120241800e-2]  # in m^3 / kg
-    Table5_h = [0.115331273e3, 0.184142828e3, 0.975542239e3]  # in kJ / kg
-    Table5_u = [0.112324818e3, 0.106448356e3, 0.971934985e3]  # in kJ / kg
-    Table5_s = [0.392294792, 0.368563852, 0.258041912e1]  # in kJ / kg K
-    Table5_Cp = [0.417301218e1, 0.401008987e1, 0.465580682e1]  # in kJ / kg K
-    Table5_w = [0.150773921e4, 0.163469054e4, 0.124071337e4]  # in m / s
+    Table5_T = [300.0, 300.0, 500.0]  # in [K]
+    Table5_p = [3.0, 80.0, 3.0]  # in [MPa]
+    Table5_v = [0.100215168e-2, 0.971180894e-3, 0.120241800e-2]  # in [m³ / kg]
+    Table5_h = [0.115331273e3, 0.184142828e3, 0.975542239e3]  # in [kJ / kg]
+    Table5_u = [0.112324818e3, 0.106448356e3, 0.971934985e3]  # in [kJ / kg]
+    Table5_s = [0.392294792, 0.368563852, 0.258041912e1]  # in [kJ / kg K]
+    Table5_Cp = [0.417301218e1, 0.401008987e1, 0.465580682e1]  # in [kJ / kg K]
+    Table5_w = [0.150773921e4, 0.163469054e4, 0.124071337e4]  # in [m / s]
 
     # Table 6: Numerical values of the coefficients and exponents of the backward equation T ( p,h ) for region 1, Eq. (11)
     Table6_I = [0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 2, 2, 3, 3, 4, 5, 6]
@@ -129,9 +129,9 @@ class R7_97:
     ]
 
     # Table 7:  Temperature values calculated from Eq. (11) for selected values of p and h
-    Table7_p = [3.0, 80.0, 80.0]  # in MPa
-    Table7_s = [0.5, 0.5, 3.0]  # in kJ / kg K
-    Table7_T = [0.307842258e3, 0.309979785e3, 0.565899909e3]  # in K
+    Table7_p = [3.0, 80.0, 80.0]  # in [MPa]
+    Table7_s = [0.5, 0.5, 3.0]  # in [kJ / kg K]
+    Table7_T = [0.307842258e3, 0.309979785e3, 0.565899909e3]  # in [K]
 
     # Table 8: Numerical values of the coefficients and exponents of the backward equation T ( p,s ) for region 1, Eq. (13)
     Table8_I = [0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 4]
@@ -160,9 +160,9 @@ class R7_97:
     ]
 
     # Table 9: Temperature values calculated from Eq. (13) for selected values of p and s
-    Table9_p = [3.0, 80.0, 80.0]  # in MPa
-    Table9_s = [0.5, 0.5, 3.0]  # in kJ / kg K
-    Table9_T = [0.307842258e3, 0.309979785e3, 0.565899909e3]  # in K
+    Table9_p = [3.0, 80.0, 80.0]  # in [MPa]
+    Table9_s = [0.5, 0.5, 3.0]  # in [kJ / kg K]
+    Table9_T = [0.307842258e3, 0.309979785e3, 0.565899909e3]  # in [K]
 
     # Region2
     # Table 10. Numerical values of the coefficients and exponents of the ideal-gas part
@@ -330,14 +330,14 @@ class R7_97:
     ]
 
     # Table 15: Thermodynamic property values calculated from Eq. (15) for selected values of T and p
-    Table15_p = [0.0035, 0.0035, 30.0]  # in MPa
-    Table15_T = [300.0, 700.0, 700.0]  # in K
-    Table15_v = [0.394913866e2, 0.923015898e2, 0.542946619e-2]  # in m^3 / kg
-    Table15_h = [0.254991145e4, 0.333568375e4, 0.263149474e4]  # in kJ / kg
-    Table15_u = [0.241169160e4, 0.301262819e4, 0.246861076e4]  # in kJ / kg
-    Table15_s = [0.852238967e1, 0.101749996e2, 0.517540298e1]  # in kJ / kg K
-    Table15_Cp = [0.191300162e1, 0.208141274e1, 0.103505092e2]  # in kJ / kg K
-    Table15_w = [0.427920172e3, 0.644289068e3, 0.480386523e3]  # in m / s
+    Table15_p = [0.0035, 0.0035, 30.0]  # in [MPa]
+    Table15_T = [300.0, 700.0, 700.0]  # in [K]
+    Table15_v = [0.394913866e2, 0.923015898e2, 0.542946619e-2]  # in [m³ / kg]
+    Table15_h = [0.254991145e4, 0.333568375e4, 0.263149474e4]  # in [kJ / kg]
+    Table15_u = [0.241169160e4, 0.301262819e4, 0.246861076e4]  # in [kJ / kg]
+    Table15_s = [0.852238967e1, 0.101749996e2, 0.517540298e1]  # in [kJ / kg K]
+    Table15_Cp = [0.191300162e1, 0.208141274e1, 0.103505092e2]  # in [kJ / kg K]
+    Table15_w = [0.427920172e3, 0.644289068e3, 0.480386523e3]  # in [m / s]
 
     # Table 16: Numerical values of the coefficients and exponents of the residual part gamma r of
     # the dimensionless Gibbs free energy for the metastable-vapor region, Eq. (19)
@@ -360,14 +360,14 @@ class R7_97:
     ]
 
     # Table 18: Thermodynamic property values calculated from Eq. (18) for selected values of T and p
-    Table18_p = [1.0, 1.0, 1.5]  # in MPa
-    Table18_T = [450.0, 440.0, 450.0]  # in K
-    Table18_v = [0.192516540, 0.186212297, 0.121685206]  # in m^3 / kg
-    Table18_h = [0.276881115e4, 0.274015123e4, 0.272134539e4]  # in kJ / kg
-    Table18_u = [0.257629461e4, 0.255393894e4, 0.253881758e4]  # in kJ / kg
-    Table18_s = [0.656660377e1, 0.650218759e1, 0.629170440e1]  # in kJ / kg K
-    Table18_Cp = [0.276349265e1, 0.298166443e1, 0.362795578e1]  # in kJ / kg K
-    Table18_w = [0.498408101e3, 0.489363295e3, 0.481941819e3]  # in m / s
+    Table18_p = [1.0, 1.0, 1.5]  # in [MPa]
+    Table18_T = [450.0, 440.0, 450.0]  # in [K]
+    Table18_v = [0.192516540, 0.186212297, 0.121685206]  # in [m³ / kg]
+    Table18_h = [0.276881115e4, 0.274015123e4, 0.272134539e4]  # in [kJ / kg]
+    Table18_u = [0.257629461e4, 0.255393894e4, 0.253881758e4]  # in [kJ / kg]
+    Table18_s = [0.656660377e1, 0.650218759e1, 0.629170440e1]  # in [kJ / kg K]
+    Table18_Cp = [0.276349265e1, 0.298166443e1, 0.362795578e1]  # in [kJ / kg K]
+    Table18_w = [0.498408101e3, 0.489363295e3, 0.481941819e3]  # in [m / s]
 
     # Table 19: Numerical values of the coefficients of the B2bc-equation, Eqs. (20) and (21), for
     # defining the boundary between subregions 2b and 2c with respect to T( p,h ) calculations
@@ -535,8 +535,8 @@ class R7_97:
     # Table 24:  Maximum differences delta T max and root-mean-square differences
     # delta T_RMS between tperatures calculated from Eqs. (22) to (24), and from Eq. (15)
     # in comparison with the tolerated differences delta T tol
-    Table24_p = [0.001, 3.0, 3.0, 5.0, 5.0, 25.0, 40.0, 60.0, 60.0]  # in MPa
-    Table24_h = [3000.0, 3000.0, 4000.0, 3500.0, 4000.0, 3500.0, 2700.0, 2700.0, 3200.0]  # in kJ / kg
+    Table24_p = [0.001, 3.0, 3.0, 5.0, 5.0, 25.0, 40.0, 60.0, 60.0]  # in [MPa]
+    Table24_h = [3000.0, 3000.0, 4000.0, 3500.0, 4000.0, 3500.0, 2700.0, 2700.0, 3200.0]  # in [kJ / kg]
     Table24_T = [
         0.534433241e3,
         0.575373370e3,
@@ -547,7 +547,7 @@ class R7_97:
         0.743056411e3,
         0.791137067e3,
         0.882756860e3,
-    ]  # in K
+    ]  # in [K]
 
     # Table 25: Numerical values of the coefficients and exponents of the backward equation T( p,s ) for subregion 2a, Eq. (25)
     Table25_I = [
@@ -872,8 +872,8 @@ class R7_97:
     ]
 
     # Table 29: Temperature values calculated from Eqs. (25) to (27) for selected values of p and s a
-    Table29_p = [0.1, 0.1, 2.5, 8.0, 8.0, 90.0, 20.0, 80.0, 80.0]  # in MPa
-    Table29_s = [7.5, 8.0, 8.0, 6.0, 7.5, 6.0, 5.75, 5.25, 5.75]  # kg / kJ K
+    Table29_p = [0.1, 0.1, 2.5, 8.0, 8.0, 90.0, 20.0, 80.0, 80.0]  # in [MPa]
+    Table29_s = [7.5, 8.0, 8.0, 6.0, 7.5, 6.0, 5.75, 5.25, 5.75]  # in [kg / kJ K]
     Table29_ref = [
         0.399517097e3,
         0.514127081e3,
@@ -884,7 +884,7 @@ class R7_97:
         0.697992849e3,
         0.854011484e3,
         0.949017998e3,
-    ]  # in K
+    ]  # in [K]
 
     # Region3
 
@@ -976,14 +976,14 @@ class R7_97:
     ]
 
     # Table 33: Thermodynamic property values calculated from Eq. (28) for selected values of T and rho
-    Table33_T = [650.0, 650.0, 750.0]  # in K
-    Table33_rho = [500.0, 200.0, 500.0]  # kg / m³
-    Table33_p = [0.255837018e2, 0.222930643e2, 0.783095639e2]  # in MPa
-    Table33_h = [0.186343019e4, 0.237512401e4, 0.225868845e4]  # in kJ / kg
-    Table33_u = [0.181226279e4, 0.226365868e4, 0.210206932e4]  # in kJ / kg
-    Table33_s = [0.405427273e1, 0.485438792e1, 0.446971906e1]  # in kJ / kg K
-    Table33_Cp = [0.138935717e2, 0.446579342e2, 0.634165359e1]  # in kJ / kg K
-    Table33_w = [0.502005554e3, 0.383444594e3, 0.760696041e3]  # in m / s
+    Table33_T = [650.0, 650.0, 750.0]  # in [K]
+    Table33_rho = [500.0, 200.0, 500.0]  # in [kg / m³]
+    Table33_p = [0.255837018e2, 0.222930643e2, 0.783095639e2]  # in [MPa]
+    Table33_h = [0.186343019e4, 0.237512401e4, 0.225868845e4]  # in [kJ / kg]
+    Table33_u = [0.181226279e4, 0.226365868e4, 0.210206932e4]  # in [kJ / kg]
+    Table33_s = [0.405427273e1, 0.485438792e1, 0.446971906e1]  # in [kJ / kg K]
+    Table33_Cp = [0.138935717e2, 0.446579342e2, 0.634165359e1]  # in [kJ / kg K]
+    Table33_w = [0.502005554e3, 0.383444594e3, 0.760696041e3]  # in [m / s]
 
     # Region4
     # Table 34: Numerical values of the coefficients of the dimensionless saturation equations, Eqs. (29) to (31)
@@ -1001,8 +1001,8 @@ class R7_97:
     ]
 
     # Table 35:  Saturation pressures calculated from Eq. (30) for selected values of T
-    Table35_T = [300.0, 500.0, 600.0]  # in K
-    Table35_p = [0.353658941e-2, 0.263889776e1, 0.123443146e2]  # in MPa
+    Table35_T = [300.0, 500.0, 600.0]  # in [K]
+    Table35_p = [0.353658941e-2, 0.263889776e1, 0.123443146e2]  # in [MPa]
 
     # Region5
     # Table 37: Numerical values of the coefficients and exponents of the ideal-gas part gamma o of
@@ -1024,15 +1024,15 @@ class R7_97:
     ]
 
     # Table 42:  Thermodynamic property values calculated from Eq. (32) for selected values of T and p
-    Table42_T = [1500.0, 1500.0, 2000.0]  # in K
-    Table42_p = [0.5, 0.30, 30.0]  # in MPa
-    Table42_rho = [500.0, 200.0, 500.0]  # kg / m³
-    Table42_v = [0.138455090e1, 0.230761299e1, 0.311385219e1]  # in m³ / kg
-    Table42_h = [0.521976855e4, 0.516723514e4, 0.657122604e4]  # in kJ / kg
-    Table42_u = [0.452749310e4, 0.447495124e4, 0.563707038e4]  # in kJ / kg
-    Table42_s = [0.965408875e1, 0.772970133e1, 0.853640523e1]  # in kJ / kg K
-    Table42_Cp = [0.261609445e1, 0.272724317e1, 0.288569882e1]  # in kJ / kg K
-    Table42_w = [0.917068690e3, 0.928548002e3, 0.106736948e4]  # in m / s
+    Table42_T = [1500.0, 1500.0, 2000.0]  # in [K]
+    Table42_p = [0.5, 0.30, 30.0]  # in [MPa]
+    Table42_rho = [500.0, 200.0, 500.0]  # in [kg / m³]
+    Table42_v = [0.138455090e1, 0.230761299e1, 0.311385219e1]  # in [m³ / kg]
+    Table42_h = [0.521976855e4, 0.516723514e4, 0.657122604e4]  # in [kJ / kg]
+    Table42_u = [0.452749310e4, 0.447495124e4, 0.563707038e4]  # in [kJ / kg]
+    Table42_s = [0.965408875e1, 0.772970133e1, 0.853640523e1]  # in [kJ / kg K]
+    Table42_Cp = [0.261609445e1, 0.272724317e1, 0.288569882e1]  # in [kJ / kg K]
+    Table42_w = [0.917068690e3, 0.928548002e3, 0.106736948e4]  # in [m / s]
 
     # ?????????
     # TODO find source

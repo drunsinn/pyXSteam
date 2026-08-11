@@ -20,9 +20,9 @@ logger = logging.getLogger(__name__)
 
 def my_AllRegions_pT() -> float:
     """R17-20 calculate viscosity of all liquide states for heavy water, replaces IAPWS R4-84(2007)"""
-    # 0 < p ≤ pt pt ≤ p ≤ 100 MPa 100 MPa < p ≤ 200 MPa 200 MPa < p ≤ 960 MPa and and and and Tt ≤ T ≤ 775 K
-    # Tm(p) ≤ T ≤ 775 K
-    # Tm(p) ≤ T ≤ 473 K Tm(p) ≤ T ≤ 373 K
+    # 0 < p ≤ pt, pt ≤ p ≤ 100 [MPa], 100 [MPa] < p ≤ 200 [MPa], 200 [MPa] < p ≤ 960 [MPa] and Tt ≤ T ≤ 775 [K]
+    # Tm(p) ≤ T ≤ 775 [K]
+    # Tm(p) ≤ T ≤ 473 [K] Tm(p) ≤ T ≤ 373 [K]
     raise NotImplementedError()
     return
 

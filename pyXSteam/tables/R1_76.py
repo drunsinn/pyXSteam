@@ -13,13 +13,13 @@ Sources:
 class R1_76:
     """class with table data from IAPWS R1-76(2014)"""
 
-    REFERENCE_TEMPERATURE = 647.096  # K
-    B = 235.8  # mN/m
+    REFERENCE_TEMPERATURE = 647.096  # [K]
+    B = 235.8  # [mN / m]
     b = -0.625
     mu = 1.256
 
     # Table 1: Surface Tension of Ordinary Water Substance
-    Table1_t = [  # Temperature t in °C
+    Table1_t = [  # Temperature t in [°C]
         0.01,
         5.0,
         10.0,
@@ -62,7 +62,7 @@ class R1_76:
         195.0,
         200.0,
     ]
-    Table1_st_exp = [  # Surface tension experimental in mN/m
+    Table1_st_exp = [  # Surface tension experimental in [mN / m]
         75.64,
         74.94,
         74.23,
@@ -106,7 +106,7 @@ class R1_76:
         37.68,
     ]
 
-    Table1_st_delta = [  # Uncertainty in mN/m
+    Table1_st_delta = [  # Uncertainty in [mN / m]
         0.38,
         0.37,
         0.37,
@@ -150,7 +150,7 @@ class R1_76:
         0.22,
     ]
 
-    Table1_st_calc = [  # Surface tension calculated in mN/m
+    Table1_st_calc = [  # Surface tension calculated in [mN / m]
         75.65,
         74.94,
         74.22,
@@ -194,7 +194,7 @@ class R1_76:
         37.67,
     ]
 
-    Table1_diff = [  # Deviation calc - exp in mN/m
+    Table1_diff = [  # Deviation calc - exp in [mN / m]
         0.01,
         0.00,
         -0.01,

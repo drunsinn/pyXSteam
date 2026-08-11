@@ -4,6 +4,7 @@
 Class to convert between the unit system used by pyXSteam and the ones
 a enduser might use.
 """
+
 import logging
 from .Constants import ABSOLUTE_ZERO_CELSIUS, UnitSystem
 
@@ -49,9 +50,9 @@ class UnitConverter:
         :return: preasure in [MPa]
         """
         if self._unit_system is UnitSystem.MKS:
-            return float(ins / 10)  # bar to MPa
+            return float(ins / 10)  # [bar] to [MPa]
         if self._unit_system is UnitSystem.FLS:
-            return float(ins * 0.00689475729)  # psi to MPa
+            return float(ins * 0.00689475729)  # [psi] to [MPa]
         return float(ins)
 
     def fromSIunit_p(self, ins: float) -> float:
@@ -63,9 +64,9 @@ class UnitConverter:
         :return: preasure in [bar] or [psi]
         """
         if self._unit_system is UnitSystem.MKS:
-            return float(ins * 10)  # MPa to bar
+            return float(ins * 10)  # [MPa] to [bar]
         if self._unit_system is UnitSystem.FLS:
-            return float(ins / 0.00689475729)  # MPa to psi
+            return float(ins / 0.00689475729)  # [MPa] to [psi]
         return float(ins)
 
     def toSIunit_T(self, ins: float) -> float:
@@ -77,10 +78,10 @@ class UnitConverter:
         :return: temperature in [K]
         """
         if self._unit_system is UnitSystem.MKS:
-            # degC to Kelvin
+            # [°C] to [K]
             return float(ins - ABSOLUTE_ZERO_CELSIUS)
         if self._unit_system is UnitSystem.FLS:
-            return float((5 / 9) * (ins - 32) - ABSOLUTE_ZERO_CELSIUS)  # degF to Kelvin
+            return float((5 / 9) * (ins - 32) - ABSOLUTE_ZERO_CELSIUS)  # [°F] to [K]
         return float(ins)
 
     def fromSIunit_T(self, ins: float) -> float:
@@ -92,10 +93,10 @@ class UnitConverter:
         :return: temperature in [°C] or [°F]
         """
         if self._unit_system is UnitSystem.MKS:
-            # Kelvin to degC
+            # [K] to [°C]
             return float(ins + ABSOLUTE_ZERO_CELSIUS)
         if self._unit_system is UnitSystem.FLS:
-            return float((ins + ABSOLUTE_ZERO_CELSIUS) * (9 / 5) + 32)  # Kelvin to degF
+            return float((ins + ABSOLUTE_ZERO_CELSIUS) * (9 / 5) + 32)  # [K] to [°F]
         return float(ins)
 
     def toSIunit_h(self, ins: float) -> float:
@@ -107,7 +108,7 @@ class UnitConverter:
         :return: enthalpy [kJ / kg]
         """
         if self._unit_system is UnitSystem.FLS:
-            return float(2.32600 * ins)  # btu/lb to kJ/kg
+            return float(2.32600 * ins)  # [btu / lb] to [kJ / kg]
         return float(ins)
 
     def fromSIunit_h(self, ins: float) -> float:
@@ -131,7 +132,7 @@ class UnitConverter:
         :return: specific volume in [m³ / kg]
         """
         if self._unit_system is UnitSystem.FLS:
-            return float(ins * 0.0624279606)  # ft³/lb to m³/kg
+            return float(ins * 0.0624279606)  # [ft³ / lb] to [m³ / kg]
         return float(ins)
 
     def fromSIunit_v(self, ins: float) -> float:
@@ -143,7 +144,7 @@ class UnitConverter:
         :return: specific volume in [m³ / kg] or [ft³ / lb]
         """
         if self._unit_system is UnitSystem.FLS:
-            return float(ins / 0.0624279606)  # m³/kg to ft³/lb
+            return float(ins / 0.0624279606)  # [m³ / kg] to [ft³ / lb]
         return float(ins)
 
     def toSIunit_s(self, ins: float) -> float:
@@ -155,7 +156,7 @@ class UnitConverter:
         :return: specific entropy in [kJ / (kg °C)]
         """
         if self._unit_system is UnitSystem.FLS:
-            return float(ins / 0.238845896627)  # btu/(lb degF) to kJ/(kg degC)
+            return float(ins / 0.238845896627)  # [btu/(lb °F)] to [kJ/(kg °C)]
         return float(ins)
 
     def fromSIunit_s(self, ins: float) -> float:
@@ -167,7 +168,7 @@ class UnitConverter:
         :return: specific entropy in [kJ / (kg °C)] or [btu / (lb °F)]
         """
         if self._unit_system is UnitSystem.FLS:
-            return float(ins * 0.238845896627)  # kJ/(kg degC) to btu/(lb degF)
+            return float(ins * 0.238845896627)  # [kJ/(kg °C)] to [btu/(lb °F)]
         return float(ins)
 
     def toSIunit_u(self, ins: float) -> float:
@@ -179,7 +180,7 @@ class UnitConverter:
         :return: specific internal energy in [kJ / kg]
         """
         if self._unit_system is UnitSystem.FLS:
-            return float(ins * 2.32600)  # btu/lb to kJ/kg
+            return float(ins * 2.32600)  # [btu / lb] to [kJ / kg]
         return float(ins)
 
     def fromSIunit_u(self, ins: float) -> float:
@@ -255,7 +256,7 @@ class UnitConverter:
         :return: speed of sound in [m / s]
         """
         if self._unit_system is UnitSystem.FLS:
-            return float(ins * 0.3048)  # ft/s to m/s
+            return float(ins * 0.3048)  # [ft / s] to [m / s]
         return float(ins)
 
     def fromSIunit_w(self, ins: float) -> float:
@@ -267,7 +268,7 @@ class UnitConverter:
         :return: speed of sound in [m / s] or [ft / s]
         """
         if self._unit_system is UnitSystem.FLS:
-            return float(ins / 0.3048)  # m/s to ft/s
+            return float(ins / 0.3048)  # [m / s] to [ft / s]
         return float(ins)
 
     def toSIunit_tc(self, ins: float) -> float:
@@ -280,7 +281,7 @@ class UnitConverter:
         :return: thermal conductivity in [W / (m °C)]
         """
         if self._unit_system is UnitSystem.FLS:
-            return float(ins / 0.577789)  # btu/(h*ft*degF) to W/(m*degC)
+            return float(ins / 0.577789)  # [btu/(h*ft*°F)] to [W/(m*°C)]
         return float(ins)
 
     def fromSIunit_tc(self, ins: float) -> float:
@@ -292,7 +293,7 @@ class UnitConverter:
         :return: thermal conductivity in [W / (m °C)] or [btu / (h ft °F)]
         """
         if self._unit_system is UnitSystem.FLS:
-            return float(ins * 0.577789)  # W/(m*degC) to btu/(h*ft*degF)
+            return float(ins * 0.577789)  # [W/(m*°C)] to [btu/(h*ft*°F)]
         return float(ins)
 
     def toSIunit_st(self, ins: float) -> float:
@@ -304,7 +305,7 @@ class UnitConverter:
         :return: surface tension in [N / m]
         """
         if self._unit_system is UnitSystem.FLS:
-            return float(ins / 0.068521766)  # lb/ft to N/m
+            return float(ins / 0.068521766)  # [lb / ft] to [N / m]
         return float(ins)
 
     def fromSIunit_st(self, ins: float) -> float:
@@ -316,7 +317,7 @@ class UnitConverter:
         :return: surface tension in [N / m] or [lb / ft]
         """
         if self._unit_system is UnitSystem.FLS:
-            return float(ins * 0.068521766)  # N/m to lb/ft
+            return float(ins * 0.068521766)  # [N / m] to [lb / ft]
         return float(ins)
 
     def toSIunit_x(self, ins: float) -> float:
@@ -388,7 +389,7 @@ class UnitConverter:
         :return: viscosity in [N s / m²]
         """
         if self._unit_system is UnitSystem.FLS:
-            return float(ins / 2419.088311)  # lbm/ft/hr to Pa*s (N*s/m²)
+            return float(ins / 2419.088311)  # [lbm/ft/hr] to [Pa*s] ([N*s/m²])
         return float(ins)
 
     def fromSIunit_my(self, ins: float) -> float:
@@ -400,7 +401,7 @@ class UnitConverter:
         :return: viscosity in [Pa s], [N s / m²] or [lbm / ft / hr]
         """
         if self._unit_system is UnitSystem.FLS:
-            return float(ins * 2419.088311)  # PaS (N*s/m²) to lbm/ft/hr
+            return float(ins * 2419.088311)  # [Pa*s] ([N*s/m²]) to [lbm/ft/hr]
         return float(ins)
 
     def __str__(self) -> str:

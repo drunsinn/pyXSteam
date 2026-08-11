@@ -14,10 +14,10 @@ Properties of Ordinary Water Substance for General and Scientific Use
 class R6_95:
     """class with table data from IAPWS R6-95(2018)"""
 
-    SPECIFIC_GAS_CONSTANT = 0.46151805  # kJ kg^-1 K^-1
-    CRITICAL_TEMPERATURE = 647.096  # K
-    CRITICAL_DENSITY = 322.0  # kg m^-1
-    SPECIFIC_ENTHALPY = 0.611782  # J /kg enthalpy of thesaturated liquid at the triple point
+    SPECIFIC_GAS_CONSTANT = 0.46151805  #: R in [kJ / kg K]
+    CRITICAL_TEMPERATURE = 647.096  #: Tc in [K]
+    CRITICAL_DENSITY = 322.0  #: ρc in [kg / m³]
+    SPECIFIC_ENTHALPY = 0.611782  #:  h′t enthalpy of the saturated liquid at the triple point [J / kg]
 
     # Table 1: Numerical values of the coefficients and parameters of the ideal-gas part of the dimensionless Helmholtz free energy, Eq. (5)
     Table1_n = [
@@ -335,6 +335,7 @@ class R6_95:
 
     @staticmethod
     def tab2_sec1():
+        """combine the first section of table 2 into a zip object"""
         return zip(
             R6_95.Table2_n[0:7],
             R6_95.Table2_d[0:7],
@@ -343,6 +344,7 @@ class R6_95:
 
     @staticmethod
     def tab2_sec2():
+        """combine the second section of table 2 into a zip object"""
         return zip(
             R6_95.Table2_n[7:51],
             R6_95.Table2_d[7:51],
@@ -352,6 +354,7 @@ class R6_95:
 
     @staticmethod
     def tab2_sec3():
+        """combine the third section of table 2 into a zip object"""
         return zip(
             R6_95.Table2_n[51:54],
             R6_95.Table2_d[51:54],
@@ -364,6 +367,7 @@ class R6_95:
 
     @staticmethod
     def tab2_sec4():
+        """combine the fourth section of table 2 into a zip object"""
         return zip(
             R6_95.Table2_n[54:56],
             R6_95.Table2_a[54:56],
@@ -388,7 +392,7 @@ class R6_95:
         900.0,
         900.0,
         900.0,
-    ]  # in K
+    ]  #: T in [K]
     Table7_rho = [
         0.9965560e3,
         0.1005308e4,
@@ -401,7 +405,7 @@ class R6_95:
         0.2410000,
         0.5261500e2,
         0.8707690e3,
-    ]  # in kg / m³
+    ]  #: ρ in [kg / m³]
     Table7_p = [
         0.992418352e-1,
         0.200022515e2,
@@ -414,7 +418,7 @@ class R6_95:
         0.100062559,
         0.200000690e2,
         0.700000006e3,
-    ]  # p in MPa
+    ]  #: p in [MPa]
     Table7_cv = [
         0.413018112e1,
         0.406798347e1,
@@ -427,7 +431,7 @@ class R6_95:
         0.175890657e1,
         0.193510526e1,
         0.266422350e1,
-    ]  # cv in kJ / kg K
+    ]  #: cv in [kJ / kg K]
     Table7_w = [
         0.150151914e4,
         0.153492501e4,
@@ -440,7 +444,7 @@ class R6_95:
         0.724027147e3,
         0.698445674e3,
         0.201933608e4,
-    ]  # w in m / s
+    ]  #: w in [m / s]
     Table7_s = [
         0.393062643,
         0.387405401,
@@ -453,4 +457,15 @@ class R6_95:
         0.916653194e1,
         0.659070225e1,
         0.417223802e1,
-    ]  # s in kJ / kg K
+    ]  #: s in [kJ / kg K]
+
+    #: Table 8. Thermodynamic property values in the two-phase region for selected values of temperature
+    Table8_T = [275.0, 450.0, 625.0]  #: T in [K]
+    Table8_p = [0.698451167e-3, 0.932203564, 0.169082693e2]  #: p in [MPa]
+
+    Table_rho_dash = [0.999887406e3, 0.890341250e3, 0.567090385e3]  #: ρ' in [kg / m³]
+    Table_rho_double_dash = [0.550664919e-2, 0.481200360e1, 0.118290280e3]  #: ρ'' in [kg / m³]
+    Table_h_dash = [0.775972202e1, 0.749161585e3, 0.168626976e4]  #: h' in [kJ / kg]
+    Table_h_double_dash = [0.250428995e4, 0.277441078e4, 0.255071625e4]  #: h'' in [kJ / kg]
+    Table_s_dash = [0.283094670e-1, 0.210865845e1, 0.380194683e1]  #: s' in [kJ / kg K]
+    Table_s_double_dash = [0.910660121e1, 0.660921221e1, 0.518506121e1]  #: s'' in [kJ / kg K]

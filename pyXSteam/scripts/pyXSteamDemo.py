@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """collection of demos presenting the functionality of pyXSteam"""
+
 import time
 import logging
 from matplotlib import pyplot

@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """Main module for pyXSteam"""
+
 import math
 import logging
 
@@ -70,7 +71,7 @@ class XSteam:
 
     def specificGasConstant(self):
         """
-        :return: specific Gas Constant R in kJ kg^-1 K^-1
+        :return: specific Gas Constant R in [kJ kg^-1 K^-1]
         """
         return SPECIFIC_GAS_CONSTANT
 

@@ -5,6 +5,7 @@ IAPWS R4-84(2007)
 Revised Release on Viscosity and Thermal Conductivity of Heavy Water Substance
 http://www.iapws.org/relguide/TransD2O-2007.pdf
 """
+
 import math
 import logging
 
@@ -30,9 +31,9 @@ def myHW_rhoT_R4(rho: float, T: float) -> float:
     logger.warning("R4-84 was superseded by R17 and R18!")
     logger.debug("calculating 'viscosity of heavy water' for ρ=%f and T=%f", rho, T)
 
-    T_star = 643.847  # K
-    rho_star = 358  # kg / m³
-    my_star = 55.2651  # µ Pa s
+    T_star = 643.847  # [K]
+    rho_star = 358  # [kg / m³]
+    my_star = 55.2651  # [µ Pa s]
 
     T_dash = T / T_star
     rho_dash = rho / rho_star
@@ -88,9 +89,9 @@ def tcHW_rhoT_R4(rho: float, T: float) -> float:
     logger.warning("R4-84 was superseded by R17 and R18!")
     logger.debug("calculating 'thermal conductivity of heavy water' for ρ=%f and T=%f", rho, T)
 
-    T_star = 643.847  # K
-    rho_star = 358  # kg / m³
-    tc_star = 0.742128  # mW/(m K)
+    T_star = 643.847  # [K]
+    rho_star = 358  # [kg / m³]
+    tc_star = 0.742128  # [mW/(m K)]
 
     T_dash = T / T_star
     rho_dash = rho / rho_star

@@ -13,13 +13,13 @@ Sources:
 class R5_85:
     """class with table data from IAPWS R5-85(1994)"""
 
-    REFERENCE_TEMPERATURE = 643.847  # K
-    B = 238.0  # mN/m
+    REFERENCE_TEMPERATURE = 643.847  # [K]
+    B = 238.0  # [mN / m]
     b = -0.639
     mu = 1.25
 
     # Table 1: Surface Tension of Heavy Water Substance
-    Table1_t = [  # Temperature t in °C
+    Table1_t = [  # Temperature t in [°C]
         3.8,
         5.0,
         10.0,
@@ -97,7 +97,7 @@ class R5_85:
         370.0,
     ]
 
-    Table1_st_exp = [  # Surface tension experimental in mN/m
+    Table1_st_exp = [  # Surface tension experimental in [mN / m]
         74.98,
         74.80,
         74.10,
@@ -175,7 +175,7 @@ class R5_85:
         0.06,
     ]
 
-    Table1_st_delta = [  # Uncertainty in mN/m
+    Table1_st_delta = [  # Uncertainty in [mN / m]
         0.53,
         0.52,
         0.51,
@@ -253,7 +253,7 @@ class R5_85:
         0.10,
     ]
 
-    Table1_st_calc = [  # Surface tension calculated in mN/m
+    Table1_st_calc = [  # Surface tension calculated in [mN /  m]
         74.93,
         74.76,
         74.06,
@@ -331,7 +331,7 @@ class R5_85:
         0.05,
     ]
 
-    Table1_diff = [  # Deviation calc - exp in mN/m
+    Table1_diff = [  # Deviation calc - exp in [mN / m]
         -0.05,
         -0.04,
         -0.04,

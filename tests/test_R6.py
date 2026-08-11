@@ -53,7 +53,7 @@ class R6_FunctionTester(unittest.TestCase):
         error = abs(IAPWS_R6.eq_phi_r_deltatau(tau, delta) + 0.112176915e1)
         self.assertLess(error, self.max_error, "Error for eq_phi_r_deltatau to big")
 
-    def test_p_function(self):
+    def test_table7(self):
         """check functions against values of R6-95 Table 7"""
 
         helpers.array_2d_test(
@@ -83,3 +83,14 @@ class R6_FunctionTester(unittest.TestCase):
             R6_95.Table7_s,
             self.max_matrix_error,
         )
+
+    def test_table8(self):
+        """check functions against values of R6-95 Table 8"""
+        error = abs(IAPWS_R6.R6_p_rhoT(R6_95.Table_rho_dash[0], R6_95.Table8_T[0]) - R6_95.Table8_p[0])
+        self.assertLess(error, 3e-7, f"Error for _p_rhoT to big: {error}")
+
+        error = abs(IAPWS_R6.R6_p_rhoT(R6_95.Table_rho_dash[1], R6_95.Table8_T[1]) - R6_95.Table8_p[1])
+        self.assertLess(error, 4e-7, f"Error for _p_rhoT to big: {error}")
+
+        error = abs(IAPWS_R6.R6_p_rhoT(R6_95.Table_rho_dash[2], R6_95.Table8_T[2]) - R6_95.Table8_p[2])
+        self.assertLess(error, 3e-7, f"Error for _p_rhoT to big: {error}")

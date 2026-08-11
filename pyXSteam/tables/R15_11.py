@@ -15,22 +15,22 @@ class R15_11:
     """class with table data from IAPWS R15-11"""
 
     # reference temperature
-    T_star = 647.096  # K
+    T_star = 647.096  # [K]
 
     # reference pressure
-    p_star = 22.064  # MPa
+    p_star = 22.064  # [MPa]
 
     # reference density
-    rho_star = 322.0  # kg / m³
+    rho_star = 322.0  # [kg / m³]
 
     # reference thermal conductivity
-    lambda_star = 1e-3  # W / K m
+    lambda_star = 1e-3  # [W / K m]
 
     # reference viscosity
-    my_star = 1e-6  # Pa s
+    my_star = 1e-6  # [Pa s]
 
     # specific gas constant:
-    R = 0.46151805  # kJ / kg K
+    R = 0.46151805  # [kJ / kg K]
 
     # Table 1: Coefficients L_k in Eq. (16) for λ_0 (T)
     Table1_L = [+2.443221e-3, +1.323095e-2, +6.770357e-3, -3.454586e-3, +4.096266e-4]
@@ -54,17 +54,17 @@ class R15_11:
 
     # Table 3: Critical-region constants
     Table3_GAMMA = 177.8514
-    Table3_inv_q_dash_D = 0.40  # in nm
+    Table3_inv_q_dash_D = 0.40  # in [nm]
     Table3_nu = 0.630
     Table3_gamma = 1.239
-    Table3_xi_0 = 0.13  # in nm
+    Table3_xi_0 = 0.13  # in [nm]
     Table3_TAU_0 = 0.06
     Table3_T_dash_R = 1.5
 
     # Table 4: Sample points for computer-program verification of the correlating equation, Eq. (15). At these points, λ2 = 0.
-    Table4_T = [298.15, 298.15, 298.15, 873.15]  # in K
-    Table4_rho = [0.0, 998.0, 1200.0, 0.0]  # in kg / m³
-    Table4_lambda = [18.4341883, 607.712868, 799.038144, 79.1034659]  # in mW / m K
+    Table4_T = [298.15, 298.15, 298.15, 873.15]  # in [K]
+    Table4_rho = [0.0, 998.0, 1200.0, 0.0]  # in [kg / m³]
+    Table4_lambda = [18.4341883, 607.712868, 799.038144, 79.1034659]  # in [mW / m K]
 
     # Table 5: Sample points for computer-program verification of the correlating equation, Eq. (15), including the critical-enhancement contribution λ_2 . For all points, λ_0(647.35 K) = 51.5764797.
     Table5_T = [647.35, 647.35, 647.35, 647.35, 647.35, 647.35, 647.35, 647.35]
@@ -74,4 +74,8 @@ class R15_11:
     Table5_lambda = [51.9298924, 130.922885, 367.787459, 757.959776, 1443.75556, 650.319402, 448.883487, 600.961346]
 
     # Table 6: Coefficients Aij in Eq. (25) for ζ (T R , ρ )
-    # TODO
+    Table6_j0 = [6.53786807199516, -5.61149954923348, 3.39624167361325, -2.27492629730878, 10.2631854662709, 1.97815050331519]
+    Table6_j1 = [6.52717759281799, -6.30816983387575, 8.08379285492595, -9.82240510197603, 12.1358413791395, -5.54349664571295]
+    Table6_j2 = [5.35500529896124, -3.96415689925446, 8.91990208918795, -12.0338729505790, 9.19494865194302, -2.16866274479712]
+    Table6_j3 = [1.55225959906681, 0.464621290821181, 8.93237374861479, -11.0321960061126, 6.16780999933360, -0.965458722086812]
+    Table6_j4 = [1.11999926419994, 0.595748562571649, 9.88952565078920, -10.3255051147040, 4.66861294457414, -0.503243546373828]

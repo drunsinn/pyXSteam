@@ -5,6 +5,7 @@ IAPWS R6-95(2018)
 Revised Release on the IAPWS Formulation 1995 for the Thermodynamic
 Properties of Ordinary Water Substance for General and Scientific Use
 """
+
 import sys
 import math
 import logging
@@ -593,7 +594,7 @@ def R6_p_rhoT(rho: float, T: float) -> float:
     :param rho: density [kg / m³]
     :param T: temperature [k]
 
-    :return: preasure in [MPa]
+    :return: p preasure in [MPa]
     """
     delta = rho / R6_95.CRITICAL_DENSITY
     tau = R6_95.CRITICAL_TEMPERATURE / T
@@ -618,7 +619,7 @@ def R6_u_rhoT(rho: float, T: float):
     :param rho: density [kg / m³]
     :param T: temperature [K]
 
-    :return: internal energy
+    :return: u internal energy
     """
     delta = rho / R6_95.CRITICAL_DENSITY
     tau = R6_95.CRITICAL_TEMPERATURE / T
@@ -638,7 +639,7 @@ def R6_s_rhoT(rho: float, T: float) -> float:
     :param rho: density [kg / m³]
     :param T: temperature [k]
 
-    :return: entropy [kJ / kg K]
+    :return: s entropy [kJ / kg K]
     """
     delta = rho / R6_95.CRITICAL_DENSITY
     tau = R6_95.CRITICAL_TEMPERATURE / T
@@ -661,13 +662,13 @@ def R6_s_rhoT(rho: float, T: float) -> float:
 
 def R6_h_rhoT(rho: float, T: float) -> float:
     """
-    line 5 in table 3, Relations of thermodynamic properties to the ideal-gas part o φ and
+    line 4 in table 3, Relations of thermodynamic properties to the ideal-gas part o φ and
     the residual part r φ of the dimensionless Helmholtz free energy and their derivatives
 
     :param rho: density [kg / m³]
     :param T: temperature [k]
 
-    :return: enthalpy
+    :return: h enthalpy
     """
     delta = rho / R6_95.CRITICAL_DENSITY
     tau = R6_95.CRITICAL_TEMPERATURE / T
@@ -693,7 +694,7 @@ def R6_cv_rhoT(rho: float, T: float) -> float:
     :param rho: density [kg / m³]
     :param T: temperature [k]
 
-    :return: isochoric heat capacity [kJ / kg K]
+    :return: cv isochoric heat capacity [kJ / kg K]
     """
 
     delta = rho / R6_95.CRITICAL_DENSITY
@@ -713,13 +714,13 @@ def R6_cv_rhoT(rho: float, T: float) -> float:
 
 def R6_cp_rhoT(rho: float, T: float) -> float:
     """
-    line 5 in table 3, Relations of thermodynamic properties to the ideal-gas part o φ and
+    line 6 in table 3, Relations of thermodynamic properties to the ideal-gas part o φ and
     the residual part r φ of the dimensionless Helmholtz free energy and their derivatives
 
     :param rho: density [kg / m³]
     :param T: temperature [k]
 
-    :return: isobaric heat capacity [kJ / kg K]
+    :return: cp isobaric heat capacity [kJ / kg K]
     """
 
     delta = rho / R6_95.CRITICAL_DENSITY
@@ -751,7 +752,7 @@ def R6_w_rhoT(rho: float, T: float) -> float:
     :param rho: density [kg / m³]
     :param T: temperature [K]
 
-    :return: speed of sound [m / s]
+    :return: w speed of sound [m / s]
     """
     delta = rho / R6_95.CRITICAL_DENSITY
     tau = R6_95.CRITICAL_TEMPERATURE / T
@@ -778,14 +779,14 @@ def R6_w_rhoT(rho: float, T: float) -> float:
 
 def R6_joulethomson_rhoT(rho: float, T: float) -> float:
     """
-    line 7 in table 3, Relations of thermodynamic properties to the ideal-gas part o φ and
+    line 8 in table 3, Relations of thermodynamic properties to the ideal-gas part o φ and
     the residual part r φ of the dimensionless Helmholtz free energy and their derivatives
 
 
     :param rho: density [kg / m³]
     :param T: temperature [K]
 
-    :return: Joule-Thomson coefficient
+    :return: μ Joule-Thomson coefficient
     """
     delta = rho / R6_95.CRITICAL_DENSITY
     tau = R6_95.CRITICAL_TEMPERATURE / T
@@ -809,14 +810,14 @@ def R6_joulethomson_rhoT(rho: float, T: float) -> float:
 
 def R6_delta_T_rhoT(rho: float, T: float) -> float:
     """
-    line 7 in table 3, Relations of thermodynamic properties to the ideal-gas part o φ and
+    line 9 in table 3, Relations of thermodynamic properties to the ideal-gas part o φ and
     the residual part r φ of the dimensionless Helmholtz free energy and their derivatives
 
 
     :param rho: density [kg / m³]
     :param T: temperature [K]
 
-    :return: Isothermal throttling coefficient
+    :return: δT Isothermal throttling coefficient
     """
     delta = rho / R6_95.CRITICAL_DENSITY
     tau = R6_95.CRITICAL_TEMPERATURE / T
@@ -838,14 +839,14 @@ def R6_delta_T_rhoT(rho: float, T: float) -> float:
 
 def R6_isen_t_p_rhoT(rho: float, T: float) -> float:
     """
-    line 7 in table 3, Relations of thermodynamic properties to the ideal-gas part o φ and
+    line 10 in table 3, Relations of thermodynamic properties to the ideal-gas part o φ and
     the residual part r φ of the dimensionless Helmholtz free energy and their derivatives
 
 
     :param rho: density [kg / m³]
     :param T: temperature [K]
 
-    :return: Isentropic temperature-pressure coefficient
+    :return: βs  Isentropic temperature-pressure coefficient
     """
     delta = rho / R6_95.CRITICAL_DENSITY
     tau = R6_95.CRITICAL_TEMPERATURE / T
@@ -867,3 +868,55 @@ def R6_isen_t_p_rhoT(rho: float, T: float) -> float:
     org = part_1 / (part_2_1 + part_2_2)
 
     return org / (rho * R6_95.SPECIFIC_GAS_CONSTANT)
+
+
+def R6_sec_virial_coefficients(rho: float, T: float) -> float:
+    # """
+    # Calculate the second virial coefficient and its temperature derivative at a given temperature.
+
+    # :param T: Temperature in [K]
+
+    # :return: A tuple containing the second virial coefficient B [m³/kg] and its temperature derivative dB/dT [m³/(kg K)]
+    # """
+    # tau = R6_95.CRITICAL_TEMPERATURE / T
+
+    # B = 0.0
+    # dB_dT = 0.0
+
+    # for n, d, t in R6_95.tab2_sec1():
+    #     B += n * R6_95.SPECIFIC_GAS_CONSTANT * R6_95.CRITICAL_TEMPERATURE * math.pow(R6_95.CRITICAL_DENSITY, -1) * math.pow(tau, t)
+    #     dB_dT += -1 * n * t * R6_95.SPECIFIC_GAS_CONSTANT * R6_95.CRITICAL_TEMPERATURE * math.pow(R6_95.CRITICAL_DENSITY, -1) * math.pow(tau, t + 1) / T
+
+    # return B, dB_dT
+    raise NotImplementedError("Function R6_sec_virial_coefficients is not yet implemented.")
+
+
+def R6_third_virial_coefficients(rho: float, T: float) -> float:
+    # """
+    # Calculate the third virial coefficient and its temperature derivative at a given temperature.
+
+    # :param T: Temperature in [K]
+
+    # :return: A tuple containing the third virial coefficient C [m^6/kg^2] and its temperature derivative dC/dT [m^6/(kg^2 K)]
+    # """
+    # tau = R6_95.CRITICAL_TEMPERATURE / T
+
+    # C = 0.0
+    # dC_dT = 0.0
+
+    # for n, d, t in R6_95.tab2_sec2():
+    #     C += n * R6_95.SPECIFIC_GAS_CONSTANT * R6_95.CRITICAL_TEMPERATURE * math.pow(R6_95.CRITICAL_DENSITY, -2) * math.pow(tau, t) * math.exp(-1 * math.pow(R6_95.CRITICAL_DENSITY, d))
+    #     dC_dT += -1 * n * t * R6_95.SPECIFIC_GAS_CONSTANT * R6_95.CRITICAL_TEMPERATURE * math.pow(R6_95.CRITICAL_DENSITY, -2) * math.pow(tau, t + 1) * math.exp(-1 * math.pow(R6_95.CRITICAL_DENSITY, d)) / T
+
+    # return C, dC_dT
+    raise NotImplementedError("Function R6_third_virial_coefficients is not yet implemented.")
+
+
+def R6_phase_equilibrium_condition(rho: float, T: float) -> float:
+    """Phase-equilibrium condition (Maxwell criterion)"""
+
+    # p_sigma / R6_95.SPECIFIC_GAS_CONSTANT * T * rho_dash = 1 + delta_dash * eq_phi_r_delta(delta_dash, tau)
+    # p_sigma / R6_95.SPECIFIC_GAS_CONSTANT * T * rho_double_dash = 1 + delta_double_dash * eq_phi_r_delta(delta_double_dash, tau)
+    # (p_sigma / R6_95.SPECIFIC_GAS_CONSTANT * T) * (1/ rho_double_dash - 1/ rho_dash) - math.log(delta_dash / delta_double_dash) = eq_phi_r(delta_dash, tau) - eq_phi_r(delta_double_dash, tau)
+
+    raise NotADirectoryError()

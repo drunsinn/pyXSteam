@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """collection of demos presenting the functionality of pyXSteam"""
+
 import time
 import logging
 import math
@@ -14,18 +15,14 @@ def demo_simple_cycle():
     found at https://github.com/stu314159/xsteam/blob/42767648a05c6759ad11aea95256cb24e4fc9499/Examples/SimpleRankineCycle.m
     """
     print("Purpose: test xsteam functionality for simple Rankine Cycle")
-    print(
-        """Problem Description:
+    print("""Problem Description:
     Advanced Boiling Water Reactor (ABWR) produces saturated steam at 7.17 MPa (71.7 bar) to a set of turbine generators.
     The turbines exhaust to condensers maintained at 8 kPa (0.08 bar).
     Assume the turbines and pumps have isentropic efficiencies of 100%
-    Assume fluid leaving the condenser is saturated liquid."""
-    )
-    print(
-        """Goal:
+    Assume fluid leaving the condenser is saturated liquid.""")
+    print("""Goal:
     Calculate enthalpy, entropy, and temperature for all state points.
-    Calculate net work and thermal efficiency for this cycle"""
-    )
+    Calculate net work and thermal efficiency for this cycle""")
 
     steam_table = XSteam(XSteam.UNIT_SYSTEM_MKS)
 
@@ -100,8 +97,7 @@ def demo_ms_and_ofwh():
     """
     print("converted example from Stu Blair / https://github.com/stu314159")
     print("Purpose: test XSteam functionality with slightly more complex Rankine. Uses scipy.optimize.fsolve")
-    print(
-        """Problem Description:
+    print("""Problem Description:
     A Pressurized Water Reactor transfers heat to a Rankine cycle with the following properties:
     * Steam Generator Outlet Pressure: 820 psia, quality = 100%
     * High Pressure turbine: outlet pressure 164 psia, isentropic efficiency of 94%.
@@ -110,8 +106,7 @@ def demo_ms_and_ofwh():
     * LP Turbine with outlet pressure of 3 psia, isentropic efficiency of 94%.
     * Condenser outlet quality = 0.0
     * Main condensate pump (efficiency = 84%) outlet pressure 164 psia
-    * Main Feed pump (efficiency = 84%) outlet pressure 820 psia"""
-    )
+    * Main Feed pump (efficiency = 84%) outlet pressure 820 psia""")
 
     steam_table = XSteam(XSteam.UNIT_SYSTEM_FLS)
 
@@ -226,11 +221,9 @@ def demo_reheat_ms_ofwh():
     """
     print("converted example from Stu Blair / https://github.com/stu314159")
     print("Purpose: use fminsearch / scipy.optimize.fmin")
-    print(
-        """Problem Description:
+    print("""Problem Description:
     (a picture would be better....)
-    """
-    )
+    """)
 
     steam_table = XSteam(XSteam.UNIT_SYSTEM_FLS)
 

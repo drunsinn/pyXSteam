@@ -56,13 +56,13 @@ class R12_08:
 
     # Table 3: Critical-Region Constants
     Table3_x_u = 0.068  # critical exponent for viscosity
-    Table3_inv_q_C = 1.9  # nm
-    Table3_inv_q_D = 1.1  # nm
+    Table3_inv_q_C = 1.9  # [nm]
+    Table3_inv_q_D = 1.1  # [nm]
     Table3_q_C = 1 / 1.9e-9
     Table3_q_D = 1 / 1.1e-9
     Table3_ny = 0.630
     Table3_gamma = 1.239
-    Table3_xi_0 = 0.13  # nm
+    Table3_xi_0 = 0.13  # [nm]
     Table3_Gamma_0 = 0.06
     Table3_T_dash_R = 1.5
 
@@ -84,8 +84,8 @@ class R12_08:
     ]
 
     # Table 5: Sample points for computer-program verification of the correlating equation, Eq. (10), in the region near the critical point.
-    Table5_T = [647.35, 647.35, 647.35, 647.35, 647.35, 647.35]  # in K
-    Table5_rho = [122, 222, 272, 322, 372, 422]  # in kg / m³
+    Table5_T = [647.35, 647.35, 647.35, 647.35, 647.35, 647.35]  # in [K]
+    Table5_rho = [122, 222, 272, 322, 372, 422]  # in [kg / m³]
     Table5_xi = [
         0.309247,
         1.571405,
@@ -93,7 +93,7 @@ class R12_08:
         16.590209,
         5.603768,
         1.876244,
-    ]  # in nm
+    ]  # in [nm]
     Table5_my2dash = [
         1.00000289,  # Correlation length ξ < 0.3817016416 nm so Y is evaluated with Eq. (15).
         1.00375120,
@@ -102,4 +102,4 @@ class R12_08:
         1.03665871,
         1.00596332,
     ]
-    Table5_my = [25.520677e-6, 31.337589e-6, 36.228143e-6, 42.961579e-6, 45.688204e-6, 49.436256e-6]  # Pa*s
+    Table5_my = [25.520677e-6, 31.337589e-6, 36.228143e-6, 42.961579e-6, 45.688204e-6, 49.436256e-6]  # [Pa s]
