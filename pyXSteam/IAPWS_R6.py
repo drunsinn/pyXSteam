@@ -736,7 +736,7 @@ def R6_cp_rhoT(rho: float, T: float) -> float:
     phi_r_deltatau = eq_phi_r_deltatau(tau, delta)
     phi_r_deltadelta = eq_phi_r_deltadelta(tau, delta)
 
-    part_1 = math.pow(1 + delta * phi_r_delta - delta * tau * phi_r_deltatau)
+    part_1 = math.pow(1 + delta * phi_r_delta - delta * tau * phi_r_deltatau, 2)
     part_2 = 1 + 2 * delta * phi_r_delta + math.pow(delta, 2) * phi_r_deltadelta
     org = -1 * math.pow(tau, 2) * (phi_o_tautau + phi_r_tautau) + part_1 / part_2
 
