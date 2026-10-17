@@ -30,9 +30,9 @@ class XSteam_HW:
         """
         Constructor method
         """
-        self.logger = logging.getLogger("pyXSteam:Heavy Water")
+        self.logger = logging.getLogger(__name__)
         self._unit_converter = UnitConverter(unitSystem)
-        self.logger.info(
+        self.logger.debug(
             "initialised pyXSteam for Heavy Water with Unit System %s",
             self._unit_converter,
         )
@@ -72,14 +72,12 @@ class XSteam_HW:
         :return: viscosity or NaN if arguments are out of range
         """
         if rho <= 0.0:
-            self.logger.error("negative values for density rho not allowed %f", rho)
             raise ValueError("rho out of range")
 
         rho = self._unit_converter.toSIunit_p(rho)
         T = self._unit_converter.toSIunit_T(T)
 
         if T < 277.0 or T > 775.0:
-            self.logger.error("temperature out of range")
             return float("NaN")
 
         return self._unit_converter.fromSIunit_T(myHW_rhoT_R4(rho, T))
@@ -101,14 +99,12 @@ class XSteam_HW:
         :return: thermal conductivity or NaN if arguments are out of range
         """
         if rho <= 0.0:
-            self.logger.error("negative values for density rho not allowed %f", rho)
             raise ValueError("rho out of range")
 
         rho = self._unit_converter.toSIunit_p(rho)
         T = self._unit_converter.toSIunit_T(T)
 
         if T < 277.0 or T > 825.0:
-            self.logger.error("temperature out of range")
             return float("NaN")
 
         return self._unit_converter.fromSIunit_tc(tcHW_rhoT_R4(rho, T))

@@ -7,10 +7,14 @@
 
 this is the pyXSteam package"""
 
+import logging
+
 from .XSteam import XSteam
 from .XSteam_HW import XSteam_HW
 from .UnitConverter import UnitConverter
 from .Constants import UnitSystem, IceType
+
+logging.getLogger(__name__).addHandler(logging.NullHandler())
 
 __version__ = "0.5.0"
 __author__ = "drunsinn"

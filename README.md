@@ -71,23 +71,29 @@ By using the unitSystem Parameter, you can tell XSteam witch Unit System you are
     steamTable = XSteam(XSteam.UNIT_SYSTEM_BARE) # m/kg/sec/K/MPa/W
 ```
 
-To enable logging, add the following lines to your code:
+pyXSteam uses Python's standard `logging` package. The library does not configure
+the root logger or attach output handlers; applications should configure logging
+once at startup. To display warnings and higher-severity messages:
 
 ```
     import logging
-    logging.basicConfig(level=logging.INFO)
+    logging.basicConfig(level=logging.WARNING)
 ```
 
-or alternatively
+To see pyXSteam's diagnostic messages, including expected out-of-range results
+and region selection details, enable debug logging for the package:
 
 ```
     import logging
-    logger = logging.getLogger('pyXSteam')
-    logger.setLevel(logging.DEBUG)
-    sh = logging.StreamHandler()
-    sh.setFormatter(logging.Formatter('%(name)s - %(levelname)s - %(message)s'))
-    logger.addHandler(sh)
+    logging.basicConfig(level=logging.WARNING)
+    logging.getLogger("pyXSteam").setLevel(logging.DEBUG)
 ```
+
+Package loggers follow the `pyXSteam.*` hierarchy and propagate to application
+handlers. Out-of-range inputs that are handled by returning `NaN` are logged at
+`DEBUG` to avoid flooding applications that calculate many values; iteration
+failures remain warnings. Exceptions are raised without also logging them, so
+applications can decide how to report or handle them.
 
 ## Related projects
 

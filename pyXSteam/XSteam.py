@@ -65,9 +65,9 @@ class XSteam:
         """
         Constructor method
         """
-        self.logger = logging.getLogger("pyXSteam")
+        self.logger = logging.getLogger(__name__)
         self._unit_converter = UnitConverter(unitSystem)
-        self.logger.info("initialised pyXSteam with Unit System %s", self._unit_converter)
+        self.logger.debug("initialised pyXSteam with Unit System %s", self._unit_converter)
 
     def specificGasConstant(self):
         """
@@ -123,7 +123,7 @@ class XSteam:
         p = self._unit_converter.toSIunit_p(p)
         if TRIPLE_POINT_PRESSURE < p < CRITICAL_PRESSURE:
             return self._unit_converter.fromSIunit_T(Region4.T4_p(p))
-        self.logger.warning("pressure %f out of range", p)
+        self.logger.debug("pressure %f out of range", p)
         return float("NaN")
 
     def tsat_s(self, s: float) -> float:
@@ -140,7 +140,7 @@ class XSteam:
             ps = Region4.p4_s(s)
             return self._unit_converter.fromSIunit_T(Region4.T4_p(ps))
 
-        self.logger.warning("entropy value %f is out of range", s)
+        self.logger.debug("entropy value %f is out of range", s)
         return float("NaN")
 
     def t_ph(self, p: float, h: float) -> float:
@@ -167,7 +167,7 @@ class XSteam:
         if region == DiagramRegion.R5:
             return self._unit_converter.fromSIunit_T(Region5.T5_ph(p, h))
 
-        self.logger.warning(
+        self.logger.debug(
             "Region switch t_ph returned unknown value %d for input p %f and h %f",
             region,
             p,
@@ -199,7 +199,7 @@ class XSteam:
         if region == DiagramRegion.R5:
             return self._unit_converter.fromSIunit_T(Region5.T5_ps(p, s))
 
-        self.logger.warning(
+        self.logger.debug(
             "Region switch t_ps returned unknown value %d for input p %f and s %f",
             region,
             p,
@@ -232,14 +232,14 @@ class XSteam:
         elif region == DiagramRegion.R4:
             return self._unit_converter.fromSIunit_T(Region4.T4_hs(h, s))
         elif region == DiagramRegion.R5:
-            self.logger.error(
+            self.logger.debug(
                 "functions t_hs is not available in region 5 for input h %f and s %f",
                 h,
                 s,
             )
             return float("NaN")
         else:
-            self.logger.warning(
+            self.logger.debug(
                 "Region switch t_hs returned unknown value %d for input h %f and s %f",
                 region,
                 h,
@@ -260,7 +260,7 @@ class XSteam:
         if -0.0001545495919 < s < 9.155759395:
             return self._unit_converter.fromSIunit_p(Region4.p4_s(s))
 
-        self.logger.warning("entropy value %f out of range", s)
+        self.logger.debug("entropy value %f out of range", s)
         return float("NaN")
 
     def psat_t(self, t: float) -> float:
@@ -276,7 +276,7 @@ class XSteam:
         if 273.1 < T < CRITICAL_TEMPERATURE:
             return self._unit_converter.fromSIunit_p(Region4.p4_T(T))
         else:
-            self.logger.warning("temperature %f out of range", T)
+            self.logger.debug("temperature %f out of range", T)
             return float("NaN")
 
     def p_hs(self, h: float, s: float) -> float:
@@ -302,14 +302,14 @@ class XSteam:
             tSat = Region4.T4_hs(h, s)
             return self._unit_converter.fromSIunit_p(Region4.p4_T(tSat))
         elif region == DiagramRegion.R5:
-            self.logger.warning(
+            self.logger.debug(
                 "functions p_hs is not available in region 5 for input h %f and s %f",
                 h,
                 s,
             )
             return float("NaN")
         else:
-            self.logger.warning(
+            self.logger.debug(
                 "Region switch p_hs returned unknown value %d for input h %f and s %f",
                 region,
                 h,
@@ -334,7 +334,6 @@ class XSteam:
         :return: pressure or NaN if arguments are out of range
         """
         if rho <= 0.0:
-            self.logger.error("negative values for density rho not allowed %f", rho)
             raise ValueError("rho out of range")
         h = self._unit_converter.toSIunit_h(h)
         High_Bound = self._unit_converter.fromSIunit_p(100)
@@ -376,7 +375,7 @@ class XSteam:
         p = self._unit_converter.toSIunit_p(p)
         if TRIPLE_POINT_PRESSURE < p < CRITICAL_PRESSURE:
             return self._unit_converter.fromSIunit_h(Region4.h4V_p(p))
-        self.logger.warning("pressure %f out of range", p)
+        self.logger.debug("pressure %f out of range", p)
         return float("NaN")
 
     def hL_p(self, p: float) -> float:
@@ -391,7 +390,7 @@ class XSteam:
         p = self._unit_converter.toSIunit_p(p)
         if TRIPLE_POINT_PRESSURE < p < CRITICAL_PRESSURE:
             return self._unit_converter.fromSIunit_h(Region4.h4L_p(p))
-        self.logger.warning("pressure %f out of range", p)
+        self.logger.debug("pressure %f out of range", p)
         return float("NaN")
 
     def hV_t(self, t: float) -> float:
@@ -407,7 +406,7 @@ class XSteam:
         if FREEZING_TEMPERATURE_H2O < T < CRITICAL_TEMPERATURE:
             p = Region4.p4_T(T)
             return self._unit_converter.fromSIunit_h(Region4.h4V_p(p))
-        self.logger.warning("temperature %f out of range", T)
+        self.logger.debug("temperature %f out of range", T)
         return float("NaN")
 
     def hL_t(self, t: float) -> float:
@@ -423,7 +422,7 @@ class XSteam:
         if FREEZING_TEMPERATURE_H2O < T < CRITICAL_TEMPERATURE:
             p = Region4.p4_T(T)
             return self._unit_converter.fromSIunit_h(Region4.h4L_p(p))
-        self.logger.warning("temperature %f out of range", T)
+        self.logger.debug("temperature %f out of range", T)
         return float("NaN")
 
     def h_pt(self, p: float, t: float) -> float:
@@ -446,7 +445,7 @@ class XSteam:
         if region == DiagramRegion.R3:
             return self._unit_converter.fromSIunit_h(Region3.h3_pT(p, T))
         if region == DiagramRegion.R4:
-            self.logger.warning(
+            self.logger.debug(
                 "function h_pt is not available in region 4 for input p %f and T %f",
                 p,
                 T,
@@ -455,7 +454,7 @@ class XSteam:
         if region == DiagramRegion.R5:
             return self._unit_converter.fromSIunit_h(Region5.h5_pT(p, T))
 
-        self.logger.warning(
+        self.logger.debug(
             "Region switch h_pt returned unknown value %d for input p %f and T %f",
             region,
             p,
@@ -488,7 +487,7 @@ class XSteam:
         if region == DiagramRegion.R5:
             return self._unit_converter.fromSIunit_h(Region5.h5_pT(p, Region5.T5_ps(p, s)))
 
-        self.logger.warning(
+        self.logger.debug(
             "Region switch h_ps returned unknown value %d for input p %f and s %f ",
             region,
             p,
@@ -509,7 +508,7 @@ class XSteam:
         p = self._unit_converter.toSIunit_p(p)
         x = self._unit_converter.toSIunit_x(x)
         if (x > 1) or (x < 0) or (p >= 22.064):
-            self.logger.warning("Vapor fraction %f and/or pressure %f out of range", x, p)
+            self.logger.debug("Vapor fraction %f and/or pressure %f out of range", x, p)
             return float("NaN")
         hL = Region4.h4L_p(p)
         hV = Region4.h4V_p(p)
@@ -548,7 +547,7 @@ class XSteam:
         if region == DiagramRegion.R5:
             return self._unit_converter.fromSIunit_h(Region5.h5_pT(p, Region5.T5_prho(p, rho)))
 
-        self.logger.warning(
+        self.logger.debug(
             "Region switch h_prho returned unknown value %d for input p %f and rho %f",
             region,
             p,
@@ -569,7 +568,7 @@ class XSteam:
         T = self._unit_converter.toSIunit_T(t)
         x = self._unit_converter.toSIunit_x(x)
         if (x > 1) or (x < 0) or (T >= CRITICAL_TEMPERATURE):
-            self.logger.warning("Vapor fraction %f and/or temperature %f out of range", x, T)
+            self.logger.debug("Vapor fraction %f and/or temperature %f out of range", x, T)
             return float("NaN")
         p = Region4.p4_T(T)
         hL = Region4.h4L_p(p)
@@ -591,7 +590,7 @@ class XSteam:
             if p < 16.529:
                 return self._unit_converter.fromSIunit_v(Region2.v2_pT(p, Region4.T4_p(p)))
             return self._unit_converter.fromSIunit_v(Region3.v3_ph(p, Region4.h4V_p(p)))
-        self.logger.warning("pressure %f out of range", p)
+        self.logger.debug("pressure %f out of range", p)
         return float("NaN")
 
     def vL_p(self, p: float) -> float:
@@ -608,7 +607,7 @@ class XSteam:
             if p < 16.529:
                 return self._unit_converter.fromSIunit_v(Region1.v1_pT(p, Region4.T4_p(p)))
             return self._unit_converter.fromSIunit_v(Region3.v3_ph(p, Region4.h4L_p(p)))
-        self.logger.warning("pressure %f out of range", p)
+        self.logger.debug("pressure %f out of range", p)
         return float("NaN")
 
     def vV_t(self, t: float) -> float:
@@ -625,7 +624,7 @@ class XSteam:
             if T <= 623.15:
                 return self._unit_converter.fromSIunit_v(Region2.v2_pT(Region4.p4_T(T), T))
             return self._unit_converter.fromSIunit_v(Region3.v3_ph(Region4.p4_T(T), Region4.h4V_p(Region4.p4_T(T))))
-        self.logger.warning("temperature %f out of range", T)
+        self.logger.debug("temperature %f out of range", T)
         return float("NaN")
 
     def vL_t(self, t: float) -> float:
@@ -642,7 +641,7 @@ class XSteam:
             if T <= 623.15:
                 return self._unit_converter.fromSIunit_v(Region1.v1_pT(Region4.p4_T(T), T))
             return self._unit_converter.fromSIunit_v(Region3.v3_ph(Region4.p4_T(T), Region4.h4L_p(Region4.p4_T(T))))
-        self.logger.warning("temperature %f out of range", T)
+        self.logger.debug("temperature %f out of range", T)
         return float("NaN")
 
     def v_pt(self, p: float, t: float) -> float:
@@ -665,7 +664,7 @@ class XSteam:
         if region == DiagramRegion.R3:
             return self._unit_converter.fromSIunit_v(Region3.v3_ph(p, Region3.h3_pT(p, T)))
         if region == DiagramRegion.R4:
-            self.logger.warning(
+            self.logger.debug(
                 "function v_pt is not available in region 4 for input p %f and T %f",
                 p,
                 T,
@@ -674,7 +673,7 @@ class XSteam:
         if region == DiagramRegion.R5:
             return self._unit_converter.fromSIunit_v(Region5.v5_pT(p, T))
 
-        self.logger.warning(
+        self.logger.debug(
             "Region switch v_pt returned unknown value %d for input p %f and T %f",
             region,
             p,
@@ -714,7 +713,7 @@ class XSteam:
             Ts = Region5.T5_ph(p, h)
             return self._unit_converter.fromSIunit_v(Region5.v5_pT(p, Ts))
 
-        self.logger.warning(
+        self.logger.debug(
             "Region switch v_ph returned unknown value %d for input p %f and h %f",
             region,
             p,
@@ -754,7 +753,7 @@ class XSteam:
             Ts = Region5.T5_ps(p, s)
             return self._unit_converter.fromSIunit_v(Region5.v5_pT(p, Ts))
 
-        self.logger.warning(
+        self.logger.debug(
             "Region switch v_ps returned unknown value %d for input p %f and s %f",
             region,
             p,
@@ -863,7 +862,7 @@ class XSteam:
             if p < 16.529:
                 return self._unit_converter.fromSIunit_s(Region2.s2_pT(p, Region4.T4_p(p)))
             return self._unit_converter.fromSIunit_s(Region3.s3_rhoT(1 / (Region3.v3_ph(p, Region4.h4V_p(p))), Region4.T4_p(p)))
-        self.logger.warning("pressure %f out of range", p)
+        self.logger.debug("pressure %f out of range", p)
         return float("NaN")
 
     def sL_p(self, p: float) -> float:
@@ -880,7 +879,7 @@ class XSteam:
             if p < 16.529:
                 return self._unit_converter.fromSIunit_s(Region1.s1_pT(p, Region4.T4_p(p)))
             return self._unit_converter.fromSIunit_s(Region3.s3_rhoT(1 / (Region3.v3_ph(p, Region4.h4L_p(p))), Region4.T4_p(p)))
-        self.logger.warning("pressure %f out of range", p)
+        self.logger.debug("pressure %f out of range", p)
         return float("NaN")
 
     def sV_t(self, t: float) -> float:
@@ -902,7 +901,7 @@ class XSteam:
                     T,
                 )
             )
-        self.logger.warning("temperature %f out of range", T)
+        self.logger.debug("temperature %f out of range", T)
         return float("NaN")
 
     def sL_t(self, t: float) -> float:
@@ -924,7 +923,7 @@ class XSteam:
                     T,
                 )
             )
-        self.logger.warning("temperature %f out of range", T)
+        self.logger.debug("temperature %f out of range", T)
         return float("NaN")
 
     def s_pt(self, p: float, t: float) -> float:
@@ -949,12 +948,12 @@ class XSteam:
             rhos = 1 / Region3.v3_ph(p, hs)
             return self._unit_converter.fromSIunit_s(Region3.s3_rhoT(rhos, T))
         if region == DiagramRegion.R4:
-            self.logger.warning("function s_pt is not available in region 4 (p %f, T %f)", p, T)
+            self.logger.debug("function s_pt is not available in region 4 (p %f, T %f)", p, T)
             return float("NaN")
         if region == DiagramRegion.R5:
             return self._unit_converter.fromSIunit_s(Region5.s5_pT(p, T))
 
-        self.logger.warning(
+        self.logger.debug(
             "Region switch s_pt returned unknown value %d for input p %f and T %f",
             region,
             p,
@@ -1000,7 +999,7 @@ class XSteam:
         if region == DiagramRegion.R5:
             T = Region5.T5_ph(p, h)
             return self._unit_converter.fromSIunit_s(Region5.s5_pT(p, T))
-        self.logger.warning(
+        self.logger.debug(
             "Region switch s_ph returned unknown value %d for input p %f and h %f",
             region,
             p,
@@ -1022,7 +1021,7 @@ class XSteam:
             if p < 16.529:
                 return self._unit_converter.fromSIunit_u(Region2.u2_pT(p, Region4.T4_p(p)))
             return self._unit_converter.fromSIunit_u(Region3.u3_rhoT(1 / (Region3.v3_ph(p, Region4.h4V_p(p))), Region4.T4_p(p)))
-        self.logger.warning("preasure %f out of range for uV_p(p)", p)
+        self.logger.debug("preasure %f out of range for uV_p(p)", p)
         return float("NaN")
 
     def uL_p(self, p: float) -> float:
@@ -1039,7 +1038,7 @@ class XSteam:
             if p < 16.529:
                 return self._unit_converter.fromSIunit_u(Region1.u1_pT(p, Region4.T4_p(p)))
             return self._unit_converter.fromSIunit_u(Region3.u3_rhoT(1 / (Region3.v3_ph(p, Region4.h4L_p(p))), Region4.T4_p(p)))
-        self.logger.warning("pressure %f out of range for uL_p(p)", p)
+        self.logger.debug("pressure %f out of range for uL_p(p)", p)
         return float("NaN")
 
     def uV_t(self, t: float) -> float:
@@ -1061,7 +1060,7 @@ class XSteam:
                     T,
                 )
             )
-        self.logger.warning("temperature %f out of range", T)
+        self.logger.debug("temperature %f out of range", T)
         return float("NaN")
 
     def uL_t(self, t: float) -> float:
@@ -1085,7 +1084,7 @@ class XSteam:
                 )
             )
 
-        self.logger.warning("temperature %f out of range", T)
+        self.logger.debug("temperature %f out of range", T)
         return float("NaN")
 
     def u_pt(self, p: float, t: float) -> float:
@@ -1114,7 +1113,7 @@ class XSteam:
             return self._unit_converter.fromSIunit_u(Region3.u3_rhoT(rhos, T))
 
         if region == DiagramRegion.R4:
-            self.logger.warning(
+            self.logger.debug(
                 "function u_pt is not available in region 4 for input p %f and T %f",
                 p,
                 T,
@@ -1124,7 +1123,7 @@ class XSteam:
         if region == DiagramRegion.R5:
             return self._unit_converter.fromSIunit_u(Region5.u5_pT(p, T))
 
-        self.logger.warning(
+        self.logger.debug(
             "Region switch u_pt returned unknown value %d for input p %f and T %f",
             region,
             p,
@@ -1176,7 +1175,7 @@ class XSteam:
             Ts = Region5.T5_ph(p, h)
             return self._unit_converter.fromSIunit_u(Region5.u5_pT(p, Ts))
 
-        self.logger.warning(
+        self.logger.debug(
             "Region switch u_ph returned unknown value %d for input p %f and h %f",
             region,
             p,
@@ -1224,7 +1223,7 @@ class XSteam:
             Ts = Region5.T5_ps(p, s)
             return self._unit_converter.fromSIunit_u(Region5.u5_pT(p, Ts))
 
-        self.logger.warning(
+        self.logger.debug(
             "Region switch u_ps returned unknown value %d for input p %f and s %f",
             region,
             p,
@@ -1246,7 +1245,7 @@ class XSteam:
             if p < 16.529:
                 return self._unit_converter.fromSIunit_Cp(Region2.Cp2_pT(p, Region4.T4_p(p)))
             return self._unit_converter.fromSIunit_Cp(Region3.Cp3_rhoT(1 / (Region3.v3_ph(p, Region4.h4V_p(p))), Region4.T4_p(p)))
-        self.logger.warning("preassure %f out of range", p)
+        self.logger.debug("preassure %f out of range", p)
         return float("NaN")
 
     def CpL_p(self, p: float) -> float:
@@ -1263,7 +1262,7 @@ class XSteam:
             if p < 16.529:
                 return self._unit_converter.fromSIunit_Cp(Region1.Cp1_pT(p, Region4.T4_p(p)))
             return self._unit_converter.fromSIunit_Cp(Region3.Cp3_rhoT(1 / (Region3.v3_ph(p, Region4.h4L_p(p))), Region4.T4_p(p)))
-        self.logger.warning("preassure %f out of range", p)
+        self.logger.debug("preassure %f out of range", p)
         return float("NaN")
 
     def CpV_t(self, t: float) -> float:
@@ -1285,7 +1284,7 @@ class XSteam:
                     T,
                 )
             )
-        self.logger.warning("temperature %f out of range", T)
+        self.logger.debug("temperature %f out of range", T)
         return float("NaN")
 
     def CpL_t(self, t: float) -> float:
@@ -1308,7 +1307,7 @@ class XSteam:
             Cp = Region3.Cp3_rhoT(rho, T)
             return self._unit_converter.fromSIunit_Cp(Cp)
 
-        self.logger.warning("temperature %f out of range", T)
+        self.logger.debug("temperature %f out of range", T)
         return float("NaN")
 
     def Cp_pt(self, p: float, t: float) -> float:
@@ -1337,7 +1336,7 @@ class XSteam:
             return self._unit_converter.fromSIunit_Cp(Region3.Cp3_rhoT(rhos, T))
 
         if region == DiagramRegion.R4:
-            self.logger.warning(
+            self.logger.debug(
                 "function Cp_pt is not available in region 4 for input p %f and T %f",
                 p,
                 T,
@@ -1347,7 +1346,7 @@ class XSteam:
         if region == DiagramRegion.R5:
             return self._unit_converter.fromSIunit_Cp(Region5.Cp5_pT(p, T))
 
-        self.logger.warning(
+        self.logger.debug(
             "Region switch Cp_pt returned unknown value %d for input p %f and T %f",
             region,
             p,
@@ -1383,7 +1382,7 @@ class XSteam:
             return self._unit_converter.fromSIunit_Cp(Region3.Cp3_rhoT(rhos, Ts))
 
         if region == DiagramRegion.R4:
-            self.logger.warning(
+            self.logger.debug(
                 "function Cp_ph is not available in region 4  for input p %f and h %f",
                 p,
                 h,
@@ -1394,7 +1393,7 @@ class XSteam:
             Ts = Region5.T5_ph(p, h)
             return self._unit_converter.fromSIunit_Cp(Region5.Cp5_pT(p, Ts))
 
-        self.logger.warning(
+        self.logger.debug(
             "Region switch Cp_ph returned unknown value %d for input p %f and h %f",
             region,
             p,
@@ -1430,7 +1429,7 @@ class XSteam:
             return self._unit_converter.fromSIunit_Cp(Region3.Cp3_rhoT(rhos, Ts))
 
         if region == DiagramRegion.R4:
-            self.logger.warning(
+            self.logger.debug(
                 "function Cp_ps is not available in region 4 for input p %f and s %f",
                 p,
                 s,
@@ -1441,7 +1440,7 @@ class XSteam:
             Ts = Region5.T5_ps(p, s)
             return self._unit_converter.fromSIunit_Cp(Region5.Cp5_pT(p, Ts))
 
-        self.logger.warning(
+        self.logger.debug(
             "Region switch Cp_ps returned unknown value %d for input p %f and s %f",
             region,
             p,
@@ -1468,7 +1467,7 @@ class XSteam:
             Cv = Region3.Cv3_rhoT(rho, Region4.T4_p(p))
             return self._unit_converter.fromSIunit_Cv(Cv)
 
-        self.logger.warning("pressure %f out of range", p)
+        self.logger.debug("pressure %f out of range", p)
         return float("NaN")
 
     def CvL_p(self, p: float) -> float:
@@ -1490,7 +1489,7 @@ class XSteam:
             Cv = Region3.Cv3_rhoT(rho, Region4.T4_p(p))
             return self._unit_converter.fromSIunit_Cv(Cv)
 
-        self.logger.warning("pressure %f out of range", p)
+        self.logger.debug("pressure %f out of range", p)
         return float("NaN")
 
     def CvV_t(self, t: float) -> float:
@@ -1513,7 +1512,7 @@ class XSteam:
             Cv = Region3.Cv3_rhoT(rho, T)
             return self._unit_converter.fromSIunit_Cv(Cv)
 
-        self.logger.warning("temperature %f out of range", T)
+        self.logger.debug("temperature %f out of range", T)
         return float("NaN")
 
     def CvL_t(self, t: float) -> float:
@@ -1536,7 +1535,7 @@ class XSteam:
             Cv = Region3.Cv3_rhoT(rho, T)
             return self._unit_converter.fromSIunit_Cv(Cv)
 
-        self.logger.warning("temperature %f out of range", T)
+        self.logger.debug("temperature %f out of range", T)
         return float("NaN")
 
     def Cv_pt(self, p: float, t: float) -> float:
@@ -1565,7 +1564,7 @@ class XSteam:
             return self._unit_converter.fromSIunit_Cv(Region3.Cv3_rhoT(rhos, T))
 
         if region == DiagramRegion.R4:
-            self.logger.warning(
+            self.logger.debug(
                 "function Cv_pt is not available in region 4 for input p %f and T %f",
                 p,
                 T,
@@ -1575,7 +1574,7 @@ class XSteam:
         if region == DiagramRegion.R5:
             return self._unit_converter.fromSIunit_Cv(Region5.Cv5_pT(p, T))
 
-        self.logger.warning(
+        self.logger.debug(
             "Region switch Cv_pt returned unknown value %d for input p %f and T %f",
             region,
             p,
@@ -1611,7 +1610,7 @@ class XSteam:
             return self._unit_converter.fromSIunit_Cv(Region3.Cv3_rhoT(rhos, Ts))
 
         if region == DiagramRegion.R4:
-            self.logger.warning(
+            self.logger.debug(
                 "function Cv_ph is not available in region 4 for input p %f and h %f",
                 p,
                 h,
@@ -1622,7 +1621,7 @@ class XSteam:
             Ts = Region5.T5_ph(p, h)
             return self._unit_converter.fromSIunit_Cv(Region5.Cv5_pT(p, Ts))
 
-        self.logger.warning(
+        self.logger.debug(
             "Region switch Cv_ph returned unknown value %d for input p %f and h %f",
             region,
             p,
@@ -1658,7 +1657,7 @@ class XSteam:
             return self._unit_converter.fromSIunit_Cv(Region3.Cv3_rhoT(rhos, Ts))
 
         if region == DiagramRegion.R4:
-            self.logger.warning(
+            self.logger.debug(
                 "function Cv_ps is not available in region 4 for input p %f and s %f",
                 p,
                 s,
@@ -1671,7 +1670,7 @@ class XSteam:
             Ts = Region5.T5_ps(p, s)
             return self._unit_converter.fromSIunit_Cv(Region5.Cv5_pT(p, Ts))
 
-        self.logger.warning(
+        self.logger.debug(
             "Region switch Cv_ps returned unknown value %d for input p %f and s %f",
             region,
             p,
@@ -1698,7 +1697,7 @@ class XSteam:
             w = Region3.w3_rhoT(rho, Region4.T4_p(p))
             return self._unit_converter.fromSIunit_w(w)
 
-        self.logger.warning("pressure %f out of range", p)
+        self.logger.debug("pressure %f out of range", p)
         return float("NaN")
 
     def wL_p(self, p: float) -> float:
@@ -1720,7 +1719,7 @@ class XSteam:
             w = Region3.w3_rhoT(rho, Region4.T4_p(p))
             return self._unit_converter.fromSIunit_w(w)
 
-        self.logger.warning("pressure %f out of range", p)
+        self.logger.debug("pressure %f out of range", p)
         return float("NaN")
 
     def wV_t(self, t: float) -> float:
@@ -1743,7 +1742,7 @@ class XSteam:
             w = Region3.w3_rhoT(rho, T)
             return self._unit_converter.fromSIunit_w(w)
 
-        self.logger.warning("temperature %f out of range", T)
+        self.logger.debug("temperature %f out of range", T)
         return float("NaN")
 
     def wL_t(self, t: float) -> float:
@@ -1766,7 +1765,7 @@ class XSteam:
             w = Region3.w3_rhoT(roh, T)
             return self._unit_converter.fromSIunit_w(w)
 
-        self.logger.warning("temperature %f out of range", T)
+        self.logger.debug("temperature %f out of range", T)
         return float("NaN")
 
     def w_pt(self, p: float, t: float) -> float:
@@ -1795,7 +1794,7 @@ class XSteam:
             return self._unit_converter.fromSIunit_w(Region3.w3_rhoT(rhos, T))
 
         if region == DiagramRegion.R4:
-            self.logger.warning(
+            self.logger.debug(
                 "function w_pt is not available in region 4 for input p %f and T %f",
                 p,
                 T,
@@ -1805,7 +1804,7 @@ class XSteam:
         if region == DiagramRegion.R5:
             return self._unit_converter.fromSIunit_w(Region5.w5_pT(p, T))
 
-        self.logger.warning(
+        self.logger.debug(
             "Region switch w_pt returned unknown value %d for input p %f and T %f",
             region,
             p,
@@ -1841,14 +1840,14 @@ class XSteam:
             return self._unit_converter.fromSIunit_w(Region3.w3_rhoT(rhos, Ts))
 
         if region == DiagramRegion.R4:
-            self.logger.warning("function w_ph is not available in region 4 p %f and h %f", p, h)
+            self.logger.debug("function w_ph is not available in region 4 p %f and h %f", p, h)
             return float("NaN")
 
         if region == DiagramRegion.R5:
             Ts = Region5.T5_ph(p, h)
             return self._unit_converter.fromSIunit_w(Region5.w5_pT(p, Ts))
 
-        self.logger.warning(
+        self.logger.debug(
             "Region switch w_ph returned unknown value %d for input p %f and h %f",
             region,
             p,
@@ -1884,7 +1883,7 @@ class XSteam:
             return self._unit_converter.fromSIunit_w(Region3.w3_rhoT(rhos, Ts))
 
         if region == DiagramRegion.R4:
-            self.logger.warning(
+            self.logger.debug(
                 "function w_ps is not available in region 4 for input p %f and s %f",
                 p,
                 s,
@@ -1897,7 +1896,7 @@ class XSteam:
             Ts = Region5.T5_ps(p, s)
             return self._unit_converter.fromSIunit_w(Region5.w5_pT(p, Ts))
 
-        self.logger.warning(
+        self.logger.debug(
             "Region switch w_ps returned unknown value %d for input p %f and s %f",
             region,
             p,
@@ -1922,7 +1921,7 @@ class XSteam:
         T = self._unit_converter.toSIunit_T(t)
         region = select_region_pT(p, T)
         if region == DiagramRegion.R4:
-            self.logger.warning(
+            self.logger.debug(
                 "function my_pt is not available in region 4 for input p %f and T %f",
                 p,
                 T,
@@ -1930,7 +1929,7 @@ class XSteam:
             return float("NaN")
 
         if region == DiagramRegion.NILL:
-            self.logger.warning(
+            self.logger.debug(
                 "Region switch my_pt returned unknown value %d for input p %f and T %f",
                 region,
                 p,
@@ -1959,7 +1958,7 @@ class XSteam:
         region = select_region_ph(p, h)
 
         if region == DiagramRegion.R4:
-            self.logger.warning(
+            self.logger.debug(
                 "function my_pt is not available in region 4 for input p %f and h %f",
                 p,
                 h,
@@ -1967,7 +1966,7 @@ class XSteam:
             return float("NaN")
 
         if region == DiagramRegion.NILL:
-            self.logger.warning(
+            self.logger.debug(
                 "Region switch my_ph returned unknown value %d for input p %f and h %f",
                 region,
                 p,
@@ -2211,7 +2210,7 @@ class XSteam:
         h = self._unit_converter.toSIunit_h(h)
         if TRIPLE_POINT_PRESSURE < p < CRITICAL_PRESSURE:
             return self._unit_converter.fromSIunit_x(Region4.x4_ph(p, h))
-        self.logger.warning("pressure out of range")
+        self.logger.debug("pressure out of range")
         return float("NaN")
 
     def x_ps(self, p: float, s: float) -> float:
@@ -2228,7 +2227,7 @@ class XSteam:
         s = self._unit_converter.toSIunit_s(s)
         if TRIPLE_POINT_PRESSURE < p < CRITICAL_PRESSURE:
             return self._unit_converter.fromSIunit_x(Region4.x4_ps(p, s))
-        self.logger.warning("pressure %f out of range", p)
+        self.logger.debug("pressure %f out of range", p)
         return float("NaN")
 
     def vx_ph(self, p: float, h: float) -> float:
@@ -2254,7 +2253,7 @@ class XSteam:
             vx = xs * vV / (xs * vV + (1 - xs) * vL)
             return self._unit_converter.fromSIunit_vx(vx)
 
-        self.logger.warning("pressure %f out of range", p)
+        self.logger.debug("pressure %f out of range", p)
         return float("NaN")
 
     def vx_ps(self, p: float, s: float) -> float:
@@ -2280,7 +2279,7 @@ class XSteam:
             vx = xs * vV / (xs * vV + (1 - xs) * vL)
             return self._unit_converter.fromSIunit_vx(vx)
 
-        self.logger.warning("pressure %f out of range", p)
+        self.logger.debug("pressure %f out of range", p)
         return float("NaN")
 
     def pmelt_t(self, t: float, hint: IceType = IceType.NONE) -> float:
@@ -2309,7 +2308,7 @@ class XSteam:
 
         if hint is None or hint == IceType.NONE:
             if 251.165 <= T < 256.164:
-                self.logger.error("can't select ice type based on temperature %f, hint required", T)
+                self.logger.debug("can't select ice type based on temperature %f, hint required", T)
                 return float("NaN")
 
             if 256.164 <= T < 273.31:
@@ -2324,40 +2323,39 @@ class XSteam:
                 self.logger.debug("chose ice type VII based on temperature")
                 return self._unit_converter.fromSIunit_p(pmelt_T_iceVII(T))
 
-            self.logger.warning("temperature %f out of range", T)
+            self.logger.debug("temperature %f out of range", T)
             return float("NaN")
 
         if hint == IceType.Ih:
             if 251.165 <= T < 273.16:
                 return self._unit_converter.fromSIunit_p(pmelt_T_iceIh(T))
-            self.logger.warning("temperature %f out of range", T)
+            self.logger.debug("temperature %f out of range", T)
             return float("NaN")
 
         if hint == IceType.III:
             if 251.165 <= T < 256.164:
                 return self._unit_converter.fromSIunit_p(pmelt_T_iceIII(T))
-            self.logger.warning("temperature %f out of range", T)
+            self.logger.debug("temperature %f out of range", T)
             return float("NaN")
 
         if hint == IceType.V:
             if 256.164 <= T < 273.31:
                 return self._unit_converter.fromSIunit_p(pmelt_T_iceV(T))
-            self.logger.warning("temperature %f out of range", T)
+            self.logger.debug("temperature %f out of range", T)
             return float("NaN")
 
         if hint == IceType.VI:
             if 273.31 <= T < 355:
                 return self._unit_converter.fromSIunit_p(pmelt_T_iceVI(T))
-            self.logger.warning("temperature %f out of range", T)
+            self.logger.debug("temperature %f out of range", T)
             return float("NaN")
 
         if hint == IceType.VII:
             if 355 <= T < 751:
                 return self._unit_converter.fromSIunit_p(pmelt_T_iceVII(T))
-            self.logger.warning("temperature %f out of range", T)
+            self.logger.debug("temperature %f out of range", T)
             return float("NaN")
 
-        self.logger.error("unknown value for parameter 'hint' %s, can't select ice type", hint)
         raise ValueError("unknown value for parameter 'hint'")
 
     def psubl_t(self, t: float) -> float:
@@ -2371,7 +2369,7 @@ class XSteam:
         T = self._unit_converter.toSIunit_T(t)
         if 50 <= T < 273.16:
             return self._unit_converter.fromSIunit_p(psubl_T(T))
-        self.logger.warning("temperature %f out of range", T)
+        self.logger.debug("temperature %f out of range", T)
         return float("NaN")
 
     def R12_my_rhot(self, rho: float, t: float, industrial_application: bool = True) -> float:

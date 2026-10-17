@@ -42,7 +42,7 @@ def R12_helpereq_rhoT(rho: float, T: float):
     tau = R12_08.T_STAR / T
 
     if delta == 1:
-        logger.info("change delta slightly to avoid div 0 at delta = 1.0")
+        logger.debug("change delta slightly to avoid div 0 at delta = 1.0")
         delta += sys.float_info.epsilon
 
     phi_r_delta = eq_phi_r_delta(tau, delta)

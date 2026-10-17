@@ -43,12 +43,12 @@ def my_AllRegions_pT(p: float, T: float) -> float:
         hs = Region3.h3_pT(p, T)
         rho = 1 / Region3.v3_ph(p, hs)
     elif select_region_pT(p, T) == 4:
-        logger.warning("function my_AllRegions_pT is not available in region 4")
+        logger.debug("function my_AllRegions_pT is not available in region 4")
         return float("NaN")
     elif select_region_pT(p, T) == 5:
         rho = 1 / Region5.v5_pT(p, T)
     else:
-        logger.warning("Region switch returned unknown value")
+        logger.debug("Region switch returned unknown value")
         return float("NaN")
 
     rhos = rho / 317.763
@@ -62,7 +62,7 @@ def my_AllRegions_pT(p: float, T: float) -> float:
         or (T > (150 + FREEZING_TEMPERATURE_H2O) and (p > 350))
         or (p > 500)
     ):
-        logger.warning("Temperature and/or Preasure out of range of validity")
+        logger.debug("Temperature and/or Preasure out of range of validity")
         return float("NaN")
 
     my0 = Ts**0.5 / (1 + 0.978197 / Ts + 0.579829 / (Ts**2) - 0.202354 / (Ts**3))
@@ -128,7 +128,7 @@ def my_AllRegions_ph(p: float, h: float) -> float:
         T = Ts
         rho = 1 / Region5.v5_pT(p, Ts)
     else:
-        logger.warning("Region switch returned unknown value")
+        logger.debug("Region switch returned unknown value")
         return float("NaN")
 
     rhos = rho / 317.763
@@ -141,7 +141,7 @@ def my_AllRegions_ph(p: float, h: float) -> float:
         or (T > (150 + FREEZING_TEMPERATURE_H2O) and (p > 350))
         or (p > 500)
     ):
-        logger.warning("Temperature and/or Preasure out of range of validity")
+        logger.debug("Temperature and/or Preasure out of range of validity")
         return float("NaN")
 
     my0 = Ts**0.5 / (1 + 0.978197 / Ts + 0.579829 / (Ts**2) - 0.202354 / (Ts**3))
@@ -182,19 +182,19 @@ def tc_ptrho(p: float, T: float, rho: float) -> float:
 
     # ver2.6 Start corrected bug
     if T < FREEZING_TEMPERATURE_H2O:
-        logger.warning("Temperature out of range of validity")
+        logger.debug("Temperature out of range of validity")
         return float("NaN")
     if T < 500 + FREEZING_TEMPERATURE_H2O:
         if p > 100:
-            logger.warning("Preasure out of range of validity")
+            logger.debug("Preasure out of range of validity")
             return float("NaN")
     if T <= 650 + FREEZING_TEMPERATURE_H2O:
         if p > 70:
-            logger.warning("Preasure out of range of validity")
+            logger.debug("Preasure out of range of validity")
             return float("NaN")
     else:  # T <= 800 + __FREEZING_POINT_H2O__:
         if p > 40:
-            logger.warning("Preasure out of range of validity")
+            logger.debug("Preasure out of range of validity")
             return float("NaN")
     # ver2.6 End corrected bug
 
@@ -239,5 +239,5 @@ def surface_tension_T(T: float) -> float:
         sigma = B * tau**my * (1 + bb * tau)
         return sigma
 
-    logger.warning("Temperature out of range of validity")
+    logger.debug("Temperature out of range of validity")
     return float("NaN")

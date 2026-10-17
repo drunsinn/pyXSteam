@@ -600,7 +600,7 @@ def R6_p_rhoT(rho: float, T: float) -> float:
     tau = R6_95.CRITICAL_TEMPERATURE / T
 
     if delta == 1:
-        logger.info("change delta slightly to avoid div 0 at delta = 1.0")
+        logger.debug("change delta slightly to avoid div 0 at delta = 1.0")
         delta += sys.float_info.epsilon
 
     phi_r_delta = eq_phi_r_delta(tau, delta)
@@ -625,7 +625,7 @@ def R6_u_rhoT(rho: float, T: float):
     tau = R6_95.CRITICAL_TEMPERATURE / T
 
     if delta == 1:
-        logger.info("change delta slightly to avoid div 0 at delta = 1.0")
+        logger.debug("change delta slightly to avoid div 0 at delta = 1.0")
         delta += sys.float_info.epsilon
 
     return tau * (eq_phi_o_tau(tau) + eq_phi_r_tau(tau, delta)) * R6_95.SPECIFIC_GAS_CONSTANT * T
@@ -645,7 +645,7 @@ def R6_s_rhoT(rho: float, T: float) -> float:
     tau = R6_95.CRITICAL_TEMPERATURE / T
 
     if delta == 1:
-        logger.info("change delta slightly to avoid div 0 at delta = 1.0")
+        logger.debug("change delta slightly to avoid div 0 at delta = 1.0")
         delta += sys.float_info.epsilon
 
     phi_o_tau = eq_phi_o_tau(tau)
@@ -674,7 +674,7 @@ def R6_h_rhoT(rho: float, T: float) -> float:
     tau = R6_95.CRITICAL_TEMPERATURE / T
 
     if delta == 1:
-        logger.info("change delta slightly to avoid div 0 at delta = 1.0")
+        logger.debug("change delta slightly to avoid div 0 at delta = 1.0")
         delta += sys.float_info.epsilon
 
     phi_o_tau = eq_phi_o_tau(tau)
@@ -701,7 +701,7 @@ def R6_cv_rhoT(rho: float, T: float) -> float:
     tau = R6_95.CRITICAL_TEMPERATURE / T
 
     if delta == 1:
-        logger.info("change delta slightly to avoid div 0 at delta = 1.0")
+        logger.debug("change delta slightly to avoid div 0 at delta = 1.0")
         delta += sys.float_info.epsilon
 
     phi_o_tautau = eq_phi_o_tautau(tau)
@@ -727,7 +727,7 @@ def R6_cp_rhoT(rho: float, T: float) -> float:
     tau = R6_95.CRITICAL_TEMPERATURE / T
 
     if delta == 1:
-        logger.info("change delta slightly to avoid div 0 at delta = 1.0")
+        logger.debug("change delta slightly to avoid div 0 at delta = 1.0")
         delta += sys.float_info.epsilon
 
     phi_r_delta = eq_phi_r_delta(tau, delta)
@@ -758,7 +758,7 @@ def R6_w_rhoT(rho: float, T: float) -> float:
     tau = R6_95.CRITICAL_TEMPERATURE / T
 
     if delta == 1:
-        logger.info("change delta slightly to avoid div 0 at delta = 1.0")
+        logger.debug("change delta slightly to avoid div 0 at delta = 1.0")
         delta += sys.float_info.epsilon
 
     phi_r_delta = eq_phi_r_delta(tau, delta)
@@ -792,7 +792,7 @@ def R6_joulethomson_rhoT(rho: float, T: float) -> float:
     tau = R6_95.CRITICAL_TEMPERATURE / T
 
     if delta == 1:
-        logger.info("change delta slightly to avoid div 0 at delta = 1.0")
+        logger.debug("change delta slightly to avoid div 0 at delta = 1.0")
         delta += sys.float_info.epsilon
 
     phi_r_delta = eq_phi_r_delta(tau, delta)
@@ -823,7 +823,7 @@ def R6_delta_T_rhoT(rho: float, T: float) -> float:
     tau = R6_95.CRITICAL_TEMPERATURE / T
 
     if delta == 1:
-        logger.info("change delta slightly to avoid div 0 at delta = 1.0")
+        logger.debug("change delta slightly to avoid div 0 at delta = 1.0")
         delta += sys.float_info.epsilon
 
     phi_r_delta = eq_phi_r_delta(tau, delta)
@@ -852,7 +852,7 @@ def R6_isen_t_p_rhoT(rho: float, T: float) -> float:
     tau = R6_95.CRITICAL_TEMPERATURE / T
 
     if delta == 1:
-        logger.info("change delta slightly to avoid div 0 at delta = 1.0")
+        logger.debug("change delta slightly to avoid div 0 at delta = 1.0")
         delta += sys.float_info.epsilon
 
     phi_r_delta = eq_phi_r_delta(tau, delta)

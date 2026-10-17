@@ -38,7 +38,6 @@ class UnitConverter:
         if UnitSystem.has_value(unitSystem):
             self._unit_system = unitSystem
         else:
-            self.logger.error("Unknown Unit System selected")
             raise ValueError("Unknown Unit System")
 
     def toSIunit_p(self, ins: float) -> float:
@@ -332,7 +331,6 @@ class UnitConverter:
         """
         if 0.0 <= ins <= 1.0:
             return float(ins)
-        self.logger.error("value of vapour fraction out of range: 0 < x < 1")
         raise ValueError("Vapour fraction out of Range")
 
     def fromSIunit_x(self, ins: float) -> float:
@@ -347,7 +345,6 @@ class UnitConverter:
         """
         if 0.0 <= ins <= 1.0:
             return float(ins)
-        self.logger.error("value of vapour fraction out of range: 0 < x < 1")
         raise ValueError("Vapour fraction out of Range")
 
     def toSIunit_vx(self, ins: float) -> float:
@@ -362,7 +359,6 @@ class UnitConverter:
         """
         if 0.0 <= ins <= 1.0:
             return float(ins)
-        self.logger.error("value of vapour volume fraction out of range: 0 < x < 1")
         raise ValueError("Vapour volume fraction out of Range")
 
     def fromSIunit_vx(self, ins: float) -> float:
@@ -377,7 +373,6 @@ class UnitConverter:
         """
         if 0.0 <= ins <= 1.0:
             return float(ins)
-        self.logger.error("value of vapour volume fraction out of range: 0 < x < 1")
         raise ValueError("Vapour volume fraction out of Range")
 
     def toSIunit_my(self, ins: float) -> float:

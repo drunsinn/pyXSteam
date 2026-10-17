@@ -52,5 +52,5 @@ def surface_tension_T(T: float) -> float:
         sigma = B * tau**my * (1 + bb * tau)
         return sigma
 
-    logger.warning("Temperature out of range of validity")
+    logger.debug("Temperature out of range of validity")
     return float("NaN")

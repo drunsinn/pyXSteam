@@ -351,11 +351,10 @@ def demo_reheat_ms_ofwh():
 
 
 def main():
-    logger = logging.getLogger("pyXSteam")
-    logger.setLevel(logging.ERROR)
-    sh = logging.StreamHandler()
-    sh.setFormatter(logging.Formatter("%(name)s - %(levelname)s - %(message)s"))
-    logger.addHandler(sh)
+    logging.basicConfig(
+        level=logging.ERROR,
+        format="%(name)s - %(levelname)s - %(message)s",
+    )
 
     print("Demos on how to use pyXSteam on the example of the rankine cycle")
     print("converted examples from Stu Blair")
