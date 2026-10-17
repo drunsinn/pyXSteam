@@ -39,7 +39,9 @@ Check out [pyXSteam at readthedocs](https://pyxsteam.readthedocs.io)
 
 ## Requirements
 
-There are no requirements for installing pyXSteam with Python 3.8 and up. The demos require `numpy` and `matplotlib`.
+There are no runtime requirements for installing pyXSteam with Python 3.9 and
+up. Install the optional demo dependencies with `pip install "pyXSteam[demo]"`
+(includes NumPy, Matplotlib, and SciPy).
 
 ### Tests
 
@@ -51,43 +53,53 @@ run `pip install pyXSteam`
 
 To run unittests you need two additional packages: `pytest` and `numpy`. After installing both, just run pytest in the base directory. The tests use some fixed values from the documentation to make sure that every coefficient and formula works as intended.
 
-To test if setup was successful, run `pyXSteamDemo`. This will require numpy and matplotlib to be installed.
+To test if setup was successful, install the demo dependencies and run
+`pyXSteamDemo`.
 
 ## Usage
 
 Simple Example:
 
 ```
-    from pyXSteam.XSteam import XSteam
-    steamTable = XSteam(XSteam.UNIT_SYSTEM_MKS)
-    print(steamTable.hL_p(220.0))
+    from pyXSteam import XSteam
+    steam_table = XSteam(XSteam.UNIT_SYSTEM_MKS)
+    print(steam_table.hL_p(220.0))
 ```
 
-By using the unitSystem Parameter, you can tell XSteam witch Unit System you are using.
+The `unitSystem` parameter selects input and output units:
 
 ```
-    steamTable = XSteam(XSteam.UNIT_SYSTEM_MKS) # m/kg/sec/°C/bar/W
-    steamTable = XSteam(XSteam.UNIT_SYSTEM_FLS) # ft/lb/sec/°F/psi/btu
-    steamTable = XSteam(XSteam.UNIT_SYSTEM_BARE) # m/kg/sec/K/MPa/W
+    steam_table = XSteam(XSteam.UNIT_SYSTEM_MKS)  # pressure: bar; temperature: °C
+    steam_table = XSteam(XSteam.UNIT_SYSTEM_FLS)  # pressure: psi; temperature: °F
 ```
 
-To enable logging, add the following lines to your code:
+`UNIT_SYSTEM_BARE` is currently an alias of `UNIT_SYSTEM_MKS`, so it also uses
+bar and °C rather than MPa and kelvin. Use `UNIT_SYSTEM_MKS` for the documented
+MKS conversions.
 
-```
-    import logging
-    logging.basicConfig(level=logging.INFO)
-```
-
-or alternatively
+pyXSteam uses Python's standard `logging` package. The library does not configure
+the root logger or attach output handlers; applications should configure logging
+once at startup. To display warnings and higher-severity messages:
 
 ```
     import logging
-    logger = logging.getLogger('pyXSteam')
-    logger.setLevel(logging.DEBUG)
-    sh = logging.StreamHandler()
-    sh.setFormatter(logging.Formatter('%(name)s - %(levelname)s - %(message)s'))
-    logger.addHandler(sh)
+    logging.basicConfig(level=logging.WARNING)
 ```
+
+To see pyXSteam's diagnostic messages, including expected out-of-range results
+and region selection details, enable debug logging for the package:
+
+```
+    import logging
+    logging.basicConfig(level=logging.WARNING)
+    logging.getLogger("pyXSteam").setLevel(logging.DEBUG)
+```
+
+Package loggers follow the `pyXSteam.*` hierarchy and propagate to application
+handlers. Out-of-range inputs that are handled by returning `NaN` are logged at
+`DEBUG` to avoid flooding applications that calculate many values; iteration
+failures remain warnings. Exceptions are raised without also logging them, so
+applications can decide how to report or handle them.
 
 ## Related projects
 
