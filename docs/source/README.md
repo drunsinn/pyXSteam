@@ -48,7 +48,9 @@ up. Install the optional demo dependencies with `pip install "pyXSteam[demo]"`
 Tests require `pytest`, `pytest-cov`, and `numpy`. Run `pytest` (or `make test`)
 to see uncovered lines and branches in the terminal and generate an HTML report
 at `dist/reports/coverage.html`. The test command fails if total branch-aware
-coverage falls below 60%.
+coverage falls below 60%. Demo scripts under `pyXSteam/scripts/` are excluded
+from the coverage calculation because they are user-facing examples rather than
+core library code.
 
 ## Install
 
