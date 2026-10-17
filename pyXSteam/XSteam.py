@@ -61,51 +61,51 @@ class XSteam:
     TYPE_ICE_VI = IceType.VI
     TYPE_ICE_VII = IceType.VII
 
-    def __init__(self, unitSystem: UnitSystem = UnitSystem.BARE):
+    def __init__(self, unitSystem: UnitSystem = UnitSystem.BARE) -> None:
         """
         Constructor method
         """
-        self.logger = logging.getLogger(__name__)
+        self.logger: logging.Logger = logging.getLogger(__name__)
         self._unit_converter = UnitConverter(unitSystem)
         self.logger.debug("initialised pyXSteam with Unit System %s", self._unit_converter)
 
-    def specificGasConstant(self):
+    def specificGasConstant(self) -> float:
         """
         :return: specific Gas Constant R in [kJ kg^-1 K^-1]
         """
         return SPECIFIC_GAS_CONSTANT
 
-    def criticalTemperatur(self):
+    def criticalTemperatur(self) -> float:
         """
         :return: specific temperature with conversion to the selected unit system
         """
         return self._unit_converter.fromSIunit_T(CRITICAL_TEMPERATURE)
 
-    def criticalPressure(self):
+    def criticalPressure(self) -> float:
         """
         :return: specific pressure with conversion to the selected unit system
         """
         return self._unit_converter.fromSIunit_p(CRITICAL_PRESSURE)
 
-    def criticalDensity(self):
+    def criticalDensity(self) -> float:
         """
         :return: specific density with conversion to the selected unit system
         """
         return self._unit_converter.fromSIunit_v(1 / CRITICAL_DENSITY)
 
-    def triplePointTemperatur(self):
+    def triplePointTemperatur(self) -> float:
         """
         :return: temperature of the triple point with conversion to the selected unit system
         """
         return self._unit_converter.fromSIunit_T(TRIPLE_POINT_TEMPERATURE)
 
-    def triplePointPressure(self):
+    def triplePointPressure(self) -> float:
         """
         :return: Pressure of the triple point with conversion to the selected unit systemt
         """
         return self._unit_converter.fromSIunit_p(TRIPLE_POINT_PRESSURE)
 
-    def zeroPointTemperature(self):
+    def zeroPointTemperature(self) -> float:
         """
         :return: absolute zero temperature with conversion to the selected unit system
         """
