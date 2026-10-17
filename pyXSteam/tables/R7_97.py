@@ -1034,11 +1034,11 @@ class R7_97:
     Table42_Cp = [0.261609445e1, 0.272724317e1, 0.288569882e1]  # in [kJ / kg K]
     Table42_w = [0.917068690e3, 0.928548002e3, 0.106736948e4]  # in [m / s]
 
-    # ?????????
-    # TODO find source
-    Tablexx_I = [1, 1, 1, 2, 3]
-    Tablexx_J = [0, 1, 3, 9, 3]
-    Tablexx_n = [
+    # Region 5 residual Gibbs coefficients used by the original XSteam implementation.
+    # Their source is unconfirmed; they differ from the six terms in IAPWS R7-97 (2012), Table 38.
+    Region5_residual_I = [1, 1, 1, 2, 3]
+    Region5_residual_J = [0, 1, 3, 9, 3]
+    Region5_residual_n = [
         -1.2563183589592e-04,
         2.1774678714571e-03,
         -0.004594282089991,
