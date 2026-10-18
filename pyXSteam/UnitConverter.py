@@ -146,6 +146,28 @@ class UnitConverter:
             return float(ins / 0.0624279606)  # [m³ / kg] to [ft³ / lb]
         return float(ins)
 
+    def toSIunit_rho(self, ins: float) -> float:
+        """Convert density from the selected unit system to [kg / m³]."""
+        return 1 / self.toSIunit_v(1 / ins)
+
+    def fromSIunit_rho(self, ins: float) -> float:
+        """Convert density from [kg / m³] to the selected unit system."""
+        return 1 / self.fromSIunit_v(1 / ins)
+
+    def fromSIunit_v_squared(self, ins: float) -> float:
+        """Convert a squared specific-volume quantity to the selected unit system."""
+        return ins * self.fromSIunit_v(1) ** 2
+
+    def toSIunit_T_interval(self, ins: float) -> float:
+        """Convert a temperature interval to kelvins."""
+        return ins * (self.toSIunit_T(1) - self.toSIunit_T(0))
+
+    def fromSIunit_pressure_derivative(self, ins: float) -> float:
+        """Convert a [K / MPa] derivative to the selected temperature/pressure units."""
+        temperature_scale = self.fromSIunit_T(1) - self.fromSIunit_T(0)
+        pressure_scale = self.fromSIunit_p(1)
+        return ins * temperature_scale / pressure_scale
+
     def toSIunit_s(self, ins: float) -> float:
         """
         convert specific entropy from user selected unit system to SI units

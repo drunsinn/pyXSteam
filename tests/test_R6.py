@@ -2,6 +2,7 @@
 
 import unittest
 from pyXSteam import IAPWS_R6
+from pyXSteam import XSteam
 from pyXSteam.tables import R6_95
 from . import helpers
 
@@ -162,3 +163,104 @@ class R6_FunctionTester(unittest.TestCase):
         upper = IAPWS_R6.R6_third_virial_coefficients(1.0, 600.0 + step)[0]
         lower = IAPWS_R6.R6_third_virial_coefficients(1.0, 600.0 - step)[0]
         self.assertAlmostEqual(derivative, (upper - lower) / (2 * step), delta=1e-14)
+
+    def test_xsteam_r6_methods(self):
+        """Check XSteam's MKS-unit wrappers against the R6 module."""
+        steam = XSteam(XSteam.UNIT_SYSTEM_MKS)
+        rho = R6_95.Table7_rho[5]
+        temperature = steam._unit_converter.fromSIunit_T(R6_95.Table7_T[5])
+        temperature_si = steam._unit_converter.toSIunit_T(temperature)
+        reference_properties = {
+            "p": steam._unit_converter.fromSIunit_p(IAPWS_R6.R6_p_rhoT(rho, temperature_si)),
+            "u": steam._unit_converter.fromSIunit_u(IAPWS_R6.R6_u_rhoT(rho, temperature_si)),
+            "s": steam._unit_converter.fromSIunit_s(IAPWS_R6.R6_s_rhoT(rho, temperature_si)),
+            "h": steam._unit_converter.fromSIunit_h(IAPWS_R6.R6_h_rhoT(rho, temperature_si)),
+            "cv": steam._unit_converter.fromSIunit_Cv(IAPWS_R6.R6_cv_rhoT(rho, temperature_si)),
+            "cp": steam._unit_converter.fromSIunit_Cp(IAPWS_R6.R6_cp_rhoT(rho, temperature_si)),
+            "w": steam._unit_converter.fromSIunit_w(IAPWS_R6.R6_w_rhoT(rho, temperature_si)),
+            "joulethomson": steam._unit_converter.fromSIunit_pressure_derivative(IAPWS_R6.R6_joulethomson_rhoT(rho, temperature_si)),
+            "delta_T": steam._unit_converter.fromSIunit_v(IAPWS_R6.R6_delta_T_rhoT(rho, temperature_si)),
+            "isen_t_p": steam._unit_converter.fromSIunit_pressure_derivative(IAPWS_R6.R6_isen_t_p_rhoT(rho, temperature_si)),
+        }
+        for method_name, reference in reference_properties.items():
+            with self.subTest(property=method_name):
+                method = getattr(steam, f"{method_name}_rhoT")
+                self.assertAlmostEqual(method(rho, temperature), reference)
+
+        volume_scale = steam._unit_converter.fromSIunit_v(1)
+        temperature_scale = steam._unit_converter.toSIunit_T(1) - steam._unit_converter.toSIunit_T(0)
+        for method_name, module_method in (
+            ("sec", IAPWS_R6.R6_sec_virial_coefficients),
+            ("third", IAPWS_R6.R6_third_virial_coefficients),
+        ):
+            with self.subTest(virial=method_name):
+                coefficient, derivative = module_method(rho, temperature_si)
+                if method_name == "sec":
+                    steam_result = steam.sec_virial_coefficients(rho, temperature)
+                    coefficient_scale = volume_scale
+                else:
+                    steam_result = steam.third_virial_coefficients(rho, temperature)
+                    coefficient_scale = volume_scale**2
+                self.assertAlmostEqual(steam_result[0], coefficient * coefficient_scale)
+                self.assertAlmostEqual(
+                    steam_result[1],
+                    derivative * coefficient_scale * temperature_scale,
+                )
+
+        self.assertEqual(
+            steam.phase_equilibrium_condition(
+                R6_95.Table_rho_dash[1],
+                R6_95.Table_rho_double_dash[1],
+                450 - 273.15,
+            ),
+            (
+                steam._unit_converter.fromSIunit_p(
+                    IAPWS_R6.R6_phase_equilibrium_condition(
+                        R6_95.Table_rho_dash[1],
+                        R6_95.Table_rho_double_dash[1],
+                        450,
+                    )[0]
+                ),
+                IAPWS_R6.R6_phase_equilibrium_condition(
+                    R6_95.Table_rho_dash[1],
+                    R6_95.Table_rho_double_dash[1],
+                    450,
+                )[1],
+            ),
+        )
+
+    def test_xsteam_r6_fls_units(self):
+        """Check R6 wrappers convert density, temperature, and pressure in FLS."""
+        steam = XSteam(XSteam.UNIT_SYSTEM_FLS)
+        rho_si = R6_95.Table7_rho[5]
+        temperature_si = R6_95.Table7_T[5]
+        rho_fls = steam._unit_converter.fromSIunit_rho(rho_si)
+        temperature_fls = steam._unit_converter.fromSIunit_T(temperature_si)
+
+        pressure_si = IAPWS_R6.R6_p_rhoT(rho_si, temperature_si)
+        enthalpy_si = IAPWS_R6.R6_h_rhoT(rho_si, temperature_si)
+        self.assertAlmostEqual(
+            steam.p_rhoT(rho_fls, temperature_fls),
+            steam._unit_converter.fromSIunit_p(pressure_si),
+        )
+        self.assertAlmostEqual(
+            steam.h_rhoT(rho_fls, temperature_fls),
+            steam._unit_converter.fromSIunit_h(enthalpy_si),
+        )
+        for name, module_method in (
+            ("joulethomson_rhoT", IAPWS_R6.R6_joulethomson_rhoT),
+            ("isen_t_p_rhoT", IAPWS_R6.R6_isen_t_p_rhoT),
+        ):
+            with self.subTest(derivative=name):
+                expected = steam._unit_converter.fromSIunit_pressure_derivative(module_method(rho_si, temperature_si))
+                self.assertAlmostEqual(getattr(steam, name)(rho_fls, temperature_fls), expected)
+
+        coefficient_si = IAPWS_R6.R6_third_virial_coefficients(rho_si, temperature_si)
+        coefficient_fls = steam.third_virial_coefficients(rho_fls, temperature_fls)
+        volume_scale = steam._unit_converter.fromSIunit_v(1)
+        temperature_scale = steam._unit_converter.toSIunit_T_interval(1)
+        self.assertAlmostEqual(coefficient_fls[0], coefficient_si[0] * volume_scale**2)
+        self.assertAlmostEqual(
+            coefficient_fls[1],
+            coefficient_si[1] * volume_scale**2 * temperature_scale,
+        )

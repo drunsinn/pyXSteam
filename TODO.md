@@ -18,9 +18,6 @@ as the source of truth to avoid divergent values.
 Implementation and behavior
 ----------------------------
 
-* Make the IAPWS R6 functions available via XSteam. (pyXSteam/IAPWS_R6.py:17)
-* Verify IAPWS R6 functions that have no reference values in R6, and add the
-  missing tests. (pyXSteam/IAPWS_R6.py:18-19)
 * Confirm whether defaulting to Region 1 is correct for this region-selection
   case. (pyXSteam/RegionSelection.py:170)
 * Investigate the commented-out mixture formulas for Cv_ps and w_ps in

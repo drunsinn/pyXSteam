@@ -14,10 +14,6 @@ from .tables import R6_95
 
 logger = logging.getLogger(__name__)
 
-# TODO: make functions available via XSteam
-# TODO: verify functions R6_* for which no test values are available in R6
-# TODO: add missing tests
-
 
 def eq_Theta(tau: float, delta: float, A: float, beta: float) -> float:
     """line 2 of eq 6 or table 5 - function not to be used separately

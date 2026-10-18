@@ -41,6 +41,21 @@ from .IAPWS_R14 import (
     psubl_T,
 )
 from .IAPWS_R12 import my_rhoT
+from .IAPWS_R6 import (
+    R6_cp_rhoT as _R6_cp_rhoT,
+    R6_cv_rhoT as _R6_cv_rhoT,
+    R6_delta_T_rhoT as _R6_delta_T_rhoT,
+    R6_h_rhoT as _R6_h_rhoT,
+    R6_isen_t_p_rhoT as _R6_isen_t_p_rhoT,
+    R6_joulethomson_rhoT as _R6_joulethomson_rhoT,
+    R6_p_rhoT as _R6_p_rhoT,
+    R6_phase_equilibrium_condition as _R6_phase_equilibrium_condition,
+    R6_s_rhoT as _R6_s_rhoT,
+    R6_sec_virial_coefficients as _R6_sec_virial_coefficients,
+    R6_third_virial_coefficients as _R6_third_virial_coefficients,
+    R6_u_rhoT as _R6_u_rhoT,
+    R6_w_rhoT as _R6_w_rhoT,
+)
 
 
 class XSteam:
@@ -2392,3 +2407,127 @@ class XSteam:
         my = my_rhoT(rho, T, industrial_application)
 
         return self._unit_converter.fromSIunit_my(my)
+
+    def p_rhoT(self, rho: float, t: float) -> float:
+        """IAPWS-95 pressure from density and temperature."""
+        return self._unit_converter.fromSIunit_p(
+            _R6_p_rhoT(
+                self._unit_converter.toSIunit_rho(rho),
+                self._unit_converter.toSIunit_T(t),
+            )
+        )
+
+    def u_rhoT(self, rho: float, t: float) -> float:
+        """IAPWS-95 internal energy from density and temperature."""
+        return self._unit_converter.fromSIunit_u(
+            _R6_u_rhoT(
+                self._unit_converter.toSIunit_rho(rho),
+                self._unit_converter.toSIunit_T(t),
+            )
+        )
+
+    def s_rhoT(self, rho: float, t: float) -> float:
+        """IAPWS-95 entropy from density and temperature."""
+        return self._unit_converter.fromSIunit_s(
+            _R6_s_rhoT(
+                self._unit_converter.toSIunit_rho(rho),
+                self._unit_converter.toSIunit_T(t),
+            )
+        )
+
+    def h_rhoT(self, rho: float, t: float) -> float:
+        """IAPWS-95 enthalpy from density and temperature."""
+        return self._unit_converter.fromSIunit_h(
+            _R6_h_rhoT(
+                self._unit_converter.toSIunit_rho(rho),
+                self._unit_converter.toSIunit_T(t),
+            )
+        )
+
+    def cv_rhoT(self, rho: float, t: float) -> float:
+        """IAPWS-95 isochoric heat capacity from density and temperature."""
+        return self._unit_converter.fromSIunit_Cv(
+            _R6_cv_rhoT(
+                self._unit_converter.toSIunit_rho(rho),
+                self._unit_converter.toSIunit_T(t),
+            )
+        )
+
+    def cp_rhoT(self, rho: float, t: float) -> float:
+        """IAPWS-95 isobaric heat capacity from density and temperature."""
+        return self._unit_converter.fromSIunit_Cp(
+            _R6_cp_rhoT(
+                self._unit_converter.toSIunit_rho(rho),
+                self._unit_converter.toSIunit_T(t),
+            )
+        )
+
+    def w_rhoT(self, rho: float, t: float) -> float:
+        """IAPWS-95 speed of sound from density and temperature."""
+        return self._unit_converter.fromSIunit_w(
+            _R6_w_rhoT(
+                self._unit_converter.toSIunit_rho(rho),
+                self._unit_converter.toSIunit_T(t),
+            )
+        )
+
+    def joulethomson_rhoT(self, rho: float, t: float) -> float:
+        """IAPWS-95 Joule-Thomson coefficient from density and temperature."""
+        return self._unit_converter.fromSIunit_pressure_derivative(
+            _R6_joulethomson_rhoT(
+                self._unit_converter.toSIunit_rho(rho),
+                self._unit_converter.toSIunit_T(t),
+            )
+        )
+
+    def delta_T_rhoT(self, rho: float, t: float) -> float:
+        """IAPWS-95 isothermal throttling coefficient from density and temperature."""
+        return self._unit_converter.fromSIunit_v(
+            _R6_delta_T_rhoT(
+                self._unit_converter.toSIunit_rho(rho),
+                self._unit_converter.toSIunit_T(t),
+            )
+        )
+
+    def isen_t_p_rhoT(self, rho: float, t: float) -> float:
+        """IAPWS-95 isentropic temperature-pressure coefficient."""
+        return self._unit_converter.fromSIunit_pressure_derivative(
+            _R6_isen_t_p_rhoT(
+                self._unit_converter.toSIunit_rho(rho),
+                self._unit_converter.toSIunit_T(t),
+            )
+        )
+
+    def sec_virial_coefficients(self, rho: float, t: float) -> tuple[float, float]:
+        """IAPWS-95 second virial coefficient and its temperature derivative."""
+        coefficient, derivative = _R6_sec_virial_coefficients(
+            self._unit_converter.toSIunit_rho(rho),
+            self._unit_converter.toSIunit_T(t),
+        )
+        return (
+            self._unit_converter.fromSIunit_v(coefficient),
+            self._unit_converter.fromSIunit_v(derivative) * self._unit_converter.toSIunit_T_interval(1),
+        )
+
+    def third_virial_coefficients(self, rho: float, t: float) -> tuple[float, float]:
+        """IAPWS-95 third virial coefficient and its temperature derivative."""
+        coefficient, derivative = _R6_third_virial_coefficients(
+            self._unit_converter.toSIunit_rho(rho),
+            self._unit_converter.toSIunit_T(t),
+        )
+        return (
+            self._unit_converter.fromSIunit_v_squared(coefficient),
+            self._unit_converter.fromSIunit_v_squared(derivative) * self._unit_converter.toSIunit_T_interval(1),
+        )
+
+    def phase_equilibrium_condition(self, rho_liquid: float, rho_vapor: float, t: float) -> tuple[float, float]:
+        """IAPWS-95 pressure and Maxwell residuals for a liquid-vapor state."""
+        pressure_residual, maxwell_residual = _R6_phase_equilibrium_condition(
+            self._unit_converter.toSIunit_rho(rho_liquid),
+            self._unit_converter.toSIunit_rho(rho_vapor),
+            self._unit_converter.toSIunit_T(t),
+        )
+        return (
+            self._unit_converter.fromSIunit_p(pressure_residual),
+            maxwell_residual,
+        )
