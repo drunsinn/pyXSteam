@@ -870,53 +870,98 @@ def R6_isen_t_p_rhoT(rho: float, T: float) -> float:
     return org / (rho * R6_95.SPECIFIC_GAS_CONSTANT)
 
 
-def R6_sec_virial_coefficients(rho: float, T: float) -> float:
-    # """
-    # Calculate the second virial coefficient and its temperature derivative at a given temperature.
+def R6_sec_virial_coefficients(rho: float, T: float) -> tuple[float, float]:
+    """Return the second virial coefficient B and its temperature derivative.
 
-    # :param T: Temperature in [K]
+    The density argument is retained for compatibility; virial coefficients are
+    defined by the zero-density limit and therefore do not depend on it.
+    """
+    del rho
+    tau = R6_95.CRITICAL_TEMPERATURE / T
+    scale = 1 / R6_95.CRITICAL_DENSITY
 
-    # :return: A tuple containing the second virial coefficient B [m³/kg] and its temperature derivative dB/dT [m³/(kg K)]
-    # """
-    # tau = R6_95.CRITICAL_TEMPERATURE / T
+    coefficient = 0.0
+    derivative_tau = 0.0
+    for terms in (R6_95.tab2_sec1(), R6_95.tab2_sec2()):
+        for n, d, t, *rest in terms:
+            if d == 1:
+                coefficient += n * math.pow(tau, t)
+                derivative_tau += n * t * math.pow(tau, t - 1)
 
-    # B = 0.0
-    # dB_dT = 0.0
+    for n, a, b, A, B, C, D, beta in R6_95.tab2_sec4():
+        theta = A + 1 - tau
+        delta_term = math.pow(theta, 2) + B
+        psi = math.exp(-C - D * math.pow(tau - 1, 2))
+        coefficient += n * math.pow(delta_term, b) * psi
+        derivative_tau += n * psi * (-2 * b * theta * math.pow(delta_term, b - 1) - 2 * D * (tau - 1) * math.pow(delta_term, b))
 
-    # for n, d, t in R6_95.tab2_sec1():
-    #     B += n * R6_95.SPECIFIC_GAS_CONSTANT * R6_95.CRITICAL_TEMPERATURE * math.pow(R6_95.CRITICAL_DENSITY, -1) * math.pow(tau, t)
-    #     dB_dT += -1 * n * t * R6_95.SPECIFIC_GAS_CONSTANT * R6_95.CRITICAL_TEMPERATURE * math.pow(R6_95.CRITICAL_DENSITY, -1) * math.pow(tau, t + 1) / T
-
-    # return B, dB_dT
-    raise NotImplementedError("Function R6_sec_virial_coefficients is not yet implemented.")
-
-
-def R6_third_virial_coefficients(rho: float, T: float) -> float:
-    # """
-    # Calculate the third virial coefficient and its temperature derivative at a given temperature.
-
-    # :param T: Temperature in [K]
-
-    # :return: A tuple containing the third virial coefficient C [m^6/kg^2] and its temperature derivative dC/dT [m^6/(kg^2 K)]
-    # """
-    # tau = R6_95.CRITICAL_TEMPERATURE / T
-
-    # C = 0.0
-    # dC_dT = 0.0
-
-    # for n, d, t in R6_95.tab2_sec2():
-    #     C += n * R6_95.SPECIFIC_GAS_CONSTANT * R6_95.CRITICAL_TEMPERATURE * math.pow(R6_95.CRITICAL_DENSITY, -2) * math.pow(tau, t) * math.exp(-1 * math.pow(R6_95.CRITICAL_DENSITY, d))
-    #     dC_dT += -1 * n * t * R6_95.SPECIFIC_GAS_CONSTANT * R6_95.CRITICAL_TEMPERATURE * math.pow(R6_95.CRITICAL_DENSITY, -2) * math.pow(tau, t + 1) * math.exp(-1 * math.pow(R6_95.CRITICAL_DENSITY, d)) / T
-
-    # return C, dC_dT
-    raise NotImplementedError("Function R6_third_virial_coefficients is not yet implemented.")
+    value = scale * coefficient
+    derivative = scale * (-tau / T) * derivative_tau
+    return value, derivative
 
 
-def R6_phase_equilibrium_condition(rho: float, T: float) -> float:
-    """Phase-equilibrium condition (Maxwell criterion)"""
+def R6_third_virial_coefficients(rho: float, T: float) -> tuple[float, float]:
+    """Return the third virial coefficient C and its temperature derivative.
 
-    # p_sigma / R6_95.SPECIFIC_GAS_CONSTANT * T * rho_dash = 1 + delta_dash * eq_phi_r_delta(delta_dash, tau)
-    # p_sigma / R6_95.SPECIFIC_GAS_CONSTANT * T * rho_double_dash = 1 + delta_double_dash * eq_phi_r_delta(delta_double_dash, tau)
-    # (p_sigma / R6_95.SPECIFIC_GAS_CONSTANT * T) * (1/ rho_double_dash - 1/ rho_dash) - math.log(delta_dash / delta_double_dash) = eq_phi_r(delta_dash, tau) - eq_phi_r(delta_double_dash, tau)
+    The density argument is retained for compatibility; virial coefficients are
+    defined by the zero-density limit and therefore do not depend on it.
+    """
+    del rho
+    tau = R6_95.CRITICAL_TEMPERATURE / T
+    scale = math.pow(R6_95.CRITICAL_DENSITY, -2)
 
-    raise NotADirectoryError()
+    coefficient = 0.0
+    derivative_tau = 0.0
+    for terms in (R6_95.tab2_sec1(), R6_95.tab2_sec2()):
+        for n, d, t, *rest in terms:
+            if d == 2:
+                multiplier = 2.0
+            elif d == 1 and rest and rest[0] == 1:
+                multiplier = -2.0
+            else:
+                continue
+            coefficient += multiplier * n * math.pow(tau, t)
+            derivative_tau += multiplier * n * t * math.pow(tau, t - 1)
+
+    for n, a, b, A, B, C, D, beta in R6_95.tab2_sec4():
+        theta = A + 1 - tau
+        delta_term = math.pow(theta, 2) + B
+        psi = math.exp(-C - D * math.pow(tau - 1, 2))
+        q = A * theta / beta + B * a
+        term = C * math.pow(delta_term, b) - b * q * math.pow(delta_term, b - 1)
+        derivative_term = (
+            -2 * C * b * theta * math.pow(delta_term, b - 1)
+            + b * A / beta * math.pow(delta_term, b - 1)
+            + 2 * b * (b - 1) * q * theta * math.pow(delta_term, b - 2)
+            - 2 * D * (tau - 1) * term
+        )
+        coefficient += 4 * n * psi * term
+        derivative_tau += 4 * n * psi * derivative_term
+
+    value = scale * coefficient
+    derivative = scale * (-tau / T) * derivative_tau
+    return value, derivative
+
+
+def R6_phase_equilibrium_condition(rho_liquid: float, rho_vapor: float, T: float) -> tuple[float, float]:
+    """Return pressure-equality and Maxwell-criterion residuals.
+
+    The pressure residual is ``p_liquid - p_vapor`` in MPa. The dimensionless
+    Maxwell residual uses the mean of those pressures as the saturation
+    pressure, and is zero when the Maxwell condition is satisfied.
+    """
+    pressure_liquid = R6_p_rhoT(rho_liquid, T)
+    pressure_vapor = R6_p_rhoT(rho_vapor, T)
+    pressure_sigma = (pressure_liquid + pressure_vapor) / 2
+
+    tau = R6_95.CRITICAL_TEMPERATURE / T
+    delta_liquid = rho_liquid / R6_95.CRITICAL_DENSITY
+    delta_vapor = rho_vapor / R6_95.CRITICAL_DENSITY
+    maxwell_residual = (
+        pressure_sigma * 1000 / (R6_95.SPECIFIC_GAS_CONSTANT * T) * (1 / rho_vapor - 1 / rho_liquid)
+        - math.log(rho_liquid / rho_vapor)
+        - eq_phi_r(tau, delta_liquid)
+        + eq_phi_r(tau, delta_vapor)
+    )
+
+    return pressure_liquid - pressure_vapor, maxwell_residual

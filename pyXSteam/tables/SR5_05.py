@@ -44,7 +44,7 @@ class SR5_05:
     Table1_T3rx_I = [0, 1, 2, 3]
     Table1_T3rx_n = [0.584561202520006e3, -0.102961025163669e1, 0.243293362700452, -0.294905044740799e-2]
 
-    # Tables 3 Selected temperature values calculated from the subregion boundary equations for computer-program verification 
+    # Tables 3 Selected temperature values calculated from the subregion boundary equations for computer-program verification
     Table3_equation = ["T3ab", "T3cd", "T3ef", "T3gh", "T3ij", "T3jk", "T3mn", "T3op", "T3qu", "T3rx"]
 
     Table3_p = [40, 25, 40, 23, 23, 23, 22.8, 22.8, 22, 22]
@@ -62,7 +62,7 @@ class SR5_05:
         648.2622754,
     ]
 
-    # Tabel 4: Reducing quantities v*, p*, and T*, number of coefficients N, non-linear parameters a and b, and exponents c, d, and e for the   ,v p T  equations of the subregions 3a to 3t 
+    # Tabel 4: Reducing quantities v*, p*, and T*, number of coefficients N, non-linear parameters a and b, and exponents c, d, and e for the   ,v p T  equations of the subregions 3a to 3t
     Table4_subregion = [
         "3a",
         "3b",
@@ -348,7 +348,6 @@ class SR5_05:
     Table9_T3wx_I = [0, 1, 2, -1, -2]
 
     Table9_T3wx_n = [7.2805260914538, 97.3505869861952, 14.7370491183191, 329.196213998375, 873.371668682417]
-
 
     # Table 11: Selected temperature values calculated from the 3u-3v and 3w-3x boundary equations for computer-program verification.
     Table11_equation = ["T3uv", "T3wx"]
