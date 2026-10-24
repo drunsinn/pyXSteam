@@ -78,52 +78,41 @@ class XSteam:
 
     def __init__(self, unitSystem: UnitSystem = UnitSystem.BARE) -> None:
         """
-        Constructor method
+        Create a property calculator using the requested unit convention.
+
+        :param unitSystem: input/output unit system; MKS and BARE use bar and
+            °C, while FLS uses psi and °F.
         """
         self.logger: logging.Logger = logging.getLogger(__name__)
         self._unit_converter = UnitConverter(unitSystem)
         self.logger.debug("initialised pyXSteam with Unit System %s", self._unit_converter)
 
     def specificGasConstant(self) -> float:
-        """
-        :return: specific Gas Constant R in [kJ kg^-1 K^-1]
-        """
+        """Return the specific gas constant R in kJ/(kg·K)."""
         return SPECIFIC_GAS_CONSTANT
 
     def criticalTemperatur(self) -> float:
-        """
-        :return: specific temperature with conversion to the selected unit system
-        """
+        """Return the critical temperature in the selected temperature unit."""
         return self._unit_converter.fromSIunit_T(CRITICAL_TEMPERATURE)
 
     def criticalPressure(self) -> float:
-        """
-        :return: specific pressure with conversion to the selected unit system
-        """
+        """Return the critical pressure in the selected pressure unit."""
         return self._unit_converter.fromSIunit_p(CRITICAL_PRESSURE)
 
     def criticalDensity(self) -> float:
-        """
-        :return: specific density with conversion to the selected unit system
-        """
-        return self._unit_converter.fromSIunit_v(1 / CRITICAL_DENSITY)
+        """Return the critical density (kg/m³ for MKS/BARE; lb/ft³ for FLS)."""
+        return self._unit_converter.fromSIunit_rho(CRITICAL_DENSITY)
 
     def triplePointTemperatur(self) -> float:
-        """
-        :return: temperature of the triple point with conversion to the selected unit system
-        """
+        """Return triple-point temperature in the selected temperature unit."""
         return self._unit_converter.fromSIunit_T(TRIPLE_POINT_TEMPERATURE)
 
     def triplePointPressure(self) -> float:
-        """
-        :return: Pressure of the triple point with conversion to the selected unit systemt
-        """
+        """Return the triple-point pressure in the selected pressure unit."""
         return self._unit_converter.fromSIunit_p(TRIPLE_POINT_PRESSURE)
 
     def zeroPointTemperature(self) -> float:
-        """
-        :return: absolute zero temperature with conversion to the selected unit system
-        """
+        """Return absolute-zero temperature in the selected temperature unit."""
         return self._unit_converter.fromSIunit_T(0.0)
 
     def tsat_p(self, p: float) -> float:
@@ -131,7 +120,7 @@ class XSteam:
         Section 1.2 temperature
         Saturation-temperature as a function of pressure
 
-        :param p: preasure
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
 
         :return: saturation temperature or NaN if arguments are out of range
         """
@@ -146,7 +135,7 @@ class XSteam:
         Section 1.2 temperature
         Saturation-temperature as a function of entropy
 
-        :param s: specific entropy
+        :param s: specific entropy in the selected system (kJ/(kg·K) for MKS/BARE; Btu/(lb·°F) for FLS)
 
         :return: saturation temperature or NaN if arguments are out of range
         """
@@ -163,8 +152,8 @@ class XSteam:
         Section 1.2 temperature
         temperature as a function of pressure and enthalpy
 
-        :param p: preasure
-        :param h: enthalpy
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+        :param h: specific enthalpy in the selected system (kJ/kg for MKS/BARE; Btu/lb for FLS)
 
         :return: temperature or NaN if arguments are out of range
         """
@@ -195,8 +184,8 @@ class XSteam:
         Section 1.2 temperature
         temperature as a function of pressure and entropy
 
-        :param p: preasure
-        :param s: specific entropy
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+        :param s: specific entropy in the selected system (kJ/(kg·K) for MKS/BARE; Btu/(lb·°F) for FLS)
 
         :return: temperature or NaN if arguments are out of range
         """
@@ -227,8 +216,8 @@ class XSteam:
         Section 1.2 temperature
         temperature as a function of enthalpy and entropy
 
-        :param h: enthalpy
-        :param s: specific entropy
+        :param h: specific enthalpy in the selected system (kJ/kg for MKS/BARE; Btu/lb for FLS)
+        :param s: specific entropy in the selected system (kJ/(kg·K) for MKS/BARE; Btu/(lb·°F) for FLS)
 
         :return: temperature or NaN if arguments are out of range
         """
@@ -267,7 +256,7 @@ class XSteam:
         Section 1.3 Pressure
         Saturation-Pressure as a function of entropy
 
-        :param s: specific entropy
+        :param s: specific entropy in the selected system (kJ/(kg·K) for MKS/BARE; Btu/(lb·°F) for FLS)
 
         :return: saturation pressure or NaN if arguments are out of range
         """
@@ -283,7 +272,7 @@ class XSteam:
         Section 1.3 Pressure
         Saturation-Pressure as a function of temperature
 
-        :param t: temperature
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
 
         :return: saturation pressure or NaN if arguments are out of range
         """
@@ -299,8 +288,8 @@ class XSteam:
         Section 1.3 Pressure
         Pressure  as a function of enthalpy and entropy
 
-        :param h: enthalpy
-        :param s: specific entropy
+        :param h: specific enthalpy in the selected system (kJ/kg for MKS/BARE; Btu/lb for FLS)
+        :param s: specific entropy in the selected system (kJ/(kg·K) for MKS/BARE; Btu/(lb·°F) for FLS)
 
         :return: pressure or NaN if arguments are out of range
         """
@@ -341,8 +330,8 @@ class XSteam:
 
         Not valid for water or sumpercritical since water rho does not change very much with p. Uses iteration to find p.
 
-        :param h: enthalpy
-        :param rho: density
+        :param h: specific enthalpy in the selected system (kJ/kg for MKS/BARE; Btu/lb for FLS)
+        :param rho: density in the selected system (kg/m³ for MKS/BARE; lb/ft³ for FLS)
 
         :raises ValueError: value of density is zero or negative
 
@@ -381,11 +370,11 @@ class XSteam:
     def hV_p(self, p: float) -> float:
         """
         Section 1.4 enthalpy
-        Saturated vapour enthalpy as a function of pressure
+        Saturated vapor enthalpy as a function of pressure
 
-        :param p: preasure
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
 
-        :return: saturated vapour enthalpy or NaN if arguments are out of range
+        :return: saturated vapor enthalpy or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
         if TRIPLE_POINT_PRESSURE < p < CRITICAL_PRESSURE:
@@ -398,7 +387,7 @@ class XSteam:
         Section 1.4 enthalpy
         Saturated liquid enthalpy as a function of pressure
 
-        :param p: preasure
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
 
         :return: saturated liquid enthalpy or NaN if arguments are out of range
         """
@@ -411,11 +400,11 @@ class XSteam:
     def hV_t(self, t: float) -> float:
         """
         Section 1.4 enthalpy
-        Saturated vapour enthalpy as a function of temperature
+        Saturated vapor enthalpy as a function of temperature
 
-        :param t: temperature
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
 
-        :return: saturated vapour enthalpy or NaN if arguments are out of range
+        :return: saturated vapor enthalpy or NaN if arguments are out of range
         """
         T = self._unit_converter.toSIunit_T(t)
         if FREEZING_TEMPERATURE_H2O < T < CRITICAL_TEMPERATURE:
@@ -429,7 +418,7 @@ class XSteam:
         Section 1.4 enthalpy
         Saturated liquid enthalpy as a function of temperature
 
-        :param t: temperature
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
 
         :return: saturated liquid enthalpy or NaN if arguments are out of range
         """
@@ -443,10 +432,10 @@ class XSteam:
     def h_pt(self, p: float, t: float) -> float:
         """
         Section 1.4 enthalpy
-        Entalpy as a function of pressure and temperature
+        Enthalpy as a function of pressure and temperature
 
-        :param p: preasure
-        :param t: temperature
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
 
         :return: enthalpy or NaN if arguments are out of range
         """
@@ -480,10 +469,10 @@ class XSteam:
     def h_ps(self, p: float, s: float) -> float:
         """
         Section 1.4 enthalpy
-        Entalpy as a function of pressure and entropy
+        Enthalpy as a function of pressure and entropy
 
-        :param p: preasure
-        :param s: specific entropy
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+        :param s: specific entropy in the selected system (kJ/(kg·K) for MKS/BARE; Btu/(lb·°F) for FLS)
 
         :return: enthalpy or NaN if arguments are out of range
         """
@@ -513,10 +502,10 @@ class XSteam:
     def h_px(self, p: float, x: float) -> float:
         """
         Section 1.4 enthalpy
-        Entalpy as a function of pressure and vapour fraction
+        Enthalpy as a function of pressure and vapor fraction
 
-        :param p: preasure
-            x (float): vapour fraction value
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+        :param x: vapor quality, dimensionless mass fraction in [0, 1]
 
         :return: enthalpy or NaN if arguments are out of range
         """
@@ -532,10 +521,10 @@ class XSteam:
     def h_prho(self, p: float, rho: float) -> float:
         """
         Section 1.4 enthalpy
-        Entalpy as a function of pressure and density. Observe for low temperatures (liquid) this equation has 2 solutions
+        Enthalpy as a function of pressure and density. Observe for low temperatures (liquid) this equation has 2 solutions
 
-        :param p: preasure
-            rho (float): density value
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+        :param rho: density in the selected system (kg/m³ for MKS/BARE; lb/ft³ for FLS)
 
         :return: enthalpy or NaN if arguments are out of range
         """
@@ -573,10 +562,10 @@ class XSteam:
     def h_tx(self, t: float, x: float) -> float:
         """
         Section 1.4 enthalpy
-        Entalpy as a function of temperature and vapour fraction
+        Enthalpy as a function of temperature and vapor fraction
 
-        :param t: temperature
-            x (float): vapour fraction value
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
+        :param x: vapor quality, dimensionless mass fraction in [0, 1]
 
         :return: enthalpy or NaN if arguments are out of range
         """
@@ -593,12 +582,12 @@ class XSteam:
     def vV_p(self, p: float) -> float:
         """
         Section 1.5 Specific Volume
-        Saturated vapour volume as a function of pressure
+        Saturated vapor volume as a function of pressure
 
-        :param p: preasure
-            x (float): vapour fraction value
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+        :param x: vapor quality, dimensionless mass fraction in [0, 1]
 
-        :return: saturated vapour volume or NaN if arguments are out of range
+        :return: saturated vapor volume or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
         if TRIPLE_POINT_PRESSURE < p < CRITICAL_PRESSURE:
@@ -613,7 +602,7 @@ class XSteam:
         Section 1.5 Specific Volume
         Saturated liquid volume as a function of pressure
 
-        :param p: preasure
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
 
         :return: saturated liquid volume or NaN if arguments are out of range
         """
@@ -628,11 +617,11 @@ class XSteam:
     def vV_t(self, t: float) -> float:
         """
         Section 1.5 Specific Volume
-        Saturated vapour volume as a function of temperature
+        Saturated vapor volume as a function of temperature
 
-        :param t: temperature
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
 
-        :return: saturated vapour volume or NaN if arguments are out of range
+        :return: saturated vapor volume or NaN if arguments are out of range
         """
         T = self._unit_converter.toSIunit_T(t)
         if FREEZING_TEMPERATURE_H2O < T < CRITICAL_TEMPERATURE:
@@ -647,7 +636,7 @@ class XSteam:
         Section 1.5 Specific Volume
         Saturated liquid volume as a function of temperature
 
-        :param t: temperature
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
 
         :return: saturated liquid volume or NaN if arguments are out of range
         """
@@ -664,8 +653,8 @@ class XSteam:
         Section 1.5 Specific Volume
         Specific volume as a function of pressure and temperature
 
-        :param p: preasure
-        :param t: temperature
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
 
         :return: specific volume or NaN if arguments are out of range
         """
@@ -701,8 +690,8 @@ class XSteam:
         Section 1.5 Specific Volume
         Specific volume as a function of pressure and enthalpy
 
-        :param p: preasure
-        :param h: enthalpy
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+        :param h: specific enthalpy in the selected system (kJ/kg for MKS/BARE; Btu/lb for FLS)
 
         :return: specific volume or NaN if arguments are out of range
         """
@@ -741,8 +730,8 @@ class XSteam:
         Section 1.5 Specific Volume
         Specific volume as a function of pressure and entropy
 
-        :param p: preasure
-        :param s: specific entropy
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+        :param s: specific entropy in the selected system (kJ/(kg·K) for MKS/BARE; Btu/(lb·°F) for FLS)
 
         :return: specific volume or NaN if arguments are out of range
         """
@@ -780,11 +769,11 @@ class XSteam:
         """
         Section 1.6 Density (rho)
         Note: Density is calculated as 1/v. See section 1.5 Volume
-        Saturated vapour density as a function of pressure
+        Saturated vapor density as a function of pressure
 
-        :param p: preasure
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
 
-        :return: saturated vapour density
+        :return: saturated vapor density
         """
         return 1 / self.vV_p(p)
 
@@ -794,7 +783,7 @@ class XSteam:
         Note: Density is calculated as 1/v. See section 1.5 Volume
         Saturated liquid density as a function of pressure
 
-        :param p: preasure
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
 
         :return: saturated liquid density
         """
@@ -804,11 +793,11 @@ class XSteam:
         """
         Section 1.6 Density (rho)
         Note: Density is calculated as 1/v. See section 1.5 Volume
-        Saturated vapour density as a function of temperature
+        Saturated vapor density as a function of temperature
 
-        :param t: temperature
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
 
-        :return: saturated vapour density
+        :return: saturated vapor density
         """
         return 1 / self.vV_t(t)
 
@@ -818,7 +807,7 @@ class XSteam:
         Note: Density is calculated as 1/v. See section 1.5 Volume
         Saturated liquid density as a function of temperature
 
-        :param t: temperature
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
 
         :return: saturated liquid density
         """
@@ -830,8 +819,8 @@ class XSteam:
         Note: Density is calculated as 1/v. See section 1.5 Volume
         Density as a function of pressure and temperature
 
-        :param p: preasure
-        :param t: temperature
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
 
         :return: density
         """
@@ -843,8 +832,8 @@ class XSteam:
         Note: Density is calculated as 1/v. See section 1.5 Volume
         Density as a function of pressure and enthalpy
 
-        :param p: preasure
-        :param h: enthalpy
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+        :param h: specific enthalpy in the selected system (kJ/kg for MKS/BARE; Btu/lb for FLS)
 
         :return: density
         """
@@ -856,8 +845,8 @@ class XSteam:
         Note: Density is calculated as 1/v. See section 1.5 Volume
         Density as a function of pressure and entropy
 
-        :param p: preasure
-        :param s: specific entropy
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+        :param s: specific entropy in the selected system (kJ/(kg·K) for MKS/BARE; Btu/(lb·°F) for FLS)
 
         :return: density
         """
@@ -866,11 +855,11 @@ class XSteam:
     def sV_p(self, p: float) -> float:
         """
         Section 1.7 Specific entropy
-        Saturated vapour entropy as a function of pressure
+        Saturated vapor entropy as a function of pressure
 
-        :param p: preasure
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
 
-        :return: Saturated vapour entropy or NaN if arguments are out of range
+        :return: Saturated vapor entropy or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
         if TRIPLE_POINT_PRESSURE < p < CRITICAL_PRESSURE:
@@ -885,7 +874,7 @@ class XSteam:
         Section 1.7 Specific entropy
         Saturated liquid entropy as a function of pressure
 
-        :param p: preasure
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
 
         :return: Saturated liquid entropy or NaN if arguments are out of range
         """
@@ -900,11 +889,11 @@ class XSteam:
     def sV_t(self, t: float) -> float:
         """
         Section 1.7 Specific entropy
-        Saturated vapour entropy as a function of temperature
+        Saturated vapor entropy as a function of temperature
 
-        :param t: temperature
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
 
-        :return: Saturated vapour entropy or NaN if arguments are out of range
+        :return: Saturated vapor entropy or NaN if arguments are out of range
         """
         T = self._unit_converter.toSIunit_T(t)
         if FREEZING_TEMPERATURE_H2O < T < CRITICAL_TEMPERATURE:
@@ -924,7 +913,7 @@ class XSteam:
         Section 1.7 Specific entropy
         Saturated liquid entropy as a function of temperature
 
-        :param t: temperature
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
 
         :return: Saturated liquid entropy or NaN if arguments are out of range
         """
@@ -944,10 +933,10 @@ class XSteam:
     def s_pt(self, p: float, t: float) -> float:
         """
         Section 1.7 Specific entropy
-        Specific entropy as a function of pressure and temperature (Returns saturated vapour entalpy if mixture)
+        Specific entropy as a function of pressure and temperature (Returns saturated vapor entalpy if mixture)
 
-        :param p: preasure
-        :param t: temperature
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
 
         :return: entropy or NaN if arguments are out of range
         """
@@ -981,8 +970,8 @@ class XSteam:
         Section 1.7 Specific entropy
         Specific entropy as a function of pressure and enthalpy
 
-        :param p: preasure
-        :param h: enthalpy
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+        :param h: specific enthalpy in the selected system (kJ/kg for MKS/BARE; Btu/lb for FLS)
 
         :return: entropy or NaN if arguments are out of range
         """
@@ -1025,11 +1014,11 @@ class XSteam:
     def uV_p(self, p: float) -> float:
         """
         Section 1.8 Specific internal energy
-        Saturated vapour internal energy as a function of pressure
+        Saturated vapor internal energy as a function of pressure
 
-        :param p: preasure
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
 
-        :return: saturated vapour internal energy or NaN if arguments are out of range
+        :return: saturated vapor internal energy or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
         if TRIPLE_POINT_PRESSURE < p < CRITICAL_PRESSURE:
@@ -1044,7 +1033,7 @@ class XSteam:
         Section 1.8 Specific internal energy
         Saturated liquid internal energy as a function of pressure
 
-        :param p: preasure
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
 
         :return: saturated liquid internal energy
         """
@@ -1059,11 +1048,11 @@ class XSteam:
     def uV_t(self, t: float) -> float:
         """
         Section 1.8 Specific internal energy
-        Saturated vapour internal energy as a function of temperature
+        Saturated vapor internal energy as a function of temperature
 
-        :param t: temperature
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
 
-        :return: saturated vapour internal energy or NaN if arguments are out of range
+        :return: saturated vapor internal energy or NaN if arguments are out of range
         """
         T = self._unit_converter.toSIunit_T(t)
         if FREEZING_TEMPERATURE_H2O < T < CRITICAL_TEMPERATURE:
@@ -1083,7 +1072,7 @@ class XSteam:
         Section 1.8 Specific internal energy
         Saturated liquid internal energy as a function of temperature
 
-        :param t: temperature
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
 
         :return: saturated liquid internal energy or NaN if arguments are out of range
         """
@@ -1107,8 +1096,8 @@ class XSteam:
         Section 1.8 Specific internal energy
         Specific internal energy as a function of pressure and temperature
 
-        :param p: preasure
-        :param t: temperature
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
 
         :return: specific internal energy or NaN if arguments are out of range
         """
@@ -1151,8 +1140,8 @@ class XSteam:
         Section 1.8 Specific internal energy
         Specific internal energy as a function of pressure and enthalpy
 
-        :param p: preasure
-        :param h: enthalpy
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+        :param h: specific enthalpy in the selected system (kJ/kg for MKS/BARE; Btu/lb for FLS)
 
         :return: specific internal energy or NaN if arguments are out of range
         """
@@ -1203,8 +1192,8 @@ class XSteam:
         Section 1.8 Specific internal energy
         Specific internal energy as a function of pressure and entropy
 
-        :param p: preasure
-        :param s: specific entropy
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+        :param s: specific entropy in the selected system (kJ/(kg·K) for MKS/BARE; Btu/(lb·°F) for FLS)
 
         :return: specific internal energy or NaN if arguments are out of range
         """
@@ -1249,18 +1238,18 @@ class XSteam:
     def CpV_p(self, p: float) -> float:
         """
         Section 1.9 Specific isobaric heat capacity
-        Saturated vapour heat capacity as a function of pressure
+        Saturated vapor heat capacity as a function of pressure
 
-        :param p: preasure
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
 
-        :return: saturated vapour heat capacity or NaN if arguments are out of range
+        :return: saturated vapor heat capacity or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
         if TRIPLE_POINT_PRESSURE < p < CRITICAL_PRESSURE:
             if p < 16.529:
                 return self._unit_converter.fromSIunit_Cp(Region2.Cp2_pT(p, Region4.T4_p(p)))
             return self._unit_converter.fromSIunit_Cp(Region3.Cp3_rhoT(1 / (Region3.v3_ph(p, Region4.h4V_p(p))), Region4.T4_p(p)))
-        self.logger.debug("preassure %f out of range", p)
+        self.logger.debug("pressure %f out of range", p)
         return float("NaN")
 
     def CpL_p(self, p: float) -> float:
@@ -1268,7 +1257,7 @@ class XSteam:
         Section 1.9 Specific isobaric heat capacity
         Saturated liquid heat capacity as a function of pressure
 
-        :param p: preasure
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
 
         :return: saturated liquid heat capacity or NaN if arguments are out of range
         """
@@ -1277,17 +1266,17 @@ class XSteam:
             if p < 16.529:
                 return self._unit_converter.fromSIunit_Cp(Region1.Cp1_pT(p, Region4.T4_p(p)))
             return self._unit_converter.fromSIunit_Cp(Region3.Cp3_rhoT(1 / (Region3.v3_ph(p, Region4.h4L_p(p))), Region4.T4_p(p)))
-        self.logger.debug("preassure %f out of range", p)
+        self.logger.debug("pressure %f out of range", p)
         return float("NaN")
 
     def CpV_t(self, t: float) -> float:
         """
         Section 1.9 Specific isobaric heat capacity
-        Saturated vapour heat capacity as a function of temperature
+        Saturated vapor heat capacity as a function of temperature
 
-        :param t: temperature
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
 
-        :return: saturated vapour heat capacity or NaN if arguments are out of range
+        :return: saturated vapor heat capacity or NaN if arguments are out of range
         """
         T = self._unit_converter.toSIunit_T(t)
         if FREEZING_TEMPERATURE_H2O < T < CRITICAL_TEMPERATURE:
@@ -1307,7 +1296,7 @@ class XSteam:
         Section 1.9 Specific isobaric heat capacity
         Saturated liquid heat capacity as a function of temperature
 
-        :param t: temperature
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
 
         :return: saturated liquid heat capacity or NaN if arguments are out of range
         """
@@ -1330,8 +1319,8 @@ class XSteam:
         Section 1.9 Specific isobaric heat capacity
         Specific isobaric heat capacity as a function of pressure and temperature
 
-        :param p: preasure
-        :param t: temperature
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
 
         :return: specific isobaric heat capacity or NaN if arguments are out of range
         """
@@ -1374,8 +1363,8 @@ class XSteam:
         Section 1.9 Specific isobaric heat capacity
         Specific isobaric heat capacity as a function of pressure and enthalpy
 
-        :param p: preasure
-        :param h: enthalpy
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+        :param h: specific enthalpy in the selected system (kJ/kg for MKS/BARE; Btu/lb for FLS)
 
         :return: specific isobaric heat capacity or NaN if arguments are out of range
         """
@@ -1421,8 +1410,8 @@ class XSteam:
         Section 1.9 Specific isobaric heat capacity
         Specific isobaric heat capacity as a function of pressure and entropy
 
-        :param p: preasure
-        :param s: specific entropy
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+        :param s: specific entropy in the selected system (kJ/(kg·K) for MKS/BARE; Btu/(lb·°F) for FLS)
 
         :return: specific isobaric heat capacity or NaN if arguments are out of range
         """
@@ -1466,11 +1455,11 @@ class XSteam:
     def CvV_p(self, p: float) -> float:
         """
         Section 1.10 Specific isochoric heat capacity
-        Saturated vapour isochoric heat capacity as a function of pressure
+        Saturated vapor isochoric heat capacity as a function of pressure
 
-        :param p: preasure
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
 
-        :return: saturated vapour isochoric heat capacity or NaN if arguments are out of range
+        :return: saturated vapor isochoric heat capacity or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
         if TRIPLE_POINT_PRESSURE < p < CRITICAL_PRESSURE:
@@ -1490,7 +1479,7 @@ class XSteam:
         Section 1.10 Specific isochoric heat capacity
         Saturated liquid isochoric heat capacity as a function of pressure
 
-        :param p: preasure
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
 
         :return: saturated liquid isochoric heat capacity or NaN if arguments are out of range
         """
@@ -1510,11 +1499,11 @@ class XSteam:
     def CvV_t(self, t: float) -> float:
         """
         Section 1.10 Specific isochoric heat capacity
-        Saturated vapour isochoric heat capacity as a function of temperature
+        Saturated vapor isochoric heat capacity as a function of temperature
 
-        :param t: temperature
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
 
-        :return: saturated vapour isochoric heat capacity or NaN if arguments are out of range
+        :return: saturated vapor isochoric heat capacity or NaN if arguments are out of range
         """
         T = self._unit_converter.toSIunit_T(t)
         if FREEZING_TEMPERATURE_H2O < T < CRITICAL_TEMPERATURE:
@@ -1535,7 +1524,7 @@ class XSteam:
         Section 1.10 Specific isochoric heat capacity
         Saturated liquid isochoric heat capacity as a function of temperature
 
-        :param t: temperature
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
 
         :return: saturated liquid isochoric heat capacity or NaN if arguments are out of range
         """
@@ -1558,8 +1547,8 @@ class XSteam:
         Section 1.10 Specific isochoric heat capacity
         Specific isochoric heat capacity as a function of pressure and temperature
 
-        :param p: preasure
-        :param t: temperature
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
 
         :return: specific isochoric heat capacity or NaN if arguments are out of range
         """
@@ -1602,8 +1591,8 @@ class XSteam:
         Section 1.10 Specific isochoric heat capacity
         Specific isochoric heat capacity as a function of pressure and enthalpy
 
-        :param p: preasure
-        :param h: enthalpy
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+        :param h: specific enthalpy in the selected system (kJ/kg for MKS/BARE; Btu/lb for FLS)
 
         :return: specific isochoric heat capacity or NaN if arguments are out of range
         """
@@ -1649,11 +1638,11 @@ class XSteam:
         Section 1.10 Specific isochoric heat capacity
         Specific isochoric heat capacity as a function of pressure and entropy
         In the two-phase region, returns a quality-weighted interpolation of
-        the saturated liquid and vapour values; this is an estimate, not an
+        the saturated liquid and vapor values; this is an estimate, not an
         equilibrium-mixture derivative.
 
-        :param p: preasure
-        :param s: specific entropy
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+        :param s: specific entropy in the selected system (kJ/(kg·K) for MKS/BARE; Btu/(lb·°F) for FLS)
 
         :return: specific isochoric heat capacity or NaN if arguments are out of range
         """
@@ -1677,9 +1666,9 @@ class XSteam:
         if region == DiagramRegion.R4:
             quality = Region4.x4_ps(p, s)
             p_user = self._unit_converter.fromSIunit_p(p)
-            cv_vapour = self.CvV_p(p_user)
+            cv_vapor = self.CvV_p(p_user)
             cv_liquid = self.CvL_p(p_user)
-            return quality * cv_vapour + (1 - quality) * cv_liquid
+            return quality * cv_vapor + (1 - quality) * cv_liquid
 
         if region == DiagramRegion.R5:
             Ts = Region5.T5_ps(p, s)
@@ -1696,11 +1685,11 @@ class XSteam:
     def wV_p(self, p: float) -> float:
         """
         Section 1.11 Speed of sound
-        Saturated vapour speed of sound as a function of pressure
+        Saturated vapor speed of sound as a function of pressure
 
-        :param p: preasure
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
 
-        :return: speed of sound in saturated vapour or NaN if arguments are out of range
+        :return: speed of sound in saturated vapor or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
         if TRIPLE_POINT_PRESSURE < p < CRITICAL_PRESSURE:
@@ -1720,7 +1709,7 @@ class XSteam:
         Section 1.11 Speed of sound
         Saturated liquid speed of sound as a function of pressure
 
-        :param p: preasure
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
 
         :return: speed of sound in saturated liquid or NaN if arguments are out of range
         """
@@ -1740,11 +1729,11 @@ class XSteam:
     def wV_t(self, t: float) -> float:
         """
         Section 1.11 Speed of sound
-        Saturated vapour speed of sound as a function of temperature
+        Saturated vapor speed of sound as a function of temperature
 
-        :param t: temperature
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
 
-        :return: speed of sound in saturated vapour or NaN if arguments are out of range
+        :return: speed of sound in saturated vapor or NaN if arguments are out of range
         """
         T = self._unit_converter.toSIunit_T(t)
         if FREEZING_TEMPERATURE_H2O < T < CRITICAL_TEMPERATURE:
@@ -1765,7 +1754,7 @@ class XSteam:
         Section 1.11 Speed of sound
         Saturated liquid speed of sound as a function of temperature
 
-        :param t: temperature
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
 
         :return: speed of sound in saturated liquid or NaN if arguments are out of range
         """
@@ -1788,8 +1777,8 @@ class XSteam:
         Section 1.11 Speed of sound
         Speed of sound as a function of pressure and temperature
 
-        :param p: preasure
-        :param t: temperature
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
 
         :return: speed of sound or NaN if arguments are out of range
         """
@@ -1832,8 +1821,8 @@ class XSteam:
         Section 1.11 Speed of sound
         Speed of sound as a function of pressure and enthalpy
 
-        :param p: preasure
-        :param h: enthalpy
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+        :param h: specific enthalpy in the selected system (kJ/kg for MKS/BARE; Btu/lb for FLS)
 
         :return: speed of sound or NaN if arguments are out of range
         """
@@ -1875,11 +1864,11 @@ class XSteam:
         Section 1.11 Speed of sound
         Speed of sound as a function of pressure and entropy
         In the two-phase region, returns a quality-weighted interpolation of
-        the saturated liquid and vapour values; this is an estimate, not an
+        the saturated liquid and vapor values; this is an estimate, not an
         equilibrium-mixture speed of sound.
 
-        :param p: preasure
-        :param s: specific entropy
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+        :param s: specific entropy in the selected system (kJ/(kg·K) for MKS/BARE; Btu/(lb·°F) for FLS)
 
         :return: speed of sound or NaN if arguments are out of range
         """
@@ -1903,9 +1892,9 @@ class XSteam:
         if region == DiagramRegion.R4:
             quality = Region4.x4_ps(p, s)
             p_user = self._unit_converter.fromSIunit_p(p)
-            w_vapour = self.wV_p(p_user)
+            w_vapor = self.wV_p(p_user)
             w_liquid = self.wL_p(p_user)
-            return quality * w_vapour + (1 - quality) * w_liquid
+            return quality * w_vapor + (1 - quality) * w_liquid
 
         if region == DiagramRegion.R5:
             Ts = Region5.T5_ps(p, s)
@@ -1927,8 +1916,8 @@ class XSteam:
         density. This is not true since it will be two phases.
         Viscosity as a function of pressure and temperature
 
-        :param p: preasure
-        :param t: temperature
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
 
         :return: viscosity or NaN if arguments are out of range
         """
@@ -1963,8 +1952,8 @@ class XSteam:
         according to the density. This is not true since it will be two phases.
         Viscosity as a function of pressure and enthalpy
 
-        :param p: preasure
-        :param h: enthalpy
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+        :param h: specific enthalpy in the selected system (kJ/kg for MKS/BARE; Btu/lb for FLS)
 
         :return: viscosity or NaN if arguments are out of range
         """
@@ -2001,8 +1990,8 @@ class XSteam:
         is not true since it will be two phases.
         Viscosity as a function of pressure and entropy
 
-        :param p: preasure
-        :param s: specific entropy
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+        :param s: specific entropy in the selected system (kJ/(kg·K) for MKS/BARE; Btu/(lb·°F) for FLS)
 
         :return: viscosity
         """
@@ -2014,8 +2003,8 @@ class XSteam:
         Section 1.13 Prandtl
         Prandtl number as a function of preasuere and temperature
 
-        :param p: preasure
-        :param t: temperature
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
 
         :return: prandtl number
         """
@@ -2029,8 +2018,8 @@ class XSteam:
         Section 1.13 Prandtl
         Prandtl number as a function of preasuere and enthalpy
 
-        :param p: preasure
-        :param h: enthalpy
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+        :param h: specific enthalpy in the selected system (kJ/kg for MKS/BARE; Btu/lb for FLS)
 
         :return: prandtl number
         """
@@ -2044,7 +2033,7 @@ class XSteam:
         Section 1.15 Surface tension
         Surface tension for two phase water/steam as a function of temperature
 
-        :param t: temperature
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
 
         :return: surface tension
         """
@@ -2056,7 +2045,7 @@ class XSteam:
         Section 1.15 Surface tension
         Surface tension for two phase water/steam as a function of preasure
 
-        :param p: preasure
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
 
         :return: surface tension
         """
@@ -2071,7 +2060,7 @@ class XSteam:
         Conductivity of ordinary water substance (IAPWS 1998)
         Saturated liquid thermal conductivity as a function of pressure
 
-        :param p: preasure
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
 
         :return: saturated liquid thermal conductivity
         """
@@ -2088,11 +2077,11 @@ class XSteam:
         Section 1.16 Thermal conductivity
         Note: Revised release on the IAPS Formulation 1985 for the Thermal
         Conductivity of ordinary water substance (IAPWS 1998)
-        Saturated vapour thermal conductivity as a function of pressure
+        Saturated vapor thermal conductivity as a function of pressure
 
-        :param p: preasure
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
 
-        :return: saturated vapour thermal conductivity
+        :return: saturated vapor thermal conductivity
         """
         ps = p
         T = self.tsat_p(p)
@@ -2108,9 +2097,9 @@ class XSteam:
         Section 1.16 Thermal conductivity
         Note: Revised release on the IAPS Formulation 1985 for the Thermal
         Conductivity of ordinary water substance (IAPWS 1998)
-        Saturated vapour thermal conductivity as a function of temperature
+        Saturated vapor thermal conductivity as a function of temperature
 
-        :param t: temperature
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
 
         :return: saturated liquid thermal conductivity
         """
@@ -2130,9 +2119,9 @@ class XSteam:
         Conductivity of ordinary water substance (IAPWS 1998)
         Saturated liquid thermal conductivity as a function of temperature
 
-        :param t: temperature
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
 
-        :return: saturated vapour thermal conductivity
+        :return: saturated vapor thermal conductivity
         """
         Ts = t
         p = self.psat_t(Ts)
@@ -2150,8 +2139,8 @@ class XSteam:
         Conductivity of ordinary water substance (IAPWS 1998)
         Thermal conductivity as a function of pressure and temperature
 
-        :param p: preasure
-        :param t: temperature
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
 
         :return: thermal conductivity
         """
@@ -2173,8 +2162,8 @@ class XSteam:
         Conductivity of ordinary water substance (IAPWS 1998)
         Thermal conductivity as a function of pressure and enthalpy
 
-        :param p: preasure
-        :param h: enthalpy
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+        :param h: specific enthalpy in the selected system (kJ/kg for MKS/BARE; Btu/lb for FLS)
 
         :return: thermal conductivity
         """
@@ -2195,8 +2184,8 @@ class XSteam:
         Conductivity of ordinary water substance (IAPWS 1998)
         Thermal conductivity as a function of enthalpy and entropy
 
-        :param h: enthalpy
-        :param s: specific entropy
+        :param h: specific enthalpy in the selected system (kJ/kg for MKS/BARE; Btu/lb for FLS)
+        :param s: specific entropy in the selected system (kJ/(kg·K) for MKS/BARE; Btu/(lb·°F) for FLS)
 
         :return: thermal conductivity
         """
@@ -2216,10 +2205,10 @@ class XSteam:
         Section 1.17 Vapour fraction
         Vapour fraction as a function of pressure and enthalpy
 
-        :param p: preasure
-        :param h: enthalpy
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+        :param h: specific enthalpy in the selected system (kJ/kg for MKS/BARE; Btu/lb for FLS)
 
-        :return: vapour fraction or NaN if arguments are out of range
+        :return: vapor fraction or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
         h = self._unit_converter.toSIunit_h(h)
@@ -2233,10 +2222,10 @@ class XSteam:
         Section 1.17 Vapour fraction
         Vapour fraction as a function of pressure and entropy
 
-        :param p: preasure
-        :param s: specific entropy
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+        :param s: specific entropy in the selected system (kJ/(kg·K) for MKS/BARE; Btu/(lb·°F) for FLS)
 
-        :return: vapour fraction or NaN if arguments are out of range
+        :return: vapor fraction or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
         s = self._unit_converter.toSIunit_s(s)
@@ -2250,10 +2239,10 @@ class XSteam:
         Section 1.18 Vapour Volume Fraction
         Vapour volume fraction as a function of pressure and enthalpy
 
-        :param p: preasure
-        :param h: enthalpy
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+        :param h: specific enthalpy in the selected system (kJ/kg for MKS/BARE; Btu/lb for FLS)
 
-        :return: vapour volume fraction or NaN if arguments are out of range
+        :return: vapor volume fraction or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
         h = self._unit_converter.toSIunit_h(h)
@@ -2276,10 +2265,10 @@ class XSteam:
         Section 1.18 Vapour Volume Fraction
         Vapour volume fraction as a function of pressure and entropy
 
-        :param p: preasure
-        :param s: specific entropy
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+        :param s: specific entropy in the selected system (kJ/(kg·K) for MKS/BARE; Btu/(lb·°F) for FLS)
 
-        :return: vapour volume fraction or NaN if arguments are out of range
+        :return: vapor volume fraction or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
         s = self._unit_converter.toSIunit_s(s)
@@ -2312,12 +2301,12 @@ class XSteam:
         `IceType.VII` = 7
         If the hint is not one of the values above or None(Default), an Exception is raised
 
-        :param t: temperature
-        :param hint: hint for the selection logic to decide which part of the melting curve to use. For supported values see IceType
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
+        :param hint: optional :class:`IceType` selecting the melting-curve branch; use NONE for automatic selection where unambiguous
 
         :raises ValueError: unknown value for hint
 
-        :return: preassure or NaN if arguments are out of range
+        :return: pressure or NaN if arguments are out of range
         """
         T = self._unit_converter.toSIunit_T(t)
 
@@ -2377,9 +2366,9 @@ class XSteam:
         """R14-08(2011) Pressure along the sublimation curve as a function of temperature
         http://www.iapws.org/relguide/MeltSub2011.pdf
 
-        :param t: temperature
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
 
-        :return: preassure or NaN if arguments are out of range
+        :return: pressure or NaN if arguments are out of range
         """
         T = self._unit_converter.toSIunit_T(t)
         if 50 <= T < 273.16:
@@ -2396,8 +2385,8 @@ class XSteam:
         (kg/m³ and °C for MKS; lb/ft³ and °F for FLS); the returned viscosity
         follows the selected system (Pa·s for MKS; lbm/(ft·hr) for FLS).
 
-        :param rho: density in the selected unit system
-        :param t: temperature in the selected unit system
+        :param rho: density in the selected system (kg/m³ for MKS/BARE; lb/ft³ for FLS)
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
         :param industrial_application: omit critical enhancement when True
         :return: dynamic viscosity in the selected unit system
         """
@@ -2409,7 +2398,12 @@ class XSteam:
         return self._unit_converter.fromSIunit_my(viscosity_si)
 
     def p_rhoT(self, rho: float, t: float) -> float:
-        """IAPWS-95 pressure from density and temperature."""
+        """Calculate IAPWS-95 pressure from density and temperature.
+
+        :param rho: density in the selected system (kg/m³ for MKS/BARE; lb/ft³ for FLS)
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
+        :return: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+        """
         return self._unit_converter.fromSIunit_p(
             _R6_p_rhoT(
                 self._unit_converter.toSIunit_rho(rho),
@@ -2418,7 +2412,12 @@ class XSteam:
         )
 
     def u_rhoT(self, rho: float, t: float) -> float:
-        """IAPWS-95 internal energy from density and temperature."""
+        """Calculate IAPWS-95 internal energy from density and temperature.
+
+        :param rho: density in the selected system (kg/m³ for MKS/BARE; lb/ft³ for FLS)
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
+        :return: specific internal energy in the selected system (kJ/kg for MKS/BARE; Btu/lb for FLS)
+        """
         return self._unit_converter.fromSIunit_u(
             _R6_u_rhoT(
                 self._unit_converter.toSIunit_rho(rho),
@@ -2427,7 +2426,12 @@ class XSteam:
         )
 
     def s_rhoT(self, rho: float, t: float) -> float:
-        """IAPWS-95 entropy from density and temperature."""
+        """Calculate IAPWS-95 entropy from density and temperature.
+
+        :param rho: density in the selected system (kg/m³ for MKS/BARE; lb/ft³ for FLS)
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
+        :return: specific entropy in the selected system (kJ/(kg·K) for MKS/BARE; Btu/(lb·°F) for FLS)
+        """
         return self._unit_converter.fromSIunit_s(
             _R6_s_rhoT(
                 self._unit_converter.toSIunit_rho(rho),
@@ -2436,7 +2440,12 @@ class XSteam:
         )
 
     def h_rhoT(self, rho: float, t: float) -> float:
-        """IAPWS-95 enthalpy from density and temperature."""
+        """Calculate IAPWS-95 enthalpy from density and temperature.
+
+        :param rho: density in the selected system (kg/m³ for MKS/BARE; lb/ft³ for FLS)
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
+        :return: specific enthalpy in the selected system (kJ/kg for MKS/BARE; Btu/lb for FLS)
+        """
         return self._unit_converter.fromSIunit_h(
             _R6_h_rhoT(
                 self._unit_converter.toSIunit_rho(rho),
@@ -2445,7 +2454,12 @@ class XSteam:
         )
 
     def cv_rhoT(self, rho: float, t: float) -> float:
-        """IAPWS-95 isochoric heat capacity from density and temperature."""
+        """Calculate IAPWS-95 isochoric heat capacity from density and temperature.
+
+        :param rho: density in the selected system (kg/m³ for MKS/BARE; lb/ft³ for FLS)
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
+        :return: specific heat capacity in the selected system (kJ/(kg·K) for MKS/BARE; Btu/(lb·°F) for FLS)
+        """
         return self._unit_converter.fromSIunit_Cv(
             _R6_cv_rhoT(
                 self._unit_converter.toSIunit_rho(rho),
@@ -2454,7 +2468,12 @@ class XSteam:
         )
 
     def cp_rhoT(self, rho: float, t: float) -> float:
-        """IAPWS-95 isobaric heat capacity from density and temperature."""
+        """Calculate IAPWS-95 isobaric heat capacity from density and temperature.
+
+        :param rho: density in the selected system (kg/m³ for MKS/BARE; lb/ft³ for FLS)
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
+        :return: specific heat capacity in the selected system (kJ/(kg·K) for MKS/BARE; Btu/(lb·°F) for FLS)
+        """
         return self._unit_converter.fromSIunit_Cp(
             _R6_cp_rhoT(
                 self._unit_converter.toSIunit_rho(rho),
@@ -2463,7 +2482,12 @@ class XSteam:
         )
 
     def w_rhoT(self, rho: float, t: float) -> float:
-        """IAPWS-95 speed of sound from density and temperature."""
+        """Calculate IAPWS-95 speed of sound from density and temperature.
+
+        :param rho: density in the selected system (kg/m³ for MKS/BARE; lb/ft³ for FLS)
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
+        :return: speed in the selected system (m/s for MKS/BARE; ft/s for FLS)
+        """
         return self._unit_converter.fromSIunit_w(
             _R6_w_rhoT(
                 self._unit_converter.toSIunit_rho(rho),
@@ -2472,7 +2496,12 @@ class XSteam:
         )
 
     def joulethomson_rhoT(self, rho: float, t: float) -> float:
-        """IAPWS-95 Joule-Thomson coefficient from density and temperature."""
+        """Calculate IAPWS-95 Joule-Thomson coefficient from density and temperature.
+
+        :param rho: density in the selected system (kg/m³ for MKS/BARE; lb/ft³ for FLS)
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
+        :return: Joule-Thomson temperature-pressure coefficient in selected temperature and pressure units
+        """
         return self._unit_converter.fromSIunit_pressure_derivative(
             _R6_joulethomson_rhoT(
                 self._unit_converter.toSIunit_rho(rho),
@@ -2481,7 +2510,12 @@ class XSteam:
         )
 
     def delta_T_rhoT(self, rho: float, t: float) -> float:
-        """IAPWS-95 isothermal throttling coefficient from density and temperature."""
+        """Calculate IAPWS-95 isothermal throttling coefficient from density and temperature.
+
+        :param rho: density in the selected system (kg/m³ for MKS/BARE; lb/ft³ for FLS)
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
+        :return: specific-volume units in the selected system (m³/kg for MKS/BARE; ft³/lb for FLS)
+        """
         return self._unit_converter.fromSIunit_v(
             _R6_delta_T_rhoT(
                 self._unit_converter.toSIunit_rho(rho),
@@ -2490,7 +2524,12 @@ class XSteam:
         )
 
     def isen_t_p_rhoT(self, rho: float, t: float) -> float:
-        """IAPWS-95 isentropic temperature-pressure coefficient."""
+        """Calculate the IAPWS-95 isentropic temperature-pressure coefficient.
+
+        :param rho: density in the selected system (kg/m³ for MKS/BARE; lb/ft³ for FLS)
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
+        :return: coefficient in selected temperature units per selected pressure unit
+        """
         return self._unit_converter.fromSIunit_pressure_derivative(
             _R6_isen_t_p_rhoT(
                 self._unit_converter.toSIunit_rho(rho),
@@ -2499,7 +2538,13 @@ class XSteam:
         )
 
     def sec_virial_coefficients(self, rho: float, t: float) -> tuple[float, float]:
-        """IAPWS-95 second virial coefficient and its temperature derivative."""
+        """Calculate IAPWS-95 second virial coefficient B and dB/dT.
+
+        :param rho: density in the selected system; retained for API consistency
+            but not used because virial coefficients are zero-density limits
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
+        :return: (B, dB/dT), in selected specific-volume and temperature units
+        """
         coefficient, derivative = _R6_sec_virial_coefficients(
             self._unit_converter.toSIunit_rho(rho),
             self._unit_converter.toSIunit_T(t),
@@ -2510,7 +2555,13 @@ class XSteam:
         )
 
     def third_virial_coefficients(self, rho: float, t: float) -> tuple[float, float]:
-        """IAPWS-95 third virial coefficient and its temperature derivative."""
+        """Calculate IAPWS-95 third virial coefficient C and dC/dT.
+
+        :param rho: density in the selected system; retained for API consistency
+            but not used because virial coefficients are zero-density limits
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
+        :return: (C, dC/dT), in selected squared-specific-volume and temperature units
+        """
         coefficient, derivative = _R6_third_virial_coefficients(
             self._unit_converter.toSIunit_rho(rho),
             self._unit_converter.toSIunit_T(t),
@@ -2521,7 +2572,16 @@ class XSteam:
         )
 
     def phase_equilibrium_condition(self, rho_liquid: float, rho_vapor: float, t: float) -> tuple[float, float]:
-        """IAPWS-95 pressure and Maxwell residuals for a liquid-vapor state."""
+        """Return IAPWS-95 pressure-equality and Maxwell residuals.
+
+        :param rho_liquid: liquid density in the selected system (kg/m³ for
+            MKS/BARE; lb/ft³ for FLS)
+        :param rho_vapor: vapor density in the selected system (kg/m³ for
+            MKS/BARE; lb/ft³ for FLS)
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
+        :return: pressure residual (bar for MKS/BARE; psi for FLS) and
+            dimensionless Maxwell residual
+        """
         pressure_residual, maxwell_residual = _R6_phase_equilibrium_condition(
             self._unit_converter.toSIunit_rho(rho_liquid),
             self._unit_converter.toSIunit_rho(rho_vapor),

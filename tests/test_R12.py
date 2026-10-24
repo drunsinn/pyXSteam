@@ -27,9 +27,7 @@ class R12_FunctionTester(unittest.TestCase):
 
     def test_R12_correlation_length(self):
         """R12-08 Table 5 verification for the correlation length."""
-        for temperature, density, reference in zip(
-            R12_08.Table5_T, R12_08.Table5_rho, R12_08.Table5_xi
-        ):
+        for temperature, density, reference in zip(R12_08.Table5_T, R12_08.Table5_rho, R12_08.Table5_xi):
             with self.subTest(temperature=temperature, density=density):
                 self.assertAlmostEqual(
                     IAPWS_R12.R12_xi(density, temperature),
@@ -48,9 +46,7 @@ class R12_FunctionTester(unittest.TestCase):
             with self.subTest(temperature=temperature, density=density):
                 y = IAPWS_R12.R12_Y(density, temperature)
                 mu2 = IAPWS_R12.R12_my_dash_2(density, temperature)
-                viscosity = IAPWS_R12.my_rhoT(
-                    density, temperature, industrial_application=False
-                )
+                viscosity = IAPWS_R12.my_rhoT(density, temperature, industrial_application=False)
                 self.assertAlmostEqual(
                     y,
                     math.log(expected_mu2) / R12_08.Table3_x_u,
@@ -101,9 +97,7 @@ class R12_FunctionTester(unittest.TestCase):
         ) as enhancement_function:
             industrial_viscosity = IAPWS_R12.my_rhoT(density, temperature)
             self.assertEqual(enhancement_function.call_count, 0)
-            full_viscosity = IAPWS_R12.my_rhoT(
-                density, temperature, industrial_application=False
-            )
+            full_viscosity = IAPWS_R12.my_rhoT(density, temperature, industrial_application=False)
             self.assertEqual(enhancement_function.call_count, 1)
 
         self.assertAlmostEqual(
@@ -155,9 +149,7 @@ class R12_FunctionTester(unittest.TestCase):
         viscosity_si = IAPWS_R12.my_rhoT(density_si, temperature_si)
 
         mks = XSteam(UnitSystem.MKS)
-        self.assertAlmostEqual(
-            mks.R12_my_rhot(density_si, 25.0), viscosity_si, delta=1e-15
-        )
+        self.assertAlmostEqual(mks.R12_my_rhot(density_si, 25.0), viscosity_si, delta=1e-15)
         self.assertAlmostEqual(mks.my_pt(1.0, 100.0), 1.22704e-5, delta=1e-6)
         self.assertAlmostEqual(mks.my_ph(1.0, 100.0), 9.14003770302e-4, delta=1e-6)
 
@@ -165,6 +157,4 @@ class R12_FunctionTester(unittest.TestCase):
         density_fls = fls._unit_converter.fromSIunit_rho(density_si)
         temperature_fls = fls._unit_converter.fromSIunit_T(temperature_si)
         viscosity_fls = fls._unit_converter.fromSIunit_my(viscosity_si)
-        self.assertAlmostEqual(
-            fls.R12_my_rhot(density_fls, temperature_fls), viscosity_fls, delta=1e-10
-        )
+        self.assertAlmostEqual(fls.R12_my_rhot(density_fls, temperature_fls), viscosity_fls, delta=1e-10)

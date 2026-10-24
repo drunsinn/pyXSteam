@@ -141,8 +141,7 @@ def R12_Y(rho: float, T: float) -> float:
         part_2 = -1 * (1 / (4 * q_C_xi)) * math.sin(2 * Psi_D)
         part_3 = (1 / (math.pow(q_C_xi, 2))) * (1 - (5 / 4) * math.pow(q_C_xi, 2)) * math.sin(Psi_D)
         part_4 = -math.pow(q_C_xi, -3) * (
-            (1 - (3 / 2) * math.pow(q_C_xi, 2)) * Psi_D
-            - math.pow(math.fabs(math.pow(q_C_xi, 2) - 1), 3 / 2) * L
+            (1 - (3 / 2) * math.pow(q_C_xi, 2)) * Psi_D - math.pow(math.fabs(math.pow(q_C_xi, 2) - 1), 3 / 2) * L
         )
         res = part_1 + part_2 + part_3 + part_4
     return res

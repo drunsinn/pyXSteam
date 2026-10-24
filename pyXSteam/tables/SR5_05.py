@@ -62,7 +62,7 @@ class SR5_05:
         648.2622754,
     ]
 
-    # Tabel 4: Reducing quantities v*, p*, and T*, number of coefficients N, non-linear parameters a and b, and exponents c, d, and e for the   ,v p T  equations of the subregions 3a to 3t
+    # Table 4: Reducing quantities v*, p*, and T*, number of coefficients N, non-linear parameters a and b, and exponents c, d, and e for the   ,v p T  equations of the subregions 3a to 3t
     Table4_subregion = [
         "3a",
         "3b",

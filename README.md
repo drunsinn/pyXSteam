@@ -21,6 +21,7 @@ Some effort has been made to include the refined function of more recent release
  - IAPWS R4 (deprecated)
  - IAPWS R5-85(1994)
  - IAPWS R14
+ - IAPWS R12
 
 
 ## Contributors to pyXSteam
@@ -133,25 +134,52 @@ Revised release on the IAPS Formulation 1985 for the Thermal Conductivity of ord
 
 ## Nomenclature
 
-All Functions follow the same naming schema: First the wanted property, then a underscore `_`, then the wanted input properties Example: `t_ph` is temperature as a function of pressure and enthalpy. For a list of valid functions se below:
+Most property methods follow `property_inputs`: the property symbol is followed
+by underscore-separated independent variables. For example, `t_ph` returns
+temperature from pressure and specific enthalpy, while `h_tx` returns specific
+enthalpy from saturation temperature and vapor quality. Arguments use the
+selected unit system described above; quality and Prandtl number are
+unitless.
 
-| Property | Description                                                  |
-|----------|--------------------------------------------------------------|
-| t        | Temperature (°C or °F)                                       |
-| p        | Pressure (bar or psi)                                        |
-| h        | Enthalpy (kJ/kg or btu/lb)                                   |
-| v        | Specific volume (m3/kg or ft\^3/lb)                          |
-| rho      | Density (kg/m3 or lb/ft\^3)                                  |
-| s        | Specific entropy (kJ/(kg °C) or btu/(lb °F))                 |
-| u        | Specific internal energy (kJ/kg or btu/lb)                   |
-| Cp       | Specific isobaric heat capacity (kJ/(kg °C) or btu/(lb °F))  |
-| Cv       | Specific isochoric heat capacity (kJ/(kg °C) or btu/(lb °F)) |
-| w        | Speed of sound (m/s or ft/s)                                 |
-| my       | Viscosity (N s/m\^2 or lbm/ft/hr)                            |
-| tc       | Thermal Conductivity (W/(m °C) or btu/(h ft °F))             |
-| st       | Surface Tension (N/m or lb/ft)                               |
-| x        | Vapor fraction                                               |
-| vx       | Vapor Volume Fraction                                        |
+| Symbol | Meaning | MKS/BARE units | FLS units |
+|--------|---------|----------------|-----------|
+| `p` | Pressure | bar | psi |
+| `t` | Temperature | °C | °F |
+| `h` | Specific enthalpy | kJ/kg | Btu/lb |
+| `u` | Specific internal energy | kJ/kg | Btu/lb |
+| `s` | Specific entropy | kJ/(kg·K) | Btu/(lb·°F) |
+| `v` | Specific volume | m³/kg | ft³/lb |
+| `rho` | Density | kg/m³ | lb/ft³ |
+| `x` | Vapor quality (mass fraction) | dimensionless, 0–1 | dimensionless, 0–1 |
+| `vx` | Vapor volume fraction | dimensionless, 0–1 | dimensionless, 0–1 |
+| `Cp` | Isobaric specific heat capacity | kJ/(kg·K) | Btu/(lb·°F) |
+| `Cv` | Isochoric specific heat capacity | kJ/(kg·K) | Btu/(lb·°F) |
+| `w` | Speed of sound | m/s | ft/s |
+| `my` | Dynamic viscosity | Pa·s | lbm/(ft·hr) |
+| `tc` | Thermal conductivity | W/(m·K) | Btu/(h·ft·°F) |
+| `st` | Surface tension | N/m | lb/ft |
+| `pr` | Prandtl number | dimensionless | dimensionless |
+| `B`, `C` | Second and third virial coefficients | m³/kg; (m³/kg)² | ft³/lb; (ft³/lb)² |
+| `dB/dT`, `dC/dT` | Temperature derivatives of virial coefficients | coefficient units/K | coefficient units/°F |
+| `Joule-Thomson coefficient` | Temperature change per pressure change at constant enthalpy | K/MPa internally; K/bar as returned by MKS/BARE | °F/psi |
+| `delta_T` | Isothermal throttling coefficient | Specific-volume units | Specific-volume units |
+
+In saturation method names, uppercase `V` means saturated vapor and uppercase
+`L` means saturated liquid (`hV_p`, `vL_t`). The final lowercase suffixes
+`p`, `t`, `h`, and `s` identify pressure, temperature, enthalpy, and entropy
+inputs. `rho` means density, `x` means vapor quality, and `hs` means the pair
+of enthalpy and entropy inputs. The case-sensitive suffix `rhoT` identifies
+IAPWS-95 methods taking density and temperature. The virial-coefficient
+methods return a `(coefficient, temperature_derivative)` pair; their `rho`
+argument is accepted for API consistency but the zero-density coefficients do
+not depend on it.
+
+`pmelt_t` also accepts the optional `hint` argument (`IceType`) to select an
+ice melting-curve branch; `industrial_application` in `R12_my_rhot` selects
+whether to include the near-critical viscosity enhancement. These options are
+not encoded in the method-name suffixes. Methods such as `specificGasConstant`
+and `criticalPressure` return constants and do not follow the property-input
+naming pattern.
 
 
 ## Available Functions
@@ -159,7 +187,8 @@ All Functions follow the same naming schema: First the wanted property, then a u
 ### Temperature
 | Function | Description                                        |
 |----------|----------------------------------------------------|
-| tsat_p   | Saturation temperature                             |
+| tsat_p   | Saturation temperature as a function of pressure   |
+| tsat_s   | Saturation temperature as a function of entropy    |
 | t_ph     | Temperature as a function of pressure and enthalpy |
 | t_ps     | Temperature as a function of pressure and entropy  |
 | t_hs     | Temperature as a function of enthalpy and entropy  |
@@ -167,8 +196,9 @@ All Functions follow the same naming schema: First the wanted property, then a u
 ### Pressure
 | Function | Description                                                                                                    |
 |----------|----------------------------------------------------------------------------------------------------------------|
-| psat_t   | Saturation pressure                                                                                            |
-| p_hs     | Pressure as a function of h and s.                                                                             |
+| psat_t   | Saturation pressure as a function of temperature                                                               |
+| psat_s   | Saturation pressure as a function of entropy                                                                   |
+| p_hs     | Pressure as a function of enthalpy and entropy                                                                 |
 | p_hrho   | Pressure as a function of h and rho. Very inaccurate for solid water region since it's almost incompressible!  |
 | pmelt_t  | Pressure as a function of temperature along the melting curve. Optional parameter to select ice region         |
 | psubl_t  | Pressure as a function of temperature along the sublimation curve.                                             |
@@ -216,7 +246,7 @@ All Functions follow the same naming schema: First the wanted property, then a u
 | sL_p     | Saturated liquid entropy                                                                                 |
 | sV_t     | Saturated vapor entropy                                                                                  |
 | sL_t     | Saturated liquid entropy                                                                                 |
-| s_pt     | Specific entropy as a function of pressure and temperature (Returns saturated vapor enthalpy if mixture) |
+| s_pt     | Specific entropy as a function of pressure and temperature                                            |
 | s_ph     | Specific entropy as a function of pressure and enthalpy                                                  |
 
 ### Specific internal energy
@@ -273,10 +303,10 @@ All Functions follow the same naming schema: First the wanted property, then a u
 ### Thermal Conductivity
 | Function | Description                                                    |
 |----------|----------------------------------------------------------------|
-| tcL_p    | Saturated vapor thermal conductivity                           |
-| tcV_p    | Saturated liquid thermal conductivity                          |
-| tcL_t    | Saturated vapor thermal conductivity                           |
-| tcV_t    | Saturated liquid thermal conductivity                          |
+| tcL_p    | Saturated liquid thermal conductivity as a function of pressure |
+| tcV_p    | Saturated vapor thermal conductivity as a function of pressure  |
+| tcL_t    | Saturated liquid thermal conductivity as a function of temperature |
+| tcV_t    | Saturated vapor thermal conductivity as a function of temperature |
 | tc_pt    | Thermal conductivity as a function of pressure and temperature |
 | tc_ph    | Thermal conductivity as a function of pressure and enthalpy    |
 | tc_hs    | Thermal conductivity as a function of enthalpy and entropy     |
@@ -302,8 +332,51 @@ All Functions follow the same naming schema: First the wanted property, then a u
 ### Pressure along the Melting and Sublimation Curves
 | Function | Description                                                        |
 |----------|--------------------------------------------------------------------|
-| pmelt_t  | Pressure along the melting curve as a function of temperature      |
-| psubl_t  | Pressure along the sublimation curve as a function of temperature  |
+| pmelt_t  | Pressure along the melting curve; optional ice-type hint selects branch |
+| psubl_t  | Pressure along the sublimation curve as a function of temperature      |
+
+### Prandtl number
+| Function | Description                                           |
+|----------|-------------------------------------------------------|
+| pr_pt    | Prandtl number as a function of pressure and temperature |
+| pr_ph    | Prandtl number as a function of pressure and enthalpy    |
+
+### Opt-in IAPWS R12-08 viscosity
+| Function | Description |
+|----------|-------------|
+| R12_my_rhot | Dynamic viscosity as a function of density and temperature; optionally includes near-critical enhancement |
+
+### IAPWS-95 properties from density and temperature
+| Function | Description |
+|----------|-------------|
+| p_rhoT | Pressure |
+| u_rhoT | Specific internal energy |
+| s_rhoT | Specific entropy |
+| h_rhoT | Specific enthalpy |
+| cv_rhoT | Isochoric specific heat capacity |
+| cp_rhoT | Isobaric specific heat capacity |
+| w_rhoT | Speed of sound |
+| joulethomson_rhoT | Joule-Thomson coefficient |
+| delta_T_rhoT | Isothermal throttling coefficient |
+| isen_t_p_rhoT | Isentropic temperature-pressure coefficient |
+
+### IAPWS-95 virial and phase-equilibrium utilities
+| Function | Description |
+|----------|-------------|
+| sec_virial_coefficients | Second virial coefficient and temperature derivative |
+| third_virial_coefficients | Third virial coefficient and temperature derivative |
+| phase_equilibrium_condition | Pressure-equality and Maxwell residuals for liquid/vapor densities at a temperature |
+
+### Constants
+| Function | Description |
+|----------|-------------|
+| specificGasConstant | Specific gas constant R |
+| criticalTemperatur | Critical temperature |
+| criticalPressure | Critical pressure |
+| criticalDensity | Critical density |
+| triplePointTemperatur | Triple-point temperature |
+| triplePointPressure | Triple-point pressure |
+| zeroPointTemperature | Absolute-zero temperature |
 
 ## Development
 - pull requests are always wellcome!

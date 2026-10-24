@@ -6,7 +6,7 @@ clean:
 clear_cache:
 	rm -rf .pytest_cache
 	rm -rf .ruff_cache
-	uv run pyclean .
+	uv run pyclean . --debris
 
 test:
 	uv run pytest

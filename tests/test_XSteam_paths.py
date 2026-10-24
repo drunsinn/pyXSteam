@@ -14,7 +14,14 @@ class XSteamPathCoverageTester(unittest.TestCase):
         self.assertAlmostEqual(self.steam_table.criticalPressure(), 220.6395)
         self.assertAlmostEqual(self.steam_table.triplePointTemperatur(), 0.01)
         self.assertAlmostEqual(self.steam_table.triplePointPressure(), 0.00611657)
+        self.assertAlmostEqual(self.steam_table.criticalDensity(), 322.0)
         self.assertAlmostEqual(self.steam_table.zeroPointTemperature(), -273.15)
+
+        fls = XSteam(XSteam.UNIT_SYSTEM_FLS)
+        self.assertAlmostEqual(
+            fls.criticalDensity(),
+            fls._unit_converter.fromSIunit_rho(322.0),
+        )
 
     def test_region_five_public_properties(self):
         # IAPWS R7-97 Table 42 state: T=1500 K, p=0.5 MPa.

@@ -65,10 +65,7 @@ class R6_FunctionTester(unittest.TestCase):
         for density in (222.0, 272.0, 372.0, 422.0):
             delta = density / R6_95.CRITICAL_DENSITY
             with self.subTest(density=density):
-                numerical = (
-                    IAPWS_R6.eq_phi_r_delta(tau, delta + step)
-                    - IAPWS_R6.eq_phi_r_delta(tau, delta - step)
-                ) / (2 * step)
+                numerical = (IAPWS_R6.eq_phi_r_delta(tau, delta + step) - IAPWS_R6.eq_phi_r_delta(tau, delta - step)) / (2 * step)
                 analytical = IAPWS_R6.eq_phi_r_deltadelta(tau, delta)
                 self.assertAlmostEqual(analytical, numerical, delta=1e-8)
 
