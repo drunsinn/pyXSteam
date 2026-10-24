@@ -138,8 +138,12 @@ def select_region_ps(p: float, s: float) -> DiagramRegion:
 
     :return: diagram region
     """
-    if (p < TRIPLE_POINT_PRESSURE) or (p > 100) or (s < 0) or (s > Region5.s5_pT(p, 2273.15)):
+    if (p < TRIPLE_POINT_PRESSURE) or (p > 100) or (s > Region5.s5_pT(p, 2273.15)):
         logger.debug("Preasure or Entropy outside valid area")
+        return DiagramRegion.NILL
+    minimum_entropy = Region1.s1_pT(p, FREEZING_TEMPERATURE_H2O)
+    if s < minimum_entropy:
+        logger.debug("Entropy below the IF97 temperature range")
         return DiagramRegion.NILL
     # Check region 5
     if s > Region2.s2_pT(p, 1073.15):
@@ -167,10 +171,10 @@ def select_region_ps(p: float, s: float) -> DiagramRegion:
     if (p < 16.529) and (s > Region1.s1_pT(p, region_boundary_temperature)):
         return DiagramRegion.R4
     # Check region 1
-    if (p > TRIPLE_POINT_PRESSURE) and (s > Region1.s1_pT(p, FREEZING_TEMPERATURE_H2O)):
+    if (p >= TRIPLE_POINT_PRESSURE) and (s >= minimum_entropy):
         return DiagramRegion.R1
-    # ToDo: Check if Defaulting to region 1 is correct here
-    return DiagramRegion.R1
+    logger.debug("Pressure and entropy do not identify a valid IF97 region")
+    return DiagramRegion.NILL
 
 
 def select_region_hs(h: float, s: float) -> DiagramRegion:

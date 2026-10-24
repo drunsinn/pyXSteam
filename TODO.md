@@ -18,8 +18,11 @@ as the source of truth to avoid divergent values.
 Implementation and behavior
 ----------------------------
 
-* Confirm whether defaulting to Region 1 is correct for this region-selection
-  case. (pyXSteam/RegionSelection.py:170)
+* Complete: `select_region_ps` now explicitly accepts the Region 1 lower
+  entropy boundary at 273.15 K, including the slightly negative entropy at
+  triple-point pressure. Inputs below the pressure-specific boundary and any
+  otherwise unclassified states return NILL instead of defaulting to Region 1.
+  (pyXSteam/RegionSelection.py)
 * Complete: `Cv_ps` and `w_ps` in Region 4 now return quality-weighted
   interpolations of their saturated liquid and vapour endpoint values, using
   entropy-derived vapour quality. These are estimates, not derivative-based

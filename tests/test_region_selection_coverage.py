@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import patch
 
-from pyXSteam.Constants import DiagramRegion
+from pyXSteam.Constants import DiagramRegion, FREEZING_TEMPERATURE_H2O, TRIPLE_POINT_PRESSURE
 from pyXSteam.RegionSelection import (
     select_region_hs,
     select_region_ph,
@@ -55,6 +55,13 @@ class RegionSelectionCoverageTester(unittest.TestCase):
         for pressure, entropy, expected_region in cases:
             with self.subTest(pressure=pressure, entropy=entropy):
                 self.assertEqual(select_region_ps(pressure, entropy), expected_region)
+
+    def test_select_region_ps_freezing_boundary(self):
+        for pressure in (TRIPLE_POINT_PRESSURE, 1.0, 100.0):
+            minimum_entropy = Region1.s1_pT(pressure, FREEZING_TEMPERATURE_H2O)
+            with self.subTest(pressure=pressure):
+                self.assertEqual(select_region_ps(pressure, minimum_entropy), DiagramRegion.R1)
+                self.assertEqual(select_region_ps(pressure, minimum_entropy - 1e-8), DiagramRegion.NILL)
 
     def test_select_region_ps_reuses_saturation_temperature(self):
         with patch(
