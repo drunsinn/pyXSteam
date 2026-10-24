@@ -1,5 +1,5 @@
-## TODO v0.5.0, xx.yyyy
-* increase minimal python version to 3.8
+## v1.x.x, xx.yyyy
+* increase minimal python version to 3.11
 * add type hints to all functions
 * improve docstrings to include type hints
 * replace magic numbers for ice type, diagram region and unit system with enumerations

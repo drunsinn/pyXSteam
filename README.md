@@ -21,7 +21,6 @@ Some effort has been made to include the refined function of more recent release
  - IAPWS R4 (deprecated)
  - IAPWS R5-85(1994)
  - IAPWS R14
- - IAPWS R12
 
 
 ## Contributors to pyXSteam
@@ -74,10 +73,17 @@ Simple Example:
 
 The `unitSystem` parameter selects input and output units:
 
+```python
+from pyXSteam import UnitSystem, XSteam
+
+steam_table = XSteam(UnitSystem.MKS)  # pressure: bar; temperature: °C
+steam_table_fls = XSteam(UnitSystem.FLS)  # pressure: psi; temperature: °F
 ```
-    steam_table = XSteam(XSteam.UNIT_SYSTEM_MKS)  # pressure: bar; temperature: °C
-    steam_table = XSteam(XSteam.UNIT_SYSTEM_FLS)  # pressure: psi; temperature: °F
-```
+
+For the full upgrade checklist when moving from `main` 0.4.x to the planned
+1.0.x release, see the [migration guide](./MIGRATION.md). The key breaking
+change is that `BARE` is now an alias for MKS (bar and °C), not the former
+MPa-and-kelvin unit convention.
 
 `UNIT_SYSTEM_BARE` is currently an alias of `UNIT_SYSTEM_MKS`, so it also uses
 bar and °C rather than MPa and kelvin. Use `UNIT_SYSTEM_MKS` for the documented
