@@ -29,14 +29,6 @@ Implementation and behavior
 Table and calculation checks
 ----------------------------
 
-* Resolve the provenance of the five Region 5 residual Gibbs coefficients.
-  They appear in the XSteam MATLAB implementation, whose comment cites R7-97
-  generally, but do not match the six rows of official R7-97 Table 38. Find an
-  older/alternate source or establish whether they are erroneous before
-  changing them. (pyXSteam/tables/R7_97.py:1038,
-  pyXSteam/Regions.py:1803; [XSteam MATLAB source](https://github.com/KurtJacobson/XSteam/blob/c8c168883e561cfa249a6ebe3d1c4dfb7c85f61c/MATLAB/XSteam.m#L2606),
-  [official IAPWS R7-97](https://iapws.org/technical-guidance/release/IF97-Rev))
-
 Tests and reference data
 ------------------------
 
@@ -51,11 +43,13 @@ Tests and reference data
   (tests/test_Regions.py:401)
 * Clarify and resolve the FIXME in the Region 4 T(h,s) verification test.
   (tests/test_Regions.py:428)
-* Resolve the Region 5 p(T) test mismatch with R7-97 Table 42; the test
-  currently uses modified pressures and expected values.
-  (tests/test_Regions.py:450)
-* Identify or verify the source for the Region 5 T(p,h) and T(p,s) test
-  values. (tests/test_Regions.py:485, 498)
+* Complete: corrected the Region 5 Table 38 coefficient transcription errors
+  (the third coefficient exponent and final temperature exponent), and fixed
+  Table 42's second pressure and specific-volume exponents. Region 5 forward
+  calculations now use the official six-term coefficient table; forward and
+  inverse tests use the Table 42 reference states and values.
+  ([IAPWS R7-97](https://iapws.org/technical-guidance/release/IF97-Rev);
+  tests/test_Regions.py:450)
 
 Python 3.11 optimization backlog (completed)
 ---------------------------------------------

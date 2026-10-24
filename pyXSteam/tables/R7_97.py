@@ -1013,11 +1013,11 @@ class R7_97:
     # Table 38: Numerical values of the coefficients and exponents of the residual part gamma r of
     # the dimensionless Gibbs free energy for region 5, Eq. (34)
     Table38_I = [1, 1, 1, 2, 2, 3]
-    Table38_J = [1, 2, 3, 3, 9, 8]
+    Table38_J = [1, 2, 3, 3, 9, 7]
     Table38_n = [
         +0.15736404855259e-2,
         +0.90153761673944e-3,
-        -0.50270077677648e-3,
+        -0.50270077677648e-2,
         +0.22440037409485e-5,
         -0.41163275453471e-5,
         +0.37919454822955e-7,
@@ -1025,23 +1025,17 @@ class R7_97:
 
     # Table 42:  Thermodynamic property values calculated from Eq. (32) for selected values of T and p
     Table42_T = [1500.0, 1500.0, 2000.0]  # in [K]
-    Table42_p = [0.5, 0.30, 30.0]  # in [MPa]
+    Table42_p = [0.5, 30.0, 30.0]  # in [MPa]
     Table42_rho = [500.0, 200.0, 500.0]  # in [kg / m³]
-    Table42_v = [0.138455090e1, 0.230761299e1, 0.311385219e1]  # in [m³ / kg]
+    Table42_v = [0.138455090e1, 0.230761299e-1, 0.311385219e-1]  # in [m³ / kg]
     Table42_h = [0.521976855e4, 0.516723514e4, 0.657122604e4]  # in [kJ / kg]
     Table42_u = [0.452749310e4, 0.447495124e4, 0.563707038e4]  # in [kJ / kg]
     Table42_s = [0.965408875e1, 0.772970133e1, 0.853640523e1]  # in [kJ / kg K]
     Table42_Cp = [0.261609445e1, 0.272724317e1, 0.288569882e1]  # in [kJ / kg K]
     Table42_w = [0.917068690e3, 0.928548002e3, 0.106736948e4]  # in [m / s]
 
-    # Region 5 residual Gibbs coefficients used by the original XSteam implementation.
-    # Their source is unconfirmed; they differ from the six terms in IAPWS R7-97 (2012), Table 38.
-    Region5_residual_I = [1, 1, 1, 2, 3]
-    Region5_residual_J = [0, 1, 3, 9, 3]
-    Region5_residual_n = [
-        -1.2563183589592e-04,
-        2.1774678714571e-03,
-        -0.004594282089991,
-        -3.9724828359569e-06,
-        1.2919228289784e-07,
-    ]
+    # Backwards-compatible aliases for the coefficients formerly used by the
+    # original XSteam implementation.
+    Region5_residual_I = Table38_I
+    Region5_residual_J = Table38_J
+    Region5_residual_n = Table38_n

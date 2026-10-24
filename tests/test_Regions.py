@@ -8,6 +8,7 @@ Due to some rounding Errors the max. allowedError had to be increased....
 import unittest
 import numpy
 from pyXSteam.Regions import Region1, Region2, Region3, Region4, Region5
+from pyXSteam.tables.R7_97 import R7_97
 
 REGION_ERROR = 1e-8
 REGION_MATRIX_ERROR = REGION_ERROR * 2.0  # The accumulated Error is bigger than the error of each single function
@@ -446,28 +447,17 @@ class Region5Tester(unittest.TestCase):
         pass
 
     def test_pT_function(self):
-        """R7-97(2012) Tests to verify all functions with the Parameters rhpo and T of region 5"""
-        # FIXME this test does not work! the values found in R7-97 do not match with the values found here!
-        # Table 42
-        # in_p = [0.5, 30.0, 30.0] # Table 42
-        in_p = [0.5, 8.0, 8.0]  # mod
-        in_T = [1500.0, 1500.0, 2000.0]
-        # ref = [
-        #     [0.138455090e1, 0.230761299e-1, 0.311385219e-1],  # v
-        #     [0.521976855e4, 0.516723514e4, 0.657122604e4],  # h
-        #     [0.452749310e4, 0.447495124e4, 0.563707038e4],  # u
-        #     [0.965408875e1, 0.772970133e1, 0.853640523e1],  # s
-        #     [0.261609445e1, 0.272724317e1, 0.288569882e1],  # cp
-        #     [0.917068690e3, 0.928548002e3, 0.106736948e4],  # w
-        # ] # Table 42
+        """Verify Region 5 properties against IAPWS R7-97 (2012), Table 42."""
+        in_p = R7_97.Table42_p
+        in_T = R7_97.Table42_T
         ref = [
-            [1.38455354, 0.0865156616, 0.115743146],  # v
-            [5219.76332, 5206.09634, 6583.80291],  # h
-            [4527.48654, 4513.97105, 5657.85774],  # u
-            [9.65408431, 8.36546724, 9.15671044],  # s
-            [2.61610228, 2.64453866, 2.8530675],  # cp
-            [917.071933, 919.708859, 1054.35806],  # w
-        ]  # mod
+            R7_97.Table42_v,
+            R7_97.Table42_h,
+            R7_97.Table42_u,
+            R7_97.Table42_s,
+            R7_97.Table42_Cp,
+            R7_97.Table42_w,
+        ]
         res = numpy.zeros((6, 3))
         for i, (p, T) in enumerate(zip(in_p, in_T)):
             res[0][i] = Region5.v5_pT(p, T)
@@ -481,11 +471,10 @@ class Region5Tester(unittest.TestCase):
         self.assertLess(error, REGION_MATRIX_ERROR, "Test of *(p,T) Function for Region 5 failed")
 
     def test_ph_function(self):
-        """(source unknown) Tests to verify all functions with the Parameters p and h of Region 5"""
-        # TODO
-        in_p = [0.5, 8.0, 8.0]
-        in_h = [5219.76331549428, 5206.09634477373, 6583.80290533381]
-        ref = [1500.0, 1500.0, 2000.0]
+        """Verify Region 5 T(p,h) inversion at the Table 42 reference states."""
+        in_p = R7_97.Table42_p
+        in_h = R7_97.Table42_h
+        ref = R7_97.Table42_T
         res = numpy.zeros(3)
         for i in range(3):
             res[i] = Region5.T5_ph(in_p[i], in_h[i])
@@ -494,11 +483,10 @@ class Region5Tester(unittest.TestCase):
         self.assertLess(error, REGION_ERROR, "Test of T(p,h) Function for Region 5 failed")
 
     def test_ps_function(self):
-        """(source unknown) Tests to verify all functions with the Parameters p and s of Region 5"""
-        # TODO
-        in_p = [0.5, 8.0, 8.0]
-        in_s = [9.65408430982588, 8.36546724495503, 9.15671044273249]
-        ref = [1500.0, 1500.0, 2000.0]
+        """Verify Region 5 T(p,s) inversion at the Table 42 reference states."""
+        in_p = R7_97.Table42_p
+        in_s = R7_97.Table42_s
+        ref = R7_97.Table42_T
         res = numpy.zeros(3)
         for i, (p, s) in enumerate(zip(in_p, in_s)):
             res[i] = Region5.T5_ps(p, s)

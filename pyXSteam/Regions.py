@@ -1793,7 +1793,7 @@ class Region5:
             gamma0_tau = gamma0_tau + n * J * tau ** (J - 1)
 
         gammar_tau = 0
-        for I, J, n in zip(R7_97.Region5_residual_I, R7_97.Region5_residual_J, R7_97.Region5_residual_n):
+        for I, J, n in zip(R7_97.Table38_I, R7_97.Table38_J, R7_97.Table38_n):
             gammar_tau = gammar_tau + n * Pi**I * J * tau ** (J - 1)
 
         return _R * T * tau * (gamma0_tau + gammar_tau)
@@ -1817,7 +1817,7 @@ class Region5:
         gamma0_pi = 1 / Pi
 
         gammar_pi = 0
-        for I, J, n in zip(R7_97.Region5_residual_I, R7_97.Region5_residual_J, R7_97.Region5_residual_n):
+        for I, J, n in zip(R7_97.Table38_I, R7_97.Table38_J, R7_97.Table38_n):
             gammar_pi = gammar_pi + n * I * Pi ** (I - 1) * tau**J
 
         return _R * T / p * Pi * (gamma0_pi + gammar_pi) / 1000
@@ -1846,7 +1846,7 @@ class Region5:
 
         gammar_pi = 0
         gammar_tau = 0
-        for I, J, n in zip(R7_97.Region5_residual_I, R7_97.Region5_residual_J, R7_97.Region5_residual_n):
+        for I, J, n in zip(R7_97.Table38_I, R7_97.Table38_J, R7_97.Table38_n):
             gammar_pi = gammar_pi + n * I * Pi ** (I - 1) * tau**J
             gammar_tau = gammar_tau + n * Pi**I * J * tau ** (J - 1)
 
@@ -1873,7 +1873,7 @@ class Region5:
             gamma0_tautau = gamma0_tautau + n * J * (J - 1) * tau ** (J - 2)
 
         gammar_tautau = 0
-        for I, J, n in zip(R7_97.Region5_residual_I, R7_97.Region5_residual_J, R7_97.Region5_residual_n):
+        for I, J, n in zip(R7_97.Table38_I, R7_97.Table38_J, R7_97.Table38_n):
             gammar_tautau = gammar_tautau + n * Pi**I * J * (J - 1) * tau ** (J - 2)
 
         return -_R * tau**2 * (gamma0_tautau + gammar_tautau)
@@ -1902,7 +1902,7 @@ class Region5:
 
         gammar = 0
         gammar_tau = 0
-        for I, J, n in zip(R7_97.Region5_residual_I, R7_97.Region5_residual_J, R7_97.Region5_residual_n):
+        for I, J, n in zip(R7_97.Table38_I, R7_97.Table38_J, R7_97.Table38_n):
             gammar = gammar + n * Pi**I * tau**J
             gammar_tau = gammar_tau + n * Pi**I * J * tau ** (J - 1)
 
@@ -1932,7 +1932,7 @@ class Region5:
         gammar_pitau = 0
         gammar_pipi = 0
         gammar_tautau = 0
-        for I, J, n in zip(R7_97.Region5_residual_I, R7_97.Region5_residual_J, R7_97.Region5_residual_n):
+        for I, J, n in zip(R7_97.Table38_I, R7_97.Table38_J, R7_97.Table38_n):
             gammar_pi = gammar_pi + n * I * Pi ** (I - 1) * tau**J
             gammar_pitau = gammar_pitau + n * I * Pi ** (I - 1) * J * tau ** (J - 1)
             gammar_pipi = gammar_pipi + n * I * (I - 1) * Pi ** (I - 2) * tau**J
