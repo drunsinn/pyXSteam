@@ -20,17 +20,20 @@ Implementation and behavior
 
 * Confirm whether defaulting to Region 1 is correct for this region-selection
   case. (pyXSteam/RegionSelection.py:170)
-* Investigate the commented-out mixture formulas for Cv_ps and w_ps in
-  Region 4 and decide whether to implement them or retain the NaN behavior.
-  (pyXSteam/XSteam.py:1665, 1891)
+* Complete: `Cv_ps` and `w_ps` in Region 4 now return quality-weighted
+  interpolations of their saturated liquid and vapour endpoint values, using
+  entropy-derived vapour quality. These are estimates, not derivative-based
+  equilibrium-mixture properties; both formulas preserve the legacy XSteam
+  interpolation convention. Tests cover MKS and FLS at low and high pressures.
+  (pyXSteam/XSteam.py)
 * Decide whether to use or remove the unused hB2bc_p function.
   (pyXSteam/RegionBorders.py:100)
 
 Table and calculation checks
 ----------------------------
 
-Tests and reference data
-------------------------
+Tests and reference data (completed)
+------------------------------------
 
 * Complete: reconciled Region 3 T(p,s) and v(p,s) tests with SR3-03 (2014)
   Tables 12 and 15. The uncommented inputs and expected outputs already

@@ -240,6 +240,25 @@ class MKSFunctionTester(unittest.TestCase):
         error = abs(self.steam_table.Cv_ps(1.0, 1.0) - 3.902919468)
         self.assertLess(error, self.max_error, "test of Cv_ps not passed")
 
+    def test_two_phase_Cv_ps_and_w_ps(self):
+        for unit_system in (UnitSystem.MKS, UnitSystem.FLS):
+            steam = XSteam(unit_system)
+            for pressure_si in (1.0, 20.0):
+                pressure = steam._unit_converter.fromSIunit_p(pressure_si)
+                with self.subTest(unit_system=unit_system, pressure=pressure):
+                    entropy = (steam.sL_p(pressure) + steam.sV_p(pressure)) / 2
+                    quality = steam.x_ps(pressure, entropy)
+
+                    self.assertAlmostEqual(quality, 0.5)
+                    self.assertAlmostEqual(
+                        steam.Cv_ps(pressure, entropy),
+                        quality * steam.CvV_p(pressure) + (1 - quality) * steam.CvL_p(pressure),
+                    )
+                    self.assertAlmostEqual(
+                        steam.w_ps(pressure, entropy),
+                        quality * steam.wV_p(pressure) + (1 - quality) * steam.wL_p(pressure),
+                    )
+
     def test_wV_p(self):
         error = abs(self.steam_table.wV_p(1.0) - 472.0541571)
         self.assertLess(error, self.max_error, "test of wV_p not passed")

@@ -1648,6 +1648,9 @@ class XSteam:
         """
         Section 1.10 Specific isochoric heat capacity
         Specific isochoric heat capacity as a function of pressure and entropy
+        In the two-phase region, returns a quality-weighted interpolation of
+        the saturated liquid and vapour values; this is an estimate, not an
+        equilibrium-mixture derivative.
 
         :param p: preasure
         :param s: specific entropy
@@ -1672,14 +1675,11 @@ class XSteam:
             return self._unit_converter.fromSIunit_Cv(Region3.Cv3_rhoT(rhos, Ts))
 
         if region == DiagramRegion.R4:
-            self.logger.debug(
-                "function Cv_ps is not available in region 4 for input p %f and s %f",
-                p,
-                s,
-            )
-            # TODO: why is the following line here?
-            # (xs * CvVp + (1 - xs) * CvLp) / Cv_scale - Cv_offset
-            return float("NaN")
+            quality = Region4.x4_ps(p, s)
+            p_user = self._unit_converter.fromSIunit_p(p)
+            cv_vapour = self.CvV_p(p_user)
+            cv_liquid = self.CvL_p(p_user)
+            return quality * cv_vapour + (1 - quality) * cv_liquid
 
         if region == DiagramRegion.R5:
             Ts = Region5.T5_ps(p, s)
@@ -1874,6 +1874,9 @@ class XSteam:
         """
         Section 1.11 Speed of sound
         Speed of sound as a function of pressure and entropy
+        In the two-phase region, returns a quality-weighted interpolation of
+        the saturated liquid and vapour values; this is an estimate, not an
+        equilibrium-mixture speed of sound.
 
         :param p: preasure
         :param s: specific entropy
@@ -1898,14 +1901,11 @@ class XSteam:
             return self._unit_converter.fromSIunit_w(Region3.w3_rhoT(rhos, Ts))
 
         if region == DiagramRegion.R4:
-            self.logger.debug(
-                "function w_ps is not available in region 4 for input p %f and s %f",
-                p,
-                s,
-            )
-            # TODO: why is the following line here?
-            # (xs * wVp + (1 - xs) * wLp) / w_scale - w_offset
-            return float("NaN")
+            quality = Region4.x4_ps(p, s)
+            p_user = self._unit_converter.fromSIunit_p(p)
+            w_vapour = self.wV_p(p_user)
+            w_liquid = self.wL_p(p_user)
+            return quality * w_vapour + (1 - quality) * w_liquid
 
         if region == DiagramRegion.R5:
             Ts = Region5.T5_ps(p, s)
