@@ -422,19 +422,17 @@ class Region4Tester(unittest.TestCase):
         error = numpy.sum(numpy.absolute((res - ref) / ref))
         self.assertLess(error, REGION_ERROR, "Test of h(s) Function for Region 4 failed")
 
-    def test_Tsat_function(self):
-        """SR4-04(2014): computer-program verification for Tsat functions (Eq 9) for h and s"""
-        # Table 29
-
-        # FIXME
-        error = abs(Region4.T4_hs(1800.0, 5.3) - 3.468476498e2) / 3.468476498e2
-        self.assertLess(error, 3e-7, "Error for T4_hs(s) to big")
-
-        error = abs(Region4.T4_hs(2400.0, 6.0) - 4.251373305e2) / 4.251373305e2
-        self.assertLess(error, REGION_ERROR, "Error for T4_hs(s) to big")
-
-        error = abs(Region4.T4_hs(2500.0, 5.5) - 5.225579013e2) / 5.225579013e2
-        self.assertLess(error, REGION_ERROR, "Error for T4_hs(s) to big")
+    def test_Tsat_hs(self):
+        """SR4-04(2014) Eq. (9) verification values from Table 29."""
+        cases = [
+            (1800.0, 5.3, 3.468475498e2),
+            (2400.0, 6.0, 4.251373305e2),
+            (2500.0, 5.5, 5.225579013e2),
+        ]
+        for h, s, expected in cases:
+            with self.subTest(h=h, s=s):
+                error = abs(Region4.T4_hs(h, s) - expected) / expected
+                self.assertLess(error, REGION_ERROR)
 
 
 class Region5Tester(unittest.TestCase):

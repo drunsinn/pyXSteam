@@ -41,8 +41,10 @@ Tests and reference data
   (tests/test_Regions.py:388)
 * Split the Region 4 h(s) test data by its source tables.
   (tests/test_Regions.py:401)
-* Clarify and resolve the FIXME in the Region 4 T(h,s) verification test.
-  (tests/test_Regions.py:428)
+* Complete: corrected the first Region 4 T(h,s) verification value to the
+  SR4-04 (2014) Table 29 value (346.8475498 K); the former expected value had
+  a digit transposition. All three Table 29 cases now pass at the common
+  relative-error threshold. (tests/test_Regions.py)
 * Complete: corrected the Region 5 Table 38 coefficient transcription errors
   (the third coefficient exponent and final temperature exponent), and fixed
   Table 42's second pressure and specific-volume exponents. Region 5 forward

@@ -1702,9 +1702,7 @@ class Region4:
     def T4_hs(cls, h: float, s: float) -> float:
         """function T4_hs = T4_hs(h, s)
 
-        Supplementary Release on Backward Equations ( ) , p h s for Region 3,
-
-        Chapter 5.3 page 30.
+        SR4-04 Eq. 9: backward equation for saturation temperature T(h, s).
 
         :param h: enthalpy in [kJ / kg]
         :param s: specific entropy in [kJ / (kg K)]
