@@ -57,11 +57,12 @@ Tests and reference data
 * Identify or verify the source for the Region 5 T(p,h) and T(p,s) test
   values. (tests/test_Regions.py:485, 498)
 
-Python 3.11 optimization backlog
-----------------------------------
+Python 3.11 optimization backlog (completed)
+---------------------------------------------
 
-Upgrade the project floor to Python 3.11 and evaluate the high-value wins
-available in the newer runtime before doing broader refactors.
+The project now requires Python 3.11 or newer. The profiling, optimization
+review, and targeted changes below are complete; revisit only if representative
+application workloads identify new bottlenecks.
 
 * Baseline profile completed on Python 3.11.17 with `cProfile`: 1,000
   repetitions of 17 public calculations across Regions 1–5 and saturation
@@ -75,11 +76,20 @@ available in the newer runtime before doing broader refactors.
   benchmarks. A profile of the full test run was dominated by pytest-cov
   analysis/reporting rather than library calculations. No algorithms were
   changed; use representative application workloads before optimizing.
-* Continue reviewing the region selectors for other repeated calculations;
-  make changes only when profiling shows meaningful cost and tests preserve the
-  boundary behavior.
-* Review opportunities to use `functools.cache`/`lru_cache` for memoized table
-  lookups or repeated unit-conversion paths.
+* Complete: reviewed the profiled region-selector paths and reused duplicate
+  per-call saturation-temperature boundary calculations in the pressure/entropy
+  and pressure/density selectors. Further optimization is deferred until
+  representative workloads justify it.
+* Complete: table lookups are direct reads from static coefficient arrays, and
+  unit conversions are inexpensive scalar arithmetic, so neither needs caching.
+  A Python 3.11.17 microbenchmark of 100,000 calls found an `lru_cache(512)`
+  slowed unique-input calls versus direct calls for `Region2.s2_pT` (2.52 s vs
+  2.19 s), `pB23_T` (0.076 s vs 0.031 s), and `UnitConverter.toSIunit_p`
+  (0.077 s vs 0.031 s). Exact repeat hits were much faster, especially for
+  `Region2.s2_pT` (0.011 s), but those results use a repeated-input synthetic
+  workload. Avoid global caching until a representative application workload
+  demonstrates enough repeated inputs to offset miss overhead and retained
+  cache entries.
 * Complete: `typing.Self` is not applicable because the public classes expose
   no fluent or self-returning methods. A `TypeAlias` would only rename existing
   scalar or fixed-length tuple types, so it would not materially clarify the
