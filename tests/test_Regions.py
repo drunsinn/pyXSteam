@@ -9,6 +9,7 @@ import unittest
 import numpy
 from pyXSteam.Regions import Region1, Region2, Region3, Region4, Region5
 from pyXSteam.tables.R7_97 import R7_97
+from pyXSteam.tables.SR3_03 import SR3_03
 
 REGION_ERROR = 1e-8
 REGION_MATRIX_ERROR = REGION_ERROR * 2.0  # The accumulated Error is bigger than the error of each single function
@@ -281,14 +282,10 @@ class Region3Tester(unittest.TestCase):
         self.assertLess(error, REGION_ERROR, "Test of v(p,h) Function for Region 3 failed")
 
     def test_T_ps_function(self):
-        """SR3-03(2014) Tests to verify T functions with the Parameters p and s of region 3"""
-        # Table 12
-        # FIXME this function used different values from those found in SR3-03!
-        in_p = [20.0, 50.0, 100.0, 20.0, 50.0, 100.0]
-        # in_s = [3.7, 3.5, 4, 5, 4.5, 5.0]
-        in_s = [3.8, 3.6, 4.0, 5.0, 4.5, 5.0]
-        # ref = [620.8841563, 618.1549029, 705.6880237, 640.1176443, 716.3687517, 847.4332825]
-        ref = [6.282959869e2, 6.297158726e2, 7.056880237e2, 6.401176443e2, 7.163687517e2, 8.474332825e2]
+        """SR3-03(2014) Table 12 verification values for T(p,s)."""
+        in_p = SR3_03.Table12_p
+        in_s = SR3_03.Table12_s
+        ref = SR3_03.Table12_T
         res = numpy.zeros(6)
         for i, (p, s) in enumerate(zip(in_p, in_s)):
             res[i] = Region3.T3_ps(p, s)
@@ -297,14 +294,10 @@ class Region3Tester(unittest.TestCase):
         self.assertLess(error, REGION_ERROR, "Test of T(p,s) Function for Region 3 failed")
 
     def test_v_ps_function(self):
-        """SR3-03(2014) Tests to verify all v functions with the Parameters p and s of Region 3"""
-        # Table 15
-        # FIXME this function used different values from those found in SR3-03!
-        in_p = [20.0, 50.0, 100.0, 20.0, 50.0, 100.0]
-        # in_s = [3.7, 3.5, 4.0, 5.0, 4.5, 5.0]
-        in_s = [3.8, 3.6, 4.0, 5.0, 4.5, 5.0]
-        # ref = [0.001639890984, 0.001423030205, 0.001555893131, 0.006262101987, 0.002332634294, 0.002449610757]
-        ref = [1.733791463e-3, 1.469680170e-3, 1.555893131e-3, 6.262101987e-3, 2.332634294e-3, 2.449610757e-3]
+        """SR3-03(2014) Table 15 verification values for v(p,s)."""
+        in_p = SR3_03.Table15_p
+        in_s = SR3_03.Table15_s
+        ref = SR3_03.Table15_v
         res = numpy.zeros(6)
         for i, (p, s) in enumerate(zip(in_p, in_s)):
             res[i] = Region3.v3_ps(p, s)
@@ -350,9 +343,9 @@ class Region3Tester(unittest.TestCase):
         self.assertLess(error, REGION_ERROR, "Test of p(h,s) Function for Region 3 failed")
 
     def test_pT_function(self):
-        """Legacy XSteam h(p,T) regression values from the Scilab test suite.
+        """Legacy h3_pT regression via the approximate supplementary T3_ph equation.
 
-        These expected values are not the R7-97 Table 33 reference values.
+        These expected values are not independent R7-97 Table 33 references.
         """
         in_p = [25.583702, 22.293064, 78.309564]
         in_T = [650.0, 650.0, 750.0]
@@ -387,8 +380,7 @@ class Region4Tester(unittest.TestCase):
         self.assertLess(p4_t_error, REGION_ERROR, "Test of p(T) Function for Region 4 failed")
 
     def test_p_functions(self):
-        """R7-97(2012) Tests to verify all functions with the Parameters p of region 4"""
-        # TODO find correct table number
+        """R7-97(2012) Table 36 verification for the saturation temperature."""
         in_p = [0.1, 1.0, 10.0]
         ref = [0.372755919e3, 0.453035632e3, 0.584149488e3]
         res = numpy.zeros(3)

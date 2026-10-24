@@ -32,20 +32,28 @@ Table and calculation checks
 Tests and reference data
 ------------------------
 
-* Reconcile the Region 3 T(p,s) and v(p,s) test inputs with SR3-03 Tables 12
-  and 15; the current inputs differ from the values noted in the comments.
-  (tests/test_Regions.py:285, 301)
+* Complete: reconciled Region 3 T(p,s) and v(p,s) tests with SR3-03 (2014)
+  Tables 12 and 15. The uncommented inputs and expected outputs already
+  matched the official tables; stale commented legacy values did not.
+  Tests now consume the canonical `SR3_03` table arrays directly.
+  (tests/test_Regions.py)
 * Complete: the Region 3 h(p,T) fixture is copied from the legacy XSteam
   Scilab verification block (`h3_pT`, `IF97` values), not an official R7-97
-  Table 33 test. The fixture is retained as a legacy regression; its expected
-  enthalpies differ from Table 33 for the corresponding rounded p,T states.
+  Table 33 test. `h3_pT` solves by iterating the supplementary backward
+  equation `T3_ph`; at Table 33 enthalpies, `T3_ph` differs from the tabulated
+  temperatures by about 0.01 K, explaining why the h(p,T) fixture does not
+  match Table 33. The separate `test_rhoT_function` verifies the fundamental
+  Region 3 equation against Table 33. Retain the h(p,T) case as a legacy
+  regression, not an independent accuracy test.
   ([XSteam Scilab source](https://github.com/KurtJacobson/XSteam/blob/c8c168883e561cfa249a6ebe3d1c4dfb7c85f61c/Scilab/XSteam.sci#L4532-L4541);
   tests/test_Regions.py)
-* Investigate the Region 3 h(p,T) discrepancy against official R7-97
-  Table 33 values before treating the legacy regression fixture as an
-  independent accuracy test. (tests/test_Regions.py)
-* Find the correct table number for the Region 4 T(p) verification values.
-  (tests/test_Regions.py:388)
+* Assess whether to replace the `h3_pT` inversion through approximate
+  `T3_ph` with a direct numerical solve of the Region 3 fundamental equation.
+  Keep behavior unchanged until accuracy, convergence, and compatibility are
+  evaluated. (pyXSteam/Regions.py:1326)
+* Complete: the Region 4 T(p) verification values (0.1, 1, and 10 MPa)
+  are from R7-97 (2012), Table 36, "Saturation temperatures calculated from
+  Eq. (31) for selected values of p." (tests/test_Regions.py)
 * Split the Region 4 h(s) test data by its source tables.
   (tests/test_Regions.py:401)
 * Complete: corrected the first Region 4 T(h,s) verification value to the
