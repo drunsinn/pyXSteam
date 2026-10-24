@@ -123,7 +123,9 @@ Density is calculated as 1/v. See section for Specific volume
 
 ### Viscosity
 
-Viscosity is not part of IAPWS Steam IF97. Equations from "Revised Release on the IAPWS Formulation 1985 for the Viscosity of Ordinary Water Substance", 2003 are used. Viscosity in the mixed region (4) is interpolated according to the density. This is not true since it will be two phases.
+The legacy `my_pt`, `my_ph`, and `my_ps` methods use the revised 1985 IAPWS viscosity formulation. Their behavior is unchanged for compatibility.
+
+The IAPWS R12-08 formulation is available separately as the opt-in `XSteam.R12_my_rhot(rho, t, industrial_application=True)` method. It takes density and temperature in the selected unit system and returns viscosity in that system: kg/m³, °C, and Pa·s for MKS; lb/ft³, °F, and lbm/(ft·hr) for FLS. Setting `industrial_application=False` includes the near-critical enhancement; the default industrial form omits it. This method is marked experimental, so validate its suitability for your application.
 
 ### Thermal conductivity
 

@@ -58,8 +58,8 @@ class R12_08:
     Table3_x_u = 0.068  # critical exponent for viscosity
     Table3_inv_q_C = 1.9  # [nm]
     Table3_inv_q_D = 1.1  # [nm]
-    Table3_q_C = 1 / 1.9e-9
-    Table3_q_D = 1 / 1.1e-9
+    Table3_q_C = 1 / 1.9  # [nm⁻¹], consistent with ξ in [nm]
+    Table3_q_D = 1 / 1.1  # [nm⁻¹], consistent with ξ in [nm]
     Table3_ny = 0.630
     Table3_gamma = 1.239
     Table3_xi_0 = 0.13  # [nm]

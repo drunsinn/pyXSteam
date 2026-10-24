@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
 import unittest
-import numpy
+import math
+from unittest.mock import patch
 
-from pyXSteam import IAPWS_R12
+from pyXSteam import IAPWS_R12, XSteam, UnitSystem
 from pyXSteam.tables import R12_08
 from . import helpers
 
@@ -24,40 +25,146 @@ class R12_FunctionTester(unittest.TestCase):
             self.max_error,
         )
 
-    def test_R12(self):
-        self.skipTest("Not implemented yet")
+    def test_R12_correlation_length(self):
+        """R12-08 Table 5 verification for the correlation length."""
+        for temperature, density, reference in zip(
+            R12_08.Table5_T, R12_08.Table5_rho, R12_08.Table5_xi
+        ):
+            with self.subTest(temperature=temperature, density=density):
+                self.assertAlmostEqual(
+                    IAPWS_R12.R12_xi(density, temperature),
+                    reference,
+                    delta=5e-7,
+                )
 
-        values = list()
-        values.append({"T": 647.35, "rho": 122, "result": 25.520677e-6})
-        values.append({"T": 647.35, "rho": 222, "result": 31.337589e-6})
-        values.append({"T": 647.35, "rho": 272, "result": 36.228143e-6})
-        values.append({"T": 647.35, "rho": 322, "result": 42.961579e-6})
-        values.append({"T": 647.35, "rho": 372, "result": 45.688204e-6})
-        values.append({"T": 647.35, "rho": 422, "result": 49.436256e-6})
+    def test_R12_critical_enhancement(self):
+        """R12-08 Table 5 verification for both Y branches and full viscosity."""
+        for temperature, density, expected_mu2, expected_viscosity in zip(
+            R12_08.Table5_T,
+            R12_08.Table5_rho,
+            R12_08.Table5_my2dash,
+            R12_08.Table5_my,
+        ):
+            with self.subTest(temperature=temperature, density=density):
+                y = IAPWS_R12.R12_Y(density, temperature)
+                mu2 = IAPWS_R12.R12_my_dash_2(density, temperature)
+                viscosity = IAPWS_R12.my_rhoT(
+                    density, temperature, industrial_application=False
+                )
+                self.assertAlmostEqual(
+                    y,
+                    math.log(expected_mu2) / R12_08.Table3_x_u,
+                    delta=1e-7,
+                )
+                self.assertAlmostEqual(mu2, expected_mu2, delta=1e-8)
+                self.assertAlmostEqual(viscosity, expected_viscosity, delta=5e-13)
 
-        for value in values:
-            calc = IAPWS_R12.eq10(T=value["T"], rho=value["rho"], industrial=False)
-            error = calc - value["result"]
-            self.assertLess(
-                error,
-                self.max_error,
-                "ep10 not passed for values T %(T)f rho %(rho)f: Error is %(error)e allowed: %(max)e"
-                % {
-                    "T": value["T"],
-                    "rho": value["rho"],
-                    "error": error,
-                    "max": self.max_error,
-                },
+    def test_R12_critical_enhancement_temperature_gate(self):
+        cases = (
+            (645.91 - 1e-6, 0.0),
+            (645.91, 0.0),
+            (645.91 + 1e-6, 1.0),
+            (650.77 - 1e-6, 1.0),
+            (650.77, 0.0),
+            (650.77 + 1e-6, 0.0),
+        )
+        for temperature, expected_calls in cases:
+            with self.subTest(temperature=temperature):
+                with patch("pyXSteam.IAPWS_R12.R12_Y", return_value=0.5) as y_function:
+                    actual = IAPWS_R12.R12_my_dash_2(100.0, temperature)
+                self.assertAlmostEqual(actual, math.exp(0.068 * 0.5) if expected_calls else 1.0)
+                self.assertEqual(y_function.call_count, int(expected_calls))
+
+    def test_R12_critical_enhancement_density_gate(self):
+        cases = (
+            (245.8 - 1e-6, 0.0),
+            (245.8, 0.0),
+            (245.8 + 1e-6, 1.0),
+            (405.3 - 1e-6, 1.0),
+            (405.3, 0.0),
+            (405.3 + 1e-6, 0.0),
+        )
+        for density, expected_calls in cases:
+            with self.subTest(density=density):
+                with patch("pyXSteam.IAPWS_R12.R12_Y", return_value=0.5) as y_function:
+                    actual = IAPWS_R12.R12_my_dash_2(density, 700.0)
+                self.assertAlmostEqual(actual, math.exp(0.068 * 0.5) if expected_calls else 1.0)
+                self.assertEqual(y_function.call_count, int(expected_calls))
+
+    def test_R12_industrial_and_full_formulations(self):
+        temperature = 647.35
+        density = 322.0
+        enhancement = IAPWS_R12.R12_my_dash_2(density, temperature)
+        with patch(
+            "pyXSteam.IAPWS_R12.R12_my_dash_2",
+            wraps=IAPWS_R12.R12_my_dash_2,
+        ) as enhancement_function:
+            industrial_viscosity = IAPWS_R12.my_rhoT(density, temperature)
+            self.assertEqual(enhancement_function.call_count, 0)
+            full_viscosity = IAPWS_R12.my_rhoT(
+                density, temperature, industrial_application=False
             )
+            self.assertEqual(enhancement_function.call_count, 1)
 
-    def test_R12_internal(self):
+        self.assertAlmostEqual(
+            full_viscosity,
+            industrial_viscosity * enhancement,
+            delta=1e-18,
+        )
 
-        self.skipTest("Not implemented yet")
+    def test_R12_invalid_inputs(self):
+        invalid_states = (
+            (-1.0, 300.0),
+            (0.0, 0.0),
+            (1.0, 0.0),
+            (1.0, -1.0),
+            (float("nan"), 300.0),
+            (1.0, float("nan")),
+            (float("inf"), 300.0),
+            (1.0, float("inf")),
+        )
+        for density, temperature in invalid_states:
+            with self.subTest(density=density, temperature=temperature):
+                for industrial in (True, False):
+                    self.assertTrue(
+                        math.isnan(
+                            IAPWS_R12.my_rhoT(
+                                density,
+                                temperature,
+                                industrial_application=industrial,
+                            )
+                        )
+                    )
+                self.assertTrue(math.isnan(IAPWS_R12.R12_xi(density, temperature)))
+                self.assertTrue(math.isnan(IAPWS_R12.R12_Y(density, temperature)))
+                self.assertTrue(math.isnan(IAPWS_R12.R12_my_dash_2(density, temperature)))
 
-        res = numpy.zeros(len(R12_08.Table5_xi))
-        for i, (T, rho) in enumerate(zip(R12_08.Table5_T, R12_08.Table5_rho)):
-            print(IAPWS_R12.R12_xi(rho, T))
-            res[i] = IAPWS_R12.R12_xi(rho, T)
+    def test_R12_zero_density_and_extrapolation(self):
+        zero_density_viscosity = IAPWS_R12.my_rhoT(0.0, 300.0)
+        self.assertTrue(math.isfinite(zero_density_viscosity))
+        self.assertGreater(zero_density_viscosity, 0.0)
+        self.assertEqual(IAPWS_R12.R12_my_dash_2(0.0, 647.35), 1.0)
 
-        error = numpy.sum(numpy.absolute((res - R12_08.Table5_xi) / R12_08.Table5_xi))
-        self.assertLess(error, self.max_error, "Test of internal calculation of correlation length ξ failed")
+        extrapolated = IAPWS_R12.my_rhoT(1.0, 1174.0)
+        self.assertTrue(math.isfinite(extrapolated))
+        self.assertGreater(extrapolated, 0.0)
+
+    def test_R12_xsteam_wrapper_units(self):
+        density_si = 998.0
+        temperature_si = 298.15
+        viscosity_si = IAPWS_R12.my_rhoT(density_si, temperature_si)
+
+        mks = XSteam(UnitSystem.MKS)
+        self.assertAlmostEqual(
+            mks.R12_my_rhot(density_si, 25.0), viscosity_si, delta=1e-15
+        )
+        self.assertAlmostEqual(mks.my_pt(1.0, 100.0), 1.22704e-5, delta=1e-6)
+        self.assertAlmostEqual(mks.my_ph(1.0, 100.0), 9.14003770302e-4, delta=1e-6)
+
+        fls = XSteam(UnitSystem.FLS)
+        density_fls = fls._unit_converter.fromSIunit_rho(density_si)
+        temperature_fls = fls._unit_converter.fromSIunit_T(temperature_si)
+        viscosity_fls = fls._unit_converter.fromSIunit_my(viscosity_si)
+        self.assertAlmostEqual(
+            fls.R12_my_rhot(density_fls, temperature_fls), viscosity_fls, delta=1e-10
+        )

@@ -441,7 +441,7 @@ def eq_phi_r_deltadelta(tau: float, delta: float) -> float:
     for n, d, t, alpha, beta, gamma, epsilon in R6_95.tab2_sec3():
         exp_1 = _exp(tau, delta, alpha, beta, gamma, epsilon)
         part_1 = -2 * alpha * math.pow(delta, d)
-        part_2 = 4 * alpha * math.pow(delta, d) * math.pow(delta - epsilon, 2)
+        part_2 = 4 * math.pow(alpha, 2) * math.pow(delta, d) * math.pow(delta - epsilon, 2)
         part_3 = -4 * d * alpha * math.pow(delta, d - 1) * (delta - epsilon)
         part_4 = d * (d - 1) * math.pow(delta, d - 2)
         sum_3 += n * math.pow(tau, t) * math.exp(exp_1) * (part_1 + part_2 + part_3 + part_4)

@@ -32,6 +32,49 @@ Implementation and behavior
 * Decide whether to use or remove the unused hB2bc_p function.
   (pyXSteam/RegionBorders.py:100)
 
+IAPWS R12-08 viscosity formulation
+----------------------------------
+
+The industrial Eq. (10) calculation passes the Table 4 verification points, but
+the critical-enhancement path is incomplete and its Table 5 test is skipped.
+Complete the work in this order:
+
+* Complete: R12-08 Table 5 exposed a missing square on coefficient `alpha` in
+  the IAPWS-95 Gaussian residual term's second density derivative. This
+  affected the susceptibility used by Eq. (20); correcting the derivative
+  brings the calculated correlation lengths into agreement with all six
+  Table 5 values. Added a near-critical finite-difference regression test.
+  (pyXSteam/IAPWS_R6.py; tests/test_R6.py; tests/test_R12.py)
+* Complete: corrected `R12_Y` using R12-08 Eqs. (15)–(19). The correlation
+  length is in nanometers, so `q_C` and `q_D` now use reciprocal nanometers;
+  corrected the high-length `w` denominator and Eq. (16)'s final term. Added
+  Table 5 checks of `Y`, µ₂, and full viscosity covering the low- and high-
+  length branches. (pyXSteam/IAPWS_R12.py; pyXSteam/tables/R12_08.py;
+  tests/test_R12.py)
+* Complete: restored R12-08 Table 5 verification for correlation length ξ,
+  enhancement factor µ₂, and total viscosity µ at all six states. The obsolete
+  skipped `eq10` checks were replaced with assertions using the current
+  `my_rhoT` API and tolerances matched to the published precision. Coverage
+  exercises both `R12_Y` branches. (tests/test_R12.py)
+* Complete: retained Table 4 as the industrial Eq. (10) verification. Added
+  tests immediately below, at, and above both Eq. (13) temperature and density
+  bounds; boundaries are excluded as specified. Verified industrial viscosity
+  skips µ₂ and full viscosity applies it. (pyXSteam/IAPWS_R12.py;
+  tests/test_R12.py)
+* Complete: R12 functions return NaN for non-finite inputs, nonpositive
+  temperature, or negative density; `my_rhoT` accepts zero density as the
+  dilute-gas limit. Positive finite states outside R12-08's recommended range
+  remain extrapolatable, as the release describes. Guarded critical helper
+  paths against arithmetic/domain exceptions. Added invalid-input and finite
+  extrapolation coverage. (pyXSteam/IAPWS_R12.py; tests/test_R12.py)
+* Complete: kept `XSteam.R12_my_rhot` opt-in; legacy `my_pt`, `my_ph`, and
+  `my_ps` remain on the existing viscosity formulation. Documented R12-08
+  availability and selected-unit-system conventions. Fixed the wrapper to
+  convert density to SI for FLS input and convert the result back; added MKS/FLS
+  wrapper checks. R15 verification passes with the corrected shared
+  susceptibility calculation. (pyXSteam/XSteam.py; README.md;
+  tests/test_R12.py; tests/test_R15.py)
+
 Table and calculation checks
 ----------------------------
 

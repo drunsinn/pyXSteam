@@ -2388,25 +2388,25 @@ class XSteam:
         return float("NaN")
 
     def R12_my_rhot(self, rho: float, t: float, industrial_application: bool = True) -> float:
-        """shear viscosity of pure water substance over an extensive range of fluid states
+        """Return opt-in IAPWS R12-08 viscosity for density and temperature.
 
-        Release on the IAPWS Formulation 2008 for the Viscosity of Ordinary Water Substance
-        IAPWS R12-08
-        http://www.iapws.org/relguide/visc.pdf
+        Unlike the legacy ``my_pt``/``my_ph`` methods, this method uses the
+        IAPWS 2008 viscosity formulation. It is opt-in to preserve existing
+        viscosity results. ``rho`` and ``t`` use the selected unit system
+        (kg/m³ and °C for MKS; lb/ft³ and °F for FLS); the returned viscosity
+        follows the selected system (Pa·s for MKS; lbm/(ft·hr) for FLS).
 
-        :param rho: density
-        :param t: temperature
-        :param industrial_application: select if simple or detailes approximation should be used
-
-        :return: shear viscosity
+        :param rho: density in the selected unit system
+        :param t: temperature in the selected unit system
+        :param industrial_application: omit critical enhancement when True
+        :return: dynamic viscosity in the selected unit system
         """
         self.logger.warning("this function is still experimental, use at your own risk!")
 
-        T = self._unit_converter.toSIunit_T(t)
-
-        my = my_rhoT(rho, T, industrial_application)
-
-        return self._unit_converter.fromSIunit_my(my)
+        density_si = self._unit_converter.toSIunit_rho(rho)
+        temperature_si = self._unit_converter.toSIunit_T(t)
+        viscosity_si = my_rhoT(density_si, temperature_si, industrial_application)
+        return self._unit_converter.fromSIunit_my(viscosity_si)
 
     def p_rhoT(self, rho: float, t: float) -> float:
         """IAPWS-95 pressure from density and temperature."""

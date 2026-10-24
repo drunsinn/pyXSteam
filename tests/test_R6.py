@@ -56,6 +56,22 @@ class R6_FunctionTester(unittest.TestCase):
         error = abs(IAPWS_R6.eq_phi_r_deltatau(tau, delta) + 0.112176915e1)
         self.assertLess(error, self.max_error, "Error for eq_phi_r_deltatau to big")
 
+    def test_residual_density_second_derivative(self):
+        """Check the second density derivative against a finite difference near criticality."""
+        temperature = 647.35
+        tau = R6_95.CRITICAL_TEMPERATURE / temperature
+        step = 1e-5
+
+        for density in (222.0, 272.0, 372.0, 422.0):
+            delta = density / R6_95.CRITICAL_DENSITY
+            with self.subTest(density=density):
+                numerical = (
+                    IAPWS_R6.eq_phi_r_delta(tau, delta + step)
+                    - IAPWS_R6.eq_phi_r_delta(tau, delta - step)
+                ) / (2 * step)
+                analytical = IAPWS_R6.eq_phi_r_deltadelta(tau, delta)
+                self.assertAlmostEqual(analytical, numerical, delta=1e-8)
+
     def test_table7(self):
         """check functions against values of R6-95 Table 7"""
 
