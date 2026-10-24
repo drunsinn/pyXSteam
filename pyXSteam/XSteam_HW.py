@@ -26,7 +26,7 @@ class XSteam_HW:
     UNIT_SYSTEM_MKS = UnitSystem.MKS
     UNIT_SYSTEM_FLS = UnitSystem.FLS
 
-    def __init__(self, unitSystem: UnitSystem = UnitSystem.BARE):
+    def __init__(self, unitSystem: UnitSystem = UnitSystem.BARE) -> None:
         """
         Constructor method
         """
@@ -37,19 +37,19 @@ class XSteam_HW:
             self._unit_converter,
         )
 
-    def criticalTemperatur(self):
+    def criticalTemperatur(self) -> float:
         """
         :return: specific temperature with conversion to the selected unit system
         """
         return self._unit_converter.fromSIunit_T(CRITICAL_TEMPERATURE_D20_1992)
 
-    def criticalPressure(self):
+    def criticalPressure(self) -> float:
         """
         :return: specific pressure with conversion to the selected unit system
         """
         return self._unit_converter.fromSIunit_p(CRITICAL_PRESSURE_D20_1992)
 
-    def criticalDensity(self):
+    def criticalDensity(self) -> float:
         """
         :return: specific density with conversion to the selected unit system
         """

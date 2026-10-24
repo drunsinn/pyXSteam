@@ -67,17 +67,11 @@ def my_AllRegions_pT(p: float, T: float) -> float:
 
     my0 = Ts**0.5 / (1 + 0.978197 / Ts + 0.579829 / (Ts**2) - 0.202354 / (Ts**3))
     temp_sum = 0
-    for i in range(0, 6):
-        temp_sum = (
-            temp_sum
-            + h0[i] * (((1 / Ts) - 1) ** i)
-            + h1[i] * (((1 / Ts) - 1) ** i) * ((rhos - 1) ** 1)
-            + h2[i] * (((1 / Ts) - 1) ** i) * ((rhos - 1) ** 2)
-            + h3[i] * (((1 / Ts) - 1) ** i) * ((rhos - 1) ** 3)
-            + h4[i] * (((1 / Ts) - 1) ** i) * ((rhos - 1) ** 4)
-            + h5[i] * (((1 / Ts) - 1) ** i) * ((rhos - 1) ** 5)
-            + h6[i] * (((1 / Ts) - 1) ** i) * ((rhos - 1) ** 6)
-        )
+    for i, coefficients in enumerate(zip(h0, h1, h2, h3, h4, h5, h6)):
+        temperature_power = ((1 / Ts) - 1) ** i
+        density_difference = rhos - 1
+        for j, coefficient in enumerate(coefficients):
+            temp_sum += coefficient * temperature_power * density_difference**j
     my1 = math.exp(rhos * temp_sum)
     mys = my0 * my1
     return mys * 0.000055071
@@ -147,17 +141,11 @@ def my_AllRegions_ph(p: float, h: float) -> float:
     my0 = Ts**0.5 / (1 + 0.978197 / Ts + 0.579829 / (Ts**2) - 0.202354 / (Ts**3))
 
     temp_sum = 0
-    for i in range(0, 6):
-        temp_sum = (
-            temp_sum
-            + h0[i] * (1 / Ts - 1) ** i
-            + h1[i] * (1 / Ts - 1) ** i * (rhos - 1) ** 1
-            + h2[i] * (1 / Ts - 1) ** i * (rhos - 1) ** 2
-            + h3[i] * (1 / Ts - 1) ** i * (rhos - 1) ** 3
-            + h4[i] * (1 / Ts - 1) ** i * (rhos - 1) ** 4
-            + h5[i] * (1 / Ts - 1) ** i * (rhos - 1) ** 5
-            + h6[i] * (1 / Ts - 1) ** i * (rhos - 1) ** 6
-        )
+    for i, coefficients in enumerate(zip(h0, h1, h2, h3, h4, h5, h6)):
+        temperature_power = (1 / Ts - 1) ** i
+        density_difference = rhos - 1
+        for j, coefficient in enumerate(coefficients):
+            temp_sum += coefficient * temperature_power * density_difference**j
 
     my1 = math.exp(rhos * temp_sum)
     mys = my0 * my1

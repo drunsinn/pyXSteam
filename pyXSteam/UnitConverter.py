@@ -17,7 +17,7 @@ class UnitConverter:
                        supported values see the enum UnitSystem.
     """
 
-    def __init__(self, unitSystem: UnitSystem = UnitSystem.BARE):
+    def __init__(self, unitSystem: UnitSystem = UnitSystem.BARE) -> None:
         """
         :param unitSystem: new unit system to use for input and output values
 
@@ -27,7 +27,7 @@ class UnitConverter:
         self.set_unitSystem(unitSystem)
         self.logger.debug("set unit converter to %s", self.__str__())
 
-    def set_unitSystem(self, unitSystem: UnitSystem):
+    def set_unitSystem(self, unitSystem: UnitSystem) -> None:
         """
         change unit system
 

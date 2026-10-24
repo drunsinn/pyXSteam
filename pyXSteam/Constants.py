@@ -65,7 +65,7 @@ class UnitSystem(IntEnum):
     FLS = 2  # [ft/lb/sec/°F/psi/btu]
 
     @classmethod
-    def has_value(cls, value: int):
+    def has_value(cls, value: int) -> bool:
         """check if value is member of enum"""
         return value in cls._value2member_map_
 
@@ -81,7 +81,7 @@ class IceType(IntEnum):
     NONE = -1
 
     @classmethod
-    def has_value(cls, value: int):
+    def has_value(cls, value: int) -> bool:
         """check if value is member of enum"""
         return value in cls._value2member_map_
 

@@ -1,8 +1,6 @@
 [build-system]
-requires = ["setuptools", "wheel", "setuptools_scm[toml]>=6.0"]
+requires = ["setuptools>=77", "wheel"]
 build-backend = "setuptools.build_meta"
-
-[tool.setuptools_scm]
 
 [project]
 name = "pyXSteam"
@@ -17,8 +15,7 @@ dependencies = []
 file = "README.md"
 content-type = "text/markdown"
 
-[project.license]
-file = "LICENSE"
+license-files = ["LICENSE.txt"]
 
 [project.optional-dependencies]
 demo = ["matplotlib>=3.9.4", "numpy>=2.4.6", "scipy>=1.9.3"]
@@ -46,12 +43,11 @@ dev = [
     "vermin>=1.9.2",
 ]
 
-[tool.setuptools]
-packages = ["pyXSteam"]
+[tool.setuptools.packages.find]
+include = ["pyXSteam*"]
 
 [tool.setuptools.dynamic]
 version = { attr = "pyXSteam.__version__" }
-readme = { file = ["README.md"], content-type = "text/markdown" }
 
 [tool.black]
 line-length = 140
@@ -65,7 +61,7 @@ log_cli_level = "INFO"
 log_format = "%(asctime)s %(levelname)s %(message)s"
 log_date_format = "%Y-%m-%d %H:%M:%S"
 norecursedirs = ["docs", "build", "downloads"]
-addopts = "--cov=pyXSteam --cov-branch --cov-report=term-missing:skip-covered --cov-report=html:dist/reports/coverage.html --cov-fail-under=60"
+addopts = "--cov=pyXSteam --cov-branch --cov-report=term-missing:skip-covered --cov-report=html:dist/reports/coverage.html --cov-fail-under=70"
 
 [tool.coverage.run]
 omit = ["pyXSteam/scripts/*"]

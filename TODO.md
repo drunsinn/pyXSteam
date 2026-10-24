@@ -75,19 +75,31 @@ available in the newer runtime before doing broader refactors.
   benchmarks. A profile of the full test run was dominated by pytest-cov
   analysis/reporting rather than library calculations. No algorithms were
   changed; use representative application workloads before optimizing.
-* Reuse per-call saturation-temperature boundaries in the pressure/entropy and
-  pressure/density selectors. This removes duplicate Region 4 boundary
-  calculations without caching arbitrary user inputs globally.
 * Continue reviewing the region selectors for other repeated calculations;
   make changes only when profiling shows meaningful cost and tests preserve the
   boundary behavior.
 * Review opportunities to use `functools.cache`/`lru_cache` for memoized table
   lookups or repeated unit-conversion paths.
-* Evaluate whether `typing.Self`, `TypeAlias`, and stricter annotations can make
-  the public API clearer without changing behavior.
-* Consider using `itertools.pairwise` and tuple-based iteration for boundary and
-  interpolation code where it improves readability and performance.
-* Decide whether a small `match`/`case` refactor is worthwhile for the region
-  selection and dispatch logic.
-* Re-check `__init__.py` exports and module imports for Python 3.11 packaging
-  simplifications and import hygiene.
+* Complete: `typing.Self` is not applicable because the public classes expose
+  no fluent or self-returning methods. A `TypeAlias` would only rename existing
+  scalar or fixed-length tuple types, so it would not materially clarify the
+  current API. Added missing `None`, `float`, and `bool` return annotations to
+  constructors, heavy-water accessors, unit-system setters, and enum validators;
+  these changes do not alter runtime behavior.
+* Complete: no current boundary calculation walks adjacent points, so
+  `itertools.pairwise` would add indirection without simplifying the logic.
+  Rewrote the viscosity polynomial loops in `TransportProperties.py` to iterate
+  over zipped coefficient tuples instead of indexing seven parallel arrays;
+  the summation order is preserved.
+* Complete: retain the existing `if`/`elif` region dispatch. The `XSteam`
+  methods have many region switches, but their branches perform distinct
+  property-specific calculations, conversions, and unsupported-region handling;
+  replacing them with `match`/`case` would change syntax without reducing
+  duplication or improving the flow enough to justify a broad mechanical edit.
+* Complete: confirmed the existing package exports (`XSteam`, `XSteam_HW`,
+  `UnitConverter`, `UnitSystem`, and `IceType`) and core IAPWS/table imports.
+  Kept those exports unchanged; demo scripts appropriately require the optional
+  `demo` dependencies. Replaced the hand-maintained package list with setuptools
+  package discovery for `pyXSteam*`, removed redundant setuptools-scm/version
+  and readme configuration, and configured the existing `LICENSE.txt` via the
+  modern `license-files` metadata field without inferring an SPDX identifier.
