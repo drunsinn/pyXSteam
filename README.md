@@ -39,7 +39,7 @@ Check out [pyXSteam at readthedocs](https://pyxsteam.readthedocs.io)
 
 ## Requirements
 
-There are no runtime requirements for installing pyXSteam with Python 3.9 and
+There are no runtime requirements for installing pyXSteam with Python 3.11 and
 up. Install the optional demo dependencies with `pip install "pyXSteam[demo]"`
 (includes NumPy, Matplotlib, and SciPy).
 

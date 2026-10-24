@@ -57,12 +57,23 @@ Tests and reference data
 * Identify or verify the source for the Region 5 T(p,h) and T(p,s) test
   values. (tests/test_Regions.py:485, 498)
 
-Legacy roadmap
---------------
+Python 3.11 optimization backlog
+----------------------------------
 
-Review the old v0.5.0 TODO list, confirm which items are complete, and migrate
-only the remaining work here. The list includes: minimum Python version,
-function type hints and docstrings, enumerations for magic numbers, import
-restructuring, pyproject.toml, demo-script location, dependency groups,
-switching to Ruff, the uv workflow, a Makefile, and moving constants into the
-tables module. (NEWS.txt:1-13)
+Upgrade the project floor to Python 3.11 and evaluate the high-value wins
+available in the newer runtime before doing broader refactors.
+
+* Audit the hot paths for pure-Python bottlenecks and profile them on Python 3.11
+  before changing algorithms.
+* Replace repeated region/index selection logic with Python 3.11-friendly typing,
+  caching, and clearer control flow where it reduces repeated work.
+* Review opportunities to use `functools.cache`/`lru_cache` for memoized table
+  lookups or repeated unit-conversion paths.
+* Evaluate whether `typing.Self`, `TypeAlias`, and stricter annotations can make
+  the public API clearer without changing behavior.
+* Consider using `itertools.pairwise` and tuple-based iteration for boundary and
+  interpolation code where it improves readability and performance.
+* Decide whether a small `match`/`case` refactor is worthwhile for the region
+  selection and dispatch logic.
+* Re-check `__init__.py` exports and module imports for Python 3.11 packaging
+  simplifications and import hygiene.
