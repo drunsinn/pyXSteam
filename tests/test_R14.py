@@ -8,7 +8,7 @@ class R14_FunctionTester(unittest.TestCase):
     """R14-08(2011) computer program verification"""
 
     def setUp(self):
-        self.max_error = 1e-6
+        self.max_error_psubl_T = 1e-11
         self.max_error_ice_Ih = 0.002
         self.max_error_ice_III = 0.003
         self.max_error_ice_V = 0.003
@@ -38,7 +38,7 @@ class R14_FunctionTester(unittest.TestCase):
     def test_R14_psubl_T_function(self):
         """R14-08(2011) computer program verification for psubl with values from Table 3"""
         error = abs(IAPWS_R14.psubl_T(230.0) - 8.94735e-6)
-        self.assertLess(error, self.max_error, "Error for psubl_t to big")
+        self.assertLess(error, self.max_error_psubl_T, "Error for psubl_t to big")
 
     def test_pmelt_T_function_custom(self):
         """R14-08(2011) computer program verification for pmelt with custom values"""

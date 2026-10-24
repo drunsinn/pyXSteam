@@ -38,7 +38,7 @@ class BordersTester(unittest.TestCase):
 
     def test_SR2_01_B2bc(self):
         """SR2-01(2016): computer-program verification for boundary between sub regions 2b and 2c, Eq. (2)"""
-        error = self._calc_err(RB.hB2bc_s(7.0), 3376.437884) / 3376.437884
+        error = self._calc_err(RB.hB2bc_s(7.0), 3376.437884)
         self.assertLess(error, self.max_error, "Error for hB2bc(s) too big")
 
     def test_SR4_04_B13(self):
