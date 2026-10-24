@@ -63,10 +63,24 @@ Python 3.11 optimization backlog
 Upgrade the project floor to Python 3.11 and evaluate the high-value wins
 available in the newer runtime before doing broader refactors.
 
-* Audit the hot paths for pure-Python bottlenecks and profile them on Python 3.11
-  before changing algorithms.
-* Replace repeated region/index selection logic with Python 3.11-friendly typing,
-  caching, and clearer control flow where it reduces repeated work.
+* Baseline profile completed on Python 3.11.17 with `cProfile`: 1,000
+  repetitions of 17 public calculations across Regions 1–5 and saturation
+  paths produced 257,009 calls in 1.412 profiled seconds. The largest
+  exclusive costs were `Region2.s2_pT` (0.287 s / 8,000 calls),
+  `Region3.T3_ph` (0.205 s / 16,000 calls), and `Region1.s1_pT`
+  (0.189 s / 7,000 calls). The Region 3 `h3_pT` iterative calculation took
+  0.361 s cumulatively over 1,000 calls; `select_region_ps` took 0.551 s
+  cumulatively over 4,000 calls, including its nested region-boundary
+  calculations. These are synthetic-workload baselines, not production
+  benchmarks. A profile of the full test run was dominated by pytest-cov
+  analysis/reporting rather than library calculations. No algorithms were
+  changed; use representative application workloads before optimizing.
+* Reuse per-call saturation-temperature boundaries in the pressure/entropy and
+  pressure/density selectors. This removes duplicate Region 4 boundary
+  calculations without caching arbitrary user inputs globally.
+* Continue reviewing the region selectors for other repeated calculations;
+  make changes only when profiling shows meaningful cost and tests preserve the
+  boundary behavior.
 * Review opportunities to use `functools.cache`/`lru_cache` for memoized table
   lookups or repeated unit-conversion paths.
 * Evaluate whether `typing.Self`, `TypeAlias`, and stricter annotations can make

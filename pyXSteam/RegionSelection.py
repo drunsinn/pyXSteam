@@ -148,11 +148,13 @@ def select_region_ps(p: float, s: float) -> DiagramRegion:
         logger.debug("Preasure outside valid area")
         return DiagramRegion.NILL
     # Check region 2
+    region_boundary_temperature: float
     if p > 16.529:
         # Between 5.047 & 5.261. Use to speed up !
-        ss = Region2.s2_pT(p, TB23_p(p))
+        region_boundary_temperature = TB23_p(p)
     else:
-        ss = Region2.s2_pT(p, Region4.T4_p(p))
+        region_boundary_temperature = Region4.T4_p(p)
+    ss = Region2.s2_pT(p, region_boundary_temperature)
     if s > ss:
         return DiagramRegion.R2
     # Check region 3
@@ -162,7 +164,7 @@ def select_region_ps(p: float, s: float) -> DiagramRegion:
             return DiagramRegion.R3
         return DiagramRegion.R4
     # Check region 4 (Not inside region 3)
-    if (p < 16.529) and (s > Region1.s1_pT(p, Region4.T4_p(p))):
+    if (p < 16.529) and (s > Region1.s1_pT(p, region_boundary_temperature)):
         return DiagramRegion.R4
     # Check region 1
     if (p > TRIPLE_POINT_PRESSURE) and (s > Region1.s1_pT(p, FREEZING_TEMPERATURE_H2O)):
@@ -308,9 +310,10 @@ def select_region_prho(p: float, rho: float) -> DiagramRegion:
             # if temperature is smaller than 4°C since it is ligther.
             logger.debug("Specific volume outside valid area")
             return DiagramRegion.NILL
-        if v <= Region1.v1_pT(p, Region4.T4_p(p)):
+        saturation_temperature: float = Region4.T4_p(p)
+        if v <= Region1.v1_pT(p, saturation_temperature):
             return DiagramRegion.R1
-        if v < Region2.v2_pT(p, Region4.T4_p(p)):
+        if v < Region2.v2_pT(p, saturation_temperature):
             return DiagramRegion.R4
         if v <= Region2.v2_pT(p, 1073.15):
             return DiagramRegion.R2

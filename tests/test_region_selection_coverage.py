@@ -1,4 +1,5 @@
 import unittest
+from unittest.mock import patch
 
 from pyXSteam.Constants import DiagramRegion
 from pyXSteam.RegionSelection import (
@@ -55,6 +56,15 @@ class RegionSelectionCoverageTester(unittest.TestCase):
             with self.subTest(pressure=pressure, entropy=entropy):
                 self.assertEqual(select_region_ps(pressure, entropy), expected_region)
 
+    def test_select_region_ps_reuses_saturation_temperature(self):
+        with patch(
+            "pyXSteam.RegionSelection.Region4.T4_p",
+            wraps=Region4.T4_p,
+        ) as temperature_lookup:
+            self.assertEqual(select_region_ps(1.0, 5.0), DiagramRegion.R4)
+
+        temperature_lookup.assert_called_once_with(1.0)
+
     def test_select_region_hs(self):
         cases = (
             (115.331273, 0.392294792, DiagramRegion.R1),
@@ -85,3 +95,17 @@ class RegionSelectionCoverageTester(unittest.TestCase):
         for pressure, density, expected_region in cases:
             with self.subTest(pressure=pressure, density=density):
                 self.assertEqual(select_region_prho(pressure, density), expected_region)
+
+    def test_select_region_prho_reuses_saturation_temperature(self):
+        saturation_temperature = Region4.T4_p(1.0)
+        liquid_volume = Region1.v1_pT(1.0, saturation_temperature)
+        vapour_volume = Region2.v2_pT(1.0, saturation_temperature)
+        mixture_density = 1.0 / (0.5 * liquid_volume + 0.5 * vapour_volume)
+
+        with patch(
+            "pyXSteam.RegionSelection.Region4.T4_p",
+            wraps=Region4.T4_p,
+        ) as temperature_lookup:
+            self.assertEqual(select_region_prho(1.0, mixture_density), DiagramRegion.R4)
+
+        temperature_lookup.assert_called_once_with(1.0)
