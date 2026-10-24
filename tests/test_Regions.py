@@ -350,8 +350,10 @@ class Region3Tester(unittest.TestCase):
         self.assertLess(error, REGION_ERROR, "Test of p(h,s) Function for Region 3 failed")
 
     def test_pT_function(self):
-        """(source unknown) Tests to verify all functions with the Parameters p and T of Region 3"""
-        # TODO
+        """Legacy XSteam h(p,T) regression values from the Scilab test suite.
+
+        These expected values are not the R7-97 Table 33 reference values.
+        """
         in_p = [25.583702, 22.293064, 78.309564]
         in_T = [650.0, 650.0, 750.0]
         ref = [1863.271389, 2375.696155, 2258.626582]

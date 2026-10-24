@@ -35,8 +35,15 @@ Tests and reference data
 * Reconcile the Region 3 T(p,s) and v(p,s) test inputs with SR3-03 Tables 12
   and 15; the current inputs differ from the values noted in the comments.
   (tests/test_Regions.py:285, 301)
-* Identify the source of the Region 3 p(T) verification values.
-  (tests/test_Regions.py:353)
+* Complete: the Region 3 h(p,T) fixture is copied from the legacy XSteam
+  Scilab verification block (`h3_pT`, `IF97` values), not an official R7-97
+  Table 33 test. The fixture is retained as a legacy regression; its expected
+  enthalpies differ from Table 33 for the corresponding rounded p,T states.
+  ([XSteam Scilab source](https://github.com/KurtJacobson/XSteam/blob/c8c168883e561cfa249a6ebe3d1c4dfb7c85f61c/Scilab/XSteam.sci#L4532-L4541);
+  tests/test_Regions.py)
+* Investigate the Region 3 h(p,T) discrepancy against official R7-97
+  Table 33 values before treating the legacy regression fixture as an
+  independent accuracy test. (tests/test_Regions.py)
 * Find the correct table number for the Region 4 T(p) verification values.
   (tests/test_Regions.py:388)
 * Split the Region 4 h(s) test data by its source tables.
