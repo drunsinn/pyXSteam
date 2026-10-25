@@ -4,6 +4,68 @@ Open tasks and ideas
 Use this file as the central index for open work. Source comments are kept
 in place; references below point back to their locations.
 
+Merge PR #13 and release v1.0.0
+-------------------------------
+
+Track the work required to merge the `modernisation` branch into `master` and
+publish the 1.0.0 release. Status markers: `[ ]` open, `[~]` in progress,
+`[x]` done, `[!]` blocked.
+
+Blockers (must be resolved before the merge):
+
+* [x] Resolve the merge conflicts with `master`. PR #13 reports
+  `mergeable=false` / `dirty`. Three files conflict:
+  `.github/workflows/python-publish.yml` (take the `master` version:
+  `pip install build twine` plus `python -m build`; do not regress to
+  `pip wheel -w dist .`), `.gitignore` (union of both; `master` added the
+  misspelled `docs/souce/README.md`, the branch added
+  `docs/source/README.md`), and `docs/source/README.md` (take the branch
+  version). Resolving these also restores the `pull_request` CI trigger.
+* [x] Commit the `1.0.0` version bump. `pyXSteam/__init__.py` is committed as
+  `__version__ = "0.5.0"` while the working tree holds an uncommitted bump to
+  `1.0.0`; the release tag must match the package metadata.
+* [x] Finalize `NEWS.txt`. The heading is still the placeholder
+  `## v1.x.x, xx.yyyy`; replace it with the real version and date.
+* [x] Commit the remaining uncommitted local changes
+  (`docs/source/README.md`, `pyXSteam/__init__.py`).
+
+Merge and release:
+
+* [ ] Merge PR #13 into `master`. The repository default branch is `master`,
+  not `main`.
+* [ ] Verify the CI matrix after the merge. The test workflow
+  (`python-package.yml`, Python 3.11-3.14) has not run on this code since
+  2025-10-10 because the conflicted PR suppressed `pull_request` runs.
+* [ ] Tag `v1.0.0` and create the GitHub release. `python-publish.yml` uploads
+  to PyPI on `release: created`; confirm both the sdist and the wheel are
+  produced and uploaded.
+
+Follow-up issues found while reviewing the PR:
+
+* [x] Sync `docs/source/README.md` with the root `README.md`. The committed
+  copy lacks the new `UnitSystem` example and the migration-guide link.
+* [x] Fix the broken `MIGRATION.md` documentation link. The README links
+  `./MIGRATION.md`, but Sphinx builds from `docs/source/`, where the file does
+  not exist, producing a `myst` cross-reference warning. Also add
+  `MIGRATION.md` to the sdist and the documentation toctree.
+* [~] Untrack the generated `docs/source/README.md`. It is tracked but listed
+  in `.gitignore`, and `docs/Makefile` overwrites it via
+  `cp -f ../README.md ./source/`, leaving the tree dirty after every `make doc`.
+* [x] Fix the coverage threshold mismatch in the README. The README states
+  coverage fails below 60%, but `pyproject.toml` sets `--cov-fail-under=70`.
+* [x] Correct the `main`/`master` references in `MIGRATION.md` and the README.
+* [x] Document the removal of the `pyXSteam.name` attribute in `MIGRATION.md`.
+* [x] Fix the dead `BARE` branch in `UnitConverter.__str__`. `UnitSystem.BARE`
+  is an alias of `MKS` (both value 1), so the branch is unreachable and
+  `str(UnitConverter(UnitSystem.BARE))` returns `"MKS (...)"`.
+* [x] Add `ruff` linting to CI. `flake8` was removed but `ruff` was never
+  added, so CI runs no linter; rename the workflow from
+  "Build and Lint with Flake8".
+* [ ] Resolve the license inconsistency. The `pyXSteam/__init__.py` docstring
+  says GPLv2, `__license__` says MIT, and `LICENSE.txt` is LGPLv2.
+* [ ] Update the stale PR #13 description. It claims Python 3.7 is the likely
+  minimum (it is 3.11) and one checklist item is still unchecked.
+
 Table data access
 -----------------
 
