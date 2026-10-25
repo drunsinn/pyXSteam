@@ -1,204 +1,249 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """Main module for pyXSteam"""
+
 import math
 import logging
-from . import RegionSelection
+
+from .RegionSelection import (
+    select_region_pT,
+    select_region_ph,
+    select_region_ps,
+    select_region_hs,
+    select_region_prho,
+)
 from .Regions import Region1, Region2, Region3, Region4, Region5
-from . import TransportProperties
-from . import Constants
+from .TransportProperties import (
+    my_AllRegions_pT,
+    my_AllRegions_ph,
+    tc_ptrho,
+    surface_tension_T,
+)
+from .Constants import (
+    SPECIFIC_GAS_CONSTANT,
+    CRITICAL_TEMPERATURE,
+    CRITICAL_DENSITY,
+    CRITICAL_PRESSURE,
+    TRIPLE_POINT_TEMPERATURE,
+    TRIPLE_POINT_PRESSURE,
+    FREEZING_TEMPERATURE_H2O,
+    UnitSystem,
+    IceType,
+    DiagramRegion,
+)
 from .UnitConverter import UnitConverter
-from . import IAPWS_R14
+from .IAPWS_R14 import (
+    pmelt_T_iceIh,
+    pmelt_T_iceIII,
+    pmelt_T_iceV,
+    pmelt_T_iceVI,
+    pmelt_T_iceVII,
+    psubl_T,
+)
+from .IAPWS_R12 import my_rhoT
+from .IAPWS_R6 import (
+    R6_cp_rhoT as _R6_cp_rhoT,
+    R6_cv_rhoT as _R6_cv_rhoT,
+    R6_delta_T_rhoT as _R6_delta_T_rhoT,
+    R6_h_rhoT as _R6_h_rhoT,
+    R6_isen_t_p_rhoT as _R6_isen_t_p_rhoT,
+    R6_joulethomson_rhoT as _R6_joulethomson_rhoT,
+    R6_p_rhoT as _R6_p_rhoT,
+    R6_phase_equilibrium_condition as _R6_phase_equilibrium_condition,
+    R6_s_rhoT as _R6_s_rhoT,
+    R6_sec_virial_coefficients as _R6_sec_virial_coefficients,
+    R6_third_virial_coefficients as _R6_third_virial_coefficients,
+    R6_u_rhoT as _R6_u_rhoT,
+    R6_w_rhoT as _R6_w_rhoT,
+)
 
 
-class XSteam(object):
+class XSteam:
     """Main pyXSteam object. Abstract of all other functions to allow auto selection of
     the correct region for each set of parameters.
 
-    Args:
-        unitSystem (int): set the unit system used for input and output values.
-            Can be eather 0 (UNIT_SYSTEM_BARE), 1 (UNIT_SYSTEM_MKS) or 2 (UNIT_SYSTEM_FLS).
+    :param unitSystem: unit system used for input and output values. For supported values
+        see the enum UnitSystem.
     """
 
-    # Copy constant Values to expose them to the User
-    UNIT_SYSTEM_BARE = UnitConverter.__UNIT_SYSTEM_BARE__
-    UNIT_SYSTEM_MKS = UnitConverter.__UNIT_SYSTEM_MKS__
-    UNIT_SYSTEM_FLS = UnitConverter.__UNIT_SYSTEM_FLS__
+    UNIT_SYSTEM_BARE = UnitSystem.BARE
+    UNIT_SYSTEM_MKS = UnitSystem.MKS
+    UNIT_SYSTEM_FLS = UnitSystem.FLS
 
-    TYPE_ICE_Ih = IAPWS_R14.__TYPE_ICE_Ih__
-    TYPE_ICE_III = IAPWS_R14.__TYPE_ICE_III__
-    TYPE_ICE_V = IAPWS_R14.__TYPE_ICE_V__
-    TYPE_ICE_VI = IAPWS_R14.__TYPE_ICE_VI__
-    TYPE_ICE_VII = IAPWS_R14.__TYPE_ICE_VII__
+    TYPE_ICE_Ih = IceType.Ih
+    TYPE_ICE_III = IceType.III
+    TYPE_ICE_V = IceType.V
+    TYPE_ICE_VI = IceType.VI
+    TYPE_ICE_VII = IceType.VII
 
-    def __init__(self, unitSystem=UnitConverter.__UNIT_SYSTEM_BARE__):
-        self.logger = logging.getLogger(__name__)
+    def __init__(self, unitSystem: UnitSystem = UnitSystem.BARE) -> None:
+        """
+        Create a property calculator using the requested unit convention.
+
+        :param unitSystem: input/output unit system; MKS and BARE use bar and
+            °C, while FLS uses psi and °F.
+        """
+        self.logger: logging.Logger = logging.getLogger(__name__)
         self._unit_converter = UnitConverter(unitSystem)
-        self.logger.info(
-            "initialised pyXSteam with Unit System %s", self._unit_converter
-        )
+        self.logger.debug("initialised pyXSteam with Unit System %s", self._unit_converter)
 
-    def specificGasConstant(self):
-        """returns the specific Gas Constant R in kJ kg^-1 K^-1"""
-        return Constants.__SPECIFIC_GAS_CONSTANT__
+    def specificGasConstant(self) -> float:
+        """Return the specific gas constant R in kJ/(kg·K)."""
+        return SPECIFIC_GAS_CONSTANT
 
-    def criticalTemperatur(self):
-        """returns the specific temperature with conversion to the selected unit system"""
-        return self._unit_converter.fromSIunit_T(Constants.__CRITICAL_TEMPERATURE__)
+    def criticalTemperatur(self) -> float:
+        """Return the critical temperature in the selected temperature unit."""
+        return self._unit_converter.fromSIunit_T(CRITICAL_TEMPERATURE)
 
-    def criticalPressure(self):
-        """returns the specific pressure with conversion to the selected unit system"""
-        return self._unit_converter.fromSIunit_p(Constants.__CRITICAL_PRESSURE__)
+    def criticalPressure(self) -> float:
+        """Return the critical pressure in the selected pressure unit."""
+        return self._unit_converter.fromSIunit_p(CRITICAL_PRESSURE)
 
-    def criticalDensity(self):
-        """returns the specific density with conversion to the selected unit system"""
-        return self._unit_converter.fromSIunit_p(Constants.__CRITICAL_DENSITY__)
+    def criticalDensity(self) -> float:
+        """Return the critical density (kg/m³ for MKS/BARE; lb/ft³ for FLS)."""
+        return self._unit_converter.fromSIunit_rho(CRITICAL_DENSITY)
 
-    def triplePointTemperatur(self):
-        """returns the temperature of the triple point with conversion to the selected unit system"""
-        return self._unit_converter.fromSIunit_T(Constants.__TRIPLE_POINT_TEMPERATURE__)
+    def triplePointTemperatur(self) -> float:
+        """Return triple-point temperature in the selected temperature unit."""
+        return self._unit_converter.fromSIunit_T(TRIPLE_POINT_TEMPERATURE)
 
-    def triplePointPressure(self):
-        """returns the Pressure of the triple poin with conversion to the selected unit systemt"""
-        return self._unit_converter.fromSIunit_p(Constants.__TRIPLE_POINT_PRESSURE__)
+    def triplePointPressure(self) -> float:
+        """Return the triple-point pressure in the selected pressure unit."""
+        return self._unit_converter.fromSIunit_p(TRIPLE_POINT_PRESSURE)
 
-    def zeroPointTemperature(self):
-        """returns the absolute zero temperature with conversion to the selected unit system"""
+    def zeroPointTemperature(self) -> float:
+        """Return absolute-zero temperature in the selected temperature unit."""
         return self._unit_converter.fromSIunit_T(0.0)
 
-    # ***********************************************************************************************************
-    # Section 1.2 temperature
-    def tsat_p(self, p):
-        """Saturation-temperature as a function of pressure
+    def tsat_p(self, p: float) -> float:
+        """
+        Section 1.2 temperature
+        Saturation-temperature as a function of pressure
 
-        Args:
-            p (float): preasure value
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
 
-        Returns:
-            tsat (float): saturation temperature or NaN if arguments are out of range
+        :return: saturation temperature or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
-        if (p > 0.000611657) and (p < 22.06395):
+        if TRIPLE_POINT_PRESSURE < p < CRITICAL_PRESSURE:
             return self._unit_converter.fromSIunit_T(Region4.T4_p(p))
-        else:
-            self.logger.warning("pressure %f out of range", p)
-            return float("NaN")
+        self.logger.debug("pressure %f out of range", p)
+        return float("NaN")
 
-    def tsat_s(self, s):
-        """Saturation-temperature as a function of entropy
+    def tsat_s(self, s: float) -> float:
+        """
+        Section 1.2 temperature
+        Saturation-temperature as a function of entropy
 
-        Args:
-            s (float): entropy value
+        :param s: specific entropy in the selected system (kJ/(kg·K) for MKS/BARE; Btu/(lb·°F) for FLS)
 
-        Returns:
-            tsat (float): saturation temperature or NaN if arguments are out of range
+        :return: saturation temperature or NaN if arguments are out of range
         """
         s = self._unit_converter.toSIunit_s(s)
-        if (s > -0.0001545495919) and (s < 9.155759395):
+        if -0.0001545495919 < s < 9.155759395:
             ps = Region4.p4_s(s)
             return self._unit_converter.fromSIunit_T(Region4.T4_p(ps))
-        else:
-            self.logger.warning("entropy value %f is out of range", s)
-            return float("NaN")
 
-    def t_ph(self, p, h):
-        """temperature as a function of pressure and enthalpy
+        self.logger.debug("entropy value %f is out of range", s)
+        return float("NaN")
 
-        Args:
-            p (float): preasure value
-            h (float): enthalpy value
+    def t_ph(self, p: float, h: float) -> float:
+        """
+        Section 1.2 temperature
+        temperature as a function of pressure and enthalpy
 
-        Returns:
-            t (float): temperature or NaN if arguments are out of range
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+        :param h: specific enthalpy in the selected system (kJ/kg for MKS/BARE; Btu/lb for FLS)
+
+        :return: temperature or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
         h = self._unit_converter.toSIunit_h(h)
-        region = RegionSelection.region_ph(p, h)
-        if region == 1:
+        region = select_region_ph(p, h)
+        if region == DiagramRegion.R1:
             return self._unit_converter.fromSIunit_T(Region1.T1_ph(p, h))
-        elif region == 2:
+        if region == DiagramRegion.R2:
             return self._unit_converter.fromSIunit_T(Region2.T2_ph(p, h))
-        elif region == 3:
+        if region == DiagramRegion.R3:
             return self._unit_converter.fromSIunit_T(Region3.T3_ph(p, h))
-        elif region == 4:
+        if region == DiagramRegion.R4:
             return self._unit_converter.fromSIunit_T(Region4.T4_p(p))
-        elif region == 5:
+        if region == DiagramRegion.R5:
             return self._unit_converter.fromSIunit_T(Region5.T5_ph(p, h))
-        else:
-            self.logger.warning(
-                "Region switch t_ph returned unknown value %d for input p %f and h %f",
-                region,
-                p,
-                h,
-            )
-            return float("NaN")
 
-    def t_ps(self, p, s):
-        """temperature as a function of pressure and entropy
+        self.logger.debug(
+            "Region switch t_ph returned unknown value %d for input p %f and h %f",
+            region,
+            p,
+            h,
+        )
+        return float("NaN")
 
-        Args:
-            p (float): preasure value
-            s (float): entropy value
-            h (float): enthalpy value
+    def t_ps(self, p: float, s: float) -> float:
+        """
+        Section 1.2 temperature
+        temperature as a function of pressure and entropy
 
-        Returns:
-            t (float): temperature or NaN if arguments are out of range
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+        :param s: specific entropy in the selected system (kJ/(kg·K) for MKS/BARE; Btu/(lb·°F) for FLS)
+
+        :return: temperature or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
         s = self._unit_converter.toSIunit_s(s)
-        region = RegionSelection.region_ps(p, s)
-        if region == 1:
+        region = select_region_ps(p, s)
+        if region == DiagramRegion.R1:
             return self._unit_converter.fromSIunit_T(Region1.T1_ps(p, s))
-        elif region == 2:
+        if region == DiagramRegion.R2:
             return self._unit_converter.fromSIunit_T(Region2.T2_ps(p, s))
-        elif region == 3:
+        if region == DiagramRegion.R3:
             return self._unit_converter.fromSIunit_T(Region3.T3_ps(p, s))
-        elif region == 4:
+        if region == DiagramRegion.R4:
             return self._unit_converter.fromSIunit_T(Region4.T4_p(p))
-        elif region == 5:
+        if region == DiagramRegion.R5:
             return self._unit_converter.fromSIunit_T(Region5.T5_ps(p, s))
-        else:
-            self.logger.warning(
-                "Region switch t_ps returned unknown value %d for input p %f and s %f",
-                region,
-                p,
-                s,
-            )
-            return float("NaN")
 
-    def t_hs(self, h, s):
-        """temperature as a function of enthalpy and entropy
+        self.logger.debug(
+            "Region switch t_ps returned unknown value %d for input p %f and s %f",
+            region,
+            p,
+            s,
+        )
+        return float("NaN")
 
-        Args:
-            h (float): enthalpy value
-            s (float): entropy value
+    def t_hs(self, h: float, s: float) -> float:
+        """
+        Section 1.2 temperature
+        temperature as a function of enthalpy and entropy
 
-        Returns:
-            t (float): temperature or NaN if arguments are out of range
+        :param h: specific enthalpy in the selected system (kJ/kg for MKS/BARE; Btu/lb for FLS)
+        :param s: specific entropy in the selected system (kJ/(kg·K) for MKS/BARE; Btu/(lb·°F) for FLS)
+
+        :return: temperature or NaN if arguments are out of range
         """
         h = self._unit_converter.toSIunit_h(h)
         s = self._unit_converter.toSIunit_s(s)
-        region = RegionSelection.region_hs(h, s)
-        if region == 1:
+        region = select_region_hs(h, s)
+        if region == DiagramRegion.R1:
             p1 = Region1.p1_hs(h, s)
             return self._unit_converter.fromSIunit_T(Region1.T1_ph(p1, h))
-        elif region == 2:
+        elif region == DiagramRegion.R2:
             p2 = Region2.p2_hs(h, s)
             return self._unit_converter.fromSIunit_T(Region2.T2_ph(p2, h))
-        elif region == 3:
+        elif region == DiagramRegion.R3:
             p3 = Region3.p3_hs(h, s)
             return self._unit_converter.fromSIunit_T(Region3.T3_ph(p3, h))
-        elif region == 4:
+        elif region == DiagramRegion.R4:
             return self._unit_converter.fromSIunit_T(Region4.T4_hs(h, s))
-        elif region == 5:
-            self.logger.error(
+        elif region == DiagramRegion.R5:
+            self.logger.debug(
                 "functions t_hs is not available in region 5 for input h %f and s %f",
                 h,
                 s,
             )
             return float("NaN")
         else:
-            self.logger.warning(
+            self.logger.debug(
                 "Region switch t_hs returned unknown value %d for input h %f and s %f",
                 region,
                 h,
@@ -206,71 +251,69 @@ class XSteam(object):
             )
             return float("NaN")
 
-    # ***********************************************************************************************************
-    # Section 1.3 Pressure (p)
-    def psat_s(self, s):
-        """Saturation-Pressure as a function of entropy
+    def psat_s(self, s: float) -> float:
+        """
+        Section 1.3 Pressure
+        Saturation-Pressure as a function of entropy
 
-        Args:
-            s (float): entropy value
+        :param s: specific entropy in the selected system (kJ/(kg·K) for MKS/BARE; Btu/(lb·°F) for FLS)
 
-        Returns:
-            psat (float): saturation pressure or NaN if arguments are out of range
+        :return: saturation pressure or NaN if arguments are out of range
         """
         s = self._unit_converter.toSIunit_s(s)
-        if (s > -0.0001545495919) and (s < 9.155759395):
+        if -0.0001545495919 < s < 9.155759395:
             return self._unit_converter.fromSIunit_p(Region4.p4_s(s))
-        else:
-            self.logger.warning("entropy value %f out of range", s)
-            return float("NaN")
 
-    def psat_t(self, t):
-        """Saturation-Pressure as a function of temperature
+        self.logger.debug("entropy value %f out of range", s)
+        return float("NaN")
 
-        Args:
-            t (float): temperature value
+    def psat_t(self, t: float) -> float:
+        """
+        Section 1.3 Pressure
+        Saturation-Pressure as a function of temperature
 
-        Returns:
-            psat (float): saturation pressure or NaN if arguments are out of range
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
+
+        :return: saturation pressure or NaN if arguments are out of range
         """
         T = self._unit_converter.toSIunit_T(t)
-        if (T < 647.096) and (T > 273.1):
+        if 273.1 < T < CRITICAL_TEMPERATURE:
             return self._unit_converter.fromSIunit_p(Region4.p4_T(T))
         else:
-            self.logger.warning("temperature %f out of range", T)
+            self.logger.debug("temperature %f out of range", T)
             return float("NaN")
 
-    def p_hs(self, h, s):
-        """Pressure  as a function of enthalpy and entropy
+    def p_hs(self, h: float, s: float) -> float:
+        """
+        Section 1.3 Pressure
+        Pressure  as a function of enthalpy and entropy
 
-        Args:
-            h (float): enthalpy value
-            s (float): entropy value
+        :param h: specific enthalpy in the selected system (kJ/kg for MKS/BARE; Btu/lb for FLS)
+        :param s: specific entropy in the selected system (kJ/(kg·K) for MKS/BARE; Btu/(lb·°F) for FLS)
 
-        Returns:
-            p (float): pressure or NaN if arguments are out of range
+        :return: pressure or NaN if arguments are out of range
         """
         h = self._unit_converter.toSIunit_h(h)
         s = self._unit_converter.toSIunit_s(s)
-        region = RegionSelection.region_hs(h, s)
-        if region == 1:
+        region = select_region_hs(h, s)
+        if region == DiagramRegion.R1:
             return self._unit_converter.fromSIunit_p(Region1.p1_hs(h, s))
-        elif region == 2:
+        elif region == DiagramRegion.R2:
             return self._unit_converter.fromSIunit_p(Region2.p2_hs(h, s))
-        elif region == 3:
+        elif region == DiagramRegion.R3:
             return self._unit_converter.fromSIunit_p(Region3.p3_hs(h, s))
-        elif region == 4:
+        elif region == DiagramRegion.R4:
             tSat = Region4.T4_hs(h, s)
             return self._unit_converter.fromSIunit_p(Region4.p4_T(tSat))
-        elif region == 5:
-            self.logger.warning(
+        elif region == DiagramRegion.R5:
+            self.logger.debug(
                 "functions p_hs is not available in region 5 for input h %f and s %f",
                 h,
                 s,
             )
             return float("NaN")
         else:
-            self.logger.warning(
+            self.logger.debug(
                 "Region switch p_hs returned unknown value %d for input h %f and s %f",
                 region,
                 h,
@@ -278,26 +321,27 @@ class XSteam(object):
             )
             return float("NaN")
 
-    def p_hrho(self, h, rho):
-        """Pressure as a function of h and rho.
+    def p_hrho(self, h: float, rho: float) -> float:
+        """
+        Section 1.3 Pressure
+        Pressure as a function of h and rho.
 
         Very unaccurate for solid water region since it's almost incompressible!
 
         Not valid for water or sumpercritical since water rho does not change very much with p. Uses iteration to find p.
 
-        Args:
-            h (float): enthalpy value
-            rho (float): density value
+        :param h: specific enthalpy in the selected system (kJ/kg for MKS/BARE; Btu/lb for FLS)
+        :param rho: density in the selected system (kg/m³ for MKS/BARE; lb/ft³ for FLS)
 
-        Returns:
-            p (float): pressure or NaN if arguments are out of range
+        :raises ValueError: value of density is zero or negative
+
+        :return: pressure or NaN if arguments are out of range
         """
         if rho <= 0.0:
-            self.logger.error("negative values for density rho not allowed %f", rho)
             raise ValueError("rho out of range")
         h = self._unit_converter.toSIunit_h(h)
         High_Bound = self._unit_converter.fromSIunit_p(100)
-        Low_Bound = self._unit_converter.fromSIunit_p(0.000611657)
+        Low_Bound = self._unit_converter.fromSIunit_p(TRIPLE_POINT_PRESSURE)
         ps = self._unit_converter.fromSIunit_p(10)
         rhos = 1 / self.v_ph(ps, h)
         step_counter = 0
@@ -323,201 +367,177 @@ class XSteam(object):
             ps = (Low_Bound + High_Bound) / 2
         return ps
 
-    # ***********************************************************************************************************
-    # Section 1.4 Enthalpy (h)
-    def hV_p(self, p):
-        """Saturated vapour enthalpy as a function of pressure
+    def hV_p(self, p: float) -> float:
+        """
+        Section 1.4 enthalpy
+        Saturated vapor enthalpy as a function of pressure
 
-        Args:
-            p (float): preasure value
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
 
-        Returns:
-            hV (float): saturated vapour enthalpy or NaN if arguments are out of range
+        :return: saturated vapor enthalpy or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
-        if (p > 0.000611657) and (p < 22.06395):
+        if TRIPLE_POINT_PRESSURE < p < CRITICAL_PRESSURE:
             return self._unit_converter.fromSIunit_h(Region4.h4V_p(p))
-        else:
-            self.logger.warning("pressure %f out of range", p)
-            return float("NaN")
+        self.logger.debug("pressure %f out of range", p)
+        return float("NaN")
 
-    def hL_p(self, p):
-        """Saturated liquid enthalpy as a function of pressure
+    def hL_p(self, p: float) -> float:
+        """
+        Section 1.4 enthalpy
+        Saturated liquid enthalpy as a function of pressure
 
-        Args:
-            p (float): preasure value
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
 
-        Returns:
-            hL (float): saturated liquid enthalpy or NaN if arguments are out of range
+        :return: saturated liquid enthalpy or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
-        if (p > 0.000611657) and (p < 22.06395):
+        if TRIPLE_POINT_PRESSURE < p < CRITICAL_PRESSURE:
             return self._unit_converter.fromSIunit_h(Region4.h4L_p(p))
-        else:
-            self.logger.warning("pressure %f out of range", p)
-            return float("NaN")
+        self.logger.debug("pressure %f out of range", p)
+        return float("NaN")
 
-    def hV_t(self, t):
-        """Saturated vapour enthalpy as a function of temperature
+    def hV_t(self, t: float) -> float:
+        """
+        Section 1.4 enthalpy
+        Saturated vapor enthalpy as a function of temperature
 
-        Args:
-            t (float): temperature value
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
 
-        Returns:
-            hV (float): saturated vapour enthalpy or NaN if arguments are out of range
+        :return: saturated vapor enthalpy or NaN if arguments are out of range
         """
         T = self._unit_converter.toSIunit_T(t)
-        if (T > 273.15) and (T < 647.096):
+        if FREEZING_TEMPERATURE_H2O < T < CRITICAL_TEMPERATURE:
             p = Region4.p4_T(T)
             return self._unit_converter.fromSIunit_h(Region4.h4V_p(p))
-        else:
-            self.logger.warning("temperature %f out of range", T)
-            return float("NaN")
+        self.logger.debug("temperature %f out of range", T)
+        return float("NaN")
 
-    def hL_t(self, t):
-        """Saturated liquid enthalpy as a function of temperature
+    def hL_t(self, t: float) -> float:
+        """
+        Section 1.4 enthalpy
+        Saturated liquid enthalpy as a function of temperature
 
-        Args:
-            t (float): temperature value
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
 
-        Returns:
-            hL (float): saturated liquid enthalpy or NaN if arguments are out of range
+        :return: saturated liquid enthalpy or NaN if arguments are out of range
         """
         T = self._unit_converter.toSIunit_T(t)
-        if (T > 273.15) and (T < 647.096):
+        if FREEZING_TEMPERATURE_H2O < T < CRITICAL_TEMPERATURE:
             p = Region4.p4_T(T)
             return self._unit_converter.fromSIunit_h(Region4.h4L_p(p))
-        else:
-            self.logger.warning("temperature %f out of range", T)
-            return float("NaN")
+        self.logger.debug("temperature %f out of range", T)
+        return float("NaN")
 
-    def h_pt(self, p, t):
-        """Entalpy as a function of pressure and temperature
+    def h_pt(self, p: float, t: float) -> float:
+        """
+        Section 1.4 enthalpy
+        Enthalpy as a function of pressure and temperature
 
-        Args:
-            p (float): preasure value
-            t (float): temperature value
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
 
-        Returns:
-            h (float): enthalpy or NaN if arguments are out of range
+        :return: enthalpy or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
         T = self._unit_converter.toSIunit_T(t)
-        region = RegionSelection.region_pT(p, T)
-        if region == 1:
+        region = select_region_pT(p, T)
+        if region == DiagramRegion.R1:
             return self._unit_converter.fromSIunit_h(Region1.h1_pT(p, T))
-        elif region == 2:
+        if region == DiagramRegion.R2:
             return self._unit_converter.fromSIunit_h(Region2.h2_pT(p, T))
-        elif region == 3:
+        if region == DiagramRegion.R3:
             return self._unit_converter.fromSIunit_h(Region3.h3_pT(p, T))
-        elif region == 4:
-            self.logger.warning(
+        if region == DiagramRegion.R4:
+            self.logger.debug(
                 "function h_pt is not available in region 4 for input p %f and T %f",
                 p,
                 T,
             )
             return float("NaN")
-        elif region == 5:
+        if region == DiagramRegion.R5:
             return self._unit_converter.fromSIunit_h(Region5.h5_pT(p, T))
-        else:
-            self.logger.warning(
-                "Region switch h_pt returned unknown value %d for input p %f and T %f",
-                region,
-                p,
-                T,
-            )
-            return float("NaN")
 
-    def h_ps(self, p, s):
-        """Entalpy as a function of pressure and entropy
+        self.logger.debug(
+            "Region switch h_pt returned unknown value %d for input p %f and T %f",
+            region,
+            p,
+            T,
+        )
+        return float("NaN")
 
-        Args:
-            p (float): preasure value
-            s (float): entropy value
+    def h_ps(self, p: float, s: float) -> float:
+        """
+        Section 1.4 enthalpy
+        Enthalpy as a function of pressure and entropy
 
-        Returns:
-            h (float): enthalpy or NaN if arguments are out of range
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+        :param s: specific entropy in the selected system (kJ/(kg·K) for MKS/BARE; Btu/(lb·°F) for FLS)
+
+        :return: enthalpy or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
         s = self._unit_converter.toSIunit_s(s)
-        region = RegionSelection.region_ps(p, s)
-        if region == 1:
-            return self._unit_converter.fromSIunit_h(
-                Region1.h1_pT(p, Region1.T1_ps(p, s))
-            )
-        elif region == 2:
-            return self._unit_converter.fromSIunit_h(
-                Region2.h2_pT(p, Region2.T2_ps(p, s))
-            )
-        elif region == 3:
-            return self._unit_converter.fromSIunit_h(
-                Region3.h3_rhoT(1 / Region3.v3_ps(p, s), Region3.T3_ps(p, s))
-            )
-        elif region == 4:
+        region = select_region_ps(p, s)
+        if region == DiagramRegion.R1:
+            return self._unit_converter.fromSIunit_h(Region1.h1_pT(p, Region1.T1_ps(p, s)))
+        if region == DiagramRegion.R2:
+            return self._unit_converter.fromSIunit_h(Region2.h2_pT(p, Region2.T2_ps(p, s)))
+        if region == DiagramRegion.R3:
+            return self._unit_converter.fromSIunit_h(Region3.h3_rhoT(1 / Region3.v3_ps(p, s), Region3.T3_ps(p, s)))
+        if region == DiagramRegion.R4:
             xs = Region4.x4_ps(p, s)
-            return self._unit_converter.fromSIunit_h(
-                xs * Region4.h4V_p(p) + (1 - xs) * Region4.h4L_p(p)
-            )
-        elif region == 5:
-            return self._unit_converter.fromSIunit_h(
-                Region5.h5_pT(p, Region5.T5_ps(p, s))
-            )
-        else:
-            self.logger.warning(
-                "Region switch h_ps returned unknown value %d for input p %f and s %f ",
-                region,
-                p,
-                s,
-            )
-            return float("NaN")
+            return self._unit_converter.fromSIunit_h(xs * Region4.h4V_p(p) + (1 - xs) * Region4.h4L_p(p))
+        if region == DiagramRegion.R5:
+            return self._unit_converter.fromSIunit_h(Region5.h5_pT(p, Region5.T5_ps(p, s)))
 
-    def h_px(self, p, x):
-        """Entalpy as a function of pressure and vapour fraction
+        self.logger.debug(
+            "Region switch h_ps returned unknown value %d for input p %f and s %f ",
+            region,
+            p,
+            s,
+        )
+        return float("NaN")
 
-        Args:
-            p (float): preasure value
-            x (float): vapour fraction value
+    def h_px(self, p: float, x: float) -> float:
+        """
+        Section 1.4 enthalpy
+        Enthalpy as a function of pressure and vapor fraction
 
-        Returns:
-            h (float): enthalpy or NaN if arguments are out of range
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+        :param x: vapor quality, dimensionless mass fraction in [0, 1]
+
+        :return: enthalpy or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
         x = self._unit_converter.toSIunit_x(x)
         if (x > 1) or (x < 0) or (p >= 22.064):
-            self.logger.warning(
-                "Vapor fraction %f and/or pressure %f out of range", x, p
-            )
+            self.logger.debug("Vapor fraction %f and/or pressure %f out of range", x, p)
             return float("NaN")
         hL = Region4.h4L_p(p)
         hV = Region4.h4V_p(p)
         return self._unit_converter.fromSIunit_h(hL + x * (hV - hL))
 
-    def h_prho(self, p, rho):
-        """Entalpy as a function of pressure and density. Observe for low temperatures (liquid) this equation has 2 solutions
+    def h_prho(self, p: float, rho: float) -> float:
+        """
+        Section 1.4 enthalpy
+        Enthalpy as a function of pressure and density. Observe for low temperatures (liquid) this equation has 2 solutions
 
-        Args:
-            p (float): preasure value
-            rho (float): density value
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+        :param rho: density in the selected system (kg/m³ for MKS/BARE; lb/ft³ for FLS)
 
-        Returns:
-            h (float): enthalpy or NaN if arguments are out of range
+        :return: enthalpy or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
         rho = 1 / self._unit_converter.toSIunit_v(1 / float(rho))
-        region = RegionSelection.region_prho(p, rho)
-        if region == 1:
-            return self._unit_converter.fromSIunit_h(
-                Region1.h1_pT(p, Region1.T1_prho(p, rho))
-            )
-        elif region == 2:
-            return self._unit_converter.fromSIunit_h(
-                Region2.h2_pT(p, Region2.T2_prho(p, rho))
-            )
-        elif region == 3:
-            return self._unit_converter.fromSIunit_h(
-                Region3.h3_rhoT(rho, Region3.T3_prho(p, rho))
-            )
-        elif region == 4:
+        region = select_region_prho(p, rho)
+        if region == DiagramRegion.R1:
+            return self._unit_converter.fromSIunit_h(Region1.h1_pT(p, Region1.T1_prho(p, rho)))
+        if region == DiagramRegion.R2:
+            return self._unit_converter.fromSIunit_h(Region2.h2_pT(p, Region2.T2_prho(p, rho)))
+        if region == DiagramRegion.R3:
+            return self._unit_converter.fromSIunit_h(Region3.h3_rhoT(rho, Region3.T3_prho(p, rho)))
+        if region == DiagramRegion.R4:
             if p < 16.529:
                 vV = Region2.v2_pT(p, Region4.T4_p(p))
                 vL = Region1.v1_pT(p, Region4.T4_p(p))
@@ -528,199 +548,163 @@ class XSteam(object):
             hL = Region4.h4L_p(p)
             x = (1 / rho - vL) / (vV - vL)
             return self._unit_converter.fromSIunit_h((1 - x) * hL + x * hV)
-        elif region == 5:
-            return self._unit_converter.fromSIunit_h(
-                Region5.h5_pT(p, Region5.T5_prho(p, rho))
-            )
-        else:
-            self.logger.warning(
-                "Region switch h_prho returned unknown value %d for input p %f and rho %f",
-                region,
-                p,
-                rho,
-            )
-            return float("NaN")
+        if region == DiagramRegion.R5:
+            return self._unit_converter.fromSIunit_h(Region5.h5_pT(p, Region5.T5_prho(p, rho)))
 
-    def h_tx(self, t, x):
-        """Entalpy as a function of temperature and vapour fraction
+        self.logger.debug(
+            "Region switch h_prho returned unknown value %d for input p %f and rho %f",
+            region,
+            p,
+            rho,
+        )
+        return float("NaN")
 
-        Args:
-            t (float): temperature value
-            x (float): vapour fraction value
+    def h_tx(self, t: float, x: float) -> float:
+        """
+        Section 1.4 enthalpy
+        Enthalpy as a function of temperature and vapor fraction
 
-        Returns:
-            h (float): enthalpy or NaN if arguments are out of range
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
+        :param x: vapor quality, dimensionless mass fraction in [0, 1]
+
+        :return: enthalpy or NaN if arguments are out of range
         """
         T = self._unit_converter.toSIunit_T(t)
         x = self._unit_converter.toSIunit_x(x)
-        if (x > 1) or (x < 0) or (T >= 647.096):
-            self.logger.warning(
-                "Vapor fraction %f and/or temperature %f out of range", x, T
-            )
+        if (x > 1) or (x < 0) or (T >= CRITICAL_TEMPERATURE):
+            self.logger.debug("Vapor fraction %f and/or temperature %f out of range", x, T)
             return float("NaN")
         p = Region4.p4_T(T)
         hL = Region4.h4L_p(p)
         hV = Region4.h4V_p(p)
         return self._unit_converter.fromSIunit_h(hL + x * (hV - hL))
 
-    # ***********************************************************************************************************
-    # Section 1.5 Specific Volume (v)
-    def vV_p(self, p):
-        """Saturated vapour volume as a function of pressure
+    def vV_p(self, p: float) -> float:
+        """
+        Section 1.5 Specific Volume
+        Saturated vapor volume as a function of pressure
 
-        Args:
-            p (float): preasure value
-            x (float): vapour fraction value
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+        :param x: vapor quality, dimensionless mass fraction in [0, 1]
 
-        Returns:
-            vV (float): saturated vapour volume or NaN if arguments are out of range
+        :return: saturated vapor volume or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
-        if (p > 0.000611657) and (p < 22.06395):
+        if TRIPLE_POINT_PRESSURE < p < CRITICAL_PRESSURE:
             if p < 16.529:
-                return self._unit_converter.fromSIunit_v(
-                    Region2.v2_pT(p, Region4.T4_p(p))
-                )
-            else:
-                return self._unit_converter.fromSIunit_v(
-                    Region3.v3_ph(p, Region4.h4V_p(p))
-                )
-        else:
-            self.logger.warning("pressure %f out of range", p)
-            return float("NaN")
+                return self._unit_converter.fromSIunit_v(Region2.v2_pT(p, Region4.T4_p(p)))
+            return self._unit_converter.fromSIunit_v(Region3.v3_ph(p, Region4.h4V_p(p)))
+        self.logger.debug("pressure %f out of range", p)
+        return float("NaN")
 
-    def vL_p(self, p):
-        """Saturated liquid volume as a function of pressure
+    def vL_p(self, p: float) -> float:
+        """
+        Section 1.5 Specific Volume
+        Saturated liquid volume as a function of pressure
 
-        Args:
-            p (float): preasure value
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
 
-        Returns:
-            vV (float): saturated liquid volume or NaN if arguments are out of range
+        :return: saturated liquid volume or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
-        if (p > 0.000611657) and (p < 22.06395):
+        if TRIPLE_POINT_PRESSURE < p < CRITICAL_PRESSURE:
             if p < 16.529:
-                return self._unit_converter.fromSIunit_v(
-                    Region1.v1_pT(p, Region4.T4_p(p))
-                )
-            else:
-                return self._unit_converter.fromSIunit_v(
-                    Region3.v3_ph(p, Region4.h4L_p(p))
-                )
-        else:
-            self.logger.warning("pressure %f out of range", p)
-            return float("NaN")
+                return self._unit_converter.fromSIunit_v(Region1.v1_pT(p, Region4.T4_p(p)))
+            return self._unit_converter.fromSIunit_v(Region3.v3_ph(p, Region4.h4L_p(p)))
+        self.logger.debug("pressure %f out of range", p)
+        return float("NaN")
 
-    def vV_t(self, t):
-        """Saturated vapour volume as a function of temperature
+    def vV_t(self, t: float) -> float:
+        """
+        Section 1.5 Specific Volume
+        Saturated vapor volume as a function of temperature
 
-        Args:
-            t (float): temperature value
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
 
-        Returns:
-            vV (float): saturated vapour volume or NaN if arguments are out of range
+        :return: saturated vapor volume or NaN if arguments are out of range
         """
         T = self._unit_converter.toSIunit_T(t)
-        if (T > 273.15) and (T < 647.096):
+        if FREEZING_TEMPERATURE_H2O < T < CRITICAL_TEMPERATURE:
             if T <= 623.15:
-                return self._unit_converter.fromSIunit_v(
-                    Region2.v2_pT(Region4.p4_T(T), T)
-                )
-            else:
-                return self._unit_converter.fromSIunit_v(
-                    Region3.v3_ph(Region4.p4_T(T), Region4.h4V_p(Region4.p4_T(T)))
-                )
-        else:
-            self.logger.warning("temperature %f out of range", T)
-            return float("NaN")
+                return self._unit_converter.fromSIunit_v(Region2.v2_pT(Region4.p4_T(T), T))
+            return self._unit_converter.fromSIunit_v(Region3.v3_ph(Region4.p4_T(T), Region4.h4V_p(Region4.p4_T(T))))
+        self.logger.debug("temperature %f out of range", T)
+        return float("NaN")
 
-    def vL_t(self, t):
-        """Saturated liquid volume as a function of temperature
+    def vL_t(self, t: float) -> float:
+        """
+        Section 1.5 Specific Volume
+        Saturated liquid volume as a function of temperature
 
-        Args:
-            t (float): temperature value
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
 
-        Returns:
-            vV (float): saturated liquid volume or NaN if arguments are out of range
+        :return: saturated liquid volume or NaN if arguments are out of range
         """
         T = self._unit_converter.toSIunit_T(t)
-        if (T > 273.15) and (T < 647.096):
+        if FREEZING_TEMPERATURE_H2O < T < CRITICAL_TEMPERATURE:
             if T <= 623.15:
-                return self._unit_converter.fromSIunit_v(
-                    Region1.v1_pT(Region4.p4_T(T), T)
-                )
-            else:
-                return self._unit_converter.fromSIunit_v(
-                    Region3.v3_ph(Region4.p4_T(T), Region4.h4L_p(Region4.p4_T(T)))
-                )
-        else:
-            self.logger.warning("temperature %f out of range", T)
-            return float("NaN")
+                return self._unit_converter.fromSIunit_v(Region1.v1_pT(Region4.p4_T(T), T))
+            return self._unit_converter.fromSIunit_v(Region3.v3_ph(Region4.p4_T(T), Region4.h4L_p(Region4.p4_T(T))))
+        self.logger.debug("temperature %f out of range", T)
+        return float("NaN")
 
-    def v_pt(self, p, t):
-        """Specific volume as a function of pressure and temperature
+    def v_pt(self, p: float, t: float) -> float:
+        """
+        Section 1.5 Specific Volume
+        Specific volume as a function of pressure and temperature
 
-        Args:
-            p (float): preasure value
-            t (float): temperature value
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
 
-        Returns:
-            v (float): specific volume or NaN if arguments are out of range
+        :return: specific volume or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
         T = self._unit_converter.toSIunit_T(t)
-        region = RegionSelection.region_pT(p, T)
-        if region == 1:
+        region = select_region_pT(p, T)
+        if region == DiagramRegion.R1:
             return self._unit_converter.fromSIunit_v(Region1.v1_pT(p, T))
-        elif region == 2:
+        if region == DiagramRegion.R2:
             return self._unit_converter.fromSIunit_v(Region2.v2_pT(p, T))
-        elif region == 3:
-            return self._unit_converter.fromSIunit_v(
-                Region3.v3_ph(p, Region3.h3_pT(p, T))
-            )
-        elif region == 4:
-            self.logger.warning(
+        if region == DiagramRegion.R3:
+            return self._unit_converter.fromSIunit_v(Region3.v3_ph(p, Region3.h3_pT(p, T)))
+        if region == DiagramRegion.R4:
+            self.logger.debug(
                 "function v_pt is not available in region 4 for input p %f and T %f",
                 p,
                 T,
             )
             return float("NaN")
-        elif region == 5:
+        if region == DiagramRegion.R5:
             return self._unit_converter.fromSIunit_v(Region5.v5_pT(p, T))
-        else:
-            self.logger.warning(
-                "Region switch v_pt returned unknown value %d for input p %f and T %f",
-                region,
-                p,
-                T,
-            )
-            return float("NaN")
 
-    def v_ph(self, p, h):
-        """Specific volume as a function of pressure and enthalpy
+        self.logger.debug(
+            "Region switch v_pt returned unknown value %d for input p %f and T %f",
+            region,
+            p,
+            T,
+        )
+        return float("NaN")
 
-        Args:
-            p (float): preasure value
-            h (float): enthalpy value
+    def v_ph(self, p: float, h: float) -> float:
+        """
+        Section 1.5 Specific Volume
+        Specific volume as a function of pressure and enthalpy
 
-        Returns:
-            v (float): specific volume or NaN if arguments are out of range
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+        :param h: specific enthalpy in the selected system (kJ/kg for MKS/BARE; Btu/lb for FLS)
+
+        :return: specific volume or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
         h = self._unit_converter.toSIunit_h(h)
-        region = RegionSelection.region_ph(p, h)
-        if region == 1:
-            return self._unit_converter.fromSIunit_v(
-                Region1.v1_pT(p, Region1.T1_ph(p, h))
-            )
-        elif region == 2:
-            return self._unit_converter.fromSIunit_v(
-                Region2.v2_pT(p, Region2.T2_ph(p, h))
-            )
-        elif region == 3:
+        region = select_region_ph(p, h)
+        if region == DiagramRegion.R1:
+            return self._unit_converter.fromSIunit_v(Region1.v1_pT(p, Region1.T1_ph(p, h)))
+        if region == DiagramRegion.R2:
+            return self._unit_converter.fromSIunit_v(Region2.v2_pT(p, Region2.T2_ph(p, h)))
+        if region == DiagramRegion.R3:
             return self._unit_converter.fromSIunit_v(Region3.v3_ph(p, h))
-        elif region == 4:
+        if region == DiagramRegion.R4:
             xs = Region4.x4_ph(p, h)
             if p < 16.529:
                 v4v = Region2.v2_pT(p, Region4.T4_p(p))
@@ -729,42 +713,38 @@ class XSteam(object):
                 v4v = Region3.v3_ph(p, Region4.h4V_p(p))
                 v4L = Region3.v3_ph(p, Region4.h4L_p(p))
             return self._unit_converter.fromSIunit_v((xs * v4v + (1 - xs) * v4L))
-        elif region == 5:
+        if region == DiagramRegion.R5:
             Ts = Region5.T5_ph(p, h)
             return self._unit_converter.fromSIunit_v(Region5.v5_pT(p, Ts))
-        else:
-            self.logger.warning(
-                "Region switch v_ph returned unknown value %d for input p %f and h %f",
-                region,
-                p,
-                h,
-            )
-            return float("NaN")
 
-    def v_ps(self, p, s):
-        """Specific volume as a function of pressure and entropy
+        self.logger.debug(
+            "Region switch v_ph returned unknown value %d for input p %f and h %f",
+            region,
+            p,
+            h,
+        )
+        return float("NaN")
 
-        Args:
-            p (float): preasure value
-            s (float): entropy value
+    def v_ps(self, p: float, s: float) -> float:
+        """
+        Section 1.5 Specific Volume
+        Specific volume as a function of pressure and entropy
 
-        Returns:
-            v (float): specific volume or NaN if arguments are out of range
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+        :param s: specific entropy in the selected system (kJ/(kg·K) for MKS/BARE; Btu/(lb·°F) for FLS)
+
+        :return: specific volume or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
         s = self._unit_converter.toSIunit_s(s)
-        region = RegionSelection.region_ps(p, s)
-        if region == 1:
-            return self._unit_converter.fromSIunit_v(
-                Region1.v1_pT(p, Region1.T1_ps(p, s))
-            )
-        elif region == 2:
-            return self._unit_converter.fromSIunit_v(
-                Region2.v2_pT(p, Region2.T2_ps(p, s))
-            )
-        elif region == 3:
+        region = select_region_ps(p, s)
+        if region == DiagramRegion.R1:
+            return self._unit_converter.fromSIunit_v(Region1.v1_pT(p, Region1.T1_ps(p, s)))
+        if region == DiagramRegion.R2:
+            return self._unit_converter.fromSIunit_v(Region2.v2_pT(p, Region2.T2_ps(p, s)))
+        if region == DiagramRegion.R3:
             return self._unit_converter.fromSIunit_v(Region3.v3_ps(p, s))
-        elif region == 4:
+        if region == DiagramRegion.R4:
             xs = Region4.x4_ps(p, s)
             if p < 16.529:
                 v4v = Region2.v2_pT(p, Region4.T4_p(p))
@@ -773,276 +753,242 @@ class XSteam(object):
                 v4v = Region3.v3_ph(p, Region4.h4V_p(p))
                 v4L = Region3.v3_ph(p, Region4.h4L_p(p))
             return self._unit_converter.fromSIunit_v((xs * v4v + (1 - xs) * v4L))
-        elif region == 5:
+        if region == DiagramRegion.R5:
             Ts = Region5.T5_ps(p, s)
             return self._unit_converter.fromSIunit_v(Region5.v5_pT(p, Ts))
-        else:
-            self.logger.warning(
-                "Region switch v_ps returned unknown value %d for input p %f and s %f",
-                region,
-                p,
-                s,
-            )
-            return float("NaN")
 
-    # ***********************************************************************************************************
-    # Section 1.6 Density (rho)
-    # Density is calculated as 1/v. See section 1.5 Volume
-    def rhoV_p(self, p):
-        """Saturated vapour density as a function of pressure
+        self.logger.debug(
+            "Region switch v_ps returned unknown value %d for input p %f and s %f",
+            region,
+            p,
+            s,
+        )
+        return float("NaN")
 
-        Args:
-            p (float): preasure value
+    def rhoV_p(self, p: float) -> float:
+        """
+        Section 1.6 Density (rho)
+        Note: Density is calculated as 1/v. See section 1.5 Volume
+        Saturated vapor density as a function of pressure
 
-        Returns:
-            rhoV (float): saturated vapour density
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+
+        :return: saturated vapor density
         """
         return 1 / self.vV_p(p)
 
-    def rhoL_p(self, p):
-        """Saturated liquid density as a function of pressure
+    def rhoL_p(self, p: float) -> float:
+        """
+        Section 1.6 Density (rho)
+        Note: Density is calculated as 1/v. See section 1.5 Volume
+        Saturated liquid density as a function of pressure
 
-        Args:
-            p (float): preasure value
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
 
-        Returns:
-            rhoV (float): saturated liquid density
+        :return: saturated liquid density
         """
         return 1 / self.vL_p(p)
 
-    def rhoV_t(self, t):
-        """Saturated vapour density as a function of temperature
+    def rhoV_t(self, t: float) -> float:
+        """
+        Section 1.6 Density (rho)
+        Note: Density is calculated as 1/v. See section 1.5 Volume
+        Saturated vapor density as a function of temperature
 
-        Args:
-            t (float): temperature value
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
 
-        Returns:
-            rhoV (float): saturated vapour density
+        :return: saturated vapor density
         """
         return 1 / self.vV_t(t)
 
-    def rhoL_t(self, t):
-        """Saturated liquid density as a function of temperature
+    def rhoL_t(self, t: float) -> float:
+        """
+        Section 1.6 Density (rho)
+        Note: Density is calculated as 1/v. See section 1.5 Volume
+        Saturated liquid density as a function of temperature
 
-        Args:
-            t (float): temperature value
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
 
-        Returns:
-            rhoV (float): saturated liquid density
+        :return: saturated liquid density
         """
         return 1 / self.vL_t(t)
 
-    def rho_pt(self, p, t):
-        """Density as a function of pressure and temperature
+    def rho_pt(self, p: float, t: float) -> float:
+        """
+        Section 1.6 Density (rho)
+        Note: Density is calculated as 1/v. See section 1.5 Volume
+        Density as a function of pressure and temperature
 
-        Args:
-            p (float): preasure value
-            t (float): temperature value
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
 
-        Returns:
-            rho (float): density
+        :return: density
         """
         return 1 / self.v_pt(p, t)
 
-    def rho_ph(self, p, h):
-        """Density as a function of pressure and enthalpy
+    def rho_ph(self, p: float, h: float) -> float:
+        """
+        Section 1.6 Density (rho)
+        Note: Density is calculated as 1/v. See section 1.5 Volume
+        Density as a function of pressure and enthalpy
 
-        Args:
-            p (float): preasure value
-            h (float): enthalpy value
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+        :param h: specific enthalpy in the selected system (kJ/kg for MKS/BARE; Btu/lb for FLS)
 
-        Returns:
-            rho (float): density
+        :return: density
         """
         return 1 / self.v_ph(p, h)
 
-    def rho_ps(self, p, s):
-        """Density as a function of pressure and entropy
+    def rho_ps(self, p: float, s: float) -> float:
+        """
+        Section 1.6 Density (rho)
+        Note: Density is calculated as 1/v. See section 1.5 Volume
+        Density as a function of pressure and entropy
 
-        Args:
-            p (float): preasure value
-            s (float): entropy value
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+        :param s: specific entropy in the selected system (kJ/(kg·K) for MKS/BARE; Btu/(lb·°F) for FLS)
 
-        Returns:
-            rho (float): density
+        :return: density
         """
         return 1 / self.v_ps(p, s)
 
-    # ***********************************************************************************************************
-    # Section 1.7 Specific entropy (s)
-    def sV_p(self, p):
-        """Saturated vapour entropy as a function of pressure
+    def sV_p(self, p: float) -> float:
+        """
+        Section 1.7 Specific entropy
+        Saturated vapor entropy as a function of pressure
 
-        Args:
-            p (float): preasure value
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
 
-        Returns:
-            sV (float): Saturated vapour entropy or NaN if arguments are out of range
+        :return: Saturated vapor entropy or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
-        if (p > 0.000611657) and (p < 22.06395):
+        if TRIPLE_POINT_PRESSURE < p < CRITICAL_PRESSURE:
             if p < 16.529:
-                return self._unit_converter.fromSIunit_s(
-                    Region2.s2_pT(p, Region4.T4_p(p))
-                )
-            else:
-                return self._unit_converter.fromSIunit_s(
-                    Region3.s3_rhoT(
-                        1 / (Region3.v3_ph(p, Region4.h4V_p(p))), Region4.T4_p(p)
-                    )
-                )
-        else:
-            self.logger.warning("pressure %f out of range", p)
-            return float("NaN")
+                return self._unit_converter.fromSIunit_s(Region2.s2_pT(p, Region4.T4_p(p)))
+            return self._unit_converter.fromSIunit_s(Region3.s3_rhoT(1 / (Region3.v3_ph(p, Region4.h4V_p(p))), Region4.T4_p(p)))
+        self.logger.debug("pressure %f out of range", p)
+        return float("NaN")
 
-    def sL_p(self, p):
-        """Saturated liquid entropy as a function of pressure
+    def sL_p(self, p: float) -> float:
+        """
+        Section 1.7 Specific entropy
+        Saturated liquid entropy as a function of pressure
 
-        Args:
-            p (float): preasure value
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
 
-        Returns:
-            sL (float): Saturated liquid entropy or NaN if arguments are out of range
+        :return: Saturated liquid entropy or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
-        if (p > 0.000611657) and (p < 22.06395):
+        if TRIPLE_POINT_PRESSURE < p < CRITICAL_PRESSURE:
             if p < 16.529:
-                return self._unit_converter.fromSIunit_s(
-                    Region1.s1_pT(p, Region4.T4_p(p))
-                )
-            else:
-                return self._unit_converter.fromSIunit_s(
-                    Region3.s3_rhoT(
-                        1 / (Region3.v3_ph(p, Region4.h4L_p(p))), Region4.T4_p(p)
-                    )
-                )
-        else:
-            self.logger.warning("pressure %f out of range", p)
-            return float("NaN")
+                return self._unit_converter.fromSIunit_s(Region1.s1_pT(p, Region4.T4_p(p)))
+            return self._unit_converter.fromSIunit_s(Region3.s3_rhoT(1 / (Region3.v3_ph(p, Region4.h4L_p(p))), Region4.T4_p(p)))
+        self.logger.debug("pressure %f out of range", p)
+        return float("NaN")
 
-    def sV_t(self, t):
-        """Saturated vapour entropy as a function of temperature
+    def sV_t(self, t: float) -> float:
+        """
+        Section 1.7 Specific entropy
+        Saturated vapor entropy as a function of temperature
 
-        Args:
-            t (float): temperature value
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
 
-        Returns:
-            sV (float): Saturated vapour entropy or NaN if arguments are out of range
+        :return: Saturated vapor entropy or NaN if arguments are out of range
         """
         T = self._unit_converter.toSIunit_T(t)
-        if (T > 273.15) and (T < 647.096):
+        if FREEZING_TEMPERATURE_H2O < T < CRITICAL_TEMPERATURE:
             if T <= 623.15:
-                return self._unit_converter.fromSIunit_s(
-                    Region2.s2_pT(Region4.p4_T(T), T)
+                return self._unit_converter.fromSIunit_s(Region2.s2_pT(Region4.p4_T(T), T))
+            return self._unit_converter.fromSIunit_s(
+                Region3.s3_rhoT(
+                    1 / (Region3.v3_ph(Region4.p4_T(T), Region4.h4V_p(Region4.p4_T(T)))),
+                    T,
                 )
-            else:
-                return self._unit_converter.fromSIunit_s(
-                    Region3.s3_rhoT(
-                        1
-                        / (
-                            Region3.v3_ph(
-                                Region4.p4_T(T), Region4.h4V_p(Region4.p4_T(T))
-                            )
-                        ),
-                        T,
-                    )
-                )
-        else:
-            self.logger.warning("temperature %f out of range", T)
-            return float("NaN")
+            )
+        self.logger.debug("temperature %f out of range", T)
+        return float("NaN")
 
-    def sL_t(self, t):
-        """Saturated liquid entropy as a function of temperature
+    def sL_t(self, t: float) -> float:
+        """
+        Section 1.7 Specific entropy
+        Saturated liquid entropy as a function of temperature
 
-        Args:
-            t (float): temperature value
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
 
-        Returns:
-            sL (float): Saturated liquid entropy or NaN if arguments are out of range
+        :return: Saturated liquid entropy or NaN if arguments are out of range
         """
         T = self._unit_converter.toSIunit_T(t)
-        if (T > 273.15) and (T < 647.096):
+        if FREEZING_TEMPERATURE_H2O < T < CRITICAL_TEMPERATURE:
             if T <= 623.15:
-                return self._unit_converter.fromSIunit_s(
-                    Region1.s1_pT(Region4.p4_T(T), T)
+                return self._unit_converter.fromSIunit_s(Region1.s1_pT(Region4.p4_T(T), T))
+            return self._unit_converter.fromSIunit_s(
+                Region3.s3_rhoT(
+                    1 / (Region3.v3_ph(Region4.p4_T(T), Region4.h4L_p(Region4.p4_T(T)))),
+                    T,
                 )
-            else:
-                return self._unit_converter.fromSIunit_s(
-                    Region3.s3_rhoT(
-                        1
-                        / (
-                            Region3.v3_ph(
-                                Region4.p4_T(T), Region4.h4L_p(Region4.p4_T(T))
-                            )
-                        ),
-                        T,
-                    )
-                )
-        else:
-            self.logger.warning("temperature %f out of range", T)
-            return float("NaN")
+            )
+        self.logger.debug("temperature %f out of range", T)
+        return float("NaN")
 
-    def s_pt(self, p, t):
-        """Specific entropy as a function of pressure and temperature (Returns saturated vapour entalpy if mixture)
+    def s_pt(self, p: float, t: float) -> float:
+        """
+        Section 1.7 Specific entropy
+        Specific entropy as a function of pressure and temperature (Returns saturated vapor entalpy if mixture)
 
-        Args:
-            p (float): preasure value
-            t (float): temperature value
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
 
-        Returns:
-            s (float): entropy or NaN if arguments are out of range
+        :return: entropy or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
         T = self._unit_converter.toSIunit_T(t)
-        region = RegionSelection.region_pT(p, T)
-        if region == 1:
+        region = select_region_pT(p, T)
+        if region == DiagramRegion.R1:
             return self._unit_converter.fromSIunit_s(Region1.s1_pT(p, T))
-        elif region == 2:
+        if region == DiagramRegion.R2:
             return self._unit_converter.fromSIunit_s(Region2.s2_pT(p, T))
-        elif region == 3:
+        if region == DiagramRegion.R3:
             hs = Region3.h3_pT(p, T)
             rhos = 1 / Region3.v3_ph(p, hs)
             return self._unit_converter.fromSIunit_s(Region3.s3_rhoT(rhos, T))
-        elif region == 4:
-            self.logger.warning(
-                "function s_pt is not available in region 4 (p %f, T %f)", p, T
-            )
+        if region == DiagramRegion.R4:
+            self.logger.debug("function s_pt is not available in region 4 (p %f, T %f)", p, T)
             return float("NaN")
-        elif region == 5:
+        if region == DiagramRegion.R5:
             return self._unit_converter.fromSIunit_s(Region5.s5_pT(p, T))
-        else:
-            self.logger.warning(
-                "Region switch s_pt returned unknown value %d for input p %f and T %f",
-                region,
-                p,
-                T,
-            )
-            return float("NaN")
 
-    def s_ph(self, p, h):
-        """Specific entropy as a function of pressure and enthalpy
+        self.logger.debug(
+            "Region switch s_pt returned unknown value %d for input p %f and T %f",
+            region,
+            p,
+            T,
+        )
+        return float("NaN")
 
-        Args:
-            p (float): preasure value
-            h (float): enthalpy value
+    def s_ph(self, p: float, h: float) -> float:
+        """
+        Section 1.7 Specific entropy
+        Specific entropy as a function of pressure and enthalpy
 
-        Returns:
-            s (float): entropy or NaN if arguments are out of range
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+        :param h: specific enthalpy in the selected system (kJ/kg for MKS/BARE; Btu/lb for FLS)
+
+        :return: entropy or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
         h = self._unit_converter.toSIunit_h(h)
-        region = RegionSelection.region_ph(p, h)
-        if region == 1:
+        region = select_region_ph(p, h)
+        if region == DiagramRegion.R1:
             T = Region1.T1_ph(p, h)
             return self._unit_converter.fromSIunit_s(Region1.s1_pT(p, T))
-        elif region == 2:
+        if region == DiagramRegion.R2:
             T = Region2.T2_ph(p, h)
             return self._unit_converter.fromSIunit_s(Region2.s2_pT(p, T))
-        elif region == 3:
+        if region == DiagramRegion.R3:
             rhos = 1 / Region3.v3_ph(p, h)
             Ts = Region3.T3_ph(p, h)
             return self._unit_converter.fromSIunit_s(Region3.s3_rhoT(rhos, Ts))
-        elif region == 4:
+        if region == DiagramRegion.R4:
             Ts = Region4.T4_p(p)
             xs = Region4.x4_ph(p, h)
             if p < 16.529:
@@ -1054,194 +1000,169 @@ class XSteam(object):
                 v4L = Region3.v3_ph(p, Region4.h4L_p(p))
                 s4L = Region3.s3_rhoT(1 / v4L, Ts)
             return self._unit_converter.fromSIunit_s((xs * s4v + (1 - xs) * s4L))
-        elif region == 5:
+        if region == DiagramRegion.R5:
             T = Region5.T5_ph(p, h)
             return self._unit_converter.fromSIunit_s(Region5.s5_pT(p, T))
-        else:
-            self.logger.warning(
-                "Region switch s_ph returned unknown value %d for input p %f and h %f",
-                region,
-                p,
-                h,
+        self.logger.debug(
+            "Region switch s_ph returned unknown value %d for input p %f and h %f",
+            region,
+            p,
+            h,
+        )
+        return float("NaN")
+
+    def uV_p(self, p: float) -> float:
+        """
+        Section 1.8 Specific internal energy
+        Saturated vapor internal energy as a function of pressure
+
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+
+        :return: saturated vapor internal energy or NaN if arguments are out of range
+        """
+        p = self._unit_converter.toSIunit_p(p)
+        if TRIPLE_POINT_PRESSURE < p < CRITICAL_PRESSURE:
+            if p < 16.529:
+                return self._unit_converter.fromSIunit_u(Region2.u2_pT(p, Region4.T4_p(p)))
+            return self._unit_converter.fromSIunit_u(Region3.u3_rhoT(1 / (Region3.v3_ph(p, Region4.h4V_p(p))), Region4.T4_p(p)))
+        self.logger.debug("preasure %f out of range for uV_p(p)", p)
+        return float("NaN")
+
+    def uL_p(self, p: float) -> float:
+        """
+        Section 1.8 Specific internal energy
+        Saturated liquid internal energy as a function of pressure
+
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+
+        :return: saturated liquid internal energy
+        """
+        p = self._unit_converter.toSIunit_p(p)
+        if TRIPLE_POINT_PRESSURE < p < CRITICAL_PRESSURE:
+            if p < 16.529:
+                return self._unit_converter.fromSIunit_u(Region1.u1_pT(p, Region4.T4_p(p)))
+            return self._unit_converter.fromSIunit_u(Region3.u3_rhoT(1 / (Region3.v3_ph(p, Region4.h4L_p(p))), Region4.T4_p(p)))
+        self.logger.debug("pressure %f out of range for uL_p(p)", p)
+        return float("NaN")
+
+    def uV_t(self, t: float) -> float:
+        """
+        Section 1.8 Specific internal energy
+        Saturated vapor internal energy as a function of temperature
+
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
+
+        :return: saturated vapor internal energy or NaN if arguments are out of range
+        """
+        T = self._unit_converter.toSIunit_T(t)
+        if FREEZING_TEMPERATURE_H2O < T < CRITICAL_TEMPERATURE:
+            if T <= 623.15:
+                return self._unit_converter.fromSIunit_u(Region2.u2_pT(Region4.p4_T(T), T))
+            return self._unit_converter.fromSIunit_u(
+                Region3.u3_rhoT(
+                    1 / (Region3.v3_ph(Region4.p4_T(T), Region4.h4V_p(Region4.p4_T(T)))),
+                    T,
+                )
             )
-            return float("NaN")
+        self.logger.debug("temperature %f out of range", T)
+        return float("NaN")
 
-    # ***********************************************************************************************************
-    # Section 1.8 Specific internal energy (u)
-    def uV_p(self, p):
-        """Saturated vapour internal energy as a function of pressure
-
-        Args:
-            p (float): preasure value
-
-        Returns:
-            uV (float): saturated vapour internal energy or NaN if arguments are out of range
+    def uL_t(self, t: float) -> float:
         """
-        p = self._unit_converter.toSIunit_p(p)
-        if (p > 0.000611657) and (p < 22.06395):
-            if p < 16.529:
-                return self._unit_converter.fromSIunit_u(
-                    Region2.u2_pT(p, Region4.T4_p(p))
-                )
-            else:
-                return self._unit_converter.fromSIunit_u(
-                    Region3.u3_rhoT(
-                        1 / (Region3.v3_ph(p, Region4.h4V_p(p))), Region4.T4_p(p)
-                    )
-                )
-        else:
-            return float("NaN")
+        Section 1.8 Specific internal energy
+        Saturated liquid internal energy as a function of temperature
 
-    def uL_p(self, p):
-        """Saturated liquid internal energy as a function of pressure
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
 
-        Args:
-            p (float): preasure value
-
-        Returns:
-            uL (float): saturated liquid internal energy
-        """
-        p = self._unit_converter.toSIunit_p(p)
-        if (p > 0.000611657) and (p < 22.06395):
-            if p < 16.529:
-                return self._unit_converter.fromSIunit_u(
-                    Region1.u1_pT(p, Region4.T4_p(p))
-                )
-            else:
-                return self._unit_converter.fromSIunit_u(
-                    Region3.u3_rhoT(
-                        1 / (Region3.v3_ph(p, Region4.h4L_p(p))), Region4.T4_p(p)
-                    )
-                )
-        else:
-            self.logger.warning("pressure %f out of range", p)
-            return float("NaN")
-
-    def uV_t(self, t):
-        """Saturated vapour internal energy as a function of temperature
-
-        Args:
-            t (float): temperature value
-
-        Returns:
-            uV (float): saturated vapour internal energy or NaN if arguments are out of range
+        :return: saturated liquid internal energy or NaN if arguments are out of range
         """
         T = self._unit_converter.toSIunit_T(t)
-        if (T > 273.15) and (T < 647.096):
+        if FREEZING_TEMPERATURE_H2O < T < CRITICAL_TEMPERATURE:
             if T <= 623.15:
-                return self._unit_converter.fromSIunit_u(
-                    Region2.u2_pT(Region4.p4_T(T), T)
+                return self._unit_converter.fromSIunit_u(Region1.u1_pT(Region4.p4_T(T), T))
+
+            return self._unit_converter.fromSIunit_u(
+                Region3.u3_rhoT(
+                    1 / (Region3.v3_ph(Region4.p4_T(T), Region4.h4L_p(Region4.p4_T(T)))),
+                    T,
                 )
-            else:
-                return self._unit_converter.fromSIunit_u(
-                    Region3.u3_rhoT(
-                        1
-                        / (
-                            Region3.v3_ph(
-                                Region4.p4_T(T), Region4.h4V_p(Region4.p4_T(T))
-                            )
-                        ),
-                        T,
-                    )
-                )
-        else:
-            self.logger.warning("temperature %f out of range", T)
-            return float("NaN")
+            )
 
-    def uL_t(self, t):
-        """Saturated liquid internal energy as a function of temperature
+        self.logger.debug("temperature %f out of range", T)
+        return float("NaN")
 
-        Args:
-            t (float): temperature value
-
-        Returns:
-            uL (float): saturated liquid internal energy or NaN if arguments are out of range
+    def u_pt(self, p: float, t: float) -> float:
         """
-        T = self._unit_converter.toSIunit_T(t)
-        if (T > 273.15) and (T < 647.096):
-            if T <= 623.15:
-                return self._unit_converter.fromSIunit_u(
-                    Region1.u1_pT(Region4.p4_T(T), T)
-                )
-            else:
-                return self._unit_converter.fromSIunit_u(
-                    Region3.u3_rhoT(
-                        1
-                        / (
-                            Region3.v3_ph(
-                                Region4.p4_T(T), Region4.h4L_p(Region4.p4_T(T))
-                            )
-                        ),
-                        T,
-                    )
-                )
-        else:
-            self.logger.warning("temperature %f out of range", T)
-            return float("NaN")
+        Section 1.8 Specific internal energy
+        Specific internal energy as a function of pressure and temperature
 
-    def u_pt(self, p, t):
-        """Specific internal energy as a function of pressure and temperature
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
 
-        Args:
-            p (float): preasure value
-            t (float): temperature value
-
-        Returns:
-            u (float): specific internal energy or NaN if arguments are out of range
+        :return: specific internal energy or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
         T = self._unit_converter.toSIunit_T(t)
-        region = RegionSelection.region_pT(p, T)
-        if region == 1:
+        region = select_region_pT(p, T)
+
+        if region == DiagramRegion.R1:
             return self._unit_converter.fromSIunit_u(Region1.u1_pT(p, T))
-        elif region == 2:
+
+        if region == DiagramRegion.R2:
             return self._unit_converter.fromSIunit_u(Region2.u2_pT(p, T))
-        elif region == 3:
+
+        if region == DiagramRegion.R3:
             hs = Region3.h3_pT(p, T)
             rhos = 1 / Region3.v3_ph(p, hs)
             return self._unit_converter.fromSIunit_u(Region3.u3_rhoT(rhos, T))
-        elif region == 4:
-            self.logger.warning(
+
+        if region == DiagramRegion.R4:
+            self.logger.debug(
                 "function u_pt is not available in region 4 for input p %f and T %f",
                 p,
                 T,
             )
             return float("NaN")
-        elif region == 5:
+
+        if region == DiagramRegion.R5:
             return self._unit_converter.fromSIunit_u(Region5.u5_pT(p, T))
-        else:
-            self.logger.warning(
-                "Region switch u_pt returned unknown value %d for input p %f and T %f",
-                region,
-                p,
-                T,
-            )
-            return float("NaN")
 
-    def u_ph(self, p, h):
-        """Specific internal energy as a function of pressure and enthalpy
+        self.logger.debug(
+            "Region switch u_pt returned unknown value %d for input p %f and T %f",
+            region,
+            p,
+            T,
+        )
+        return float("NaN")
 
-        Args:
-            p (float): preasure value
-            h (float): enthalpy value
+    def u_ph(self, p: float, h: float) -> float:
+        """
+        Section 1.8 Specific internal energy
+        Specific internal energy as a function of pressure and enthalpy
 
-        Returns:
-            u (float): specific internal energy or NaN if arguments are out of range
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+        :param h: specific enthalpy in the selected system (kJ/kg for MKS/BARE; Btu/lb for FLS)
+
+        :return: specific internal energy or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
         h = self._unit_converter.toSIunit_h(h)
-        region = RegionSelection.region_ph(p, h)
-        if region == 1:
+        region = select_region_ph(p, h)
+
+        if region == DiagramRegion.R1:
             Ts = Region1.T1_ph(p, h)
             return self._unit_converter.fromSIunit_u(Region1.u1_pT(p, Ts))
-        elif region == 2:
+
+        if region == DiagramRegion.R2:
             Ts = Region2.T2_ph(p, h)
             return self._unit_converter.fromSIunit_u(Region2.u2_pT(p, Ts))
-        elif region == 3:
+
+        if region == DiagramRegion.R3:
             rhos = 1 / Region3.v3_ph(p, h)
             Ts = Region3.T3_ph(p, h)
             return self._unit_converter.fromSIunit_u(Region3.u3_rhoT(rhos, Ts))
-        elif region == 4:
+
+        if region == DiagramRegion.R4:
             Ts = Region4.T4_p(p)
             xs = Region4.x4_ph(p, h)
             if p < 16.529:
@@ -1253,808 +1174,766 @@ class XSteam(object):
                 v4L = Region3.v3_ph(p, Region4.h4L_p(p))
                 u4L = Region3.u3_rhoT(1 / v4L, Ts)
             return self._unit_converter.fromSIunit_u((xs * u4v + (1 - xs) * u4L))
-        elif region == 5:
+
+        if region == DiagramRegion.R5:
             Ts = Region5.T5_ph(p, h)
             return self._unit_converter.fromSIunit_u(Region5.u5_pT(p, Ts))
-        else:
-            self.logger.warning(
-                "Region switch u_ph returned unknown value %d for input p %f and h %f",
-                region,
-                p,
-                h,
-            )
-            return float("NaN")
 
-    def u_ps(self, p, s):
-        """Specific internal energy as a function of pressure and entropy
+        self.logger.debug(
+            "Region switch u_ph returned unknown value %d for input p %f and h %f",
+            region,
+            p,
+            h,
+        )
+        return float("NaN")
 
-        Args:
-            p (float): preasure value
-            s (float): entropy value
+    def u_ps(self, p: float, s: float) -> float:
+        """
+        Section 1.8 Specific internal energy
+        Specific internal energy as a function of pressure and entropy
 
-        Returns:
-            u (float): specific internal energy or NaN if arguments are out of range
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+        :param s: specific entropy in the selected system (kJ/(kg·K) for MKS/BARE; Btu/(lb·°F) for FLS)
+
+        :return: specific internal energy or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
         s = self._unit_converter.toSIunit_s(s)
-        region = RegionSelection.region_ps(p, s)
-        if region == 1:
+        region = select_region_ps(p, s)
+        if region == DiagramRegion.R1:
             Ts = Region1.T1_ps(p, s)
             return self._unit_converter.fromSIunit_u(Region1.u1_pT(p, Ts))
-        elif region == 2:
+
+        if region == DiagramRegion.R2:
             Ts = Region2.T2_ps(p, s)
             return self._unit_converter.fromSIunit_u(Region2.u2_pT(p, Ts))
-        elif region == 3:
+
+        if region == DiagramRegion.R3:
             rhos = 1 / Region3.v3_ps(p, s)
             Ts = Region3.T3_ps(p, s)
             return self._unit_converter.fromSIunit_u(Region3.u3_rhoT(rhos, Ts))
-        elif region == 4:
+
+        if region == DiagramRegion.R4:
             if p < 16.529:
                 uLp = Region1.u1_pT(p, Region4.T4_p(p))
                 uVp = Region2.u2_pT(p, Region4.T4_p(p))
             else:
-                uLp = Region3.u3_rhoT(
-                    1 / (Region3.v3_ph(p, Region4.h4L_p(p))), Region4.T4_p(p)
-                )
-                uVp = Region3.u3_rhoT(
-                    1 / (Region3.v3_ph(p, Region4.h4V_p(p))), Region4.T4_p(p)
-                )
+                uLp = Region3.u3_rhoT(1 / (Region3.v3_ph(p, Region4.h4L_p(p))), Region4.T4_p(p))
+                uVp = Region3.u3_rhoT(1 / (Region3.v3_ph(p, Region4.h4V_p(p))), Region4.T4_p(p))
             xs = Region4.x4_ps(p, s)
             return self._unit_converter.fromSIunit_u((xs * uVp + (1 - xs) * uLp))
-        elif region == 5:
+
+        if region == DiagramRegion.R5:
             Ts = Region5.T5_ps(p, s)
             return self._unit_converter.fromSIunit_u(Region5.u5_pT(p, Ts))
-        else:
-            self.logger.warning(
-                "Region switch u_ps returned unknown value %d for input p %f and s %f",
-                region,
-                p,
-                s,
+
+        self.logger.debug(
+            "Region switch u_ps returned unknown value %d for input p %f and s %f",
+            region,
+            p,
+            s,
+        )
+        return float("NaN")
+
+    def CpV_p(self, p: float) -> float:
+        """
+        Section 1.9 Specific isobaric heat capacity
+        Saturated vapor heat capacity as a function of pressure
+
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+
+        :return: saturated vapor heat capacity or NaN if arguments are out of range
+        """
+        p = self._unit_converter.toSIunit_p(p)
+        if TRIPLE_POINT_PRESSURE < p < CRITICAL_PRESSURE:
+            if p < 16.529:
+                return self._unit_converter.fromSIunit_Cp(Region2.Cp2_pT(p, Region4.T4_p(p)))
+            return self._unit_converter.fromSIunit_Cp(Region3.Cp3_rhoT(1 / (Region3.v3_ph(p, Region4.h4V_p(p))), Region4.T4_p(p)))
+        self.logger.debug("pressure %f out of range", p)
+        return float("NaN")
+
+    def CpL_p(self, p: float) -> float:
+        """
+        Section 1.9 Specific isobaric heat capacity
+        Saturated liquid heat capacity as a function of pressure
+
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+
+        :return: saturated liquid heat capacity or NaN if arguments are out of range
+        """
+        p = self._unit_converter.toSIunit_p(p)
+        if TRIPLE_POINT_PRESSURE < p < CRITICAL_PRESSURE:
+            if p < 16.529:
+                return self._unit_converter.fromSIunit_Cp(Region1.Cp1_pT(p, Region4.T4_p(p)))
+            return self._unit_converter.fromSIunit_Cp(Region3.Cp3_rhoT(1 / (Region3.v3_ph(p, Region4.h4L_p(p))), Region4.T4_p(p)))
+        self.logger.debug("pressure %f out of range", p)
+        return float("NaN")
+
+    def CpV_t(self, t: float) -> float:
+        """
+        Section 1.9 Specific isobaric heat capacity
+        Saturated vapor heat capacity as a function of temperature
+
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
+
+        :return: saturated vapor heat capacity or NaN if arguments are out of range
+        """
+        T = self._unit_converter.toSIunit_T(t)
+        if FREEZING_TEMPERATURE_H2O < T < CRITICAL_TEMPERATURE:
+            if T <= 623.15:
+                return self._unit_converter.fromSIunit_Cp(Region2.Cp2_pT(Region4.p4_T(T), T))
+            return self._unit_converter.fromSIunit_Cp(
+                Region3.Cp3_rhoT(
+                    1 / (Region3.v3_ph(Region4.p4_T(T), Region4.h4V_p(Region4.p4_T(T)))),
+                    T,
+                )
             )
-            return float("NaN")
+        self.logger.debug("temperature %f out of range", T)
+        return float("NaN")
 
-    # ***********************************************************************************************************
-    # Section 1.9 Specific isobaric heat capacity (Cp)
-    def CpV_p(self, p):
-        """Saturated vapour heat capacity as a function of pressure
-
-        Args:
-            p (float): preasure value
-
-        Returns:
-            CpV (float): saturated vapour heat capacity or NaN if arguments are out of range
+    def CpL_t(self, t: float) -> float:
         """
-        p = self._unit_converter.toSIunit_p(p)
-        if (p > 0.000611657) and (p < 22.06395):
-            if p < 16.529:
-                return self._unit_converter.fromSIunit_Cp(
-                    Region2.Cp2_pT(p, Region4.T4_p(p))
-                )
-            else:
-                return self._unit_converter.fromSIunit_Cp(
-                    Region3.Cp3_rhoT(
-                        1 / (Region3.v3_ph(p, Region4.h4V_p(p))), Region4.T4_p(p)
-                    )
-                )
-        else:
-            self.logger.warning("preassure %f out of range", p)
-            return float("NaN")
+        Section 1.9 Specific isobaric heat capacity
+        Saturated liquid heat capacity as a function of temperature
 
-    def CpL_p(self, p):
-        """Saturated liquid heat capacity as a function of pressure
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
 
-        Args:
-            p (float): preasure value
-
-        Returns:
-            CpL (float): saturated liquid heat capacity or NaN if arguments are out of range
-        """
-        p = self._unit_converter.toSIunit_p(p)
-        if (p > 0.000611657) and (p < 22.06395):
-            if p < 16.529:
-                return self._unit_converter.fromSIunit_Cp(
-                    Region1.Cp1_pT(p, Region4.T4_p(p))
-                )
-            else:
-                return self._unit_converter.fromSIunit_Cp(
-                    Region3.Cp3_rhoT(
-                        1 / (Region3.v3_ph(p, Region4.h4L_p(p))), Region4.T4_p(p)
-                    )
-                )
-        else:
-            self.logger.warning("preassure %f out of range", p)
-            return float("NaN")
-
-    def CpV_t(self, t):
-        """Saturated vapour heat capacity as a function of temperature
-
-        Args:
-            t (float): temperature value
-
-        Returns:
-            CpV (float): saturated vapour heat capacity or NaN if arguments are out of range
+        :return: saturated liquid heat capacity or NaN if arguments are out of range
         """
         T = self._unit_converter.toSIunit_T(t)
-        if (T > 273.15) and (T < 647.096):
+        if FREEZING_TEMPERATURE_H2O < T < CRITICAL_TEMPERATURE:
             if T <= 623.15:
-                return self._unit_converter.fromSIunit_Cp(
-                    Region2.Cp2_pT(Region4.p4_T(T), T)
-                )
-            else:
-                return self._unit_converter.fromSIunit_Cp(
-                    Region3.Cp3_rhoT(
-                        1
-                        / (
-                            Region3.v3_ph(
-                                Region4.p4_T(T), Region4.h4V_p(Region4.p4_T(T))
-                            )
-                        ),
-                        T,
-                    )
-                )
-        else:
-            self.logger.warning("temperature %f out of range", T)
-            return float("NaN")
+                Cp = Region1.Cp1_pT(Region4.p4_T(T), T)
+                return self._unit_converter.fromSIunit_Cp(Cp)
 
-    def CpL_t(self, t):
-        """Saturated liquid heat capacity as a function of temperature
+            p = Region4.p4_T(T)
+            rho = 1 / Region3.v3_ph(p, Region4.h4L_p(p))
+            Cp = Region3.Cp3_rhoT(rho, T)
+            return self._unit_converter.fromSIunit_Cp(Cp)
 
-        Args:
-            t (float): temperature value
+        self.logger.debug("temperature %f out of range", T)
+        return float("NaN")
 
-        Returns:
-            CpL (float): saturated liquid heat capacity or NaN if arguments are out of range
+    def Cp_pt(self, p: float, t: float) -> float:
         """
-        T = self._unit_converter.toSIunit_T(t)
-        if (T > 273.15) and (T < 647.096):
-            if T <= 623.15:
-                return self._unit_converter.fromSIunit_Cp(
-                    Region1.Cp1_pT(Region4.p4_T(T), T)
-                )
-            else:
-                return self._unit_converter.fromSIunit_Cp(
-                    Region3.Cp3_rhoT(
-                        1
-                        / (
-                            Region3.v3_ph(
-                                Region4.p4_T(T), Region4.h4L_p(Region4.p4_T(T))
-                            )
-                        ),
-                        T,
-                    )
-                )
-        else:
-            self.logger.warning("temperature %f out of range", T)
-            return float("NaN")
+        Section 1.9 Specific isobaric heat capacity
+        Specific isobaric heat capacity as a function of pressure and temperature
 
-    def Cp_pt(self, p, t):
-        """Specific isobaric heat capacity as a function of pressure and temperature
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
 
-        Args:
-            p (float): preasure value
-            t (float): temperature value
-
-        Returns:
-            Cp (float): specific isobaric heat capacity or NaN if arguments are out of range
+        :return: specific isobaric heat capacity or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
         T = self._unit_converter.toSIunit_T(t)
-        region = RegionSelection.region_pT(p, T)
-        if region == 1:
+        region = select_region_pT(p, T)
+
+        if region == DiagramRegion.R1:
             return self._unit_converter.fromSIunit_Cp(Region1.Cp1_pT(p, T))
-        elif region == 2:
+
+        if region == DiagramRegion.R2:
             return self._unit_converter.fromSIunit_Cp(Region2.Cp2_pT(p, T))
-        elif region == 3:
+
+        if region == DiagramRegion.R3:
             hs = Region3.h3_pT(p, T)
             rhos = 1 / Region3.v3_ph(p, hs)
             return self._unit_converter.fromSIunit_Cp(Region3.Cp3_rhoT(rhos, T))
-        elif region == 4:
-            self.logger.warning(
+
+        if region == DiagramRegion.R4:
+            self.logger.debug(
                 "function Cp_pt is not available in region 4 for input p %f and T %f",
                 p,
                 T,
             )
             return float("NaN")
-        elif region == 5:
+
+        if region == DiagramRegion.R5:
             return self._unit_converter.fromSIunit_Cp(Region5.Cp5_pT(p, T))
-        else:
-            self.logger.warning(
-                "Region switch Cp_pt returned unknown value %d for input p %f and T %f",
-                region,
-                p,
-                T,
-            )
-            return float("NaN")
 
-    def Cp_ph(self, p, h):
-        """Specific isobaric heat capacity as a function of pressure and enthalpy
+        self.logger.debug(
+            "Region switch Cp_pt returned unknown value %d for input p %f and T %f",
+            region,
+            p,
+            T,
+        )
+        return float("NaN")
 
-        Args:
-            p (float): preasure value
-            h (float): enthalpy value
+    def Cp_ph(self, p: float, h: float) -> float:
+        """
+        Section 1.9 Specific isobaric heat capacity
+        Specific isobaric heat capacity as a function of pressure and enthalpy
 
-        Returns:
-            Cp (float): specific isobaric heat capacity or NaN if arguments are out of range
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+        :param h: specific enthalpy in the selected system (kJ/kg for MKS/BARE; Btu/lb for FLS)
+
+        :return: specific isobaric heat capacity or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
         h = self._unit_converter.toSIunit_h(h)
-        region = RegionSelection.region_ph(p, h)
-        if region == 1:
+        region = select_region_ph(p, h)
+
+        if region == DiagramRegion.R1:
             Ts = Region1.T1_ph(p, h)
             return self._unit_converter.fromSIunit_Cp(Region1.Cp1_pT(p, Ts))
-        elif region == 2:
+
+        if region == DiagramRegion.R2:
             Ts = Region2.T2_ph(p, h)
             return self._unit_converter.fromSIunit_Cp(Region2.Cp2_pT(p, Ts))
-        elif region == 3:
+
+        if region == DiagramRegion.R3:
             rhos = 1 / Region3.v3_ph(p, h)
             Ts = Region3.T3_ph(p, h)
             return self._unit_converter.fromSIunit_Cp(Region3.Cp3_rhoT(rhos, Ts))
-        elif region == 4:
-            self.logger.warning(
+
+        if region == DiagramRegion.R4:
+            self.logger.debug(
                 "function Cp_ph is not available in region 4  for input p %f and h %f",
                 p,
                 h,
             )
             return float("NaN")
-        elif region == 5:
+
+        if region == DiagramRegion.R5:
             Ts = Region5.T5_ph(p, h)
             return self._unit_converter.fromSIunit_Cp(Region5.Cp5_pT(p, Ts))
-        else:
-            self.logger.warning(
-                "Region switch Cp_ph returned unknown value %d for input p %f and h %f",
-                region,
-                p,
-                h,
-            )
-            return float("NaN")
 
-    def Cp_ps(self, p, s):
-        """Specific isobaric heat capacity as a function of pressure and entropy
+        self.logger.debug(
+            "Region switch Cp_ph returned unknown value %d for input p %f and h %f",
+            region,
+            p,
+            h,
+        )
+        return float("NaN")
 
-        Args:
-            p (float): preasure value
-            s (float): entropy value
+    def Cp_ps(self, p: float, s: float) -> float:
+        """
+        Section 1.9 Specific isobaric heat capacity
+        Specific isobaric heat capacity as a function of pressure and entropy
 
-        Returns:
-            Cp (float): specific isobaric heat capacity or NaN if arguments are out of range
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+        :param s: specific entropy in the selected system (kJ/(kg·K) for MKS/BARE; Btu/(lb·°F) for FLS)
+
+        :return: specific isobaric heat capacity or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
         s = self._unit_converter.toSIunit_s(s)
-        region = RegionSelection.region_ps(p, s)
-        if region == 1:
+        region = select_region_ps(p, s)
+
+        if region == DiagramRegion.R1:
             Ts = Region1.T1_ps(p, s)
             return self._unit_converter.fromSIunit_Cp(Region1.Cp1_pT(p, Ts))
-        elif region == 2:
+
+        if region == DiagramRegion.R2:
             Ts = Region2.T2_ps(p, s)
             return self._unit_converter.fromSIunit_Cp(Region2.Cp2_pT(p, Ts))
-        elif region == 3:
+
+        if region == DiagramRegion.R3:
             rhos = 1 / Region3.v3_ps(p, s)
             Ts = Region3.T3_ps(p, s)
             return self._unit_converter.fromSIunit_Cp(Region3.Cp3_rhoT(rhos, Ts))
-        elif region == 4:
-            self.logger.warning(
+
+        if region == DiagramRegion.R4:
+            self.logger.debug(
                 "function Cp_ps is not available in region 4 for input p %f and s %f",
                 p,
                 s,
             )
             return float("NaN")
-        elif region == 5:
+
+        if region == DiagramRegion.R5:
             Ts = Region5.T5_ps(p, s)
             return self._unit_converter.fromSIunit_Cp(Region5.Cp5_pT(p, Ts))
-        else:
-            self.logger.warning(
-                "Region switch Cp_ps returned unknown value %d for input p %f and s %f",
-                region,
-                p,
-                s,
-            )
-            return float("NaN")
 
-    # ***********************************************************************************************************
-    # Section 1.10 Specific isochoric heat capacity (Cv)
-    def CvV_p(self, p):
-        """Saturated vapour isochoric heat capacity as a function of pressure
+        self.logger.debug(
+            "Region switch Cp_ps returned unknown value %d for input p %f and s %f",
+            region,
+            p,
+            s,
+        )
+        return float("NaN")
 
-        Args:
-            p (float): preasure value
+    def CvV_p(self, p: float) -> float:
+        """
+        Section 1.10 Specific isochoric heat capacity
+        Saturated vapor isochoric heat capacity as a function of pressure
 
-        Returns:
-            CvV (float): saturated vapour isochoric heat capacity or NaN if arguments are out of range
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+
+        :return: saturated vapor isochoric heat capacity or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
-        if (p > 0.000611657) and (p < 22.06395):
+        if TRIPLE_POINT_PRESSURE < p < CRITICAL_PRESSURE:
             if p < 16.529:
-                return self._unit_converter.fromSIunit_Cv(
-                    Region2.Cv2_pT(p, Region4.T4_p(p))
-                )
-            else:
-                return self._unit_converter.fromSIunit_Cv(
-                    Region3.Cv3_rhoT(
-                        1 / (Region3.v3_ph(p, Region4.h4V_p(p))), Region4.T4_p(p)
-                    )
-                )
-        else:
-            self.logger.warning("pressure %f out of range", p)
-            return float("NaN")
+                Cv = Region2.Cv2_pT(p, Region4.T4_p(p))
+                return self._unit_converter.fromSIunit_Cv(Cv)
 
-    def CvL_p(self, p):
-        """Saturated liquid isochoric heat capacity as a function of pressure
+            rho = 1 / Region3.v3_ph(p, Region4.h4V_p(p))
+            Cv = Region3.Cv3_rhoT(rho, Region4.T4_p(p))
+            return self._unit_converter.fromSIunit_Cv(Cv)
 
-        Args:
-            p (float): preasure value
+        self.logger.debug("pressure %f out of range", p)
+        return float("NaN")
 
-        Returns:
-            CvL (float): saturated liquid isochoric heat capacity or NaN if arguments are out of range
+    def CvL_p(self, p: float) -> float:
+        """
+        Section 1.10 Specific isochoric heat capacity
+        Saturated liquid isochoric heat capacity as a function of pressure
+
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+
+        :return: saturated liquid isochoric heat capacity or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
-        if (p > 0.000611657) and (p < 22.06395):
+        if TRIPLE_POINT_PRESSURE < p < CRITICAL_PRESSURE:
             if p < 16.529:
-                return self._unit_converter.fromSIunit_Cv(
-                    Region1.Cv1_pT(p, Region4.T4_p(p))
-                )
-            else:
-                return self._unit_converter.fromSIunit_Cv(
-                    Region3.Cv3_rhoT(
-                        1 / (Region3.v3_ph(p, Region4.h4L_p(p))), Region4.T4_p(p)
-                    )
-                )
-        else:
-            self.logger.warning("pressure %f out of range", p)
-            return float("NaN")
+                Cv = Region1.Cv1_pT(p, Region4.T4_p(p))
+                return self._unit_converter.fromSIunit_Cv(Cv)
 
-    def CvV_t(self, t):
-        """Saturated vapour isochoric heat capacity as a function of temperature
+            rho = 1 / Region3.v3_ph(p, Region4.h4L_p(p))
+            Cv = Region3.Cv3_rhoT(rho, Region4.T4_p(p))
+            return self._unit_converter.fromSIunit_Cv(Cv)
 
-        Args:
-            t (float): temperature value
+        self.logger.debug("pressure %f out of range", p)
+        return float("NaN")
 
-        Returns:
-            CvV (float): saturated vapour isochoric heat capacity or NaN if arguments are out of range
+    def CvV_t(self, t: float) -> float:
+        """
+        Section 1.10 Specific isochoric heat capacity
+        Saturated vapor isochoric heat capacity as a function of temperature
+
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
+
+        :return: saturated vapor isochoric heat capacity or NaN if arguments are out of range
         """
         T = self._unit_converter.toSIunit_T(t)
-        if (T > 273.15) and (T < 647.096):
+        if FREEZING_TEMPERATURE_H2O < T < CRITICAL_TEMPERATURE:
             if T <= 623.15:
-                return self._unit_converter.fromSIunit_Cv(
-                    Region2.Cv2_pT(Region4.p4_T(T), T)
-                )
-            else:
-                return self._unit_converter.fromSIunit_Cv(
-                    Region3.Cv3_rhoT(
-                        1
-                        / (
-                            Region3.v3_ph(
-                                Region4.p4_T(T), Region4.h4V_p(Region4.p4_T(T))
-                            )
-                        ),
-                        T,
-                    )
-                )
-        else:
-            self.logger.warning("temperature %f out of range", T)
-            return float("NaN")
+                Cv = Region2.Cv2_pT(Region4.p4_T(T), T)
+                return self._unit_converter.fromSIunit_Cv(Cv)
 
-    def CvL_t(self, t):
-        """Saturated liquid isochoric heat capacity as a function of temperature
+            p = Region4.p4_T(T)
+            rho = 1 / Region3.v3_ph(p, Region4.h4V_p(p))
+            Cv = Region3.Cv3_rhoT(rho, T)
+            return self._unit_converter.fromSIunit_Cv(Cv)
 
-        Args:
-            t (float): temperature value
+        self.logger.debug("temperature %f out of range", T)
+        return float("NaN")
 
-        Returns:
-            CvL (float): saturated liquid isochoric heat capacity or NaN if arguments are out of range
+    def CvL_t(self, t: float) -> float:
+        """
+        Section 1.10 Specific isochoric heat capacity
+        Saturated liquid isochoric heat capacity as a function of temperature
+
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
+
+        :return: saturated liquid isochoric heat capacity or NaN if arguments are out of range
         """
         T = self._unit_converter.toSIunit_T(t)
-        if (T > 273.15) and (T < 647.096):
+        if FREEZING_TEMPERATURE_H2O < T < CRITICAL_TEMPERATURE:
             if T <= 623.15:
-                return self._unit_converter.fromSIunit_Cv(
-                    Region1.Cv1_pT(Region4.p4_T(T), T)
-                )
-            else:
-                return self._unit_converter.fromSIunit_Cv(
-                    Region3.Cv3_rhoT(
-                        1
-                        / (
-                            Region3.v3_ph(
-                                Region4.p4_T(T), Region4.h4L_p(Region4.p4_T(T))
-                            )
-                        ),
-                        T,
-                    )
-                )
-        else:
-            self.logger.warning("temperature %f out of range", T)
-            return float("NaN")
+                Cv = Region1.Cv1_pT(Region4.p4_T(T), T)
+                return self._unit_converter.fromSIunit_Cv(Cv)
 
-    def Cv_pt(self, p, t):
-        """Specific isochoric heat capacity as a function of pressure and temperature
+            p = Region4.p4_T(T)
+            rho = 1 / Region3.v3_ph(p, Region4.h4L_p(p))
+            Cv = Region3.Cv3_rhoT(rho, T)
+            return self._unit_converter.fromSIunit_Cv(Cv)
 
-        Args:
-            p (float): preasure value
-            t (float): temperature value
+        self.logger.debug("temperature %f out of range", T)
+        return float("NaN")
 
-        Returns:
-            Cv (float): specific isochoric heat capacity or NaN if arguments are out of range
+    def Cv_pt(self, p: float, t: float) -> float:
+        """
+        Section 1.10 Specific isochoric heat capacity
+        Specific isochoric heat capacity as a function of pressure and temperature
+
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
+
+        :return: specific isochoric heat capacity or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
         T = self._unit_converter.toSIunit_T(t)
-        region = RegionSelection.region_pT(p, T)
-        if region == 1:
+        region = select_region_pT(p, T)
+
+        if region == DiagramRegion.R1:
             return self._unit_converter.fromSIunit_Cv(Region1.Cv1_pT(p, T))
-        elif region == 2:
+
+        if region == DiagramRegion.R2:
             return self._unit_converter.fromSIunit_Cv(Region2.Cv2_pT(p, T))
-        elif region == 3:
+
+        if region == DiagramRegion.R3:
             hs = Region3.h3_pT(p, T)
             rhos = 1 / Region3.v3_ph(p, hs)
             return self._unit_converter.fromSIunit_Cv(Region3.Cv3_rhoT(rhos, T))
-        elif region == 4:
-            self.logger.warning(
+
+        if region == DiagramRegion.R4:
+            self.logger.debug(
                 "function Cv_pt is not available in region 4 for input p %f and T %f",
                 p,
                 T,
             )
             return float("NaN")
-        elif region == 5:
+
+        if region == DiagramRegion.R5:
             return self._unit_converter.fromSIunit_Cv(Region5.Cv5_pT(p, T))
-        else:
-            self.logger.warning(
-                "Region switch Cv_pt returned unknown value %d for input p %f and T %f",
-                region,
-                p,
-                T,
-            )
-            return float("NaN")
 
-    def Cv_ph(self, p, h):
-        """Specific isochoric heat capacity as a function of pressure and enthalpy
+        self.logger.debug(
+            "Region switch Cv_pt returned unknown value %d for input p %f and T %f",
+            region,
+            p,
+            T,
+        )
+        return float("NaN")
 
-        Args:
-            p (float): preasure value
-            h (float): enthalpy value
+    def Cv_ph(self, p: float, h: float) -> float:
+        """
+        Section 1.10 Specific isochoric heat capacity
+        Specific isochoric heat capacity as a function of pressure and enthalpy
 
-        Returns:
-            Cv (float): specific isochoric heat capacity or NaN if arguments are out of range
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+        :param h: specific enthalpy in the selected system (kJ/kg for MKS/BARE; Btu/lb for FLS)
+
+        :return: specific isochoric heat capacity or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
         h = self._unit_converter.toSIunit_h(h)
-        region = RegionSelection.region_ph(p, h)
-        if region == 1:
+        region = select_region_ph(p, h)
+
+        if region == DiagramRegion.R1:
             Ts = Region1.T1_ph(p, h)
             return self._unit_converter.fromSIunit_Cv(Region1.Cv1_pT(p, Ts))
-        elif region == 2:
+
+        if region == DiagramRegion.R2:
             Ts = Region2.T2_ph(p, h)
             return self._unit_converter.fromSIunit_Cv(Region2.Cv2_pT(p, Ts))
-        elif region == 3:
+
+        if region == DiagramRegion.R3:
             rhos = 1 / Region3.v3_ph(p, h)
             Ts = Region3.T3_ph(p, h)
             return self._unit_converter.fromSIunit_Cv(Region3.Cv3_rhoT(rhos, Ts))
-        elif region == 4:
-            self.logger.warning(
+
+        if region == DiagramRegion.R4:
+            self.logger.debug(
                 "function Cv_ph is not available in region 4 for input p %f and h %f",
                 p,
                 h,
             )
             return float("NaN")
-        elif region == 5:
+
+        if region == DiagramRegion.R5:
             Ts = Region5.T5_ph(p, h)
             return self._unit_converter.fromSIunit_Cv(Region5.Cv5_pT(p, Ts))
-        else:
-            self.logger.warning(
-                "Region switch Cv_ph returned unknown value %d for input p %f and h %f",
-                region,
-                p,
-                h,
-            )
-            return float("NaN")
 
-    def Cv_ps(self, p, s):
-        """Specific isochoric heat capacity as a function of pressure and entropy
+        self.logger.debug(
+            "Region switch Cv_ph returned unknown value %d for input p %f and h %f",
+            region,
+            p,
+            h,
+        )
+        return float("NaN")
 
-        Args:
-            p (float): preasure value
-            s (float): entropy value
+    def Cv_ps(self, p: float, s: float) -> float:
+        """
+        Section 1.10 Specific isochoric heat capacity
+        Specific isochoric heat capacity as a function of pressure and entropy
+        In the two-phase region, returns a quality-weighted interpolation of
+        the saturated liquid and vapor values; this is an estimate, not an
+        equilibrium-mixture derivative.
 
-        Returns:
-            Cv (float): specific isochoric heat capacity or NaN if arguments are out of range
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+        :param s: specific entropy in the selected system (kJ/(kg·K) for MKS/BARE; Btu/(lb·°F) for FLS)
+
+        :return: specific isochoric heat capacity or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
         s = self._unit_converter.toSIunit_s(s)
-        region = RegionSelection.region_ps(p, s)
-        if region == 1:
+        region = select_region_ps(p, s)
+
+        if region == DiagramRegion.R1:
             Ts = Region1.T1_ps(p, s)
             return self._unit_converter.fromSIunit_Cv(Region1.Cv1_pT(p, Ts))
-        elif region == 2:
+
+        if region == DiagramRegion.R2:
             Ts = Region2.T2_ps(p, s)
             return self._unit_converter.fromSIunit_Cv(Region2.Cv2_pT(p, Ts))
-        elif region == 3:
+
+        if region == DiagramRegion.R3:
             rhos = 1 / Region3.v3_ps(p, s)
             Ts = Region3.T3_ps(p, s)
             return self._unit_converter.fromSIunit_Cv(Region3.Cv3_rhoT(rhos, Ts))
-        elif region == 4:
-            self.logger.warning(
-                "function Cv_ps is not available in region 4 for input p %f and s %f",
-                p,
-                s,
-            )
-            # (xs * CvVp + (1 - xs) * CvLp) / Cv_scale - Cv_offset
-            return float("NaN")
-        elif region == 5:
+
+        if region == DiagramRegion.R4:
+            quality = Region4.x4_ps(p, s)
+            p_user = self._unit_converter.fromSIunit_p(p)
+            cv_vapor = self.CvV_p(p_user)
+            cv_liquid = self.CvL_p(p_user)
+            return quality * cv_vapor + (1 - quality) * cv_liquid
+
+        if region == DiagramRegion.R5:
             Ts = Region5.T5_ps(p, s)
             return self._unit_converter.fromSIunit_Cv(Region5.Cv5_pT(p, Ts))
-        else:
-            self.logger.warning(
-                "Region switch Cv_ps returned unknown value %d for input p %f and s %f",
-                region,
-                p,
-                s,
-            )
-            return float("NaN")
 
-    # ***********************************************************************************************************
-    # Section 1.11 Speed of sound
-    def wV_p(self, p):
-        """Saturated vapour speed of sound as a function of pressure
+        self.logger.debug(
+            "Region switch Cv_ps returned unknown value %d for input p %f and s %f",
+            region,
+            p,
+            s,
+        )
+        return float("NaN")
 
-        Args:
-            p (float): preasure value
+    def wV_p(self, p: float) -> float:
+        """
+        Section 1.11 Speed of sound
+        Saturated vapor speed of sound as a function of pressure
 
-        Returns:
-            wV (float): speed of sound in saturated vapour or NaN if arguments are out of range
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+
+        :return: speed of sound in saturated vapor or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
-        if (p > 0.000611657) and (p < 22.06395):
+        if TRIPLE_POINT_PRESSURE < p < CRITICAL_PRESSURE:
             if p < 16.529:
-                return self._unit_converter.fromSIunit_w(
-                    Region2.w2_pT(p, Region4.T4_p(p))
-                )
-            else:
-                return self._unit_converter.fromSIunit_w(
-                    Region3.w3_rhoT(
-                        1 / (Region3.v3_ph(p, Region4.h4V_p(p))), Region4.T4_p(p)
-                    )
-                )
-        else:
-            self.logger.warning("pressure %f out of range", p)
-            return float("NaN")
+                w = Region2.w2_pT(p, Region4.T4_p(p))
+                return self._unit_converter.fromSIunit_w(w)
 
-    def wL_p(self, p):
-        """Saturated liquid speed of sound as a function of pressure
+            rho = 1 / Region3.v3_ph(p, Region4.h4V_p(p))
+            w = Region3.w3_rhoT(rho, Region4.T4_p(p))
+            return self._unit_converter.fromSIunit_w(w)
 
-        Args:
-            p (float): preasure value
+        self.logger.debug("pressure %f out of range", p)
+        return float("NaN")
 
-        Returns:
-            wL (float): speed of sound in saturated liquid or NaN if arguments are out of range
+    def wL_p(self, p: float) -> float:
+        """
+        Section 1.11 Speed of sound
+        Saturated liquid speed of sound as a function of pressure
+
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+
+        :return: speed of sound in saturated liquid or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
-        if (p > 0.000611657) and (p < 22.06395):
+        if TRIPLE_POINT_PRESSURE < p < CRITICAL_PRESSURE:
             if p < 16.529:
-                return self._unit_converter.fromSIunit_w(
-                    Region1.w1_pT(p, Region4.T4_p(p))
-                )
-            else:
-                return self._unit_converter.fromSIunit_w(
-                    Region3.w3_rhoT(
-                        1 / (Region3.v3_ph(p, Region4.h4L_p(p))), Region4.T4_p(p)
-                    )
-                )
-        else:
-            self.logger.warning("pressure %f out of range", p)
-            return float("NaN")
+                w = Region1.w1_pT(p, Region4.T4_p(p))
+                return self._unit_converter.fromSIunit_w(w)
 
-    def wV_t(self, t):
-        """Saturated vapour speed of sound as a function of temperature
+            rho = 1 / Region3.v3_ph(p, Region4.h4L_p(p))
+            w = Region3.w3_rhoT(rho, Region4.T4_p(p))
+            return self._unit_converter.fromSIunit_w(w)
 
-        Args:
-            t (float): temperature value
+        self.logger.debug("pressure %f out of range", p)
+        return float("NaN")
 
-        Returns:
-            wV (float): speed of sound in saturated vapour or NaN if arguments are out of range
+    def wV_t(self, t: float) -> float:
+        """
+        Section 1.11 Speed of sound
+        Saturated vapor speed of sound as a function of temperature
+
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
+
+        :return: speed of sound in saturated vapor or NaN if arguments are out of range
         """
         T = self._unit_converter.toSIunit_T(t)
-        if (T > 273.15) and (T < 647.096):
+        if FREEZING_TEMPERATURE_H2O < T < CRITICAL_TEMPERATURE:
             if T <= 623.15:
-                return self._unit_converter.fromSIunit_w(
-                    Region2.w2_pT(Region4.p4_T(T), T)
-                )
-            else:
-                return self._unit_converter.fromSIunit_w(
-                    Region3.w3_rhoT(
-                        1
-                        / (
-                            Region3.v3_ph(
-                                Region4.p4_T(T), Region4.h4V_p(Region4.p4_T(T))
-                            )
-                        ),
-                        T,
-                    )
-                )
-        else:
-            self.logger.warning("temperature %f out of range", T)
-            return float("NaN")
+                w = Region2.w2_pT(Region4.p4_T(T), T)
+                return self._unit_converter.fromSIunit_w(w)
 
-    def wL_t(self, t):
-        """Saturated liquid speed of sound as a function of temperature
+            p = Region4.p4_T(T)
+            rho = 1 / Region3.v3_ph(p, Region4.h4V_p(p))
+            w = Region3.w3_rhoT(rho, T)
+            return self._unit_converter.fromSIunit_w(w)
 
-        Args:
-            t (float): temperature value
+        self.logger.debug("temperature %f out of range", T)
+        return float("NaN")
 
-        Returns:
-            wL (float): speed of sound in saturated liquid or NaN if arguments are out of range
+    def wL_t(self, t: float) -> float:
+        """
+        Section 1.11 Speed of sound
+        Saturated liquid speed of sound as a function of temperature
+
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
+
+        :return: speed of sound in saturated liquid or NaN if arguments are out of range
         """
         T = self._unit_converter.toSIunit_T(t)
-        if (T > 273.15) and (T < 647.096):
+        if FREEZING_TEMPERATURE_H2O < T < CRITICAL_TEMPERATURE:
             if T <= 623.15:
-                return self._unit_converter.fromSIunit_w(
-                    Region1.w1_pT(Region4.p4_T(T), T)
-                )
-            else:
-                return self._unit_converter.fromSIunit_w(
-                    Region3.w3_rhoT(
-                        1
-                        / (
-                            Region3.v3_ph(
-                                Region4.p4_T(T), Region4.h4L_p(Region4.p4_T(T))
-                            )
-                        ),
-                        T,
-                    )
-                )
-        else:
-            self.logger.warning("temperature %f out of range", T)
-            return float("NaN")
+                w = Region1.w1_pT(Region4.p4_T(T), T)
+                return self._unit_converter.fromSIunit_w(w)
 
-    def w_pt(self, p, t):
-        """Speed of sound as a function of pressure and temperature
+            p = Region4.p4_T(T)
+            roh = 1 / Region3.v3_ph(p, Region4.h4L_p(p))
+            w = Region3.w3_rhoT(roh, T)
+            return self._unit_converter.fromSIunit_w(w)
 
-        Args:
-            p (float): preasure value
-            t (float): temperature value
+        self.logger.debug("temperature %f out of range", T)
+        return float("NaN")
 
-        Returns:
-            w (float): speed of sound or NaN if arguments are out of range
+    def w_pt(self, p: float, t: float) -> float:
+        """
+        Section 1.11 Speed of sound
+        Speed of sound as a function of pressure and temperature
+
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
+
+        :return: speed of sound or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
         T = self._unit_converter.toSIunit_T(t)
-        region = RegionSelection.region_pT(p, T)
-        if region == 1:
+        region = select_region_pT(p, T)
+
+        if region == DiagramRegion.R1:
             return self._unit_converter.fromSIunit_w(Region1.w1_pT(p, T))
-        elif region == 2:
+
+        if region == DiagramRegion.R2:
             return self._unit_converter.fromSIunit_w(Region2.w2_pT(p, T))
-        elif region == 3:
+
+        if region == DiagramRegion.R3:
             hs = Region3.h3_pT(p, T)
             rhos = 1 / Region3.v3_ph(p, hs)
             return self._unit_converter.fromSIunit_w(Region3.w3_rhoT(rhos, T))
-        elif region == 4:
-            self.logger.warning(
+
+        if region == DiagramRegion.R4:
+            self.logger.debug(
                 "function w_pt is not available in region 4 for input p %f and T %f",
                 p,
                 T,
             )
             return float("NaN")
-        elif region == 5:
+
+        if region == DiagramRegion.R5:
             return self._unit_converter.fromSIunit_w(Region5.w5_pT(p, T))
-        else:
-            self.logger.warning(
-                "Region switch w_pt returned unknown value %d for input p %f and T %f",
-                region,
-                p,
-                T,
-            )
-            return float("NaN")
 
-    def w_ph(self, p, h):
-        """Speed of sound as a function of pressure and enthalpy
+        self.logger.debug(
+            "Region switch w_pt returned unknown value %d for input p %f and T %f",
+            region,
+            p,
+            T,
+        )
+        return float("NaN")
 
-        Args:
-            p (float): preasure value
-            h (float): enthalpy value
+    def w_ph(self, p: float, h: float) -> float:
+        """
+        Section 1.11 Speed of sound
+        Speed of sound as a function of pressure and enthalpy
 
-        Returns:
-            w (float): speed of sound or NaN if arguments are out of range
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+        :param h: specific enthalpy in the selected system (kJ/kg for MKS/BARE; Btu/lb for FLS)
+
+        :return: speed of sound or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
         h = self._unit_converter.toSIunit_h(h)
-        region = RegionSelection.region_ph(p, h)
-        if region == 1:
+        region = select_region_ph(p, h)
+
+        if region == DiagramRegion.R1:
             Ts = Region1.T1_ph(p, h)
             return self._unit_converter.fromSIunit_w(Region1.w1_pT(p, Ts))
-        elif region == 2:
+
+        if region == DiagramRegion.R2:
             Ts = Region2.T2_ph(p, h)
             return self._unit_converter.fromSIunit_w(Region2.w2_pT(p, Ts))
-        elif region == 3:
+
+        if region == DiagramRegion.R3:
             rhos = 1 / Region3.v3_ph(p, h)
             Ts = Region3.T3_ph(p, h)
             return self._unit_converter.fromSIunit_w(Region3.w3_rhoT(rhos, Ts))
-        elif region == 4:
-            self.logger.warning(
-                "function w_ph is not available in region 4 p %f and h %f", p, h
-            )
+
+        if region == DiagramRegion.R4:
+            self.logger.debug("function w_ph is not available in region 4 p %f and h %f", p, h)
             return float("NaN")
-        elif region == 5:
+
+        if region == DiagramRegion.R5:
             Ts = Region5.T5_ph(p, h)
             return self._unit_converter.fromSIunit_w(Region5.w5_pT(p, Ts))
-        else:
-            self.logger.warning(
-                "Region switch w_ph returned unknown value %d for input p %f and h %f",
-                region,
-                p,
-                h,
-            )
-            return float("NaN")
 
-    def w_ps(self, p, s):
-        """Speed of sound as a function of pressure and entropy
+        self.logger.debug(
+            "Region switch w_ph returned unknown value %d for input p %f and h %f",
+            region,
+            p,
+            h,
+        )
+        return float("NaN")
 
-        Args:
-            p (float): preasure value
-            s (float): entropy value
+    def w_ps(self, p: float, s: float) -> float:
+        """
+        Section 1.11 Speed of sound
+        Speed of sound as a function of pressure and entropy
+        In the two-phase region, returns a quality-weighted interpolation of
+        the saturated liquid and vapor values; this is an estimate, not an
+        equilibrium-mixture speed of sound.
 
-        Returns:
-            w (float): speed of sound or NaN if arguments are out of range
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+        :param s: specific entropy in the selected system (kJ/(kg·K) for MKS/BARE; Btu/(lb·°F) for FLS)
+
+        :return: speed of sound or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
         s = self._unit_converter.toSIunit_s(s)
-        region = RegionSelection.region_ps(p, s)
-        if region == 1:
+        region = select_region_ps(p, s)
+
+        if region == DiagramRegion.R1:
             Ts = Region1.T1_ps(p, s)
             return self._unit_converter.fromSIunit_w(Region1.w1_pT(p, Ts))
-        elif region == 2:
+
+        if region == DiagramRegion.R2:
             Ts = Region2.T2_ps(p, s)
             return self._unit_converter.fromSIunit_w(Region2.w2_pT(p, Ts))
-        elif region == 3:
+
+        if region == DiagramRegion.R3:
             rhos = 1 / Region3.v3_ps(p, s)
             Ts = Region3.T3_ps(p, s)
             return self._unit_converter.fromSIunit_w(Region3.w3_rhoT(rhos, Ts))
-        elif region == 4:
-            self.logger.warning(
-                "function w_ps is not available in region 4 for input p %f and s %f",
-                p,
-                s,
-            )
-            # (xs * wVp + (1 - xs) * wLp) / w_scale - w_offset
-            return float("NaN")
-        elif region == 5:
+
+        if region == DiagramRegion.R4:
+            quality = Region4.x4_ps(p, s)
+            p_user = self._unit_converter.fromSIunit_p(p)
+            w_vapor = self.wV_p(p_user)
+            w_liquid = self.wL_p(p_user)
+            return quality * w_vapor + (1 - quality) * w_liquid
+
+        if region == DiagramRegion.R5:
             Ts = Region5.T5_ps(p, s)
             return self._unit_converter.fromSIunit_w(Region5.w5_pT(p, Ts))
-        else:
-            self.logger.warning(
-                "Region switch w_ps returned unknown value %d for input p %f and s %f",
-                region,
-                p,
-                s,
-            )
-            return float("NaN")
 
-    # ***********************************************************************************************************
-    # Section  1.12 Viscosity
-    # Viscosity is not part of IAPWS Steam IF97. Equations from
-    # "Revised Release on the IAPWS Formulation 1985 for the Viscosity of Ordinary Water Substance", 2003 are used.
-    # Viscosity in the mixed region (4) is interpolated according to the density. This is not true since it will be two phases.
-    def my_pt(self, p, t):
-        """Viscosity as a function of pressure and temperature
+        self.logger.debug(
+            "Region switch w_ps returned unknown value %d for input p %f and s %f",
+            region,
+            p,
+            s,
+        )
+        return float("NaN")
 
-        Args:
-            p (float): preasure value
-            t (float): temperature value
+    def my_pt(self, p: float, t: float) -> float:
+        """
+        Section 1.12 Viscosity
+        Note: Viscosity is not part of IAPWS Steam IF97. Equations from "Revised Release on the IAPWS Formulation 1985 for the
+        Viscosity of Ordinary Water Substance", 2003 are used. Viscosity in the mixed region (4) is interpolated according to the
+        density. This is not true since it will be two phases.
+        Viscosity as a function of pressure and temperature
 
-        Returns:
-            my (float): viscosity or NaN if arguments are out of range
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
+
+        :return: viscosity or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
         T = self._unit_converter.toSIunit_T(t)
-        region = RegionSelection.region_pT(p, T)
-        if region == 4:
-            self.logger.warning(
+        region = select_region_pT(p, T)
+        if region == DiagramRegion.R4:
+            self.logger.debug(
                 "function my_pt is not available in region 4 for input p %f and T %f",
                 p,
                 T,
             )
             return float("NaN")
-        elif region in [1, 2, 3, 5]:
-            return self._unit_converter.fromSIunit_my(
-                TransportProperties.my_AllRegions_pT(p, T)
-            )
-        else:
-            self.logger.warning(
+
+        if region == DiagramRegion.NILL:
+            self.logger.debug(
                 "Region switch my_pt returned unknown value %d for input p %f and T %f",
                 region,
                 p,
@@ -2062,32 +1941,36 @@ class XSteam(object):
             )
             return float("NaN")
 
-    def my_ph(self, p, h):
-        """Viscosity as a function of pressure and enthalpy
+        return self._unit_converter.fromSIunit_my(my_AllRegions_pT(p, T))
 
-        Args:
-            p (float): preasure value
-            h (float): enthalpy value
+    def my_ph(self, p: float, h: float) -> float:
+        """
+        Section 1.12 Viscosity
+        Note: Viscosity is not part of IAPWS Steam IF97. Equations from "Revised
+        Release on the IAPWS Formulation 1985 for the Viscosity of Ordinary Water
+        Substance", 2003 are used. Viscosity in the mixed region (4) is interpolated
+        according to the density. This is not true since it will be two phases.
+        Viscosity as a function of pressure and enthalpy
 
-        Returns:
-            my (float): viscosity or NaN if arguments are out of range
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+        :param h: specific enthalpy in the selected system (kJ/kg for MKS/BARE; Btu/lb for FLS)
+
+        :return: viscosity or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
         h = self._unit_converter.toSIunit_h(h)
-        region = RegionSelection.region_ph(p, h)
-        if region in [1, 2, 3, 5]:
-            return self._unit_converter.fromSIunit_my(
-                TransportProperties.my_AllRegions_ph(p, h)
-            )
-        elif region == 4:
-            self.logger.warning(
+        region = select_region_ph(p, h)
+
+        if region == DiagramRegion.R4:
+            self.logger.debug(
                 "function my_pt is not available in region 4 for input p %f and h %f",
                 p,
                 h,
             )
             return float("NaN")
-        else:
-            self.logger.warning(
+
+        if region == DiagramRegion.NILL:
+            self.logger.debug(
                 "Region switch my_ph returned unknown value %d for input p %f and h %f",
                 region,
                 p,
@@ -2095,93 +1978,91 @@ class XSteam(object):
             )
             return float("NaN")
 
-    def my_ps(self, p, s):
-        """Viscosity as a function of pressure and entropy
+        return self._unit_converter.fromSIunit_my(my_AllRegions_ph(p, h))
 
-        Args:
-            p (float): preasure value
-            s (float): entropy value
+    def my_ps(self, p: float, s: float) -> float:
+        """
+        Section 1.12 Viscosity
+        Note: Viscosity is not part of IAPWS Steam IF97. Equations
+        from "Revised Release on the IAPWS Formulation 1985 for the
+        Viscosity of Ordinary Water Substance", 2003 are used. Viscosity in
+        the mixed region (4) is interpolated according to the density. This
+        is not true since it will be two phases.
+        Viscosity as a function of pressure and entropy
 
-        Returns:
-            my (float): viscosity
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+        :param s: specific entropy in the selected system (kJ/(kg·K) for MKS/BARE; Btu/(lb·°F) for FLS)
+
+        :return: viscosity
         """
         h = self.h_ps(p, s)
         return self.my_ph(p, h)
 
-    # ***********************************************************************************************************
-    # Section 1.13 Prandtl
-    def pr_pt(self, p, t):
-        """Prandtl number as a function of preasuere and temperature
+    def pr_pt(self, p: float, t: float) -> float:
+        """
+        Section 1.13 Prandtl
+        Prandtl number as a function of preasuere and temperature
 
-        Args:
-            p (float): preasure value
-            t (float): temperature value
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
 
-        Returns:
-            pr (float): prandtl number
+        :return: prandtl number
         """
         Cp = self._unit_converter.toSIunit_Cp(self.Cp_pt(p, t))
         my = self._unit_converter.toSIunit_my(self.my_pt(p, t))
         tc = self._unit_converter.toSIunit_tc(self.tc_pt(p, t))
         return Cp * 1000 * my / tc
 
-    def pr_ph(self, p, h):
-        """Prandtl number as a function of preasuere and enthalpy
+    def pr_ph(self, p: float, h: float) -> float:
+        """
+        Section 1.13 Prandtl
+        Prandtl number as a function of preasuere and enthalpy
 
-        Args:
-            p (float): preasure value
-            h (float): enthalpy value
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+        :param h: specific enthalpy in the selected system (kJ/kg for MKS/BARE; Btu/lb for FLS)
 
-        Returns:
-            pr (float): prandtl number
+        :return: prandtl number
         """
         Cp = self._unit_converter.toSIunit_Cp(self.Cp_ph(p, h))
         my = self._unit_converter.toSIunit_my(self.my_ph(p, h))
         tc = self._unit_converter.toSIunit_tc(self.tc_ph(p, h))
         return Cp * 1000 * my / tc
 
-    # ***********************************************************************************************************
-    # Section 1.15 Surface tension
-    def st_t(self, t):
-        """Surface tension for two phase water/steam as a function of temperature
+    def st_t(self, t: float) -> float:
+        """
+        Section 1.15 Surface tension
+        Surface tension for two phase water/steam as a function of temperature
 
-        Args:
-            t (float): temperature value
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
 
-        Returns:
-            st (float): surface tension
+        :return: surface tension
         """
         T = self._unit_converter.toSIunit_T(t)
-        return self._unit_converter.fromSIunit_st(
-            TransportProperties.Surface_Tension_T(T)
-        )
+        return self._unit_converter.fromSIunit_st(surface_tension_T(T))
 
-    def st_p(self, p):
-        """Surface tension for two phase water/steam as a function of preasure
+    def st_p(self, p: float) -> float:
+        """
+        Section 1.15 Surface tension
+        Surface tension for two phase water/steam as a function of preasure
 
-        Args:
-            p (float): preasure value
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
 
-        Returns:
-            st (float): surface tension
+        :return: surface tension
         """
         T = self.tsat_p(p)
         T = self._unit_converter.toSIunit_T(T)
-        return self._unit_converter.fromSIunit_st(
-            TransportProperties.Surface_Tension_T(T)
-        )
+        return self._unit_converter.fromSIunit_st(surface_tension_T(T))
 
-    # ***********************************************************************************************************
-    # Section 1.16 Thermal conductivity
-    # Revised release on the IAPS Formulation 1985 for the Thermal Conductivity of ordinary water substance (IAPWS 1998)
-    def tcL_p(self, p):
-        """Saturated liquid thermal conductivity as a function of pressure
+    def tcL_p(self, p: float) -> float:
+        """
+        Section 1.16 Thermal conductivity
+        Note: Revised release on the IAPS Formulation 1985 for the Thermal
+        Conductivity of ordinary water substance (IAPWS 1998)
+        Saturated liquid thermal conductivity as a function of pressure
 
-        Args:
-            p (float): preasure value
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
 
-        Returns:
-            tcL (float): saturated liquid thermal conductivity
+        :return: saturated liquid thermal conductivity
         """
         t = self.tsat_p(p)
         v = self.vL_p(p)
@@ -2189,18 +2070,18 @@ class XSteam(object):
         T = self._unit_converter.toSIunit_T(t)
         v = self._unit_converter.toSIunit_v(v)
         rho = 1.0 / v
-        return self._unit_converter.fromSIunit_tc(
-            TransportProperties.tc_ptrho(p, T, rho)
-        )
+        return self._unit_converter.fromSIunit_tc(tc_ptrho(p, T, rho))
 
-    def tcV_p(self, p):
-        """Saturated vapour thermal conductivity as a function of pressure
+    def tcV_p(self, p: float) -> float:
+        """
+        Section 1.16 Thermal conductivity
+        Note: Revised release on the IAPS Formulation 1985 for the Thermal
+        Conductivity of ordinary water substance (IAPWS 1998)
+        Saturated vapor thermal conductivity as a function of pressure
 
-        Args:
-            p (float): preasure value
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
 
-        Returns:
-            tcV (float): saturated vapour thermal conductivity
+        :return: saturated vapor thermal conductivity
         """
         ps = p
         T = self.tsat_p(p)
@@ -2209,18 +2090,18 @@ class XSteam(object):
         T = self._unit_converter.toSIunit_T(T)
         v = self._unit_converter.toSIunit_v(v)
         rho = 1.0 / v
-        return self._unit_converter.fromSIunit_tc(
-            TransportProperties.tc_ptrho(p, T, rho)
-        )
+        return self._unit_converter.fromSIunit_tc(tc_ptrho(p, T, rho))
 
-    def tcL_t(self, t):
-        """Saturated vapour thermal conductivity as a function of temperature
+    def tcL_t(self, t: float) -> float:
+        """
+        Section 1.16 Thermal conductivity
+        Note: Revised release on the IAPS Formulation 1985 for the Thermal
+        Conductivity of ordinary water substance (IAPWS 1998)
+        Saturated vapor thermal conductivity as a function of temperature
 
-        Args:
-            t (float): temperature value
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
 
-        Returns:
-            tcL (float): saturated liquid thermal conductivity
+        :return: saturated liquid thermal conductivity
         """
         Ts = t
         p = self.psat_t(Ts)
@@ -2229,18 +2110,18 @@ class XSteam(object):
         T = self._unit_converter.toSIunit_T(Ts)
         v = self._unit_converter.toSIunit_v(v)
         rho = 1 / v
-        return self._unit_converter.fromSIunit_tc(
-            TransportProperties.tc_ptrho(p, T, rho)
-        )
+        return self._unit_converter.fromSIunit_tc(tc_ptrho(p, T, rho))
 
-    def tcV_t(self, t):
-        """Saturated liquid thermal conductivity as a function of temperature
+    def tcV_t(self, t: float) -> float:
+        """
+        Section 1.16 Thermal conductivity
+        Note: Revised release on the IAPS Formulation 1985 for the Thermal
+        Conductivity of ordinary water substance (IAPWS 1998)
+        Saturated liquid thermal conductivity as a function of temperature
 
-        Args:
-            t (float): temperature value
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
 
-        Returns:
-            tcV (float): saturated vapour thermal conductivity
+        :return: saturated vapor thermal conductivity
         """
         Ts = t
         p = self.psat_t(Ts)
@@ -2249,19 +2130,19 @@ class XSteam(object):
         T = self._unit_converter.toSIunit_T(Ts)
         v = self._unit_converter.toSIunit_v(v)
         rho = 1 / v
-        return self._unit_converter.fromSIunit_tc(
-            TransportProperties.tc_ptrho(p, T, rho)
-        )
+        return self._unit_converter.fromSIunit_tc(tc_ptrho(p, T, rho))
 
-    def tc_pt(self, p, t):
-        """Thermal conductivity as a function of pressure and temperature
+    def tc_pt(self, p: float, t: float) -> float:
+        """
+        Section 1.16 Thermal conductivity
+        Note: Revised release on the IAPS Formulation 1985 for the Thermal
+        Conductivity of ordinary water substance (IAPWS 1998)
+        Thermal conductivity as a function of pressure and temperature
 
-        Args:
-            p (float): preasure value
-            t (float): temperature value
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
 
-        Returns:
-            tc (float): thermal conductivity
+        :return: thermal conductivity
         """
 
         Ts = t
@@ -2272,19 +2153,19 @@ class XSteam(object):
         v = self._unit_converter.toSIunit_v(v)
         rho = 1 / v
 
-        return self._unit_converter.fromSIunit_tc(
-            TransportProperties.tc_ptrho(p, T, rho)
-        )
+        return self._unit_converter.fromSIunit_tc(tc_ptrho(p, T, rho))
 
-    def tc_ph(self, p, h):
-        """Thermal conductivity as a function of pressure and enthalpy
+    def tc_ph(self, p: float, h: float) -> float:
+        """
+        Section 1.16 Thermal conductivity
+        Note: Revised release on the IAPS Formulation 1985 for the Thermal
+        Conductivity of ordinary water substance (IAPWS 1998)
+        Thermal conductivity as a function of pressure and enthalpy
 
-        Args:
-            p (float): preasure value
-            h (float): enthalpy value
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+        :param h: specific enthalpy in the selected system (kJ/kg for MKS/BARE; Btu/lb for FLS)
 
-        Returns:
-            tc (float): thermal conductivity
+        :return: thermal conductivity
         """
         hs = h
         ps = p
@@ -2294,19 +2175,19 @@ class XSteam(object):
         T = self._unit_converter.toSIunit_T(T)
         v = self._unit_converter.toSIunit_v(v)
         rho = 1 / v
-        return self._unit_converter.fromSIunit_tc(
-            TransportProperties.tc_ptrho(p, T, rho)
-        )
+        return self._unit_converter.fromSIunit_tc(tc_ptrho(p, T, rho))
 
-    def tc_hs(self, h, s):
-        """Thermal conductivity as a function of enthalpy and entropy
+    def tc_hs(self, h: float, s: float) -> float:
+        """
+        Section 1.16 Thermal conductivity
+        Note: Revised release on the IAPS Formulation 1985 for the Thermal
+        Conductivity of ordinary water substance (IAPWS 1998)
+        Thermal conductivity as a function of enthalpy and entropy
 
-        Args:
-            h (float): enthalpy value
-            s (float): entropy value
+        :param h: specific enthalpy in the selected system (kJ/kg for MKS/BARE; Btu/lb for FLS)
+        :param s: specific entropy in the selected system (kJ/(kg·K) for MKS/BARE; Btu/(lb·°F) for FLS)
 
-        Returns:
-            tc (float): thermal conductivity
+        :return: thermal conductivity
         """
         hs = h
         p = self.p_hs(hs, s)
@@ -2317,63 +2198,55 @@ class XSteam(object):
         T = self._unit_converter.toSIunit_T(T)
         v = self._unit_converter.toSIunit_v(v)
         rho = 1 / v
-        return self._unit_converter.fromSIunit_tc(
-            TransportProperties.tc_ptrho(p, T, rho)
-        )
+        return self._unit_converter.fromSIunit_tc(tc_ptrho(p, T, rho))
 
-    # ***********************************************************************************************************
-    # Section 1.17 Vapour fraction
-    def x_ph(self, p, h):
-        """Vapour fraction as a function of pressure and enthalpy
+    def x_ph(self, p: float, h: float) -> float:
+        """
+        Section 1.17 Vapour fraction
+        Vapour fraction as a function of pressure and enthalpy
 
-        Args:
-            p (float): preasure value
-            h (float): enthalpy value
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+        :param h: specific enthalpy in the selected system (kJ/kg for MKS/BARE; Btu/lb for FLS)
 
-        Returns:
-            x (float): vapour fraction or NaN if arguments are out of range
+        :return: vapor fraction or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
         h = self._unit_converter.toSIunit_h(h)
-        if (p > 0.000611657) and (p < 22.06395):
+        if TRIPLE_POINT_PRESSURE < p < CRITICAL_PRESSURE:
             return self._unit_converter.fromSIunit_x(Region4.x4_ph(p, h))
-        else:
-            self.logger.warning("pressure out of range")
-            return float("NaN")
+        self.logger.debug("pressure out of range")
+        return float("NaN")
 
-    def x_ps(self, p, s):
-        """Vapour fraction as a function of pressure and entropy
+    def x_ps(self, p: float, s: float) -> float:
+        """
+        Section 1.17 Vapour fraction
+        Vapour fraction as a function of pressure and entropy
 
-        Args:
-            p (float): preasure value
-            s (float): entropy value
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+        :param s: specific entropy in the selected system (kJ/(kg·K) for MKS/BARE; Btu/(lb·°F) for FLS)
 
-        Returns:
-            x (float): vapour fraction or NaN if arguments are out of range
+        :return: vapor fraction or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
         s = self._unit_converter.toSIunit_s(s)
-        if (p > 0.000611657) and (p < 22.06395):
+        if TRIPLE_POINT_PRESSURE < p < CRITICAL_PRESSURE:
             return self._unit_converter.fromSIunit_x(Region4.x4_ps(p, s))
-        else:
-            self.logger.warning("pressure %f out of range", p)
-            return float("NaN")
+        self.logger.debug("pressure %f out of range", p)
+        return float("NaN")
 
-    # ***********************************************************************************************************
-    # Section 1.18 Vapour Volume Fraction
-    def vx_ph(self, p, h):
-        """Vapour volume fraction as a function of pressure and enthalpy
+    def vx_ph(self, p: float, h: float) -> float:
+        """
+        Section 1.18 Vapour Volume Fraction
+        Vapour volume fraction as a function of pressure and enthalpy
 
-        Args:
-            p (float): preasure value
-            h (float): enthalpy value
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+        :param h: specific enthalpy in the selected system (kJ/kg for MKS/BARE; Btu/lb for FLS)
 
-        Returns:
-            vx (float): vapour volume fraction or NaN if arguments are out of range
+        :return: vapor volume fraction or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
         h = self._unit_converter.toSIunit_h(h)
-        if (p > 0.000611657) and (p < 22.06395):
+        if TRIPLE_POINT_PRESSURE < p < CRITICAL_PRESSURE:
             if p < 16.529:
                 vL = Region1.v1_pT(p, Region4.T4_p(p))
                 vV = Region2.v2_pT(p, Region4.T4_p(p))
@@ -2381,26 +2254,25 @@ class XSteam(object):
                 vL = Region3.v3_ph(p, Region4.h4L_p(p))
                 vV = Region3.v3_ph(p, Region4.h4V_p(p))
             xs = Region4.x4_ph(p, h)
-            return self._unit_converter.fromSIunit_vx(
-                (xs * vV / (xs * vV + (1 - xs) * vL))
-            )
-        else:
-            self.logger.warning("pressure %f out of range", p)
-            return float("NaN")
+            vx = xs * vV / (xs * vV + (1 - xs) * vL)
+            return self._unit_converter.fromSIunit_vx(vx)
 
-    def vx_ps(self, p, s):
-        """Vapour volume fraction as a function of pressure and entropy
+        self.logger.debug("pressure %f out of range", p)
+        return float("NaN")
 
-        Args:
-            p (float): preasure value
-            s (float): entropy value
+    def vx_ps(self, p: float, s: float) -> float:
+        """
+        Section 1.18 Vapour Volume Fraction
+        Vapour volume fraction as a function of pressure and entropy
 
-        Returns:
-            vx (float): vapour volume fraction or NaN if arguments are out of range
+        :param p: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+        :param s: specific entropy in the selected system (kJ/(kg·K) for MKS/BARE; Btu/(lb·°F) for FLS)
+
+        :return: vapor volume fraction or NaN if arguments are out of range
         """
         p = self._unit_converter.toSIunit_p(p)
         s = self._unit_converter.toSIunit_s(s)
-        if (p > 0.000611657) and (p < 22.06395):
+        if TRIPLE_POINT_PRESSURE < p < CRITICAL_PRESSURE:
             if p < 16.529:
                 vL = Region1.v1_pT(p, Region4.T4_p(p))
                 vV = Region2.v2_pT(p, Region4.T4_p(p))
@@ -2408,112 +2280,314 @@ class XSteam(object):
                 vL = Region3.v3_ph(p, Region4.h4L_p(p))
                 vV = Region3.v3_ph(p, Region4.h4V_p(p))
             xs = Region4.x4_ps(p, s)
-            return self._unit_converter.fromSIunit_vx(
-                (xs * vV / (xs * vV + (1 - xs) * vL))
-            )
-        else:
-            self.logger.warning("pressure %f out of range", p)
-            return float("NaN")
+            vx = xs * vV / (xs * vV + (1 - xs) * vL)
+            return self._unit_converter.fromSIunit_vx(vx)
 
-    # ***********************************************************************************************************
-    # Revised Release on the Pressure along the Melting and Sublimation Curves of Ordinary Water Substance
-    # Release IAPWS R14-08(2011)
-    # http://www.iapws.org/relguide/MeltSub2011.pdf
-    def pmelt_t(self, t, hint=None):
-        """Pressure along the melting curve as a function of temperature. Based on IAPWS R14-08(2011)
+        self.logger.debug("pressure %f out of range", p)
+        return float("NaN")
+
+    def pmelt_t(self, t: float, hint: IceType = IceType.NONE) -> float:
+        """R14-08(2011) Pressure along the melting curve as a function of temperature
         http://www.iapws.org/relguide/MeltSub2011.pdf
-        Because of the shape of the meltin curve it is not possible to automatically select the correct region
-        automatically. Therefore the optional hint-parameter is used to tell the function which area you are interested in.
+
+        Because of the shape of the meltin curve it is not possible to automatically
+        select the correct region automatically. Therefore the optional
+        hint-parameter is used to tell the function which area you are interested in.
         The hint-values are namend after the ice types.
-        XSteam.TYPE_ICE_Ih = 1
-        XSteam.TYPE_ICE_III = 3
-        XSteam.TYPE_ICE_V = 5
-        XSteam.TYPE_ICE_VI = 6
-        XSteam.TYPE_ICE_VII = 7
+        `IceType.Ih` = 1
+        `IceType.III` = 3
+        `IceType.V` = 5
+        `IceType.VI` = 6
+        `IceType.VII` = 7
         If the hint is not one of the values above or None(Default), an Exception is raised
 
-        Args:
-            t (float): temperature value
-            hint (int): (optional) hint for the selection logic to decide which part of the melting curve to use
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
+        :param hint: optional :class:`IceType` selecting the melting-curve branch; use NONE for automatic selection where unambiguous
 
-        Returns:
-            p (float): preassure or NaN if arguments are out of range
+        :raises ValueError: unknown value for hint
+
+        :return: pressure or NaN if arguments are out of range
         """
         T = self._unit_converter.toSIunit_T(t)
 
-        if hint is None:
-            if T >= 251.165 and T < 256.164:
-                self.logger.error(
-                    "can't select ice type based on temperature %f, hint required", T
-                )
+        if hint is None or hint == IceType.NONE:
+            if 251.165 <= T < 256.164:
+                self.logger.debug("can't select ice type based on temperature %f, hint required", T)
                 return float("NaN")
-            elif T >= 256.164 and T < 273.31:
+
+            if 256.164 <= T < 273.31:
                 self.logger.debug("chose ice type V based on temperature")
-                return self._unit_converter.fromSIunit_p(IAPWS_R14.pmelt_T_iceV(T))
-            elif T >= 273.31 and T < 355:
+                return self._unit_converter.fromSIunit_p(pmelt_T_iceV(T))
+
+            if 273.31 <= T < 355:
                 self.logger.debug("chose ice type VI based on temperature")
-                return self._unit_converter.fromSIunit_p(IAPWS_R14.pmelt_T_iceVI(T))
-            elif T >= 355 and T < 751:
+                return self._unit_converter.fromSIunit_p(pmelt_T_iceVI(T))
+
+            if 355 <= T < 751:
                 self.logger.debug("chose ice type VII based on temperature")
-                return self._unit_converter.fromSIunit_p(IAPWS_R14.pmelt_T_iceVII(T))
-            else:
-                self.logger.warning("temperature %f out of range", T)
-                return float("NaN")
+                return self._unit_converter.fromSIunit_p(pmelt_T_iceVII(T))
 
-        elif hint is self.TYPE_ICE_Ih:
-            if T >= 251.165 and T < 273.16:
-                return self._unit_converter.fromSIunit_p(IAPWS_R14.pmelt_T_iceIh(T))
-            else:
-                self.logger.warning("temperature %f out of range", T)
-                return float("NaN")
+            self.logger.debug("temperature %f out of range", T)
+            return float("NaN")
 
-        elif hint is self.TYPE_ICE_III:
-            if T >= 251.165 and T < 256.164:
-                return self._unit_converter.fromSIunit_p(IAPWS_R14.pmelt_T_iceIII(T))
-            else:
-                self.logger.warning("temperature %f out of range", T)
-                return float("NaN")
+        if hint == IceType.Ih:
+            if 251.165 <= T < 273.16:
+                return self._unit_converter.fromSIunit_p(pmelt_T_iceIh(T))
+            self.logger.debug("temperature %f out of range", T)
+            return float("NaN")
 
-        elif hint is self.TYPE_ICE_V:
-            if T >= 256.164 and T < 273.31:
-                return self._unit_converter.fromSIunit_p(IAPWS_R14.pmelt_T_iceV(T))
-            else:
-                self.logger.warning("temperature %f out of range", T)
-                return float("NaN")
+        if hint == IceType.III:
+            if 251.165 <= T < 256.164:
+                return self._unit_converter.fromSIunit_p(pmelt_T_iceIII(T))
+            self.logger.debug("temperature %f out of range", T)
+            return float("NaN")
 
-        elif hint is self.TYPE_ICE_VI:
-            if T >= 273.31 and T < 355:
-                return self._unit_converter.fromSIunit_p(IAPWS_R14.pmelt_T_iceVI(T))
-            else:
-                self.logger.warning("temperature %f out of range", T)
-                return float("NaN")
+        if hint == IceType.V:
+            if 256.164 <= T < 273.31:
+                return self._unit_converter.fromSIunit_p(pmelt_T_iceV(T))
+            self.logger.debug("temperature %f out of range", T)
+            return float("NaN")
 
-        elif hint is self.TYPE_ICE_VII:
-            if T >= 355 and T < 751:
-                return self._unit_converter.fromSIunit_p(IAPWS_R14.pmelt_T_iceVII(T))
-            else:
-                self.logger.warning("temperature %f out of range", T)
-                return float("NaN")
+        if hint == IceType.VI:
+            if 273.31 <= T < 355:
+                return self._unit_converter.fromSIunit_p(pmelt_T_iceVI(T))
+            self.logger.debug("temperature %f out of range", T)
+            return float("NaN")
 
-        else:
-            self.logger.error(
-                "unknown value for parameter 'hint' %s, can't select ice type", hint
-            )
-            raise ValueError("unknown value for parameter 'hint'")
+        if hint == IceType.VII:
+            if 355 <= T < 751:
+                return self._unit_converter.fromSIunit_p(pmelt_T_iceVII(T))
+            self.logger.debug("temperature %f out of range", T)
+            return float("NaN")
 
-    def psubl_t(self, t):
-        """Pressure along the sublimation curve as a function of temperature. Based on IAPWS R14-08(2011)
+        raise ValueError("unknown value for parameter 'hint'")
+
+    def psubl_t(self, t: float) -> float:
+        """R14-08(2011) Pressure along the sublimation curve as a function of temperature
         http://www.iapws.org/relguide/MeltSub2011.pdf
 
-        Args:
-            t (float): temperature value
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
 
-        Returns:
-            p (float): preassure or NaN if arguments are out of range
+        :return: pressure or NaN if arguments are out of range
         """
         T = self._unit_converter.toSIunit_T(t)
-        if T >= 50 and T < 273.16:
-            return self._unit_converter.fromSIunit_p(IAPWS_R14.psubl_T(T))
-        else:
-            self.logger.warning("temperature %f out of range", T)
-            return float("NaN")
+        if 50 <= T < 273.16:
+            return self._unit_converter.fromSIunit_p(psubl_T(T))
+        self.logger.debug("temperature %f out of range", T)
+        return float("NaN")
+
+    def R12_my_rhot(self, rho: float, t: float, industrial_application: bool = True) -> float:
+        """Return opt-in IAPWS R12-08 viscosity for density and temperature.
+
+        Unlike the legacy ``my_pt``/``my_ph`` methods, this method uses the
+        IAPWS 2008 viscosity formulation. It is opt-in to preserve existing
+        viscosity results. ``rho`` and ``t`` use the selected unit system
+        (kg/m³ and °C for MKS; lb/ft³ and °F for FLS); the returned viscosity
+        follows the selected system (Pa·s for MKS; lbm/(ft·hr) for FLS).
+
+        :param rho: density in the selected system (kg/m³ for MKS/BARE; lb/ft³ for FLS)
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
+        :param industrial_application: omit critical enhancement when True
+        :return: dynamic viscosity in the selected unit system
+        """
+        self.logger.warning("this function is still experimental, use at your own risk!")
+
+        density_si = self._unit_converter.toSIunit_rho(rho)
+        temperature_si = self._unit_converter.toSIunit_T(t)
+        viscosity_si = my_rhoT(density_si, temperature_si, industrial_application)
+        return self._unit_converter.fromSIunit_my(viscosity_si)
+
+    def p_rhoT(self, rho: float, t: float) -> float:
+        """Calculate IAPWS-95 pressure from density and temperature.
+
+        :param rho: density in the selected system (kg/m³ for MKS/BARE; lb/ft³ for FLS)
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
+        :return: pressure in the selected system (bar for MKS/BARE; psi for FLS)
+        """
+        return self._unit_converter.fromSIunit_p(
+            _R6_p_rhoT(
+                self._unit_converter.toSIunit_rho(rho),
+                self._unit_converter.toSIunit_T(t),
+            )
+        )
+
+    def u_rhoT(self, rho: float, t: float) -> float:
+        """Calculate IAPWS-95 internal energy from density and temperature.
+
+        :param rho: density in the selected system (kg/m³ for MKS/BARE; lb/ft³ for FLS)
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
+        :return: specific internal energy in the selected system (kJ/kg for MKS/BARE; Btu/lb for FLS)
+        """
+        return self._unit_converter.fromSIunit_u(
+            _R6_u_rhoT(
+                self._unit_converter.toSIunit_rho(rho),
+                self._unit_converter.toSIunit_T(t),
+            )
+        )
+
+    def s_rhoT(self, rho: float, t: float) -> float:
+        """Calculate IAPWS-95 entropy from density and temperature.
+
+        :param rho: density in the selected system (kg/m³ for MKS/BARE; lb/ft³ for FLS)
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
+        :return: specific entropy in the selected system (kJ/(kg·K) for MKS/BARE; Btu/(lb·°F) for FLS)
+        """
+        return self._unit_converter.fromSIunit_s(
+            _R6_s_rhoT(
+                self._unit_converter.toSIunit_rho(rho),
+                self._unit_converter.toSIunit_T(t),
+            )
+        )
+
+    def h_rhoT(self, rho: float, t: float) -> float:
+        """Calculate IAPWS-95 enthalpy from density and temperature.
+
+        :param rho: density in the selected system (kg/m³ for MKS/BARE; lb/ft³ for FLS)
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
+        :return: specific enthalpy in the selected system (kJ/kg for MKS/BARE; Btu/lb for FLS)
+        """
+        return self._unit_converter.fromSIunit_h(
+            _R6_h_rhoT(
+                self._unit_converter.toSIunit_rho(rho),
+                self._unit_converter.toSIunit_T(t),
+            )
+        )
+
+    def cv_rhoT(self, rho: float, t: float) -> float:
+        """Calculate IAPWS-95 isochoric heat capacity from density and temperature.
+
+        :param rho: density in the selected system (kg/m³ for MKS/BARE; lb/ft³ for FLS)
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
+        :return: specific heat capacity in the selected system (kJ/(kg·K) for MKS/BARE; Btu/(lb·°F) for FLS)
+        """
+        return self._unit_converter.fromSIunit_Cv(
+            _R6_cv_rhoT(
+                self._unit_converter.toSIunit_rho(rho),
+                self._unit_converter.toSIunit_T(t),
+            )
+        )
+
+    def cp_rhoT(self, rho: float, t: float) -> float:
+        """Calculate IAPWS-95 isobaric heat capacity from density and temperature.
+
+        :param rho: density in the selected system (kg/m³ for MKS/BARE; lb/ft³ for FLS)
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
+        :return: specific heat capacity in the selected system (kJ/(kg·K) for MKS/BARE; Btu/(lb·°F) for FLS)
+        """
+        return self._unit_converter.fromSIunit_Cp(
+            _R6_cp_rhoT(
+                self._unit_converter.toSIunit_rho(rho),
+                self._unit_converter.toSIunit_T(t),
+            )
+        )
+
+    def w_rhoT(self, rho: float, t: float) -> float:
+        """Calculate IAPWS-95 speed of sound from density and temperature.
+
+        :param rho: density in the selected system (kg/m³ for MKS/BARE; lb/ft³ for FLS)
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
+        :return: speed in the selected system (m/s for MKS/BARE; ft/s for FLS)
+        """
+        return self._unit_converter.fromSIunit_w(
+            _R6_w_rhoT(
+                self._unit_converter.toSIunit_rho(rho),
+                self._unit_converter.toSIunit_T(t),
+            )
+        )
+
+    def joulethomson_rhoT(self, rho: float, t: float) -> float:
+        """Calculate IAPWS-95 Joule-Thomson coefficient from density and temperature.
+
+        :param rho: density in the selected system (kg/m³ for MKS/BARE; lb/ft³ for FLS)
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
+        :return: Joule-Thomson temperature-pressure coefficient in selected temperature and pressure units
+        """
+        return self._unit_converter.fromSIunit_pressure_derivative(
+            _R6_joulethomson_rhoT(
+                self._unit_converter.toSIunit_rho(rho),
+                self._unit_converter.toSIunit_T(t),
+            )
+        )
+
+    def delta_T_rhoT(self, rho: float, t: float) -> float:
+        """Calculate IAPWS-95 isothermal throttling coefficient from density and temperature.
+
+        :param rho: density in the selected system (kg/m³ for MKS/BARE; lb/ft³ for FLS)
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
+        :return: specific-volume units in the selected system (m³/kg for MKS/BARE; ft³/lb for FLS)
+        """
+        return self._unit_converter.fromSIunit_v(
+            _R6_delta_T_rhoT(
+                self._unit_converter.toSIunit_rho(rho),
+                self._unit_converter.toSIunit_T(t),
+            )
+        )
+
+    def isen_t_p_rhoT(self, rho: float, t: float) -> float:
+        """Calculate the IAPWS-95 isentropic temperature-pressure coefficient.
+
+        :param rho: density in the selected system (kg/m³ for MKS/BARE; lb/ft³ for FLS)
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
+        :return: coefficient in selected temperature units per selected pressure unit
+        """
+        return self._unit_converter.fromSIunit_pressure_derivative(
+            _R6_isen_t_p_rhoT(
+                self._unit_converter.toSIunit_rho(rho),
+                self._unit_converter.toSIunit_T(t),
+            )
+        )
+
+    def sec_virial_coefficients(self, rho: float, t: float) -> tuple[float, float]:
+        """Calculate IAPWS-95 second virial coefficient B and dB/dT.
+
+        :param rho: density in the selected system; retained for API consistency
+            but not used because virial coefficients are zero-density limits
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
+        :return: (B, dB/dT), in selected specific-volume and temperature units
+        """
+        coefficient, derivative = _R6_sec_virial_coefficients(
+            self._unit_converter.toSIunit_rho(rho),
+            self._unit_converter.toSIunit_T(t),
+        )
+        return (
+            self._unit_converter.fromSIunit_v(coefficient),
+            self._unit_converter.fromSIunit_v(derivative) * self._unit_converter.toSIunit_T_interval(1),
+        )
+
+    def third_virial_coefficients(self, rho: float, t: float) -> tuple[float, float]:
+        """Calculate IAPWS-95 third virial coefficient C and dC/dT.
+
+        :param rho: density in the selected system; retained for API consistency
+            but not used because virial coefficients are zero-density limits
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
+        :return: (C, dC/dT), in selected squared-specific-volume and temperature units
+        """
+        coefficient, derivative = _R6_third_virial_coefficients(
+            self._unit_converter.toSIunit_rho(rho),
+            self._unit_converter.toSIunit_T(t),
+        )
+        return (
+            self._unit_converter.fromSIunit_v_squared(coefficient),
+            self._unit_converter.fromSIunit_v_squared(derivative) * self._unit_converter.toSIunit_T_interval(1),
+        )
+
+    def phase_equilibrium_condition(self, rho_liquid: float, rho_vapor: float, t: float) -> tuple[float, float]:
+        """Return IAPWS-95 pressure-equality and Maxwell residuals.
+
+        :param rho_liquid: liquid density in the selected system (kg/m³ for
+            MKS/BARE; lb/ft³ for FLS)
+        :param rho_vapor: vapor density in the selected system (kg/m³ for
+            MKS/BARE; lb/ft³ for FLS)
+        :param t: temperature in the selected system (°C for MKS/BARE; °F for FLS)
+        :return: pressure residual (bar for MKS/BARE; psi for FLS) and
+            dimensionless Maxwell residual
+        """
+        pressure_residual, maxwell_residual = _R6_phase_equilibrium_condition(
+            self._unit_converter.toSIunit_rho(rho_liquid),
+            self._unit_converter.toSIunit_rho(rho_vapor),
+            self._unit_converter.toSIunit_T(t),
+        )
+        return (
+            self._unit_converter.fromSIunit_p(pressure_residual),
+            maxwell_residual,
+        )

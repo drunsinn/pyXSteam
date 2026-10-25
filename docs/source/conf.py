@@ -42,7 +42,13 @@ release = __version__
 extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.githubpages",
+    "sphinx_autodoc_typehints",
+    "myst_parser",
 ]
+
+# Generate anchors for Markdown headings so that links such as
+# [Behavior changes](#behavior-changes) resolve.
+myst_heading_anchors = 3
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
@@ -66,7 +72,7 @@ language = "en"
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
-exclude_patterns = []
+exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = None
@@ -143,7 +149,7 @@ latex_documents = [
 
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
-man_pages = [(master_doc, "pyxsteam", "pyXSteam Documentation", [author], 1)]
+man_pages = [(master_doc, "pyXSteam", "pyXSteam Documentation", [author], 1)]
 
 
 # -- Options for Texinfo output ----------------------------------------------
@@ -183,3 +189,14 @@ epub_exclude_files = ["search.html"]
 
 
 # -- Extension configuration -------------------------------------------------
+
+set_type_checking_flag = True
+
+# -- Options for sphinx_autodoc_typehints ------------------------------------
+typehints_fully_qualified = False
+always_document_param_types = True
+typehints_document_rtype = True
+typehints_use_rtype = True
+typehints_defaults = "comma"
+simplify_optional_unions = True
+typehints_formatter = None

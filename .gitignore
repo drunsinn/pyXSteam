@@ -4,6 +4,7 @@ __pycache__/
 *$py.class
 .pytest_cache/
 
+
 # C extensions
 *.so
 
@@ -110,6 +111,8 @@ venv.bak/
 *.todo
 /extern_docs
 .vscode/
-
+docs/source/README.md
+docs/source/MIGRATION.md
+docs/reports
 uv.lock
-docs/souce/README.md
+.ruff_cache/

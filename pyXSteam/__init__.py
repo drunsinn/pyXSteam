@@ -7,5 +7,16 @@
 
 this is the pyXSteam package"""
 
-name = "pyXSteam"
-__version__ = "0.4.10"
+import logging
+
+from .XSteam import XSteam
+from .XSteam_HW import XSteam_HW
+from .UnitConverter import UnitConverter
+from .Constants import UnitSystem, IceType
+
+logging.getLogger(__name__).addHandler(logging.NullHandler())
+
+__version__ = "1.0.0"
+__author__ = "drunsinn"
+__license__ = "MIT"
+__email__ = "dr.unsinn@googlemail.com"

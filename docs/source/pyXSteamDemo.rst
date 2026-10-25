@@ -1,103 +1,182 @@
-Tutorial and Demos
+Tutorial and demos
 ##################
 
 Usage
 *****
 
-Simple Example::
+The main classes and unit-system constants are exported from the package:
 
-    from pyXSteam.XSteam import XSteam
+.. code-block:: python
+
+    from pyXSteam import XSteam
+
     steam_table = XSteam(XSteam.UNIT_SYSTEM_MKS)
-    print steam_table.hL_p(220.0)
+    print(steam_table.hL_p(220.0))
 
-By using the unitSystem Parameter, you can tell XSteam witch Unit System you are using.::
+The unit system controls the input and output units:
 
-    steam_table = XSteam(XSteam.UNIT_SYSTEM_MKS) # m/kg/sec/°C/bar/W
-    steam_table = XSteam(XSteam.UNIT_SYSTEM_FLS) # ft/lb/sec/°F/psi/btu
-    steam_table = XSteam(XSteam.UNIT_SYSTEM_BARE) # m/kg/sec/K/MPa/W
-
-To enable logging, add the following lines to your code::
-
-    import logging
-    logger = logging.getLogger('pyXSteam')
-    logger.setLevel(logging.DEBUG) sh = logging.StreamHandler()
-    sh.setFormatter(logging.Formatter('%(name)s - %(levelname)s - %(message)s'))
-    logger.addHandler(sh)
+* ``UNIT_SYSTEM_MKS`` uses pressure in bar and temperature in degrees Celsius.
+  Enthalpy is in kJ/kg, density in kg/m³, and thermal conductivity in W/(m K).
+* ``UNIT_SYSTEM_FLS`` uses pressure in psi and temperature in degrees Fahrenheit.
+* ``UNIT_SYSTEM_BARE`` is currently an alias of ``UNIT_SYSTEM_MKS`` in this
+  version; it does **not** select MPa and kelvin. Use ``UNIT_SYSTEM_MKS`` for
+  the documented MKS conversions.
 
 Calculate single values
 =======================
-This is a simple example::
 
-    >>> from pyXSteam.XSteam import XSteam
+Methods are named after the property and input properties. For example,
+``hL_p`` returns saturated-liquid enthalpy as a function of pressure, while
+``t_ph`` returns temperature from pressure and enthalpy:
+
+.. code-block:: pycon
+
+    >>> from pyXSteam import XSteam
     >>> steam_table = XSteam(XSteam.UNIT_SYSTEM_MKS)
     >>> steam_table.hL_p(220.0)
     2021.909286172027
-    >>> steam_table.tcV_p(1)
-    0.02475366759235046
+    >>> steam_table.t_ph(1.0, 500.0)
+    99.60591861133764
 
-Usage with numpy
+Methods that cannot calculate a result for their input commonly return ``NaN``.
+For example, ``tsat_p`` expects a pressure between the triple-point and critical
+pressures. Check results with ``math.isnan`` or ``numpy.isnan`` when inputs may
+be outside a method's valid range.
+
+Usage with NumPy
 ================
-By converting one to the functions to a NumPy universal function it is easy to use pyXSteam on NumPy arrays::
 
-    >>> npv_pt = np.frompyfunc(steam_table.v_pt, 2, 1)
+NumPy is an optional dependency. ``numpy.frompyfunc`` can apply a pyXSteam
+method element-wise to arrays:
 
-* `NumPy documentation for frombyfunc <https://numpy.org/doc/stable/reference/generated/numpy.frompyfunc.html>`_
-* `pyXSteamDemo.py <https://github.com/drunsinn/pyXSteam/blob/master/bin/pyXSteamDemo.py>`_
+.. code-block:: python
+
+    import numpy as np
+    from pyXSteam import XSteam
+
+    steam_table = XSteam(XSteam.UNIT_SYSTEM_MKS)
+    pressures_bar = np.arange(1.0, 221.0, 1.0)
+    tsat = np.frompyfunc(steam_table.tsat_p, 1, 1)(pressures_bar)
+    tsat = np.asarray(tsat, dtype=float)
+
+See the `NumPy frompyfunc documentation
+<https://numpy.org/doc/stable/reference/generated/numpy.frompyfunc.html>`_ and
+the `pyXSteam demo source
+<https://github.com/drunsinn/pyXSteam/blob/master/pyXSteam/scripts/pyXSteamDemo.py>`_.
 
 Usage with pandas
 =================
-Using pandas together with pyXSteam is very easy as well. Using
-the `apply <https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.apply.html>`_ function and a
-`lambda <https://docs.python.org/3/reference/expressions.html#lambda>`_ you can add a new column based on the
-values of other columns::
 
-    >>> df['h'] = df.apply(lambda x: steamTable.h_pt(x.P, x.T), axis=1)
+If pandas is installed, ``DataFrame.apply`` can calculate a result from columns
+of input data. This example expects pressure in bar and temperature in degrees
+Celsius:
 
-* `Pandas documentation on DataFrame.apply <https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.apply.html>`_
-* `Python documentation on lambdas <https://docs.python.org/3/reference/expressions.html#lambda>`_
+.. code-block:: python
 
-Generate Diagrams
-=================
-Diagrams based on the calculated values can easily be created using numpy and matplotlib.
+    import pandas as pd
+    from pyXSteam import XSteam
 
-Example: To draw a T(p) diagram showing the saturation curve::
-
-    from pyXSteam.XSteam import XSteam
-    import matplotlib.pyplot as pyplot
-    import numpy as np
     steam_table = XSteam(XSteam.UNIT_SYSTEM_MKS)
-    p = np.arange(-100.0, 250.0, 1.0)
-    ntsat_p = np.frompyfunc(steam_table.tsat_p, 1, 1)
-    tsat = ntsat_p(p)
-    line1, = pyplot.plot(tsat, p)
-    pyplot.xlabel("t")
-    pyplot.ylabel("p")
-    pyplot.setp(line1, linewidth=1, color='b')
-    pyplot.show()
+    states = pd.DataFrame({"p": [1.0, 5.0], "t": [100.0, 200.0]})
+    states["h"] = states.apply(
+        lambda row: steam_table.h_pt(row["p"], row["t"]),
+        axis=1,
+    )
 
-For more demos, see `pyXSteamDemo.py <https://github.com/drunsinn/pyXSteam/blob/master/bin/pyXSteamDemo.py>`_
+See the `pandas DataFrame.apply documentation
+<https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.apply.html>`_.
 
-Heavy Water functions
-=====================
-The functions to calculate values for heavy water are available through the
-class XSteamHW
+Generate diagrams
+=================
 
-    >>> from pyXSteam.XSteamHW import XSteamHW
-    >>> steam_table = XSteamHW(XSteam.UNIT_SYSTEM_MKS)
-    >>> steam_table.my_rhoT(1.2, 300.0)
+The following example plots the saturation temperature against pressure. The
+selected pressures are within the saturation curve's valid range:
 
-Content of the demo files
-*************************
+.. code-block:: python
 
-Main demo file pyXSteamDemo.py
-==============================
-.. literalinclude:: ../../bin/pyXSteamDemo.py
+    import matplotlib.pyplot as plt
+    import numpy as np
+    from pyXSteam import XSteam
+
+    steam_table = XSteam(XSteam.UNIT_SYSTEM_MKS)
+    pressure_bar = np.arange(1.0, 221.0, 1.0)
+    tsat = np.frompyfunc(steam_table.tsat_p, 1, 1)(pressure_bar)
+    tsat = np.asarray(tsat, dtype=float)
+
+    plt.plot(pressure_bar, tsat)
+    plt.xlabel("Pressure [bar]")
+    plt.ylabel("Saturation temperature [°C]")
+    plt.grid(True)
+    plt.show()
+
+For more examples, see the `pyXSteam demo source
+<https://github.com/drunsinn/pyXSteam/blob/master/pyXSteam/scripts/pyXSteamDemo.py>`_.
+Install its optional dependencies with ``pip install "pyXSteam[demo]"``.
+
+More diagrams
+-------------
+
+For additional examples of diagrams generated with pyXSteam, see the
+repositories by Richard J Smith:
+
+* `steam-properties <https://github.com/Richard66NZ/steam-properties>`_
+* `steam-cycles-Ideal <https://github.com/Richard66NZ/steam-cycles-Ideal>`_
+* `steam-cycles-non-ideal <https://github.com/Richard66NZ/steam-cycles-non-ideal>`_
+* `steam-cycles-regenerative <https://github.com/Richard66NZ/steam-cycles-regenerative>`_
+
+Heavy water
+===========
+
+The heavy-water API is exposed as ``XSteam_HW``:
+
+.. code-block:: python
+
+    from pyXSteam import XSteam_HW
+
+    heavy_water = XSteam_HW(XSteam_HW.UNIT_SYSTEM_MKS)
+
+Heavy-water support is still in progress and should not be relied on for
+production calculations. In particular, the viscosity and thermal-conductivity
+methods use the superseded IAPWS R4-84 formulation.
+
+Logging
+-------
+
+pyXSteam uses Python's standard logging hierarchy and does not configure the
+root logger. Configure logging once in the application. Routine out-of-range
+diagnostics are logged at ``DEBUG`` because many methods return ``NaN`` for
+unsupported inputs:
+
+.. code-block:: python
+
+    import logging
+
+    logging.basicConfig(level=logging.WARNING)
+    logging.getLogger("pyXSteam").setLevel(logging.DEBUG)
+
+Demo scripts
+************
+
+The interactive demo commands are installed with the optional dependencies:
+
+.. code-block:: console
+
+    $ pip install "pyXSteam[demo]"
+    $ pyXSteamDemo
+    $ pyXSteamRankineDemo
+
+Main demo file ``pyXSteamDemo.py``
+==================================
+
+.. literalinclude:: ../../pyXSteam/scripts/pyXSteamDemo.py
     :language: python
 
-Example on how to calculate the values for a rankine cycle
-==========================================================
-Matlab example from converted example from Stu Blair converted to python
-Original can be found at `his github page <https://github.com/stu314159/xsteam/blob/master/Examples/SimpleRankineCycle.m>`_
+Rankine cycle demo
+==================
 
-.. literalinclude:: ../../bin/pyXSteamRankineDemo.py
+This example implements Rankine cycles based on examples by Stu Blair. The
+original Matlab example is available on `GitHub
+<https://github.com/stu314159/xsteam/blob/master/Examples/SimpleRankineCycle.m>`_.
+
+.. literalinclude:: ../../pyXSteam/scripts/pyXSteamRankineDemo.py
     :language: python

@@ -3,19 +3,28 @@
 """
 Section 5: Transport properties
 """
+
 import math
 import logging
-from . import RegionSelection
+from .RegionSelection import (
+    select_region_pT,
+    select_region_ph,
+)
 from .Regions import Region1, Region2, Region3, Region4, Region5
-from . import Constants
+from .Constants import TRIPLE_POINT_TEMPERATURE, CRITICAL_TEMPERATURE, FREEZING_TEMPERATURE_H2O
 
 logger = logging.getLogger(__name__)
 
 
-def my_AllRegions_pT(p, T):
+def my_AllRegions_pT(p: float, T: float) -> float:
     """function my_AllRegions_pT = my_AllRegions_pT(p, T)
 
     Section 5.1 Viscosity (IAPWS formulation 1985, Revised 2003)
+
+    :param p: preasure in [MPa]
+    :param T: temperature in [K]
+
+    :return: dynamic viscosity in [Pa s]
     """
     h0 = [0.5132047, 0.3205656, 0, 0, -0.7782567, 0.1885447]
     h1 = [0.2151778, 0.7317883, 1.241044, 1.476783, 0, 0]
@@ -26,20 +35,20 @@ def my_AllRegions_pT(p, T):
     h6 = [0, 0, 0, -0.003629481, 0, 0]
 
     # Calculate density.
-    if RegionSelection.region_pT(p, T) == 1:
+    if select_region_pT(p, T) == 1:
         rho = 1 / Region1.v1_pT(p, T)
-    elif RegionSelection.region_pT(p, T) == 2:
+    elif select_region_pT(p, T) == 2:
         rho = 1 / Region2.v2_pT(p, T)
-    elif RegionSelection.region_pT(p, T) == 3:
+    elif select_region_pT(p, T) == 3:
         hs = Region3.h3_pT(p, T)
         rho = 1 / Region3.v3_ph(p, hs)
-    elif RegionSelection.region_pT(p, T) == 4:
-        logger.warning("function my_AllRegions_pT is not available in region 4")
+    elif select_region_pT(p, T) == 4:
+        logger.debug("function my_AllRegions_pT is not available in region 4")
         return float("NaN")
-    elif RegionSelection.region_pT(p, T) == 5:
+    elif select_region_pT(p, T) == 5:
         rho = 1 / Region5.v5_pT(p, T)
     else:
-        logger.warning("Region switch returned unknown value")
+        logger.debug("Region switch returned unknown value")
         return float("NaN")
 
     rhos = rho / 317.763
@@ -48,36 +57,35 @@ def my_AllRegions_pT(p, T):
 
     # Check valid area
     if (
-        (T > (900 + 273.15))
-        or ((T > (600 + 273.15)) and (p > 300))
-        or ((T > (150 + 273.15)) and (p > 350))
+        (T > (900 + FREEZING_TEMPERATURE_H2O))
+        or (T > (600 + FREEZING_TEMPERATURE_H2O) and (p > 300))
+        or (T > (150 + FREEZING_TEMPERATURE_H2O) and (p > 350))
         or (p > 500)
     ):
-        logger.warning("Temperature and/or Preasure out of range of validity")
+        logger.debug("Temperature and/or Preasure out of range of validity")
         return float("NaN")
 
     my0 = Ts**0.5 / (1 + 0.978197 / Ts + 0.579829 / (Ts**2) - 0.202354 / (Ts**3))
     temp_sum = 0
-    for i in range(0, 6):
-        temp_sum = (
-            temp_sum
-            + h0[i] * (((1 / Ts) - 1) ** i)
-            + h1[i] * (((1 / Ts) - 1) ** i) * ((rhos - 1) ** 1)
-            + h2[i] * (((1 / Ts) - 1) ** i) * ((rhos - 1) ** 2)
-            + h3[i] * (((1 / Ts) - 1) ** i) * ((rhos - 1) ** 3)
-            + h4[i] * (((1 / Ts) - 1) ** i) * ((rhos - 1) ** 4)
-            + h5[i] * (((1 / Ts) - 1) ** i) * ((rhos - 1) ** 5)
-            + h6[i] * (((1 / Ts) - 1) ** i) * ((rhos - 1) ** 6)
-        )
+    for i, coefficients in enumerate(zip(h0, h1, h2, h3, h4, h5, h6)):
+        temperature_power = ((1 / Ts) - 1) ** i
+        density_difference = rhos - 1
+        for j, coefficient in enumerate(coefficients):
+            temp_sum += coefficient * temperature_power * density_difference**j
     my1 = math.exp(rhos * temp_sum)
     mys = my0 * my1
     return mys * 0.000055071
 
 
-def my_AllRegions_ph(p, h):
+def my_AllRegions_ph(p: float, h: float) -> float:
     """function my_AllRegions_ph = my_AllRegions_ph(p, h)
 
     Section 5.1 Viscosity (IAPWS formulation 1985, Revised 2003)
+
+    :param p: preasure in [MPa]
+    :param h: enthalpy in [kJ / kg]
+
+    :return: dynamic viscosity in [Pa s]
     """
     h0 = [0.5132047, 0.3205656, 0, 0, -0.7782567, 0.1885447]
     h1 = [0.2151778, 0.7317883, 1.241044, 1.476783, 0, 0]
@@ -88,18 +96,18 @@ def my_AllRegions_ph(p, h):
     h6 = [0, 0, 0, -0.003629481, 0, 0]
 
     # Calculate density.
-    if RegionSelection.region_ph(p, h) == 1:
+    if select_region_ph(p, h) == 1:
         Ts = Region1.T1_ph(p, h)
         T = Ts
         rho = 1 / Region1.v1_pT(p, Ts)
-    elif RegionSelection.region_ph(p, h) == 2:
+    elif select_region_ph(p, h) == 2:
         Ts = Region2.T2_ph(p, h)
         T = Ts
         rho = 1 / Region2.v2_pT(p, Ts)
-    elif RegionSelection.region_ph(p, h) == 3:
+    elif select_region_ph(p, h) == 3:
         rho = 1 / Region3.v3_ph(p, h)
         T = Region3.T3_ph(p, h)
-    elif RegionSelection.region_ph(p, h) == 4:
+    elif select_region_ph(p, h) == 4:
         xs = Region4.x4_ph(p, h)
         if p < 16.529:
             v4v = Region2.v2_pT(p, Region4.T4_p(p))
@@ -109,12 +117,12 @@ def my_AllRegions_ph(p, h):
             v4L = Region3.v3_ph(p, Region4.h4L_p(p))
         rho = 1 / (xs * v4v + (1 - xs) * v4L)
         T = Region4.T4_p(p)
-    elif RegionSelection.region_ph(p, h) == 5:
+    elif select_region_ph(p, h) == 5:
         Ts = Region5.T5_ph(p, h)
         T = Ts
         rho = 1 / Region5.v5_pT(p, Ts)
     else:
-        logger.warning("Region switch returned unknown value")
+        logger.debug("Region switch returned unknown value")
         return float("NaN")
 
     rhos = rho / 317.763
@@ -122,35 +130,29 @@ def my_AllRegions_ph(p, h):
 
     # Check valid area
     if (
-        (T > (900 + 273.15))
-        or (T > (600 + 273.15) and (p > 300))
-        or (T > (150 + 273.15) and (p > 350))
+        (T > (900 + FREEZING_TEMPERATURE_H2O))
+        or (T > (600 + FREEZING_TEMPERATURE_H2O) and (p > 300))
+        or (T > (150 + FREEZING_TEMPERATURE_H2O) and (p > 350))
         or (p > 500)
     ):
-        logger.warning("Temperature and/or Preasure out of range of validity")
+        logger.debug("Temperature and/or Preasure out of range of validity")
         return float("NaN")
 
     my0 = Ts**0.5 / (1 + 0.978197 / Ts + 0.579829 / (Ts**2) - 0.202354 / (Ts**3))
 
     temp_sum = 0
-    for i in range(0, 6):
-        temp_sum = (
-            temp_sum
-            + h0[i] * (1 / Ts - 1) ** i
-            + h1[i] * (1 / Ts - 1) ** i * (rhos - 1) ** 1
-            + h2[i] * (1 / Ts - 1) ** i * (rhos - 1) ** 2
-            + h3[i] * (1 / Ts - 1) ** i * (rhos - 1) ** 3
-            + h4[i] * (1 / Ts - 1) ** i * (rhos - 1) ** 4
-            + h5[i] * (1 / Ts - 1) ** i * (rhos - 1) ** 5
-            + h6[i] * (1 / Ts - 1) ** i * (rhos - 1) ** 6
-        )
+    for i, coefficients in enumerate(zip(h0, h1, h2, h3, h4, h5, h6)):
+        temperature_power = (1 / Ts - 1) ** i
+        density_difference = rhos - 1
+        for j, coefficient in enumerate(coefficients):
+            temp_sum += coefficient * temperature_power * density_difference**j
 
     my1 = math.exp(rhos * temp_sum)
     mys = my0 * my1
     return mys * 0.000055071
 
 
-def tc_ptrho(p, T, rho):
+def tc_ptrho(p: float, T: float, rho: float) -> float:
     """function tc_ptrho = tc_ptrho(p, T, rho)
 
     Section 5.2 Thermal Conductivity (IAPWS formulation 1985)
@@ -158,38 +160,38 @@ def tc_ptrho(p, T, rho):
     Revised release on the IAPWS formulation 1985 for the Thermal Conductivity of ordinary water IAPWS, September 1998
 
     Page 8
+
+    :param p: preasure in [MPa]
+    :param T: temperature in [K]
+    :param rho: density in [kg / m³]
+
+    :return: thermal conductivity in [W / (m K)]
     """
 
     # ver2.6 Start corrected bug
-    if T < 273.15:
-        logger.warning("Temperature out of range of validity")
+    if T < FREEZING_TEMPERATURE_H2O:
+        logger.debug("Temperature out of range of validity")
         return float("NaN")
-    elif T < 500 + 273.15:
+    if T < 500 + FREEZING_TEMPERATURE_H2O:
         if p > 100:
-            logger.warning("Preasure out of range of validity")
+            logger.debug("Preasure out of range of validity")
             return float("NaN")
-    elif T <= 650 + 273.15:
+    if T <= 650 + FREEZING_TEMPERATURE_H2O:
         if p > 70:
-            logger.warning("Preasure out of range of validity")
+            logger.debug("Preasure out of range of validity")
             return float("NaN")
-    else:  # T <= 800 + 273.15:
+    else:  # T <= 800 + __FREEZING_POINT_H2O__:
         if p > 40:
-            logger.warning("Preasure out of range of validity")
+            logger.debug("Preasure out of range of validity")
             return float("NaN")
     # ver2.6 End corrected bug
 
     T = T / 647.26  # Page 8, Eq 4
     rho = rho / 317.7  # Page 8, Eq 5
 
-    tc0 = T**0.5 * (
-        0.0102811 + 0.0299621 * T + 0.0156146 * (T**2) - 0.00422464 * (T**3)
-    )  # Page 9, Eq 9
+    tc0 = T**0.5 * (0.0102811 + 0.0299621 * T + 0.0156146 * (T**2) - 0.00422464 * (T**3))  # Page 9, Eq 9
 
-    tc1 = (
-        -0.397070
-        + 0.400302 * rho
-        + 1.06 * math.exp(-0.171587 * ((rho + 2.392190) ** 2))
-    )  # Page 9, Eq 10
+    tc1 = -0.397070 + 0.400302 * rho + 1.06 * math.exp(-0.171587 * ((rho + 2.392190) ** 2))  # Page 9, Eq 10
 
     dT = abs(T - 1) + 0.00308976  # Page 9, Eq 12
     Q = 2 + 0.0822994 / (dT ** (3 / 5))  # Page 10, Eq 13
@@ -199,33 +201,31 @@ def tc_ptrho(p, T, rho):
         s = 10.0932 / (dT ** (3 / 5))
 
     tc2 = (
-        (0.0701309 / (T**10) + 0.0118520)
-        * (rho ** (9 / 5))
-        * math.exp(0.642857 * (1 - rho ** (14 / 5)))
+        (0.0701309 / (T**10) + 0.0118520) * (rho ** (9 / 5)) * math.exp(0.642857 * (1 - rho ** (14 / 5)))
         + 0.00169937 * s * (rho**Q) * math.exp((Q / (1 + Q)) * (1 - rho ** (1 + Q)))
         - 1.02 * math.exp(-4.11717 * (T ** (3 / 2)) - 6.17937 / (rho**5))
     )  # Page 9, Eq 11
     return tc0 + tc1 + tc2  # Page 9, Eq 8
 
 
-def Surface_Tension_T(T):
-    """function Surface_Tension_T = Surface_Tension_T(T)
-
-    Section 5.3 Surface Tension
-
-    IAPWS Release on Surface Tension of Ordinary Water Substance, September 1994
-
-    also
+def surface_tension_T(T: float) -> float:
+    """R1-76(2014) calculate surface tension as a function of temperature
 
     IAPWS Revised Release on Surface Tension of Ordinary Water Substance, June 2014 R1-76(2014)
-    """
-    tc = Constants.__CRITICAL_TEMPERATURE__
-    B = 0.2358  # N/m
-    bb = -0.625  #
-    my = 1.256  #
-    if (T < 0.01) or (T > tc):
-        logger.warning("Temperature out of range of validity")
-        return float("NaN")
+    http://www.iapws.org/relguide/Surf-H2O-2014.pdf
 
-    tau = 1 - T / tc
-    return B * tau**my * (1 + bb * tau)
+    :param T: temperature in [K]
+
+    :return: surface tension in [N / m]
+    """
+    B = 235.8  # N/m
+    bb = -0.625
+    my = 1.256
+
+    if TRIPLE_POINT_TEMPERATURE <= T <= CRITICAL_TEMPERATURE:
+        tau = 1 - T / CRITICAL_TEMPERATURE
+        sigma = B * tau**my * (1 + bb * tau)
+        return sigma
+
+    logger.debug("Temperature out of range of validity")
+    return float("NaN")
