@@ -48,9 +48,10 @@ Follow-up issues found while reviewing the PR:
   `./MIGRATION.md`, but Sphinx builds from `docs/source/`, where the file does
   not exist, producing a `myst` cross-reference warning. Also add
   `MIGRATION.md` to the sdist and the documentation toctree.
-* [~] Untrack the generated `docs/source/README.md`. It is tracked but listed
+* [x] Untrack the generated `docs/source/README.md`. It is tracked but listed
   in `.gitignore`, and `docs/Makefile` overwrites it via
-  `cp -f ../README.md ./source/`, leaving the tree dirty after every `make doc`.
+  `cp -f ../README.md ./source/`, leaving the tree dirty after every
+  `make html`. Both generated copies are now ignored and produced on demand.
 * [x] Fix the coverage threshold mismatch in the README. The README states
   coverage fails below 60%, but `pyproject.toml` sets `--cov-fail-under=70`.
 * [x] Correct the `main`/`master` references in `MIGRATION.md` and the README.
