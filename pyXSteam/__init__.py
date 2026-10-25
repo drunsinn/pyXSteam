@@ -16,7 +16,7 @@ from .Constants import UnitSystem, IceType
 
 logging.getLogger(__name__).addHandler(logging.NullHandler())
 
-__version__ = "0.5.0"
+__version__ = "1.0.0"
 __author__ = "drunsinn"
 __license__ = "MIT"
 __email__ = "dr.unsinn@googlemail.com"
