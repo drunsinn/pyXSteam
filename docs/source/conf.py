@@ -46,6 +46,10 @@ extensions = [
     "myst_parser",
 ]
 
+# Generate anchors for Markdown headings so that links such as
+# [Behavior changes](#behavior-changes) resolve.
+myst_heading_anchors = 3
+
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
 

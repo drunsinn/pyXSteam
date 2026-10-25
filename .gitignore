@@ -112,6 +112,7 @@ venv.bak/
 /extern_docs
 .vscode/
 docs/source/README.md
+docs/source/MIGRATION.md
 docs/reports
 uv.lock
 .ruff_cache/

@@ -7,6 +7,7 @@
    :caption: Contents:
 
    README.md
+   MIGRATION.md
    pyXSteam
    pyXSteamDemo
    pyXSteamTables

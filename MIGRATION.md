@@ -1,6 +1,6 @@
-# Migration guide: `main` (0.4.x) to `modernisation` (1.x.x)
+# Migration guide: `master` (0.4.x) to `modernisation` (1.x.x)
 
-This guide summarizes developer-facing changes between the current `main`
+This guide summarizes developer-facing changes between the current `master`
 branch and `modernisation`. It is intended for applications upgrading across
 the planned major release. The ordinary `XSteam` property methods remain
 available with their existing names; the most important migration work is
@@ -100,6 +100,10 @@ pressure = steam.pmelt_t(-13.15, IceType.Ih)
 - Region selectors now return `DiagramRegion` (`IntEnum`) values rather than
   plain integers. They compare equal to their former numeric values; prefer
   comparisons against `DiagramRegion.R1` etc.
+- The `pyXSteam.name` attribute (`name = "pyXSteam"`) has been removed from
+  `pyXSteam/__init__.py`. Use `pyXSteam.__name__` or the literal `"pyXSteam"`
+  instead. The `__version__`, `__author__`, `__license__`, and `__email__`
+  attributes remain available.
 
 ## Behavior changes
 

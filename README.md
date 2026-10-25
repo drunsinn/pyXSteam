@@ -48,7 +48,7 @@ up. Install the optional demo dependencies with `pip install "pyXSteam[demo]"`
 Tests require `pytest`, `pytest-cov`, and `numpy`. Run `pytest` (or `make test`)
 to see uncovered lines and branches in the terminal and generate an HTML report
 at `dist/reports/coverage.html`. The test command fails if total branch-aware
-coverage falls below 60%. Demo scripts under `pyXSteam/scripts/` are excluded
+coverage falls below 70%. Demo scripts under `pyXSteam/scripts/` are excluded
 from the coverage calculation because they are user-facing examples rather than
 core library code.
 
@@ -80,7 +80,7 @@ steam_table = XSteam(UnitSystem.MKS)  # pressure: bar; temperature: °C
 steam_table_fls = XSteam(UnitSystem.FLS)  # pressure: psi; temperature: °F
 ```
 
-For the full upgrade checklist when moving from `main` 0.4.x to the planned
+For the full upgrade checklist when moving from `master` 0.4.x to the planned
 1.0.x release, see the [migration guide](./MIGRATION.md). The key breaking
 change is that `BARE` is now an alias for MKS (bar and °C), not the former
 MPa-and-kelvin unit convention.
