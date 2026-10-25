@@ -31,6 +31,10 @@ Blockers (must be resolved before the merge):
 
 Merge and release:
 
+The remaining steps need GitHub write access, which is not available in the
+development environment used for this work. Push the branch and perform the
+GitHub-side actions manually.
+
 * [ ] Merge PR #13 into `master`. The repository default branch is `master`,
   not `main`.
 * [ ] Verify the CI matrix after the merge. The test workflow
@@ -63,7 +67,11 @@ Follow-up issues found while reviewing the PR:
   added, so CI runs no linter; rename the workflow from
   "Build and Lint with Flake8".
 * [ ] Resolve the license inconsistency. The `pyXSteam/__init__.py` docstring
-  says GPLv2, `__license__` says MIT, and `LICENSE.txt` is LGPLv2.
+  says GPLv2, `__license__` says MIT, and `LICENSE.txt` is LGPLv2. Decision
+  deferred: leave the declarations as they are for the 1.0.0 release and
+  settle the question separately. Note that `pyproject.toml` deliberately
+  ships `LICENSE.txt` via `license-files` without asserting an SPDX
+  identifier, so the published metadata does not contradict the file.
 * [ ] Update the stale PR #13 description. It claims Python 3.7 is the likely
   minimum (it is 3.11) and one checklist item is still unchecked.
 
