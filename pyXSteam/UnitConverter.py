@@ -425,11 +425,6 @@ class UnitConverter:
         """
         :return: string representation of the selected unit system
         """
-        result = ""
         if self._unit_system is UnitSystem.FLS:
-            result = "FLS (ft/lb/sec/°F/psi/btu)"
-        elif self._unit_system is UnitSystem.MKS:
-            result = "MKS (m/kg/sec/°C/bar/W)"
-        else:
-            result = "BARE (m/kg/sec/K/MPa/W)"
-        return result
+            return "FLS (ft/lb/sec/°F/psi/btu)"
+        return "MKS (m/kg/sec/°C/bar/W)"
